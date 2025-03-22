@@ -118,8 +118,8 @@ importers:
         specifier: 8.6.6
         version: 8.6.6(storybook@8.6.6(prettier@3.4.1))
       '@storybook/addon-controls':
-        specifier: 8.6.6
-        version: 8.6.6(storybook@8.6.6(prettier@3.4.1))
+        specifier: 8.6.8
+        version: 8.6.8(storybook@8.6.6(prettier@3.4.1))
       '@storybook/addon-coverage':
         specifier: ^1.0.5
         version: 1.0.5
@@ -1212,6 +1212,11 @@ packages:
     resolution: {integrity: sha512-QVuUY+cveqWSaSMCRY4nM1ilA19T6ya28qTAUGaJW1undy0ig5vH3zbBAkMJnXKvraCjl9UlciyERplb8ljjxg==}
     peerDependencies:
       storybook: ^8.6.6
+
+  '@storybook/addon-controls@8.6.8':
+    resolution: {integrity: sha512-rgV0EdxmqL7HWm8W8ractgcB7WjLktWPgruDJTcHMvdVbpPDP7y3+xNivZs1IqTFV4uA6GS2pPuhzBjwppwtKQ==}
+    peerDependencies:
+      storybook: ^8.6.8
 
   '@storybook/addon-coverage@1.0.5':
     resolution: {integrity: sha512-EMa5vMJFVZJjp6MKJUa/aAfaw833eQ8/y6BHB2sMnvdwztV9DHMGtA1fXAPFwqOo81q8og0+7e47z1oHPsbk4Q==}
@@ -4893,6 +4898,13 @@ snapshots:
       ts-dedent: 2.2.0
 
   '@storybook/addon-controls@8.6.6(storybook@8.6.6(prettier@3.4.1))':
+    dependencies:
+      '@storybook/global': 5.0.0
+      dequal: 2.0.3
+      storybook: 8.6.6(prettier@3.4.1)
+      ts-dedent: 2.2.0
+
+  '@storybook/addon-controls@8.6.8(storybook@8.6.6(prettier@3.4.1))':
     dependencies:
       '@storybook/global': 5.0.0
       dequal: 2.0.3
