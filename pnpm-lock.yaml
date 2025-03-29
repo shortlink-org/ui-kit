@@ -88,10 +88,10 @@ importers:
         version: 1.1.1(react@19.0.0)
       storybook-addon-next:
         specifier: ^1.8.0
-        version: 1.8.0(@storybook/addon-actions@8.6.6(storybook@8.6.6(prettier@3.4.1)))(@storybook/addons@6.5.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(next@15.2.2(@babel/core@7.26.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(postcss@8.5.2)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.8.2)(webpack@5.96.1(esbuild@0.25.1))
+        version: 1.8.0(@storybook/addon-actions@8.6.11(storybook@8.6.6(prettier@3.4.1)))(@storybook/addons@6.5.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(next@15.2.2(@babel/core@7.26.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(postcss@8.5.2)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.8.2)(webpack@5.96.1(esbuild@0.25.1))
       storybook-addon-next-router:
         specifier: ^4.0.2
-        version: 4.0.2(@storybook/addon-actions@8.6.6(storybook@8.6.6(prettier@3.4.1)))(@storybook/addons@6.5.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@storybook/client-api@6.5.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(next@15.2.2(@babel/core@7.26.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 4.0.2(@storybook/addon-actions@8.6.11(storybook@8.6.6(prettier@3.4.1)))(@storybook/addons@6.5.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@storybook/client-api@6.5.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(next@15.2.2(@babel/core@7.26.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       styled-jsx:
         specifier: ^5.1.6
         version: 5.1.6(@babel/core@7.26.8)(react@19.0.0)
@@ -115,8 +115,8 @@ importers:
         specifier: 8.6.6
         version: 8.6.6(storybook@8.6.6(prettier@3.4.1))
       '@storybook/addon-actions':
-        specifier: 8.6.6
-        version: 8.6.6(storybook@8.6.6(prettier@3.4.1))
+        specifier: 8.6.11
+        version: 8.6.11(storybook@8.6.6(prettier@3.4.1))
       '@storybook/addon-controls':
         specifier: 8.6.6
         version: 8.6.6(storybook@8.6.6(prettier@3.4.1))
@@ -1197,6 +1197,11 @@ packages:
     resolution: {integrity: sha512-Po/PJi40NG3yt5RGtV76ih4SKKJ/kG6s3rNB8IvfOHqFN+H+qPOtikqdCV8BCqrgivaYsoYQqjwxUrUwz3+tQw==}
     peerDependencies:
       storybook: ^8.6.6
+
+  '@storybook/addon-actions@8.6.11':
+    resolution: {integrity: sha512-7VORphqmxJf2J2a8tRgCAIeaMQ1JjYZwmwsrOwXBt77NjJbAC2qx9KecN1fsKKCyRVSk/wAICvOLStKM15+v2g==}
+    peerDependencies:
+      storybook: ^8.6.11
 
   '@storybook/addon-actions@8.6.6':
     resolution: {integrity: sha512-RSutBNSwh0KDAGAEUME4GuhrzmdBYnZOWNRsFuKKsgpeDiVEBWafiCQEf39PxzsMThzFvvRx5Pie4968EDy27w==}
@@ -4876,6 +4881,15 @@ snapshots:
       axe-core: 4.10.2
       storybook: 8.6.6(prettier@3.4.1)
 
+  '@storybook/addon-actions@8.6.11(storybook@8.6.6(prettier@3.4.1))':
+    dependencies:
+      '@storybook/global': 5.0.0
+      '@types/uuid': 9.0.8
+      dequal: 2.0.3
+      polished: 4.3.1
+      storybook: 8.6.6(prettier@3.4.1)
+      uuid: 9.0.1
+
   '@storybook/addon-actions@8.6.6(storybook@8.6.6(prettier@3.4.1))':
     dependencies:
       '@storybook/global': 5.0.0
@@ -7438,9 +7452,9 @@ snapshots:
 
   store2@2.14.4: {}
 
-  storybook-addon-next-router@4.0.2(@storybook/addon-actions@8.6.6(storybook@8.6.6(prettier@3.4.1)))(@storybook/addons@6.5.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@storybook/client-api@6.5.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(next@15.2.2(@babel/core@7.26.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  storybook-addon-next-router@4.0.2(@storybook/addon-actions@8.6.11(storybook@8.6.6(prettier@3.4.1)))(@storybook/addons@6.5.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@storybook/client-api@6.5.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(next@15.2.2(@babel/core@7.26.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
-      '@storybook/addon-actions': 8.6.6(storybook@8.6.6(prettier@3.4.1))
+      '@storybook/addon-actions': 8.6.11(storybook@8.6.6(prettier@3.4.1))
       '@storybook/addons': 6.5.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@storybook/client-api': 6.5.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       next: 15.2.2(@babel/core@7.26.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -7448,9 +7462,9 @@ snapshots:
       react-dom: 19.0.0(react@19.0.0)
       tslib: 2.4.0
 
-  storybook-addon-next@1.8.0(@storybook/addon-actions@8.6.6(storybook@8.6.6(prettier@3.4.1)))(@storybook/addons@6.5.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(next@15.2.2(@babel/core@7.26.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(postcss@8.5.2)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.8.2)(webpack@5.96.1(esbuild@0.25.1)):
+  storybook-addon-next@1.8.0(@storybook/addon-actions@8.6.11(storybook@8.6.6(prettier@3.4.1)))(@storybook/addons@6.5.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(next@15.2.2(@babel/core@7.26.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(postcss@8.5.2)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.8.2)(webpack@5.96.1(esbuild@0.25.1)):
     dependencies:
-      '@storybook/addon-actions': 8.6.6(storybook@8.6.6(prettier@3.4.1))
+      '@storybook/addon-actions': 8.6.11(storybook@8.6.6(prettier@3.4.1))
       '@storybook/addons': 6.5.16(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       image-size: 1.2.0
       loader-utils: 3.3.1
