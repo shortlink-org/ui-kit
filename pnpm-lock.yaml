@@ -28,7 +28,7 @@ importers:
         version: 6.4.12(@emotion/react@11.13.5(@types/react@19.1.6)(react@19.0.0))(@emotion/styled@11.13.5(@emotion/react@11.13.5(@types/react@19.1.6)(react@19.0.0))(@types/react@19.1.6)(react@19.0.0))(@types/react@19.1.6)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@mui/types':
         specifier: ^7.2.21
-        version: 7.4.2(@types/react@19.1.6)
+        version: 7.4.3(@types/react@19.1.6)
       '@mui/x-date-pickers':
         specifier: 8.0.0-alpha.14
         version: 8.0.0-alpha.14(@emotion/react@11.13.5(@types/react@19.1.6)(react@19.0.0))(@emotion/styled@11.13.5(@emotion/react@11.13.5(@types/react@19.1.6)(react@19.0.0))(@types/react@19.1.6)(react@19.0.0))(@mui/material@6.4.12(@emotion/react@11.13.5(@types/react@19.1.6)(react@19.0.0))(@emotion/styled@11.13.5(@emotion/react@11.13.5(@types/react@19.1.6)(react@19.0.0))(@types/react@19.1.6)(react@19.0.0))(@types/react@19.1.6)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@mui/system@6.4.12(@emotion/react@11.13.5(@types/react@19.1.6)(react@19.0.0))(@emotion/styled@11.13.5(@emotion/react@11.13.5(@types/react@19.1.6)(react@19.0.0))(@types/react@19.1.6)(react@19.0.0))(@types/react@19.1.6)(react@19.0.0))(@types/react@19.1.6)(date-fns@4.1.0)(dayjs@1.11.13)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -1106,8 +1106,8 @@ packages:
       '@types/react':
         optional: true
 
-  '@mui/types@7.4.2':
-    resolution: {integrity: sha512-edRc5JcLPsrlNFYyTPxds+d5oUovuUxnnDtpJUbP6WMeV4+6eaX/mqai1ZIWT62lCOe0nlrON0s9HDiv5en5bA==}
+  '@mui/types@7.4.3':
+    resolution: {integrity: sha512-2UCEiK29vtiZTeLdS2d4GndBKacVyxGvReznGXGr+CzW/YhjIX+OHUdCIczZjzcRAgKBGmE9zCIgoV9FleuyRQ==}
     peerDependencies:
       '@types/react': ^17.0.0 || ^18.0.0 || ^19.0.0
     peerDependenciesMeta:
@@ -5148,7 +5148,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.1.6
 
-  '@mui/types@7.4.2(@types/react@19.1.6)':
+  '@mui/types@7.4.3(@types/react@19.1.6)':
     dependencies:
       '@babel/runtime': 7.27.4
     optionalDependencies:
@@ -5157,7 +5157,7 @@ snapshots:
   '@mui/utils@6.4.6(@types/react@19.1.6)(react@19.0.0)':
     dependencies:
       '@babel/runtime': 7.26.10
-      '@mui/types': 7.4.2(@types/react@19.1.6)
+      '@mui/types': 7.4.3(@types/react@19.1.6)
       '@types/prop-types': 15.7.14
       clsx: 2.1.1
       prop-types: 15.8.1
