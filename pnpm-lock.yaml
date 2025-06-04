@@ -118,8 +118,8 @@ importers:
         specifier: 8.6.6
         version: 8.6.6(storybook@8.6.6(prettier@3.4.1))
       '@storybook/addon-controls':
-        specifier: 8.6.6
-        version: 8.6.6(storybook@8.6.6(prettier@3.4.1))
+        specifier: 8.6.14
+        version: 8.6.14(storybook@8.6.6(prettier@3.4.1))
       '@storybook/addon-coverage':
         specifier: ^1.0.5
         version: 1.0.5
@@ -1402,6 +1402,11 @@ packages:
     resolution: {integrity: sha512-nhGy/JumrqFxMDdOF33b7p4ZrAZ9dAc1661AyHxJg0UULvV6HUq4BAzmYFEoZGOntEh6HUSw8hxLzF76TL2mVA==}
     peerDependencies:
       storybook: ^8.6.6
+
+  '@storybook/addon-controls@8.6.14':
+    resolution: {integrity: sha512-IiQpkNJdiRyA4Mq9mzjZlvQugL/aE7hNgVxBBGPiIZG6wb6Ht9hNnBYpap5ZXXFKV9p2qVI0FZK445ONmAa+Cw==}
+    peerDependencies:
+      storybook: ^8.6.14
 
   '@storybook/addon-controls@8.6.6':
     resolution: {integrity: sha512-QVuUY+cveqWSaSMCRY4nM1ilA19T6ya28qTAUGaJW1undy0ig5vH3zbBAkMJnXKvraCjl9UlciyERplb8ljjxg==}
@@ -5322,6 +5327,13 @@ snapshots:
     dependencies:
       '@storybook/global': 5.0.0
       memoizerific: 1.11.3
+      storybook: 8.6.6(prettier@3.4.1)
+      ts-dedent: 2.2.0
+
+  '@storybook/addon-controls@8.6.14(storybook@8.6.6(prettier@3.4.1))':
+    dependencies:
+      '@storybook/global': 5.0.0
+      dequal: 2.0.3
       storybook: 8.6.6(prettier@3.4.1)
       ts-dedent: 2.2.0
 
