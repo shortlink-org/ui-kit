@@ -51,7 +51,7 @@
     "@mui/material": "^6.5.0",
     "@mui/types": "^7.4.5",
     "@mui/x-date-pickers": "8.5.0",
-    "@storybook/builder-vite": "8.6.6",
+    "@storybook/builder-vite": "8.6.14",
     "@storybook/experimental-nextjs-vite": "8.6.6",
     "@tailwindcss/postcss": "4.0.14",
     "@tailwindcss/typography": "^0.5.16",
