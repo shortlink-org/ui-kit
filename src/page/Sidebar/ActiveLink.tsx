@@ -11,8 +11,8 @@ type ActiveLinkProps = LinkProps & {
 function ActiveLink({ children, activeClassName, ...props }: ActiveLinkProps) {
   const currentPath = usePathname()
 
-  const child = Children.only(children)
-  const childClassName = child.props.className || ''
+  const child = Children.only(children) as ReactElement
+  const childClassName = (child.props as any).className || ''
   const [className, setClassName] = useState(childClassName)
 
   useEffect(() => {
@@ -48,7 +48,7 @@ function ActiveLink({ children, activeClassName, ...props }: ActiveLinkProps) {
     <Link {...props}>
       {React.cloneElement(child, {
         className: className || null,
-      })}
+      } as any)}
     </Link>
   )
 }

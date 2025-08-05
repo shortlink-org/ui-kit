@@ -1,3 +1,4 @@
+import React from 'react'
 import { Preview } from '@storybook/react'
 import { Provider } from 'react-wrap-balancer'
 
