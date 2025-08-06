@@ -32,36 +32,37 @@ npm:
 
   # -------------------------- main logic ----------------------------
   script:
-    - |
-      set -e
+  - |
+    set -e
 
-      # ----------------------------- decide version -----------------------------
-      SEMVER_REGEX='^v\?[0-9]+\.[0-9]+\.[0-9]+\(-.*\)\?$'
+    # ------------------ decide version ------------------
+    if [ -n "$CI_COMMIT_TAG" ] &&
+        echo "$CI_COMMIT_TAG" | grep -Eq '^v?[0-9]+\.[0-9]+\.[0-9]+(-.*)?$'; then
+      VERSION=$(echo "$CI_COMMIT_TAG" | sed 's/^v//')
+      DIST_TAG="latest"
+    elif [ "$CI_COMMIT_BRANCH" = "main" ]; then
+      DATE=$(date -u '+%Y%m%d')
+      TIME=$(date -u '+%H%M%S')
+      VERSION="0.${DATE}.${TIME}"          # 0.YYYYMMDD.HHMMSS
+      DIST_TAG="$CANARY_TAG"
+    else
+      echo "⏩ Not a SemVer tag and not main – skipping publish."
+      exit 0
+    fi
 
-      if [ -n "$CI_COMMIT_TAG" ] && echo "$CI_COMMIT_TAG" | grep -Eq "$SEMVER_REGEX"; then
-        VERSION=$(echo "$CI_COMMIT_TAG" | sed 's/^v//')
-        DIST_TAG="latest"
-      elif [ "$CI_COMMIT_BRANCH" = "main" ]; then
-        VERSION="0.${CI_COMMIT_SHA:0:6}"
-        DIST_TAG="$CANARY_TAG"
-      else
-        echo "⏩ Not a SemVer tag and not main — skipping publish."
-        exit 0
-      fi
+    echo "📦 Publishing $VERSION (dist-tag: $DIST_TAG)"
 
-      echo "📦 Publishing version $VERSION (tag: $DIST_TAG)"
+    # bump package.json without committing
+    pnpm version --no-git-tag-version "$VERSION"
 
-      # ------------------------------ bump version -------------------------------
-      pnpm version --no-git-tag-version "$VERSION"
-
-      # ------------------------------ publish ------------------------------------
-      if ! npm publish \
-            --registry "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/" \
-            --scope=@shortlink-org \
-            --access public \
-            --tag "$DIST_TAG"; then
-        echo "⚠️  Version already exists — publish skipped."
-      fi
+    # publish – ignore 'version exists' errors
+    if ! npm publish \
+          --registry "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/" \
+          --scope=@shortlink-org \
+          --access public \
+          --tag "$DIST_TAG"; then
+      echo "⚠️  Version $VERSION already exists – skipping."
+    fi
 
   # Run only on tags or on main
   rules:
