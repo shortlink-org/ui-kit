@@ -1,0 +1,8 @@
+# NOTE:
+# APPLICATION   - Name application
+# PACKAGE_PATH  - Path to package.json
+.matrix_build_npm:
+  parallel:
+    matrix:
+      - APPLICATION: ui-kit
+        PACKAGE_PATH: "."
