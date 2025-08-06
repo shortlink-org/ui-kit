@@ -1,6 +1,6 @@
 include:
   - local: .gitlab/ci/pipelines/build/docker_base.yml
-  - local: .gitlab/ci/templates/cache.yml
+  - component: $CI_SERVER_FQDN/shortlink-org/gitlab-templates/pnpm_cache@main
 
 build:
   extends:
