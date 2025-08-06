@@ -1,10 +1,11 @@
+include:
+  - local: .gitlab/ci/workflows/matrix_build_npm.yml
+  - local: .gitlab/ci/templates/cache.yml
+
 # ====================================================================
 # Publish job (drop this into your .gitlab-ci.yml)
 # ====================================================================
 npm_publish:
-  extends:
-    - .matrix_build_npm
-    - .cache
   stage: publish
   image: node:24-alpine
 
