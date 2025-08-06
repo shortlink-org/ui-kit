@@ -4,7 +4,7 @@ include:
   - local: .gitlab/ci/workflows/matrix_build_npm.yml
 
 # DOCKER ===============================================================================================================
-build:
+docker:
   extends:
     - .matrix_build_ui
   stage: build
@@ -14,7 +14,7 @@ build:
     strategy: depend
 
 # HELM =================================================================================================================
-helm-chart:
+helm:
   extends:
     - .matrix_build_helm
   stage: build
@@ -27,7 +27,7 @@ helm-chart:
 #      when: on_success
 
 # NPM Publish ==========================================================================================================
-npm-publish:
+npm:
   extends:
     - .matrix_build_npm
   stage: build
