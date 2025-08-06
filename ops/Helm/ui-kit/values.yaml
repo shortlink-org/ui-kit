@@ -28,6 +28,8 @@ deploy:
   type: Rollout
   strategy:
     type: Canary
+    canary:
+      dynamicStableScale: true
 
   replicaCount: 1
 
