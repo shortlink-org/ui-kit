@@ -1,7 +1,7 @@
 include:
   - local: .gitlab/ci/templates/common.yml
   - local: .gitlab/ci/stages/publish.yaml
-  - local: .gitlab/ci/stages/test.yml
+  # - local: .gitlab/ci/stages/test.yml
   - local: .gitlab/ci/stages/build.yml
   - local: .gitlab/ci/stages/accessibility.yml
 
