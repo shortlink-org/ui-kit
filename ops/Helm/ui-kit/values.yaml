@@ -26,7 +26,8 @@ ingress:
 # ==============================================================================
 deploy:
   type: Rollout
-  strategy: Canary
+  strategy:
+    type: Canary
 
   replicaCount: 1
 
