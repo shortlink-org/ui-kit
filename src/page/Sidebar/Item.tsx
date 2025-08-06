@@ -5,7 +5,7 @@ import ActiveLink from './ActiveLink'
 type AppProps = {
   mode: 'full' | 'mini'
   url: string
-  icon: JSX.Element
+  icon: React.JSX.Element
   name: string
 }
 

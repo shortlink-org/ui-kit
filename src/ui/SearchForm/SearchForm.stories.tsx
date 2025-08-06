@@ -1,6 +1,4 @@
-import React from 'react'
 import { Meta, StoryObj } from '@storybook/react'
-import { action } from '@storybook/addon-actions'
 
 import SearchForm from './SearchForm'
 
@@ -68,13 +66,13 @@ export const PreFilled: Story = {
 
 export const SlowDebounce: Story = {
   args: {
-    placeholder: 'Type slowly – debounce 800 ms',
+    placeholder: 'Type slowly – debounce 800 ms',
     debounceDelay: 800,
   },
   parameters: {
     docs: {
       description: {
-        story: 'Debounce extended to 800 ms to illustrate delayed callbacks.',
+        story: 'Debounce extended to 800 ms to illustrate delayed callbacks.',
       },
     },
   },
@@ -96,7 +94,7 @@ export const Disabled: Story = {
 
 export const WithCustomStyling: Story = {
   args: {
-    placeholder: 'Full‑width, centred',
+    placeholder: 'Full-width, centred',
     className: 'mx-auto max-w-md',
   },
   parameters: {
