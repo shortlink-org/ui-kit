@@ -33,36 +33,48 @@ npm:
   # -------------------------- main logic ----------------------------
   script:
   - |
-    set -e
+    set -e                           # stop on first real error
+    # -----------------------------------------------------------
+    # 1. Decide VERSION and DIST_TAG   (same logic as before)
+    # -----------------------------------------------------------
+    SEMVER_REGEX='^v\?[0-9]+\.[0-9]+\.[0-9]+(-.*)?$'
 
-    # ------------------ decide version ------------------
-    if [ -n "$CI_COMMIT_TAG" ] &&
-        echo "$CI_COMMIT_TAG" | grep -Eq '^v?[0-9]+\.[0-9]+\.[0-9]+(-.*)?$'; then
+    if [ -n "$CI_COMMIT_TAG" ] && echo "$CI_COMMIT_TAG" | grep -Eq "$SEMVER_REGEX"; then
       VERSION=$(echo "$CI_COMMIT_TAG" | sed 's/^v//')
       DIST_TAG="latest"
     elif [ "$CI_COMMIT_BRANCH" = "main" ]; then
-      DATE=$(date -u '+%Y%m%d')
-      TIME=$(date -u '+%H%M%S')
-      VERSION="0.${DATE}.${TIME}"          # 0.YYYYMMDD.HHMMSS
-      DIST_TAG="$CANARY_TAG"
+      VERSION="0.$(date -u '+%Y%m%d').$(date -u '+%H%M%S')"   # 0.YYYYMMDD.HHMMSS
+      DIST_TAG="canary"
     else
-      echo "⏩ Not a SemVer tag and not main – skipping publish."
+      echo "⏩  Not a SemVer tag and not main – skipping publish."
+      exit 0
+    fi
+    echo "📦  Candidate version: $VERSION (tag: $DIST_TAG)"
+
+    # -----------------------------------------------------------
+    # 2. Abort early if this version is already in the registry
+    # -----------------------------------------------------------
+    PACKAGE_NAME=$(npm pkg get name --workspaces=false | tr -d '"')
+    if npm view "${PACKAGE_NAME}@${VERSION}" \
+          --registry "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/" >/dev/null 2>&1; then
+      echo "✔️  ${PACKAGE_NAME}@${VERSION} already exists – nothing to do."
       exit 0
     fi
 
-    echo "📦 Publishing $VERSION (dist-tag: $DIST_TAG)"
-
-    # bump package.json without committing
+    # -----------------------------------------------------------
+    # 3. Build & publish
+    # -----------------------------------------------------------
+    pnpm install --frozen-lockfile                 # tsc, vite, etc.
     pnpm version --no-git-tag-version "$VERSION"
+    pnpm run build
 
-    # publish – ignore 'version exists' errors
-    if ! npm publish \
-          --registry "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/" \
-          --scope=@shortlink-org \
-          --access public \
-          --tag "$DIST_TAG"; then
-      echo "⚠️  Version $VERSION already exists – skipping."
-    fi
+    echo "🚀  Publishing ${PACKAGE_NAME}@${VERSION} …"
+    npm publish \
+      --registry "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/" \
+      --scope=@shortlink-org \
+      --access public \
+      --tag "$DIST_TAG" \
+      --ignore-scripts
 
   # Run only on tags or on main
   rules:
