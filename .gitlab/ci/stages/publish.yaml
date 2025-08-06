@@ -6,7 +6,7 @@ npm:
     NPM_TOKEN: "$CI_JOB_TOKEN"
     PACKAGE_PATH: "${PACKAGE_PATH:-.}"
     # turn on provenance
-    NPM_CONFIG_PROVENANCE: "true"
+    NPM_CONFIG_PROVENANCE: "false"
 
   id_tokens:
     SIGSTORE_ID_TOKEN:
