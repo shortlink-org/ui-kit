@@ -12,6 +12,13 @@ stages:
 build:
   extends:
     - .template_build
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      when: on_success
+    - if: '$CI_COMMIT_BRANCH'
+      variables:
+        CI_COMMIT_TAG: "$CI_COMMIT_REF_SLUG"
+      when: on_success
 
 # TODO: fix this job
 # SECURITY =============================================================================================================
@@ -23,7 +30,12 @@ container_scanning:
     GIT_STRATEGY: fetch
     DOCKERFILE_PATH: $DOCKERFILE_PATH
   before_script:
-    - export DOCKER_IMAGE="$REGISTRY_IMAGE:$CI_COMMIT_TAG"
+    - |
+      if [ -n "$CI_COMMIT_TAG" ]; then
+        export DOCKER_IMAGE="$REGISTRY_IMAGE:$CI_COMMIT_TAG"
+      else
+        export DOCKER_IMAGE="$REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+      fi
   needs:
     - build
 
@@ -32,12 +44,18 @@ verify_image:
   stage: security
   image: alpine:3.20
   variables:
-    COSIGN_YES: "true"         # Automatically confirm actions in Cosign without user interaction
-    FF_SCRIPT_SECTIONS: "true" # Enables GitLab's CI script sections for better multi-line script output
-    IMAGE_TAG: $REGISTRY_IMAGE:$CI_COMMIT_TAG
+    COSIGN_YES: "true"
+    FF_SCRIPT_SECTIONS: "true"
   before_script:
-    - apk add --update cosign docker jq
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - apk add --no-cache cosign docker jq
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - |
+      if [ -n "$CI_COMMIT_TAG" ]; then
+        export IMAGE_TAG="$CI_COMMIT_TAG"
+      else
+        export IMAGE_TAG="$CI_COMMIT_REF_SLUG"
+      fi
+      export IMAGE_URI="$REGISTRY_IMAGE:$IMAGE_TAG"
   needs:
     - build
   script:
@@ -46,5 +64,5 @@ verify_image:
       --certificate-identity "$CI_PROJECT_URL//.gitlab-ci.yml@refs/heads/$CI_COMMIT_REF_NAME" \
       --certificate-oidc-issuer "$CI_SERVER_URL" \
       "$IMAGE_URI" | jq .
-  # TODO: fix this job
   allow_failure: true
+
