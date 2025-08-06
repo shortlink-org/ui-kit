@@ -1,5 +1,7 @@
 include:
   - local: .gitlab/ci/workflows/matrix_build_ui.yml
+  - local: .gitlab/ci/workflows/matrix_build_helm.yml
+  - local: .gitlab/ci/workflows/matrix_build_npm.yml
 
 # DOCKER ===============================================================================================================
 build:
