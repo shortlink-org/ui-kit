@@ -5,8 +5,8 @@ include:
 # ────────────────────────────────────────────────────────────────
 # PUBLISH PACKAGE TO GITLAB NPM REGISTRY  (provenance disabled)
 # ────────────────────────────────────────────────────────────────
-npm:
-  stage: publish
+publish:npm:
+  stage: build
   image: node:24-alpine
 
   variables:

@@ -6,9 +6,8 @@ include:
   - local: .gitlab/ci/stages/accessibility.yml
 
 stages:
-  - publish
-  - build
   - test
+  - build
   - deploy
   - accessibility
 
