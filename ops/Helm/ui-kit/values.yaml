@@ -25,6 +25,8 @@ ingress:
 
 # ==============================================================================
 deploy:
+  type: Rollout
+
   replicaCount: 1
 
   imagePullSecrets: []
