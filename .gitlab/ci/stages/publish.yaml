@@ -1,106 +1,59 @@
-include:
-  - local: .gitlab/ci/workflows/matrix_build_npm.yml
-  - local: .gitlab/ci/templates/cache.yml
-
 npm:
   stage: publish
   image: node:24-alpine
 
-  # --------------------------- variables ----------------------------
   variables:
     NPM_TOKEN: "$CI_JOB_TOKEN"
-    # Allow overriding where the package.json lives
     PACKAGE_PATH: "${PACKAGE_PATH:-.}"
+    # turn on provenance
     NPM_CONFIG_PROVENANCE: "true"
-    # Dist-tag to use when publishing a SHA build
-    CANARY_TAG: "canary"
 
-  # ------------------------ auth + tooling --------------------------
+  id_tokens:
+    SIGSTORE_ID_TOKEN:
+      aud: sigstore
+
   before_script:
-    # ↳ Auth for GitLab package registry
-    - printf "//%s/api/v4/projects/%s/packages/npm/:_authToken=%s\n" \
-        "$CI_SERVER_HOST" "$CI_PROJECT_ID" "$CI_JOB_TOKEN" >> ~/.npmrc
-    - echo "@${CI_PROJECT_ROOT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/" >> ~/.npmrc
-
-    # ↳ pnpm
-    - corepack enable
-    - corepack prepare pnpm@latest --activate
-
-    # ↳ move to the package
+    # Auth for the project-scoped registry
+    - echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}" > .npmrc
+    - echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:always-auth=true"        >> .npmrc
+    - export NODE_AUTH_TOKEN="$CI_JOB_TOKEN"
+    # pnpm
+    - corepack enable && corepack prepare pnpm@latest --activate
     - cd "$PACKAGE_PATH"
 
-
-  # -------------------------- main logic ----------------------------
   script:
-  - |
-    set -e
+    - |
+      set -e
 
-    # -----------------------------------------------------------
-    # 0.  Auth for GitLab npm registry (works for npm ≥ 9)
-    # -----------------------------------------------------------
-    echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}" > .npmrc
-    echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:always-auth=true"        >> .npmrc   # force every request to carry the token :contentReference[oaicite:0]{index=0}
-    export NODE_AUTH_TOKEN="$CI_JOB_TOKEN"   # npm ≥ 9 respects this env var :contentReference[oaicite:1]{index=1}
-
-    # -----------------------------------------------------------
-    # 1.  Decide VERSION and dist-tag
-    # -----------------------------------------------------------
-    if [ -n "$CI_COMMIT_TAG" ] && echo "$CI_COMMIT_TAG" | grep -Eq '^v\?[0-9]+\.[0-9]+\.[0-9]+(-.*)?$'; then
-      VERSION="$(echo "$CI_COMMIT_TAG" | sed 's/^v//')"
-      DIST_TAG="latest"
-    elif [ "$CI_COMMIT_BRANCH" = "main" ]; then
-      VERSION="0.$(date -u '+%Y%m%d').$(date -u '+%H%M%S')"    # 0.YYYYMMDD.HHMMSS; numeric → valid SemVer :contentReference[oaicite:2]{index=2}
-      DIST_TAG="canary"
-    else
-      echo "⏩  Not a release tag and not main – skipping publish."
-      exit 0
-    fi
-    echo "📦  Candidate version: $VERSION  (dist-tag: $DIST_TAG)"
-
-    # -----------------------------------------------------------
-    # 2.  Abort early if the version already exists
-    # -----------------------------------------------------------
-    PKG_NAME=$(npm pkg get name --workspaces=false | tr -d '"')
-    if npm view "${PKG_NAME}@${VERSION}" \
-            --registry "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/" \
-            >/dev/null 2>&1; then
-      echo "✔️  ${PKG_NAME}@${VERSION} already present – nothing to do."   # GitLab docs show view works for CI tokens :contentReference[oaicite:3]{index=3}
-      exit 0
-    fi
-
-    # -----------------------------------------------------------
-    # 3.  Build (ensures tsc/vite are available before prepublishOnly)
-    # -----------------------------------------------------------
-    pnpm install --frozen-lockfile                     # avoids “tsc: not found” :contentReference[oaicite:4]{index=4}
-    pnpm version --no-git-tag-version "$VERSION"
-    pnpm run build
-
-    # -----------------------------------------------------------
-    # 4.  Publish, but fail only on genuine errors
-    # -----------------------------------------------------------
-    if npm publish \
-          --registry "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/" \
-          --tag "$DIST_TAG" \
-          --ignore-scripts; then
-      echo "✅  Published ${PKG_NAME}@${VERSION}"
-    else
-      ERR_CODE=$?
-      # EPUBLISHCONFLICT / “already exists” are benign: skip instead of failing :contentReference[oaicite:5]{index=5}
-      if grep -qE '(EPUBLISHCONFLICT|previously published|already exists)' \
-            /root/.npm/_logs/* 2>/dev/null; then
-        echo "⚠️  Version already exists – skipping."
-        exit 0
+      # ----- decide version (semver tag vs main) -----
+      if [ -n "$CI_COMMIT_TAG" ] && echo "$CI_COMMIT_TAG" | grep -Eq '^v?[0-9]+\.[0-9]+\.[0-9]+(-.*)?$'; then
+        VERSION="$(echo "$CI_COMMIT_TAG" | sed 's/^v//')"
+        DIST_TAG="latest"
+      elif [ "$CI_COMMIT_BRANCH" = "main" ]; then
+        VERSION="0.$(date -u '+%Y%m%d').$(date -u '+%H%M%S')"   # 0.YYYYMMDD.HHMMSS
+        DIST_TAG="canary"
+      else
+        echo "not a release or main build – skip"; exit 0
       fi
-      echo "❌  npm publish failed with code $ERR_CODE (auth or other error)"   # ENEEDAUTH etc. :contentReference[oaicite:6]{index=6}
-      exit "$ERR_CODE"
-    fi
 
+      # ----- skip if already published -----
+      PKG=$(npm pkg get name | tr -d '"')
+      if npm view "${PKG}@${VERSION}" \
+           --registry "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/" \
+           >/dev/null 2>&1; then
+        echo "♦ ${PKG}@${VERSION} already exists – done"; exit 0
+      fi
 
-  # Run only on tags or on main
+      # ----- build & publish with provenance -----
+      pnpm install --frozen-lockfile
+      pnpm version --no-git-tag-version "$VERSION"
+      pnpm run build
+      npm publish --provenance \
+        --registry "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/" \
+        --tag "$DIST_TAG" \
+        --ignore-scripts
+
   rules:
     - if: '$CI_COMMIT_TAG'
     - if: '$CI_COMMIT_BRANCH == "main"'
-    - when: never          # all other refs skip the job
-
-  retry: 2
-  allow_failure: false
+    - when: never
