@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc -b && vite build",
     "dev": "pnpm storybook dev -p 6006",
-    "build-storybook": "pnpm storybook build",
+    "build-storybook": "pnpm storybook build --config-dir .storybook",
     "semantic-release": "pnpm dlx semantic-release",
     "test": "NODE_ENV=test jest",
     "inspector": "pnpm dlx @eslint/config-inspector",

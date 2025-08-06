@@ -3,29 +3,38 @@ include:
   - local: .gitlab/ci/templates/cache.yml
 
 # NPM PUBLISH ==========================================================================================================
+# .gitlab-ci.yml (fragment)
 npm:
   extends:
     - .matrix_build_npm
     - .cache
   stage: publish
-  image: node:23.0.0-alpine
-  # TODO: Research how to use SIGSTORE_ID_TOKEN
-  # id_tokens:
-  #  SIGSTORE_ID_TOKEN:
-  #    aud: sigstore
+  image: node:24-alpine
   variables:
-    NPM_TOKEN: $CI_JOB_TOKEN
+    NPM_TOKEN: $CI_JOB_TOKEN                   # npm expects this name
+    PACKAGE_PATH: "${PACKAGE_PATH:-.}"         # sensible default
+    NPM_CONFIG_PROVENANCE: "true"              # opt-in until the flag is stable
   before_script:
     - |
-      {
-        echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}"
-        echo "@${CI_PROJECT_ROOT_NAMESPACE}/shortlink=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
-      } | tee -a ~/.npmrc
-    # Enable pnpm
-    - corepack enable pnpm
-    - corepack use pnpm@latest
+      # 1) auth for project-scoped registry
+      printf "//%s/api/v4/projects/%s/packages/npm/:_authToken=%s\n" \
+             "$CI_SERVER_HOST" "$CI_PROJECT_ID" "$CI_JOB_TOKEN" >> ~/.npmrc
+      # 2) set scoped registry for organisation namespace
+      echo "@${CI_PROJECT_ROOT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/" \
+        >> ~/.npmrc
+    - corepack enable && corepack prepare pnpm@latest --activate
+    - cd "$PACKAGE_PATH"
   script:
-    - cd $PACKAGE_PATH
-    # TODO: add `--provenance` flag
-    - npm publish --registry ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/ --scope=@shortlink-org --access=public
-  allow_failure: true
+    # publish only on a tag that looks like a version
+    - |
+      if [[ "$CI_COMMIT_TAG" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+(-.*)?$ ]]; then
+        npm publish --registry "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/" \
+                    --scope=@shortlink-org --access public
+      else
+        echo "⏩ Not a version tag – skipping publish."
+      fi
+  rules:
+    - if: '$CI_COMMIT_TAG'   # run only for tags
+  retry: 2
+  allow_failure: false
+

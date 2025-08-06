@@ -1,6 +1,5 @@
-import type { StorybookConfig } from '@storybook/nextjs-vite'
-
-const config: StorybookConfig = {
+/** @type { import('@storybook/nextjs-vite').StorybookConfig } */
+const config = {
   stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
 
   addons: [
@@ -29,4 +28,4 @@ const config: StorybookConfig = {
   docs: {}
 }
 
-export default config
+module.exports = config 
