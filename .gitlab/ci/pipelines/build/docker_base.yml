@@ -1,0 +1,50 @@
+include:
+  - local: .gitlab/ci/templates/common.yml
+  - component: $CI_SERVER_FQDN/$CI_PROJECT_PATH/build@$CI_COMMIT_SHA
+  - component: $CI_SERVER_FQDN/components/container-scanning/container-scanning@main
+
+stages:
+  - .pre
+  - build
+  - security
+
+# BUILD ================================================================================================================
+build:
+  extends:
+    - .template_build
+
+# TODO: fix this job
+# SECURITY =============================================================================================================
+# Read more about this feature here: https://docs.gitlab.com/ee/user/application_security/container_scanning/
+
+container_scanning:
+  stage: security
+  variables:
+    GIT_STRATEGY: fetch
+    DOCKERFILE_PATH: $DOCKERFILE_PATH
+  before_script:
+    - export DOCKER_IMAGE="$REGISTRY_IMAGE:$CI_COMMIT_TAG"
+  needs:
+    - build
+
+# Verify the image signature using Cosign to ensure it matches the expected annotations and certificate identity
+verify_image:
+  stage: security
+  image: alpine:3.20
+  variables:
+    COSIGN_YES: "true"         # Automatically confirm actions in Cosign without user interaction
+    FF_SCRIPT_SECTIONS: "true" # Enables GitLab's CI script sections for better multi-line script output
+    IMAGE_TAG: $REGISTRY_IMAGE:$CI_COMMIT_TAG
+  before_script:
+    - apk add --update cosign docker jq
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  needs:
+    - build
+  script:
+    - cosign verify \
+      --annotations "tag=$IMAGE_TAG" \
+      --certificate-identity "$CI_PROJECT_URL//.gitlab-ci.yml@refs/heads/$CI_COMMIT_REF_NAME" \
+      --certificate-oidc-issuer "$CI_SERVER_URL" \
+      "$IMAGE_URI" | jq .
+  # TODO: fix this job
+  allow_failure: true
