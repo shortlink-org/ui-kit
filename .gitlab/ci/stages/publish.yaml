@@ -1,72 +1,76 @@
+include:
+  - local: .gitlab/ci/workflows/matrix_build_npm.yml
+  - local: .gitlab/ci/templates/cache.yml
+
+# ---------------------------------------------------------------
+# NPM PACKAGE PUBLISH (GitLab registry, provenance disabled)
+# ---------------------------------------------------------------
 npm:
   stage: publish
   image: node:24-alpine
 
   variables:
-    NPM_TOKEN: "$CI_JOB_TOKEN"
+    # Where the package.json lives – override per project if needed
     PACKAGE_PATH: "${PACKAGE_PATH:-.}"
-    # turn on provenance
+    # Provenance is NOT supported in a private GitLab registry
     NPM_CONFIG_PROVENANCE: "false"
 
-  id_tokens:
-    SIGSTORE_ID_TOKEN:
-      aud: sigstore
-
   before_script:
-    # Auth for the project-scoped registry
-    - echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}" > .npmrc
-    - echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:always-auth=true"        >> .npmrc
-    - export NODE_AUTH_TOKEN="$CI_JOB_TOKEN"
-    # pnpm
+    # → Auth + global config (no per-registry always-auth)  
+    - |
+      cat > ~/.npmrc <<EOF
+      //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}
+      always-auth=true
+      EOF
+      export NODE_AUTH_TOKEN="$CI_JOB_TOKEN"        # respected by npm ≥ 9 :contentReference[oaicite:0]{index=0}
+    # → pnpm
     - corepack enable && corepack prepare pnpm@latest --activate
     - cd "$PACKAGE_PATH"
 
-  script:
-  - |
+  script: |
     set -e
 
-    ############################################################
-    # 0. Auth & global npm config  (no per-registry always-auth)
-    ############################################################
-    echo "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}"  > ~/.npmrc
-    echo "always-auth=true"                                                                          >> ~/.npmrc   # global key ✔
-    export NODE_AUTH_TOKEN="$CI_JOB_TOKEN"   # npm ≥9 respects this var
-
-    ############################################################
-    # 1. Choose VERSION + DIST_TAG  (SemVer tag vs main branch)
-    ############################################################
-    if [ -n "$CI_COMMIT_TAG" ] && echo "$CI_COMMIT_TAG" | grep -Eq '^v?[0-9]+\.[0-9]+\.[0-9]+(-.*)?$'; then
-      VERSION="${CI_COMMIT_TAG#v}"          # strip leading v
+    # ------------------------------------------------------------
+    # 1. Decide VERSION & DIST_TAG
+    # ------------------------------------------------------------
+    if printf '%s' "$CI_COMMIT_TAG" | grep -Eq '^v?[0-9]+\.[0-9]+\.[0-9]+(-.*)?$'; then
+      VERSION="${CI_COMMIT_TAG#v}"
       DIST_TAG="latest"
     elif [ "$CI_COMMIT_BRANCH" = "main" ]; then
-      VERSION="0.$(date -u +%Y%m%d).$(date -u +%H%M%S)"   # 0.YYYYMMDD.HHMMSS  → legal SemVer :contentReference[oaicite:3]{index=3}
+      VERSION="0.$(date -u +%Y%m%d).$(date -u +%H%M%S)"   # 0.YYYYMMDD.HHMMSS is legal SemVer :contentReference[oaicite:1]{index=1}
       DIST_TAG="canary"
     else
-      echo "⏩  Not a release tag and not main – skipping publish."; exit 0
+      echo "▶︎ Skip publish on non-main branch without SemVer tag"; exit 0
     fi
     echo "📦  Candidate: $VERSION  (tag: $DIST_TAG)"
 
-    ############################################################
-    # 2. Skip if already in the registry
-    ############################################################
-    PKG_NAME=$(npm pkg get name --workspaces=false | tr -d '"')
-    if npm view "${PKG_NAME}@${VERSION}" \
-          --registry "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/" >/dev/null 2>&1; then
-      echo "✔️  ${PKG_NAME}@${VERSION} already exists – nothing to do."; exit 0
+    # ------------------------------------------------------------
+    # 2. Abort early if version already exists
+    # ------------------------------------------------------------
+    PKG=$(npm pkg get name --workspaces=false | tr -d '"')
+    REG="${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
+    if npm view "${PKG}@${VERSION}" --registry "$REG" >/dev/null 2>&1; then
+      echo "✔️  ${PKG}@${VERSION} already in registry – nothing to do."; exit 0
     fi
 
-    ############################################################
-    # 3. Build
-    ############################################################
-    pnpm install --frozen-lockfile                         # ensures tsc/vite exist
+    # ------------------------------------------------------------
+    # 3. Pin registry everywhere (stops ENEEDAUTH) 
+    # ------------------------------------------------------------
+    npm config set registry "$REG" --location=project     # highest precedence :contentReference[oaicite:2]{index=2}
+    export npm_config_registry="$REG"
+    echo "registry=$REG" >> ~/.npmrc
+
+    # ------------------------------------------------------------
+    # 4. Build
+    # ------------------------------------------------------------
+    pnpm install --frozen-lockfile
     pnpm version --no-git-tag-version "$VERSION"
     pnpm run build
 
-    ############################################################
-    # 4. Publish to GitLab registry  (NO provenance flag!)
-    ############################################################
-    npm publish --no-provenance \                          # explicit off → avoids EUSAGE :contentReference[oaicite:4]{index=4}
-      --registry "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/" \
+    # ------------------------------------------------------------
+    # 5. Publish (no provenance → avoids EUSAGE) 
+    # ------------------------------------------------------------
+    npm publish --no-provenance \
       --tag "$DIST_TAG" \
       --ignore-scripts
 
