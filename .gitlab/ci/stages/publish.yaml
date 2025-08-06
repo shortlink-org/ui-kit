@@ -1,41 +1,71 @@
-include:
-  - local: .gitlab/ci/workflows/matrix_build_npm.yml
-  - local: .gitlab/ci/templates/cache.yml
-
-# NPM PUBLISH ==========================================================================================================
-# .gitlab-ci.yml (fragment)
-npm:
+# ====================================================================
+# Publish job (drop this into your .gitlab-ci.yml)
+# ====================================================================
+npm_publish:
   extends:
     - .matrix_build_npm
     - .cache
   stage: publish
   image: node:24-alpine
+
+  # --------------------------- variables ----------------------------
   variables:
-    NPM_TOKEN: $CI_JOB_TOKEN                   # npm expects this name
-    PACKAGE_PATH: "${PACKAGE_PATH:-.}"         # sensible default
-    NPM_CONFIG_PROVENANCE: "true"              # opt-in until the flag is stable
+    NPM_TOKEN: "$CI_JOB_TOKEN"
+    # Allow overriding where the package.json lives
+    PACKAGE_PATH: "${PACKAGE_PATH:-.}"
+    NPM_CONFIG_PROVENANCE: "true"
+    # Dist-tag to use when publishing a SHA build
+    CANARY_TAG: "canary"
+
+  # ------------------------ auth + tooling --------------------------
   before_script:
-    - |
-      # 1) auth for project-scoped registry
-      printf "//%s/api/v4/projects/%s/packages/npm/:_authToken=%s\n" \
-             "$CI_SERVER_HOST" "$CI_PROJECT_ID" "$CI_JOB_TOKEN" >> ~/.npmrc
-      # 2) set scoped registry for organisation namespace
-      echo "@${CI_PROJECT_ROOT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/" \
-        >> ~/.npmrc
+    # NPM auth for project registry
+    - printf "//%s/api/v4/projects/%s/packages/npm/:_authToken=%s\n" \
+        "$CI_SERVER_HOST" "$CI_PROJECT_ID" "$CI_JOB_TOKEN" >> ~/.npmrc
+    # Scoped registry
+    - echo "@${CI_PROJECT_ROOT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/" >> ~/.npmrc
+    # pnpm
     - corepack enable && corepack prepare pnpm@latest --activate
+    # move to package dir
     - cd "$PACKAGE_PATH"
+
+  # -------------------------- main logic ----------------------------
   script:
-    # publish only on a tag that looks like a version
     - |
-      if [[ "$CI_COMMIT_TAG" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+(-.*)?$ ]]; then
-        npm publish --registry "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/" \
-                    --scope=@shortlink-org --access public
+      # Decide version & tag
+      if [[ -n "$CI_COMMIT_TAG" && "$CI_COMMIT_TAG" =~ ^v?([0-9]+\.[0-9]+\.[0-9]+(-.*)?)$ ]]; then
+        VERSION="${BASH_REMATCH[1]}"         # strip leading "v"
+        DIST_TAG="latest"
+      elif [[ "$CI_COMMIT_BRANCH" == "main" ]]; then
+        VERSION="0.$(echo "$CI_COMMIT_SHA" | cut -c1-6)"
+        DIST_TAG="$CANARY_TAG"
       else
-        echo "⏩ Not a version tag – skipping publish."
+        echo "▶︎ Not a SemVer tag and not main – skipping publish."
+        exit 0
       fi
+
+      echo "📦 Publishing version $VERSION with dist-tag $DIST_TAG"
+
+      # Update package.json without creating a git tag/commit
+      pnpm version --no-git-tag-version "$VERSION"
+
+      # Try to publish; if the version already exists, exit gracefully
+      if ! npm publish \
+            --registry "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/" \
+            --scope=@shortlink-org \
+            --access public \
+            --tag "$DIST_TAG"; then
+        echo "⚠️  npm publish failed (likely version already exists) – skipping."
+      fi
+
+  # --------------------------- when to run --------------------------
   rules:
+    # 1. run on any tag
     - if: '$CI_COMMIT_TAG'
-    - if: $CI_COMMIT_BRANCH == 'main'
+    # 2. or when the pipeline is on main
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    # 3. never otherwise
+    - when: never
+
   retry: 2
   allow_failure: false
-
