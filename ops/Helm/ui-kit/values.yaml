@@ -33,6 +33,8 @@ deploy:
 
   replicaCount: 1
 
+  env: []
+
   imagePullSecrets: []
 
   resources:
