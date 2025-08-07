@@ -25,3 +25,8 @@ dist-ssr
 
 # Storybook
 storybook-static
+
+# Testing
+coverage/
+test-results.json
+test-report.xml

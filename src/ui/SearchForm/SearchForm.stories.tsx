@@ -9,6 +9,10 @@ const meta: Meta<typeof SearchForm> = {
   component: SearchForm,
   parameters: {
     layout: 'padded',
+    chromatic: {
+      // Visual testing configurations
+      viewports: [375, 768, 1280, 1920]
+    }
   },
   argTypes: {
     placeholder: {
@@ -47,6 +51,9 @@ type Story = StoryObj<typeof SearchForm>
 export const Default: Story = {
   args: {
     placeholder: 'Search for anything…',
+  },
+  parameters: {
+    jest: 'SearchForm.test.tsx',
   },
 }
 

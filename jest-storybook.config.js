@@ -22,4 +22,22 @@ export default {
     '\\.pnp\\.[^\\/]+$'
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  // Storybook specific configuration
+  testResultsProcessor: 'jest-sonar-reporter',
+  collectCoverageFrom: [
+    'src/**/*.{ts,tsx}',
+    '!src/**/*.stories.{ts,tsx}',
+    '!src/**/*.test.{ts,tsx}',
+    '!src/**/*.spec.{ts,tsx}',
+    '!src/setupTests.ts',
+  ],
+  coverageReporters: ['text', 'lcov', 'html'],
+  coverageThreshold: {
+    global: {
+      branches: 10,
+      functions: 10,
+      lines: 10,
+      statements: 10,
+    },
+  },
 }

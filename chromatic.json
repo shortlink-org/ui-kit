@@ -1,0 +1,19 @@
+{
+  "projectToken": "secret",
+  "buildScriptName": "build-storybook",
+  "exitZeroOnChanges": true,
+  "autoAcceptChanges": false,
+  "onlyChanged": true,
+  "untraced": [
+    "**/*.stories.tsx",
+    "**/*.stories.js",
+    "**/*.stories.mdx"
+  ],
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "diffThreshold": 0.1,
+  "captureDelay": 1000,
+  "waitForTimeout": 5000
+}
