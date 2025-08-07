@@ -23,6 +23,11 @@ ingress:
         name: ui-kit
         port: 8080
 
+  tls:
+    - secretName: ui-kit-tls
+      hosts:
+        - ui-kit.shortlink.best
+
 # ==============================================================================
 deploy:
   type: Rollout
