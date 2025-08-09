@@ -4,5 +4,5 @@ include:
 
 build:
   extends:
-    - .cache
+    - .pnpm_cache
     - .template_build
