@@ -3,7 +3,7 @@
 # REGISTRY_IMAGE  - Registry image
 # DOCKERFILE_PATH - Path to Dockerfile
 # CMD_PATH        - Path to a binary file
-.matrix_build_ui:
+.matrix_build_docker:
   parallel:
     matrix:
       - APPLICATION: storybook

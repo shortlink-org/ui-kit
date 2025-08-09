@@ -1,16 +1,16 @@
 include:
-  - local: .gitlab/ci/workflows/matrix_build_ui.yml
+  - local: .gitlab/ci/workflows/matrix_build_docker.yml
   - local: .gitlab/ci/workflows/matrix_build_helm.yml
   - local: .gitlab/ci/workflows/matrix_build_npm.yml
 
 # DOCKER ===============================================================================================================
 docker:
   extends:
-    - .matrix_build_ui
+    - .matrix_build_docker
   stage: build
   trigger:
     include:
-      - local: '.gitlab/ci/pipelines/build/docker_ui.yml'
+      - local: '.gitlab/ci/pipelines/build/docker.yml'
     strategy: depend
 
 # HELM =================================================================================================================
