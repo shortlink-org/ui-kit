@@ -10,7 +10,7 @@ docker:
   stage: build
   trigger:
     include:
-      - local: '.gitlab/ci/pipelines/build/docker.yml'
+      - local: '.gitlab/ci/pipelines/docker.yml'
     strategy: depend
 
 # HELM =================================================================================================================
