@@ -2,6 +2,7 @@
 
 ###############################################################################
 # Global BuildKit options (optional SBOM attestation―leave if you need them)
+# Link: https://github.com/moby/buildkit/blob/master/docs/attestations/sbom.md
 ###############################################################################
 ARG BUILDKIT_SBOM_SCAN_STAGE=true
 ARG BUILDKIT_SBOM_SCAN_CONTEXT=true
@@ -58,8 +59,8 @@ ARG BUILD_DATE
 LABEL \
   org.opencontainers.image.title="ui-kit" \
   org.opencontainers.image.description="Shortlink UI component library" \
-  org.opencontainers.image.url="https://shortlink.best/" \
-  org.opencontainers.image.source="https://github.com/shortlink-org/shortlink" \
+  org.opencontainers.image.url="https://ui-kit.shortlink.best/" \
+  org.opencontainers.image.source="https://github.com/shortlink-org/ui-kit" \
   org.opencontainers.image.licenses="MIT" \
   org.opencontainers.image.vendor="Shortlink" \
   org.opencontainers.image.authors="Viktor Login <batazor111@gmail.com>" \
