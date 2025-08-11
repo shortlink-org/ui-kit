@@ -1,7 +1,7 @@
 import React from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import { action } from 'storybook/actions'
-import { userEvent, within, expect, screen } from 'storybook/test'
+import { userEvent, within, expect } from 'storybook/test'
 
 import SearchForm, { SearchFormProps } from './SearchForm'
 
