@@ -28,4 +28,4 @@ const config = {
   docs: {}
 }
 
-module.exports = config 
+module.exports = config
