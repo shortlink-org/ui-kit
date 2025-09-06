@@ -118,8 +118,8 @@ importers:
         specifier: 9.0.0-alpha.10
         version: 9.0.0-alpha.10(storybook@9.1.2(@testing-library/dom@10.4.0)(prettier@3.4.1)(vite@7.1.1(@types/node@24.2.1)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.6.1)))
       '@storybook/addon-jest':
-        specifier: 9.1.1
-        version: 9.1.1(storybook@9.1.2(@testing-library/dom@10.4.0)(prettier@3.4.1)(vite@7.1.1(@types/node@24.2.1)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.6.1)))
+        specifier: 9.1.5
+        version: 9.1.5(storybook@9.1.2(@testing-library/dom@10.4.0)(prettier@3.4.1)(vite@7.1.1(@types/node@24.2.1)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.6.1)))
       '@storybook/addon-links':
         specifier: 9.1.1
         version: 9.1.1(react@19.1.1)(storybook@9.1.2(@testing-library/dom@10.4.0)(prettier@3.4.1)(vite@7.1.1(@types/node@24.2.1)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.6.1)))
@@ -1545,10 +1545,10 @@ packages:
     peerDependencies:
       storybook: ^9.0.0-alpha.10
 
-  '@storybook/addon-jest@9.1.1':
-    resolution: {integrity: sha512-9FEkiBazNChB/oWJfYM/2ikyhiEUcDqRPzu3d9RgxRvnkUALd8IrxRY8REAEr7sfNhZNwGO+LXcuj937Gu5LsA==}
+  '@storybook/addon-jest@9.1.5':
+    resolution: {integrity: sha512-xdPkv1WmbqigoOEw+ON1fCR0o9LIR9a/n347CLvm62DM1Hunk3Y1IcmLGQweiQE2vZJ7lag8sdOlavWjcFBAqg==}
     peerDependencies:
-      storybook: ^9.1.1
+      storybook: ^9.1.5
 
   '@storybook/addon-links@9.1.1':
     resolution: {integrity: sha512-fYv0cmUzZluEKFP8iuhqu8Wqlf3demRgES7un1C6T7GilzhnMwLFcFjX40qvTC9WsIJ2Uw1G/SPjwTNXJOO5Ng==}
@@ -6192,7 +6192,7 @@ snapshots:
       storybook: 9.1.2(@testing-library/dom@10.4.0)(prettier@3.4.1)(vite@7.1.1(@types/node@24.2.1)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.6.1))
       ts-dedent: 2.2.0
 
-  '@storybook/addon-jest@9.1.1(storybook@9.1.2(@testing-library/dom@10.4.0)(prettier@3.4.1)(vite@7.1.1(@types/node@24.2.1)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.6.1)))':
+  '@storybook/addon-jest@9.1.5(storybook@9.1.2(@testing-library/dom@10.4.0)(prettier@3.4.1)(vite@7.1.1(@types/node@24.2.1)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.6.1)))':
     dependencies:
       storybook: 9.1.2(@testing-library/dom@10.4.0)(prettier@3.4.1)(vite@7.1.1(@types/node@24.2.1)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.6.1))
       tiny-invariant: 1.3.3
