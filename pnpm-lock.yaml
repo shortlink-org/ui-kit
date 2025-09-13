@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@fontsource/caveat':
         specifier: ^5.2.6
-        version: 5.2.6
+        version: 5.2.7
       '@fontsource/material-icons':
         specifier: ^5.2.5
         version: 5.2.5
@@ -981,8 +981,8 @@ packages:
     resolution: {integrity: sha512-Z5kJ+wU3oA7MMIqVR9tyZRtjYPr4OC004Q4Rw7pgOKUOKkJfZ3O24nz3WYfGRpMDNmcOi3TwQOmgm7B7Tpii0w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@fontsource/caveat@5.2.6':
-    resolution: {integrity: sha512-OKS809xrwMZq7wFQFBQ5DfK7EL7Pd0dVl7/cKyx3bwplugYhwLDp/+/7/PJH9F6KCHuit9aVdxMCxAbxFgKhSA==}
+  '@fontsource/caveat@5.2.7':
+    resolution: {integrity: sha512-lM6iaDjl7wC63AymDvOGN8sahM1Mzex2g4yFmfGOE/cS/AetKSQKdzH5Kf2dOEzakIzr9P0OHqSpt4BVG3jMcA==}
 
   '@fontsource/material-icons@5.2.5':
     resolution: {integrity: sha512-9k0LBRVgResIeD+vC/epYmm/awN2k2L8twwEtUWQ3FHluMi+7PbISOpXqksvfqPn9FJy4/KEeWOhFTR/SrbhNw==}
@@ -1284,8 +1284,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.29':
     resolution: {integrity: sha512-uw6guiW/gcAGPDhLmd77/6lW8QLeiV5RUTsAX46Db6oLhGaVj4lhnPwb184s1bkc8kdVg/+h988dro8GRDpmYQ==}
 
-  '@jridgewell/trace-mapping@0.3.30':
-    resolution: {integrity: sha512-GQ7Nw5G2lTu/BtHTKfXhKHok2WGetd4XYcVKGx00SjAk8GMwgJM3zr6zORiPGuOE+/vkc90KtTosSSvaCjKb2Q==}
+  '@jridgewell/trace-mapping@0.3.31':
+    resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
@@ -5667,7 +5667,7 @@ snapshots:
       '@eslint/core': 0.15.2
       levn: 0.4.1
 
-  '@fontsource/caveat@5.2.6': {}
+  '@fontsource/caveat@5.2.7': {}
 
   '@fontsource/material-icons@5.2.5': {}
 
@@ -6012,7 +6012,7 @@ snapshots:
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
-      '@jridgewell/trace-mapping': 0.3.30
+      '@jridgewell/trace-mapping': 0.3.31
 
   '@jridgewell/remapping@2.3.5':
     dependencies:
@@ -6024,7 +6024,7 @@ snapshots:
   '@jridgewell/source-map@0.3.11':
     dependencies:
       '@jridgewell/gen-mapping': 0.3.13
-      '@jridgewell/trace-mapping': 0.3.30
+      '@jridgewell/trace-mapping': 0.3.31
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
 
@@ -6033,7 +6033,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@jridgewell/trace-mapping@0.3.30':
+  '@jridgewell/trace-mapping@0.3.31':
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
@@ -9540,7 +9540,7 @@ snapshots:
 
   terser-webpack-plugin@5.3.14(@swc/core@1.13.3)(esbuild@0.25.8)(webpack@5.96.1(@swc/core@1.13.3)(esbuild@0.25.8)):
     dependencies:
-      '@jridgewell/trace-mapping': 0.3.30
+      '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.2
       serialize-javascript: 6.0.2
