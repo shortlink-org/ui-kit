@@ -54,7 +54,7 @@
     "@mui/material": "^7.3.2",
     "@mui/types": "^7.4.6",
     "@mui/x-date-pickers": "8.10.2",
-    "@tailwindcss/postcss": "4.1.12",
+    "@tailwindcss/postcss": "4.1.16",
     "@tailwindcss/typography": "^0.5.16",
     "@types/react": "^19.1.13",
     "algoliasearch": "^5.37.0",
