@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@fontsource/caveat':
         specifier: ^5.2.7
-        version: 5.2.7
+        version: 5.2.8
       '@fontsource/material-icons':
         specifier: ^5.2.5
         version: 5.2.5
@@ -1015,8 +1015,8 @@ packages:
     resolution: {integrity: sha512-Z5kJ+wU3oA7MMIqVR9tyZRtjYPr4OC004Q4Rw7pgOKUOKkJfZ3O24nz3WYfGRpMDNmcOi3TwQOmgm7B7Tpii0w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@fontsource/caveat@5.2.7':
-    resolution: {integrity: sha512-lM6iaDjl7wC63AymDvOGN8sahM1Mzex2g4yFmfGOE/cS/AetKSQKdzH5Kf2dOEzakIzr9P0OHqSpt4BVG3jMcA==}
+  '@fontsource/caveat@5.2.8':
+    resolution: {integrity: sha512-9fUUfFE2IQFKbx+xOcaeQxxmh8iJguEb8z+j1PeueO4UUx+XfT4pRm/B04ZDvFA794/iRxY/IibmP8ZKtIf4rw==}
 
   '@fontsource/material-icons@5.2.5':
     resolution: {integrity: sha512-9k0LBRVgResIeD+vC/epYmm/awN2k2L8twwEtUWQ3FHluMi+7PbISOpXqksvfqPn9FJy4/KEeWOhFTR/SrbhNw==}
@@ -5893,7 +5893,7 @@ snapshots:
       '@eslint/core': 0.15.2
       levn: 0.4.1
 
-  '@fontsource/caveat@5.2.7': {}
+  '@fontsource/caveat@5.2.8': {}
 
   '@fontsource/material-icons@5.2.5': {}
 
