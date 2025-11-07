@@ -73,7 +73,7 @@
     "react-wrap-balancer": "^1.1.1",
     "styled-jsx": "^5.1.7",
     "styles": "link:@mui/material/styles",
-    "tailwindcss": "4.1.12",
+    "tailwindcss": "4.1.17",
     "vite-plugin-dts": "4.5.4",
     "vite-plugin-lib-inject-css": "^2.2.2"
   },
