@@ -1,0 +1,7 @@
+ignoredBuiltDependencies:
+  - esbuild
+  - rollup
+  - sharp
+
+onlyBuiltDependencies:
+  - '@swc/core'
