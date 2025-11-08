@@ -1,31 +1,28 @@
-import { Meta } from '@storybook/react'
+import type { ComponentProps } from 'react'
 import Button from '@mui/material/Button'
+import preview from '#.storybook/preview'
 
 import ToggleDarkMode from './ToggleDarkMode'
 import Header from '../../page/Header/Header'
 
-const meta: Meta<typeof ToggleDarkMode> = {
+const meta = preview.meta({
   title: 'UI/ToggleDarkMode',
   component: ToggleDarkMode,
-}
+  args: {
+    id: 'toggle-dark-mode',
+  },
+})
 
-export default meta
+export const Default = meta.story({
+  render: (args: ComponentProps<typeof ToggleDarkMode>) => <ToggleDarkMode {...args} />,
+})
 
-function Template(args: any) {
-  return <ToggleDarkMode {...args} />
-}
-
-export const Default = {
-  render: Template,
-  args: {},
-}
-
-export function WithHeader() {
-  return (
+export const WithHeader = meta.story({
+  render: () => (
     <>
       <Header title="Header" />
-      <ToggleDarkMode id="toggle" />
+      <ToggleDarkMode id="toggle-dark-mode" />
       <Button variant="contained">Example MUI button</Button>
     </>
-  )
-}
+  ),
+})

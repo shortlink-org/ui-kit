@@ -18,6 +18,10 @@
     "jsx": "react-jsx",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "#.storybook/*": [".storybook/*"]
+    },
 
     /* Linting */
     "strict": true,
@@ -25,5 +29,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src", ".storybook/**/*.ts", ".storybook/**/*.tsx", "types/**/*.d.ts"]
 }

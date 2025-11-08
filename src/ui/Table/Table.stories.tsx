@@ -1,21 +1,19 @@
-import { Meta } from '@storybook/react'
 import { formatRelative } from 'date-fns'
 import { ContentCopy } from '@mui/icons-material'
+import preview from '#.storybook/preview'
 
 import Table from './Table'
 
-const meta: Meta<typeof Table> = {
+const meta = preview.meta({
   title: 'UI/Table',
   component: Table,
-}
-
-export default meta
+})
 
 function Template(args: any) {
   return <Table {...args} />
 }
 
-export const Default = {
+export const Default = meta.story({
   render: Template,
 
   args: {
@@ -107,4 +105,4 @@ export const Default = {
     ],
     onRefresh: () => alert('Refresh'),
   },
-}
+})

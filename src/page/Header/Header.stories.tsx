@@ -1,19 +1,14 @@
-import { Meta } from '@storybook/react'
+import type { ComponentProps } from 'react'
+import preview from '#.storybook/preview'
 
 import Header from './Header'
 
-const meta: Meta<typeof Header> = {
+const meta = preview.meta({
   title: 'Page/Header',
   component: Header,
-}
+})
 
-export default meta
-
-function Template(args: any) {
-  return <Header title="Header" {...args} />
-}
-
-export const Default = {
-  render: Template,
-  args: {},
-}
+export const Default = meta.story({
+  args: { title: 'Header' },
+  render: (args: ComponentProps<typeof Header>) => <Header {...args} />,
+})

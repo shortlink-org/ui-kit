@@ -1,8 +1,7 @@
-import { Meta } from '@storybook/nextjs-vite'
-
+import preview from '#.storybook/preview'
 import Sidebar from './Sidebar'
 
-const meta: Meta<typeof Sidebar> = {
+const meta = preview.meta({
   title: 'Page/Sidebar',
   component: Sidebar,
   parameters: {
@@ -10,11 +9,9 @@ const meta: Meta<typeof Sidebar> = {
       appDirectory: true,
     },
   },
-}
+})
 
-export default meta
-
-export const Default = {
+export const Default = meta.story({
   args: {
     mode: 'full',
   },
@@ -41,4 +38,4 @@ export const Default = {
       options: ['full', 'mini'],
     },
   },
-}
+})

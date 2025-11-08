@@ -5,3 +5,4 @@ ignoredBuiltDependencies:
 
 onlyBuiltDependencies:
   - '@swc/core'
+  - unrs-resolver

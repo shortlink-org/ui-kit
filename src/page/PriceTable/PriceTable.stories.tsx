@@ -1,19 +1,17 @@
-import { Meta } from '@storybook/react'
+import preview from '#.storybook/preview'
 
 import PriceTable, { TiersProps } from './PriceTable'
 
-const meta: Meta<TiersProps> = {
+const meta = preview.meta({
   title: 'Page/PriceTable',
   component: PriceTable,
-}
-
-export default meta
+})
 
 function Template(args: TiersProps) {
   return <PriceTable {...args}>Text</PriceTable>
 }
 
-export const Default = {
+export const Default = meta.story({
   render: Template,
 
   args: {
@@ -63,4 +61,4 @@ export const Default = {
       },
     ],
   },
-}
+})

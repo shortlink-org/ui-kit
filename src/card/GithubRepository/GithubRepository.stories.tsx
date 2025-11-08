@@ -1,6 +1,6 @@
-import { Meta, StoryFn } from '@storybook/react'
-import { expect } from '@storybook/test'
-import { within } from '@storybook/test'
+import { Meta, StoryFn } from '@storybook/react-vite'
+import { expect } from 'storybook/test'
+import { within } from 'storybook/test'
 
 import GithubRepository, { GithubRepositoryProps } from './GithubRepository'
 import { JSX } from 'react/jsx-runtime'

@@ -1,8 +1,10 @@
 // .storybook/preview.tsx
-import React from 'react'
-import type { Preview } from '@storybook/react'
+import addonDocs from "@storybook/addon-docs";
+import { definePreview } from '@storybook/nextjs-vite'
 import { Provider as WrapBalancer } from 'react-wrap-balancer'
-import { withTests } from '@storybook/addon-jest'
+import addonLinks from '@storybook/addon-links'
+import addonThemes from '@storybook/addon-themes'
+import addonA11y from '@storybook/addon-a11y'
 
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
@@ -28,9 +30,14 @@ import { theme } from '../src/theme/theme'
 // @ts-ignore – file may not exist in CI/locally
 import testResults from '../test-results.json?url'
 
-const preview: Preview = {
+const preview = definePreview({
+  addons: [
+    addonLinks(),
+    addonThemes(),
+    addonA11y(),
+    addonDocs()
+  ],
   parameters: {
-    actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       expanded: true,
       matchers: {
@@ -50,10 +57,10 @@ const preview: Preview = {
     },
     backgrounds: {
       default: 'light',
-      values: [
-        { name: 'light', value: '#ffffff' },
-        { name: 'gray', value: '#f5f5f5' },
-      ],
+      options: {
+        light: { name: 'light', value: '#ffffff' },
+        gray: { name: 'gray', value: '#f5f5f5' },
+      },
     },
   },
 
@@ -78,11 +85,6 @@ const preview: Preview = {
 
   decorators: [
     // Show jest results if available
-    withTests(
-      // @ts-ignore – URL import gives us a path string; addon accepts undefined/empty too
-      testResults ? { results: testResults } : {}
-    ),
-
     (Story, context) => {
       const forcedTheme =
         context.globals.theme === 'system' ? undefined : (context.globals.theme as 'light' | 'dark')
@@ -102,11 +104,11 @@ const preview: Preview = {
             </LocalizationProvider>
           </MuiThemeProvider>
         </NextThemeProvider>
-      )
+      );
     },
   ],
 
   tags: [],
-}
+}) as any
 
 export default preview

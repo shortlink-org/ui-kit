@@ -1,8 +1,8 @@
 import Button from '@mui/material/Button'
-import { Meta } from '@storybook/react'
-import { fn, expect, within, userEvent } from '@storybook/test'
+import { fn, expect, within, userEvent } from 'storybook/test'
+import preview from '#.storybook/preview'
 
-const meta: Meta<typeof Button> = {
+const meta = preview.meta({
   title: 'UI/Button',
   component: Button,
   parameters: {
@@ -14,15 +14,13 @@ const meta: Meta<typeof Button> = {
   args: {
     onClick: fn(),
   },
-}
-
-export default meta
+})
 
 function Template(args: any) {
   return <Button {...args}>Text</Button>
 }
 
-export const Default = {
+export const Default = meta.story({
   render: Template,
   args: {},
   // @ts-ignore
@@ -35,4 +33,4 @@ export const Default = {
   parameters: {
     jest: 'Button.test.tsx',
   },
-}
+})

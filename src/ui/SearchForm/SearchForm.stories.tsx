@@ -1,11 +1,11 @@
 import React from 'react'
-import { Meta, StoryObj } from '@storybook/react'
 import { action } from 'storybook/actions'
 import { userEvent, within, expect } from 'storybook/test'
+import preview from '#.storybook/preview'
 
 import SearchForm, { SearchFormProps } from './SearchForm'
 
-const meta: Meta<typeof SearchForm> = {
+const meta = preview.meta({
   title: 'UI/SearchForm',
   component: SearchForm,
   tags: ['autodocs'],
@@ -15,7 +15,7 @@ const meta: Meta<typeof SearchForm> = {
     chromatic: { viewports: [375, 768, 1280, 1920] },
   },
   decorators: [
-    (Story) => (
+    (Story: React.ComponentType) => (
       <div className="w-full max-w-2xl px-4 py-6">
         <Story />
       </div>
@@ -24,10 +24,7 @@ const meta: Meta<typeof SearchForm> = {
   args: {
     onSearch: action('searched'),
   } as Partial<SearchFormProps>,
-}
-export default meta
-
-type Story = StoryObj<typeof SearchForm>
+})
 
 /** helper for robust input lookup */
 const getSearchInput = (ctx: ReturnType<typeof within>) =>
@@ -35,43 +32,43 @@ const getSearchInput = (ctx: ReturnType<typeof within>) =>
   ctx.queryByPlaceholderText(/search/i) ??
   ctx.getByRole('textbox')
 
-export const Default: Story = {
+export const Default = meta.story({
   args: { placeholder: 'Search for anything…' },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const c = within(canvasElement)
     const input = getSearchInput(c)
     await userEvent.clear(input)
     await userEvent.type(input, 'hello{enter}')
     await expect(c.getByRole('button', { name: /search/i })).toBeEnabled()
   },
-}
+})
 
-export const PreFilled: Story = {
+export const PreFilled = meta.story({
   args: { placeholder: 'Search for anything…', defaultQuery: 'laptop' },
-}
+})
 
-export const SlowDebounce: Story = {
+export const SlowDebounce = meta.story({
   args: { placeholder: 'Type slowly – debounce 800 ms', debounceDelay: 800 },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const c = within(canvasElement)
     const input = getSearchInput(c)
     await userEvent.type(input, 'slow')
     await expect(c.getByRole('button', { name: /search/i })).toBeEnabled()
   },
-}
+})
 
-export const Disabled: Story = {
+export const Disabled = meta.story({
   args: { placeholder: 'Search disabled…', disabled: true },
-}
+})
 
-export const WithCustomStyling: Story = {
+export const WithCustomStyling = meta.story({
   args: { placeholder: 'Full-width, centred', className: 'mx-auto max-w-md' },
-}
+})
 
-export const InHeaderBar: Story = {
+export const InHeaderBar = meta.story({
   args: { placeholder: 'Search…' },
   decorators: [
-    (Story) => (
+    (Story: React.ComponentType) => (
       <div className="w-full px-6 py-4 bg-indigo-600 dark:bg-slate-800">
         <div className="mx-auto max-w-5xl">
           <Story />
@@ -79,10 +76,10 @@ export const InHeaderBar: Story = {
       </div>
     ),
   ],
-}
+})
 
-export const Interactive: Story = {
-  render: (args) => {
+export const Interactive = meta.story({
+  render: (args: SearchFormProps) => {
     const Demo = () => {
       const [last, setLast] = React.useState('')
       return (
@@ -98,9 +95,9 @@ export const Interactive: Story = {
     return <Demo />
   },
   args: { placeholder: 'Try typing…', debounceDelay: 300 },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const c = within(canvasElement)
     const input = getSearchInput(c)
     await userEvent.type(input, 'debounce test')
   },
-}
+})

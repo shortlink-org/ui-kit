@@ -1,10 +1,10 @@
 import React, { useLayoutEffect, useRef, useState } from 'react'
-import { Meta, StoryObj } from '@storybook/react'
+import preview from '#.storybook/preview'
 import ScrollToTopButton from './ScrollToTopButton'
 
 /* ---------- Meta ---------- */
 
-const meta: Meta<typeof ScrollToTopButton> = {
+const meta = preview.meta({
   title: 'UI/ScrollToTopButton',
   component: ScrollToTopButton,
   parameters: { layout: 'fullscreen' },
@@ -14,9 +14,7 @@ const meta: Meta<typeof ScrollToTopButton> = {
       description: 'Pixels scrolled before the button shows',
     },
   },
-}
-export default meta
-type Story = StoryObj<typeof ScrollToTopButton>
+})
 
 /* ---------- Helper container ---------- */
 
@@ -53,48 +51,49 @@ ScrollableContainer.displayName = 'ScrollableContainer'
 
 /* ---------- Template ---------- */
 
-const Template: Story = {
-  render: (args) => {
-    const outerRef = useRef<HTMLDivElement>(null)
-    const [scrollParent, setScrollParent] = useState<HTMLElement | null>(null)
+const render = (args: React.ComponentProps<typeof ScrollToTopButton>) => {
+  const outerRef = useRef<HTMLDivElement>(null)
+  const [scrollParent, setScrollParent] = useState<HTMLElement | null>(null)
 
-    // Wait until the div mounts, then store it in state so the story re-renders
-    useLayoutEffect(() => {
-      if (outerRef.current) setScrollParent(outerRef.current)
-    }, [])
+  // Wait until the div mounts, then store it in state so the story re-renders
+  useLayoutEffect(() => {
+    if (outerRef.current) setScrollParent(outerRef.current)
+  }, [])
 
-    return (
-      <ScrollableContainer ref={outerRef}>
-        <ScrollToTopButton {...args} scrollContainer={scrollParent} />
-      </ScrollableContainer>
-    )
-  },
+  return (
+    <ScrollableContainer ref={outerRef}>
+      <ScrollToTopButton {...args} scrollContainer={scrollParent} />
+    </ScrollableContainer>
+  )
 }
 
 /* ---------- Stories ---------- */
 
-export const Default: Story = { ...Template, args: { scrollThreshold: 500 } }
+export const Default = meta.story({
+  render,
+  args: { scrollThreshold: 500 },
+})
 
-export const AlwaysVisible: Story = {
-  ...Template,
+export const AlwaysVisible = meta.story({
+  render,
   args: { scrollThreshold: 100 },
   parameters: {
     docs: { description: { story: 'Appears after scrolling only 100 px.' } },
   },
-}
+})
 
-export const EarlyAppearance: Story = {
-  ...Template,
+export const EarlyAppearance = meta.story({
+  render,
   args: { scrollThreshold: 200 },
   parameters: {
     docs: { description: { story: 'Appears after 200 px.' } },
   },
-}
+})
 
-export const LateAppearance: Story = {
-  ...Template,
+export const LateAppearance = meta.story({
+  render,
   args: { scrollThreshold: 1_000 },
   parameters: {
     docs: { description: { story: 'Appears after a full 1 000 px.' } },
   },
-}
+})

@@ -1,20 +1,18 @@
 import { BeakerIcon } from '@heroicons/react/20/solid'
-import { Meta } from '@storybook/react'
+import preview from '#.storybook/preview'
 
 import Timeline, { TimelineProps } from './Timeline'
 
-const meta: Meta<typeof Timeline> = {
+const meta = preview.meta({
   title: 'UI/Timeline',
   component: Timeline,
-}
-
-export default meta
+})
 
 function Template(args: TimelineProps) {
   return <Timeline {...args} />
 }
 
-export const Default = {
+export const Default = meta.story({
   render: Template,
 
   args: {
@@ -52,4 +50,4 @@ export const Default = {
       },
     ],
   },
-}
+})
