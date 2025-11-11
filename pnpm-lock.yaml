@@ -106,8 +106,8 @@ importers:
         specifier: 10.0.6
         version: 10.0.6(storybook@10.0.6(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vite@7.2.2(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.6.1)))
       '@storybook/addon-coverage':
-        specifier: ^2.0.0
-        version: 2.0.0(vite@7.2.2(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.6.1))
+        specifier: ^3.0.0
+        version: 3.0.0(vite@7.2.2(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.6.1))
       '@storybook/addon-docs':
         specifier: 10.0.6
         version: 10.0.6(@types/react@19.2.2)(esbuild@0.25.12)(rollup@4.53.1)(storybook@10.0.6(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vite@7.2.2(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.6.1)))(vite@7.2.2(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.6.1))(webpack@5.102.1(@swc/core@1.15.1)(esbuild@0.25.12))
@@ -2032,8 +2032,8 @@ packages:
     peerDependencies:
       storybook: ^10.0.6
 
-  '@storybook/addon-coverage@2.0.0':
-    resolution: {integrity: sha512-KRqpV7+kjrKos/Im7UKqPC5MqDsZvsNl1N+Ie3TAZQd9nR/Z/4rC0oOlqW1FCRYDeyT44IQes/Km42sP8ow36g==}
+  '@storybook/addon-coverage@3.0.0':
+    resolution: {integrity: sha512-ADXpeAXtSvyGs1BSZhtO5Bi2BUedcP6eGPcBm7w3cYSj6KTpww4epEp1lnUD4faojSBBIOI2bRa/a4NA+/zt2Q==}
 
   '@storybook/addon-docs@10.0.6':
     resolution: {integrity: sha512-MrMeZyON4V08T59zOFg2Wprw/V+mMiOKsyrCf5Zb5oO9BfUb6+VqbDIETsIHdhQxOZ9H5Oi27eU3akGMgCPDMw==}
@@ -8024,7 +8024,7 @@ snapshots:
       axe-core: 4.11.0
       storybook: 10.0.6(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vite@7.2.2(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.6.1))
 
-  '@storybook/addon-coverage@2.0.0(vite@7.2.2(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.6.1))':
+  '@storybook/addon-coverage@3.0.0(vite@7.2.2(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.6.1))':
     dependencies:
       '@istanbuljs/load-nyc-config': 1.1.0
       '@jsdevtools/coverage-istanbul-loader': 3.0.5
