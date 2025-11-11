@@ -38,7 +38,8 @@ deploy:
 
   replicaCount: 1
 
-  env: []
+  env:
+    OTEL_EXPORTER_OTLP_ENDPOINT: http://grafana-tempo.grafana:4317
 
   imagePullSecrets: []
 
