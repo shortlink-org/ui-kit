@@ -38,7 +38,8 @@ deploy:
 
   replicaCount: 1
 
-  env: []
+  env:
+    OTEL_EXPORTER_OTLP_ENDPOINT: http://grafana-tempo.grafana:4317
 
   imagePullSecrets: []
 
@@ -65,14 +66,14 @@ deploy:
   livenessProbe:
     enabled: true
     httpGet:
-      path: /
+      path: /live
       port: 8080
 
   # -- define a readiness probe that checks every 5 seconds, starting after 5 seconds
   readinessProbe:
     enabled: true
     httpGet:
-      path: /
+      path: /ready
       port: 8080
 
   volumes:
