@@ -112,8 +112,8 @@ importers:
         specifier: 10.0.6
         version: 10.0.6(react@19.2.0)(storybook@10.0.8(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.6.1)))
       '@storybook/addon-themes':
-        specifier: 10.0.6
-        version: 10.0.6(storybook@10.0.8(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.6.1)))
+        specifier: 10.0.8
+        version: 10.0.8(storybook@10.0.8(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.6.1)))
       '@storybook/builder-vite':
         specifier: 10.0.6
         version: 10.0.6(esbuild@0.25.12)(rollup@4.53.3)(storybook@10.0.8(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.6.1)))(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.6.1))(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.25.12))
@@ -2024,10 +2024,10 @@ packages:
       react:
         optional: true
 
-  '@storybook/addon-themes@10.0.6':
-    resolution: {integrity: sha512-mpxDfypZSxxWtxjdwh6ui/K8XiQ/RtFK213KIiQjoRQhlGdE8evs9RCTznra9nCV/1tFXX8UQktCZqgm0JAi1g==}
+  '@storybook/addon-themes@10.0.8':
+    resolution: {integrity: sha512-rqESiwPfYClMSaeHIYxmAz6CR50dQTMCKa2mO8ZvEikdo1IBtzHJfmD9iAC6QQaFZSMG/17KVIWXJVjzWjLdfQ==}
     peerDependencies:
-      storybook: ^10.0.6
+      storybook: ^10.0.8
 
   '@storybook/builder-vite@10.0.6':
     resolution: {integrity: sha512-WD5BfYezOQC0B4ItY9HJg9zb4MbNjsZcfXipAQi7+i9dYNWegdAhg7Aq6arsRZ2YMMOiSpVEJhzmK08XRx+szA==}
@@ -7927,7 +7927,7 @@ snapshots:
     optionalDependencies:
       react: 19.2.0
 
-  '@storybook/addon-themes@10.0.6(storybook@10.0.8(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.6.1)))':
+  '@storybook/addon-themes@10.0.8(storybook@10.0.8(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.6.1)))':
     dependencies:
       storybook: 10.0.8(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.6.1))
       ts-dedent: 2.2.0
