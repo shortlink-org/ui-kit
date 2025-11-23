@@ -5,4 +5,5 @@ ignoredBuiltDependencies:
 
 onlyBuiltDependencies:
   - '@swc/core'
+  - core-js-pure
   - unrs-resolver

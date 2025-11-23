@@ -35,7 +35,7 @@ export function Sidebar({ mode }: AppProps) {
       <ul className="space-y-2 font-medium flex-grow w-full h-full px-2 py-4 overflow-y-auto">
         {getItem({
           mode,
-          url: '/addUrl',
+          url: '/add-link',
           icon: <AddLinkIcon />,
           name: 'Add URL',
         })}
