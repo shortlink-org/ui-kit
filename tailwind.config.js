@@ -6,7 +6,6 @@ import containerQueries from '@tailwindcss/container-queries'
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  mode: 'jit',
   darkMode: 'selector',
   corePlugins: {
     preflight: false,

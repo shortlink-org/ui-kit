@@ -1,7 +1,7 @@
 {
   "name": "@shortlink-org/ui-kit",
-  "version": "1.5.0",
-  "_id": "@shortlink-org/ui-kit@1.4.5",
+  "version": "1.6.0",
+  "_id": "@shortlink-org/ui-kit@1.6.0",
   "description": "UI kit for ShortLink",
   "readme": "./README.md",
   "type": "module",
