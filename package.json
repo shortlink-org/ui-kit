@@ -90,7 +90,7 @@
     "@storybook/addon-docs": "10.0.6",
     "@storybook/addon-links": "10.0.6",
     "@storybook/addon-themes": "10.0.6",
-    "@storybook/builder-vite": "10.0.6",
+    "@storybook/builder-vite": "10.1.2",
     "@storybook/nextjs": "^10.0.8",
     "@storybook/nextjs-vite": "^10.0.8",
     "@storybook/react-vite": "10.0.6",
