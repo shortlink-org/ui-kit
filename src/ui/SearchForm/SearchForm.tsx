@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useMemo, useEffect } from 'react'
+import React, { useState, useCallback, useRef, useEffect, useTransition, useDeferredValue } from 'react'
 import { Search as SearchIcon, Close as CloseIcon } from '@mui/icons-material'
 import clsx from 'clsx'
 
@@ -7,7 +7,7 @@ export interface SearchFormProps {
   onSearch?: (query: string) => void
   className?: string
   disabled?: boolean
-  debounceDelay?: number
+  debounceDelay?: number // Deprecated: kept for backward compatibility, but useDeferredValue is used instead
   defaultQuery?: string
 }
 
@@ -16,47 +16,40 @@ const SearchForm: React.FC<SearchFormProps> = ({
   onSearch,
   className = '',
   disabled = false,
-  debounceDelay = 300,
+  debounceDelay: _debounceDelay = 300, // Not used anymore, kept for backward compatibility
   defaultQuery = '',
 }) => {
   const [query, setQuery] = useState(defaultQuery)
+  const [isPending, startTransition] = useTransition()
+  const deferredQuery = useDeferredValue(query)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const debounce = useMemo(
-    () =>
-      function <F extends (...args: any[]) => void>(fn: F, ms: number) {
-        let t: NodeJS.Timeout
-        return (...args: Parameters<F>) => {
-          clearTimeout(t)
-          t = setTimeout(() => fn(...args), ms)
-        }
-      },
-    [],
-  )
-
-  const debouncedSearch = useMemo(
-    () =>
-      debounce((value: string) => {
-        if (onSearch) onSearch(value.trim())
-      }, debounceDelay),
-    [debounce, debounceDelay, onSearch],
-  )
+  // Trigger search when deferred query changes (React handles the coordination)
+  useEffect(() => {
+    if (onSearch) {
+      onSearch(deferredQuery.trim())
+    }
+  }, [deferredQuery, onSearch])
 
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault()
-      if (onSearch) onSearch(query.trim())
+      if (onSearch) {
+        startTransition(() => {
+          onSearch(query.trim())
+        })
+      }
     },
-    [query, onSearch],
+    [query, onSearch, startTransition],
   )
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const val = e.target.value
       setQuery(val)
-      debouncedSearch(val)
+      // React will automatically defer the search via useDeferredValue
     },
-    [debouncedSearch],
+    [],
   )
 
   const clearQuery = useCallback(() => {
@@ -110,16 +103,16 @@ const SearchForm: React.FC<SearchFormProps> = ({
 
       <button
         type="submit"
-        disabled={disabled || !query.trim()}
+        disabled={disabled || !query.trim() || isPending}
         className={clsx(
           'flex items-center gap-1 px-4 py-2 text-sm font-medium transition-colors border-l border-gray-300',
-          disabled || !query.trim()
+          disabled || !query.trim() || isPending
             ? 'cursor-not-allowed bg-gray-200 text-gray-500'
             : 'bg-blue-500 text-white hover:bg-blue-600'
         )}
       >
-        <SearchIcon className="h-4 w-4" />
-        Search
+        <SearchIcon className={clsx('h-4 w-4', isPending && 'animate-spin')} />
+        {isPending ? 'Searching...' : 'Search'}
       </button>
     </form>
   )

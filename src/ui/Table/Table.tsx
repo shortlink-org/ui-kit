@@ -10,7 +10,7 @@ import {
   MRT_ToggleFiltersButton,
   type MRT_Row,
 } from 'material-react-table'
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useTransition, useOptimistic } from 'react'
 
 import CreateNewItemModal from './CreateNewItemModal/CreateNewItemModal'
 
@@ -20,7 +20,7 @@ const csvConfig = mkConfig({
   useKeysAsHeaders: true,
 })
 
-type TableProps = {
+export type TableProps = {
   columns: any
   data: any
 
@@ -46,23 +46,57 @@ export const Table: React.FC<TableProps> = ({ columns, data, onRefresh }) => {
   // CRUD ----------------------------------------------------------------------
   const [createModalOpen, setCreateModalOpen] = useState(false)
   const [tableData, setTableData] = useState<any[]>(() => data)
+  const [optimisticData, setOptimisticData] = useOptimistic(
+    tableData,
+    (currentData, { type, rowIndex, values, newRow }: {
+      type: 'update' | 'delete' | 'create'
+      rowIndex?: number
+      values?: any
+      newRow?: any
+    }) => {
+      if (type === 'create' && newRow) {
+        return [...currentData, newRow]
+      }
+      if (type === 'update' && rowIndex !== undefined && values) {
+        const updated = [...currentData]
+        updated[rowIndex] = values
+        return updated
+      }
+      if (type === 'delete' && rowIndex !== undefined) {
+        return currentData.filter((_, i) => i !== rowIndex)
+      }
+      return currentData
+    }
+  )
+  const [isPending, startTransition] = useTransition()
   const [validationErrors, setValidationErrors] = useState<{
     [cellId: string]: string
   }>({})
 
   const handleCreateNewRow = (values: any) => {
-    tableData.push(values)
-    setTableData([...tableData])
+    startTransition(async () => {
+      setOptimisticData({ type: 'create', newRow: values })
+      // In real app, await API call here:
+      // await createItem(values)
+      // Then update actual state:
+      setTableData([...tableData, values])
+    })
   }
 
   // @ts-ignore
   const handleSaveRowEdits: MaterialReactTableProps<any>['onEditingRowSave'] = // @ts-ignore
     async ({ exitEditingMode, row, values }) => {
       if (!Object.keys(validationErrors).length) {
-        tableData[row.index] = values
-        // send/receive api updates here, then refetch or update local table data for re-render
-        setTableData([...tableData])
-        exitEditingMode() // required to exit editing mode and close modal
+        startTransition(async () => {
+          setOptimisticData({ type: 'update', rowIndex: row.index, values })
+          // In real app, await API call here:
+          // await updateItem(row.original.id, values)
+          // Then update actual state:
+          const updated = [...tableData]
+          updated[row.index] = values
+          setTableData(updated)
+          exitEditingMode() // required to exit editing mode and close modal
+        })
       }
     }
 
@@ -75,17 +109,22 @@ export const Table: React.FC<TableProps> = ({ columns, data, onRefresh }) => {
       if (!confirm(`Are you sure you want to delete row ${row.index + 1}?`)) {
         return
       }
-      // send api delete request here, then refetch or update local table data for re-render
-      tableData.splice(row.index, 1)
-      setTableData([...tableData])
+      startTransition(async () => {
+        setOptimisticData({ type: 'delete', rowIndex: row.index })
+        // In real app, await API call here:
+        // await deleteItem(row.original.id)
+        // Then update actual state:
+        const updated = tableData.filter((_, i) => i !== row.index)
+        setTableData(updated)
+      })
     },
-    [tableData],
+    [tableData, setOptimisticData, startTransition],
   )
 
   // @ts-ignore
   const table = useMaterialReactTable({
     columns,
-    data,
+    data: optimisticData, // Use optimistic data for instant UI updates
     initialState: { showColumnFilters: false, showGlobalFilter: true },
     enableColumnFilterModes: true,
     enableRowSelection: true,
@@ -99,13 +138,17 @@ export const Table: React.FC<TableProps> = ({ columns, data, onRefresh }) => {
 
     renderTopToolbarCustomActions: ({ table }) => (
       <Box sx={{ display: 'flex', gap: '1rem', p: '4px' }}>
-        <Button onClick={() => setCreateModalOpen(true)} variant="outlined">
-          Create New Item
+        <Button 
+          onClick={() => setCreateModalOpen(true)} 
+          variant="outlined"
+          disabled={isPending}
+        >
+          {isPending ? 'Creating...' : 'Create New Item'}
         </Button>
         <Button
           color="error"
           disabled={
-            !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
+            (!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()) || isPending
           }
           onClick={() => {
             alert('Delete Selected Rows')

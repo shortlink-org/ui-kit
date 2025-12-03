@@ -1,5 +1,5 @@
 import type { MRT_ColumnDef } from 'material-react-table'
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 import {
   Button,
   Dialog,
@@ -29,18 +29,35 @@ export const CreateNewItemModal = ({
       return acc
     }, {} as any),
   )
+  const [isPending, startTransition] = useTransition()
 
-  const handleSubmit = () => {
+  // React 19 form action - automatically wrapped in transition
+  async function submitAction(formData: FormData) {
+    const formValues: any = {}
+    columns.forEach((column) => {
+      const key = column.accessorKey ?? ''
+      formValues[key] = formData.get(key) || ''
+    })
+    
     // put your validation logic here
-    onSubmit(values)
-    onClose()
+    startTransition(async () => {
+      await onSubmit(formValues)
+      onClose()
+      // Reset form
+      setValues(
+        columns.reduce((acc, column) => {
+          acc[column.accessorKey ?? ''] = ''
+          return acc
+        }, {} as any),
+      )
+    })
   }
 
   return (
     <Dialog open={open}>
       <DialogTitle textAlign="center">Create New Item</DialogTitle>
       <DialogContent>
-        <form onSubmit={(e) => e.preventDefault()}>
+        <form action={submitAction}>
           <Stack
             sx={{
               width: '100%',
@@ -53,20 +70,33 @@ export const CreateNewItemModal = ({
                 key={column.accessorKey}
                 label={column.header}
                 name={column.accessorKey}
+                value={values[column.accessorKey ?? ''] || ''}
                 onChange={(e) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
                 }
+                required
               />
             ))}
           </Stack>
+          <DialogActions sx={{ p: '1.25rem' }}>
+            <Button 
+              type="button"
+              onClick={onClose}
+              disabled={isPending}
+            >
+              Cancel
+            </Button>
+            <Button 
+              type="submit"
+              color="secondary" 
+              variant="outlined"
+              disabled={isPending}
+            >
+              {isPending ? 'Creating...' : 'Create'}
+            </Button>
+          </DialogActions>
         </form>
       </DialogContent>
-      <DialogActions sx={{ p: '1.25rem' }}>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button color="secondary" onClick={handleSubmit} variant="outlined">
-          Create
-        </Button>
-      </DialogActions>
     </Dialog>
   )
 }

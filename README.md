@@ -22,6 +22,10 @@ const App = () => {
 }
 ```
 
+### React 19 Async Patterns
+
+See [ADR-1](./docs/adr/0001-adopt-react-19-async-patterns.md) for the architectural decision record on React 19 async patterns.
+
 ### Storybook
 
 The UI Kit is documented with Storybook. You can run it locally with:
@@ -32,7 +36,7 @@ npm run storybook
 
 ### Stack
 
-- ReactJS
+- React 19
 - Pretty code base
   - Typescript
   - ESLint/Prettier
