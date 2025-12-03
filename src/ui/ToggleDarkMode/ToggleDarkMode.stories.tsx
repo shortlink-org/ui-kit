@@ -1,4 +1,5 @@
 import type { ComponentProps } from 'react'
+import { useState } from 'react'
 import Button from '@mui/material/Button'
 import preview from '#.storybook/preview'
 
@@ -10,19 +11,36 @@ const meta = preview.meta({
   component: ToggleDarkMode,
   args: {
     id: 'toggle-dark-mode',
+    checked: false,
   },
 })
 
 export const Default = meta.story({
-  render: (args: ComponentProps<typeof ToggleDarkMode>) => <ToggleDarkMode {...args} />,
+  render: (args: ComponentProps<typeof ToggleDarkMode>) => {
+    const [checked, setChecked] = useState(args.checked ?? false)
+    return (
+      <ToggleDarkMode
+        {...args}
+        checked={checked}
+        onClick={() => setChecked(!checked)}
+      />
+    )
+  },
 })
 
 export const WithHeader = meta.story({
-  render: () => (
-    <>
-      <Header title="Header" />
-      <ToggleDarkMode id="toggle-dark-mode" />
-      <Button variant="contained">Example MUI button</Button>
-    </>
-  ),
+  render: () => {
+    const [checked, setChecked] = useState(false)
+    return (
+      <>
+        <Header title="Header" />
+        <ToggleDarkMode
+          id="toggle-dark-mode"
+          checked={checked}
+          onClick={() => setChecked(!checked)}
+        />
+        <Button variant="contained">Example MUI button</Button>
+      </>
+    )
+  },
 })
