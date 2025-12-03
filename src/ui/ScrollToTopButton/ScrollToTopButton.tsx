@@ -106,13 +106,33 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
     }
   }
 
-  if (!isVisible) return null
-
   const buttonClass = clsx(
-    'fixed bottom-5 right-5 z-[9999] flex items-center justify-center rounded-full p-3 transition focus:outline-none focus:ring-2 focus:ring-offset-2',
+    'fixed bottom-5 right-5 z-[9999]',
+    'flex items-center justify-center rounded-full p-3',
+    'transition-all duration-300 ease-in-out',
+    'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+    'transform-gpu',
+    isVisible
+      ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
+      : 'opacity-0 translate-y-2 scale-95 pointer-events-none',
     variant === 'solid'
-      ? 'bg-blue-500 text-white shadow-md hover:bg-blue-600 focus:ring-blue-400'
-      : 'bg-white/70 backdrop-blur text-blue-600 ring-1 ring-blue-500 hover:bg-white focus:ring-blue-400',
+      ? clsx(
+          'bg-blue-600 dark:bg-blue-500 text-white',
+          'shadow-lg hover:shadow-xl',
+          'hover:bg-blue-700 dark:hover:bg-blue-600',
+          'active:bg-blue-800 dark:active:bg-blue-700',
+          'active:scale-95',
+          'focus-visible:ring-blue-500 dark:focus-visible:ring-blue-400'
+        )
+      : clsx(
+          'bg-white/80 dark:bg-gray-800/80 backdrop-blur-md',
+          'text-blue-600 dark:text-blue-400',
+          'ring-1 ring-blue-500/50 dark:ring-blue-400/50',
+          'hover:bg-white dark:hover:bg-gray-800',
+          'hover:ring-blue-500 dark:hover:ring-blue-400',
+          'active:scale-95',
+          'focus-visible:ring-blue-500 dark:focus-visible:ring-blue-400'
+        ),
   )
 
   return (

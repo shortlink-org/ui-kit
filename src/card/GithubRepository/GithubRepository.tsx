@@ -12,20 +12,20 @@ export const GithubRepository: FC<GithubRepositoryProps> = memo(({ url, title })
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative my-12 mx-auto flex w-full max-w-md items-center gap-3 overflow-hidden rounded-lg bg-slate-50 shadow-md transition-colors hover:bg-blue-500 dark:bg-slate-800/60 dark:hover:bg-sky-500"
+      className="group relative my-12 mx-auto flex w-full max-w-md items-center gap-3 overflow-hidden rounded-lg bg-slate-50 shadow-md transition-all duration-300 ease-in-out hover:bg-blue-500 hover:shadow-lg dark:bg-slate-800/60 dark:hover:bg-sky-500 transform-gpu"
       aria-label={`Visit GitHub repository ${title}`}
     >
       {/* Background Animation */}
-      <span className="absolute inset-0 z-0 w-2 bg-blue-500 transition-all duration-150 group-hover:w-full dark:bg-sky-500" />
+      <span className="absolute inset-0 z-0 w-2 bg-blue-500 transition-all duration-500 ease-out group-hover:w-full dark:bg-sky-500 transform-gpu" />
 
       {/* Static Side Bar */}
-      <span className="z-10 w-2 bg-blue-500 dark:bg-sky-500" />
+      <span className="z-10 w-2 bg-blue-500 dark:bg-sky-500 transition-colors duration-300" />
 
       {/* Content */}
       <div className="z-20 flex flex-grow items-center py-3 px-4 no-underline">
         {/* GitHub Icon */}
         <svg
-          className="h-10 w-10 rounded-full object-cover text-gray-800 dark:text-white group-hover:text-white"
+          className="h-10 w-10 rounded-full object-cover text-gray-800 dark:text-white transition-colors duration-300 ease-in-out group-hover:text-white transform-gpu"
           viewBox="0 0 16 16"
           fill="currentColor"
           aria-hidden="true"
@@ -53,13 +53,13 @@ export const GithubRepository: FC<GithubRepositoryProps> = memo(({ url, title })
         </svg>
 
         <div className="mx-3 no-underline">
-          <p className={"text-lg font-semibold text-gray-900 dark:text-white group-hover:text-white no-underline"}>
+          <p className="text-lg font-semibold text-gray-900 dark:text-white transition-colors duration-300 ease-in-out group-hover:text-white no-underline">
             {title}
             <a
               href={url}
               target="_blank"
               rel="noreferrer"
-              className="block text-sm font-medium text-gray-600  group-hover:text-white dark:text-gray-300 no-underline"
+              className="block text-sm font-medium text-gray-600 transition-colors duration-300 ease-in-out group-hover:text-white dark:text-gray-300 no-underline"
             >
               <span className="absolute inset-0" aria-hidden="true" />
               {url.replace(/^.*\/\/[^/]+/, '')}
@@ -69,7 +69,7 @@ export const GithubRepository: FC<GithubRepositoryProps> = memo(({ url, title })
       </div>
 
       {/* Chevron Icon */}
-      <ChevronRightIcon className="mr-4 h-6 w-6 text-gray-500 transition-transform duration-200 group-hover:translate-x-3 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white" />
+      <ChevronRightIcon className="mr-4 h-6 w-6 text-gray-500 transition-all duration-300 ease-out group-hover:translate-x-3 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white transform-gpu" />
     </a>
   )
 })

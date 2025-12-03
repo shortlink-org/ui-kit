@@ -35,7 +35,7 @@ const columns = [
 // Component that uses use() hook
 const DataTable = () => {
   const dataPromise = useAsyncData('table-data', () => fetchTableData())
-  const data = use(dataPromise) as any[]
+  const data = use(dataPromise) as Array<{ id: number; name: string; status: string }>
 
   return <TableWithSuspense columns={columns} data={data} />
 }
