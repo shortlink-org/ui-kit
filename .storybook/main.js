@@ -7,8 +7,8 @@ export default defineMain({
     '@storybook/addon-themes',
     '@chromatic-com/storybook',
     '@storybook/addon-a11y',
-    '@storybook/addon-coverage',
-    '@storybook/addon-docs'
+    '@storybook/addon-docs',
+    '@storybook/addon-viewport'
   ],
   core: {
     builder: '@storybook/builder-vite',

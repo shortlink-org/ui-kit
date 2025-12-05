@@ -39,21 +39,21 @@ export const Default = meta.story({
     const input = getSearchInput(c)
     await userEvent.clear(input)
     await userEvent.type(input, 'hello{enter}')
-    await expect(c.getByRole('button', { name: /search/i })).toBeEnabled()
+    await expect(input).toHaveValue('hello')
   },
 })
 
 export const PreFilled = meta.story({
-  args: { placeholder: 'Search for anything…', defaultQuery: 'laptop' },
+  args: { placeholder: 'Search for anything…', defaultValue: 'laptop' },
 })
 
 export const SlowDebounce = meta.story({
-  args: { placeholder: 'Type slowly – debounce 800 ms', debounceDelay: 800 },
+  args: { placeholder: 'Type slowly – debounce 800 ms', debounceMs: 800 },
   play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const c = within(canvasElement)
     const input = getSearchInput(c)
     await userEvent.type(input, 'slow')
-    await expect(c.getByRole('button', { name: /search/i })).toBeEnabled()
+    await expect(input).toHaveValue('slow')
   },
 })
 
@@ -94,7 +94,7 @@ export const Interactive = meta.story({
     }
     return <Demo />
   },
-  args: { placeholder: 'Try typing…', debounceDelay: 300 },
+  args: { placeholder: 'Try typing…', debounceMs: 300 },
   play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const c = within(canvasElement)
     const input = getSearchInput(c)

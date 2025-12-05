@@ -1,10 +1,49 @@
 import Balancer from 'react-wrap-balancer'
+import { ReactNode } from 'react'
+import { Button } from '../../ui/Button/Button'
 
-type AppProps = {
-  title: string
+export interface HeaderAction {
+  /** Action label text */
+  label: string
+  /** Click handler */
+  handler: () => void
+  /** Button variant style */
+  variant?: 'primary' | 'secondary'
+  /** Custom ReactNode to render instead of default button (overrides label/variant) */
+  customNode?: ReactNode
 }
 
-export function Header({ title }: AppProps) {
+export interface HeaderProps {
+  /** Page title */
+  title: string
+  /** Primary action (rendered on the right, typically the main action) */
+  primaryAction?: HeaderAction
+  /** Secondary action (rendered before primary action) */
+  secondaryAction?: HeaderAction
+}
+
+export function Header({ title, primaryAction, secondaryAction }: HeaderProps) {
+  const renderAction = (action: HeaderAction | undefined) => {
+    if (!action) return null
+
+    if (action.customNode) {
+      return action.customNode
+    }
+
+    return (
+      <Button
+        variant={action.variant || 'secondary'}
+        size="md"
+        onClick={action.handler}
+        className={action.variant !== 'primary' ? 'mr-3' : ''}
+      >
+        {action.label}
+      </Button>
+    )
+  }
+
+  const hasActions = primaryAction || secondaryAction
+
   return (
     <div className="my-6 lg:my-10 container px-6 mx-auto flex flex-col md:flex-row items-center justify-between pb-4 border-b border-gray-300 dark:border-gray-700 transition-colors duration-500">
       <div>
@@ -12,20 +51,12 @@ export function Header({ title }: AppProps) {
           <Balancer>{title}</Balancer>
         </h4>
       </div>
-      <div className="mt-6 md:mt-0">
-        <button
-          type="button"
-          className="mr-3 bg-gray-200 dark:bg-gray-700 focus:outline-none transition duration-150 ease-in-out rounded hover:bg-gray-300 dark:hover:bg-gray-600 text-indigo-700 dark:text-indigo-300 px-5 py-2 text-sm transition-colors duration-200"
-        >
-          Back
-        </button>
-        <button
-          type="button"
-          className="transition-colors focus:outline-none duration-150 ease-in-out hover:bg-indigo-500 bg-indigo-700 dark:bg-indigo-800 dark:hover:bg-indigo-600 rounded text-white px-8 py-2 text-sm"
-        >
-          Edit Profile
-        </button>
-      </div>
+      {hasActions && (
+        <div className="mt-6 md:mt-0">
+          {renderAction(secondaryAction)}
+          {renderAction(primaryAction)}
+        </div>
+      )}
     </div>
   )
 }

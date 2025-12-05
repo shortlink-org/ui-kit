@@ -1,10 +1,7 @@
 // .storybook/preview.tsx
-import addonDocs from "@storybook/addon-docs";
 import { definePreview } from '@storybook/nextjs-vite'
 import { Provider as WrapBalancer } from 'react-wrap-balancer'
-import addonLinks from '@storybook/addon-links'
-import addonThemes from '@storybook/addon-themes'
-import addonA11y from '@storybook/addon-a11y'
+import clsx from 'clsx'
 
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
@@ -23,20 +20,29 @@ import '../src/theme/styles.css'
 import { theme } from '../src/theme/theme'
 
 /**
- * Optional Jest results. If the file doesn’t exist, we pass `undefined`
+ * Optional Jest results. If the file doesn't exist, we pass `undefined`
  * so the addon silently does nothing (no runtime error).
- * Vite will inline JSON when present.
+ * Using dynamic import with error handling for better compatibility.
  */
-// @ts-ignore – file may not exist in CI/locally
-import testResults from '../test-results.json?url'
+let testResults: any = undefined
+try {
+  // @ts-ignore – file may not exist in CI/locally
+  const testResultsModule = await import('../test-results.json')
+  testResults = testResultsModule.default || testResultsModule
+} catch {
+  // Silently ignore if file doesn't exist
+  testResults = undefined
+}
+
+// Viewport presets for both Storybook viewport addon and Chromatic
+const viewportPresets = {
+  mobile: { name: 'mobile', styles: { width: '375px', height: '667px' } },
+  tablet: { name: 'tablet', styles: { width: '768px', height: '1024px' } },
+  desktop: { name: 'desktop', styles: { width: '1280px', height: '720px' } },
+  wide: { name: 'wide', styles: { width: '1920px', height: '1080px' } },
+}
 
 const preview = definePreview({
-  addons: [
-    addonLinks(),
-    addonThemes(),
-    addonA11y(),
-    addonDocs()
-  ],
   parameters: {
     controls: {
       expanded: true,
@@ -45,6 +51,11 @@ const preview = definePreview({
         date: /Date$/i,
       },
     },
+    // Viewport configuration for Storybook viewport addon
+    viewport: {
+      viewports: viewportPresets,
+    },
+    // Chromatic viewports (using same presets)
     chromatic: {
       delay: 1000,
       diffThreshold: 0.1,
@@ -55,6 +66,10 @@ const preview = definePreview({
         { name: 'wide', width: 1920, height: 1080 },
       ],
     },
+    // Coverage results for addon-coverage
+    ...(testResults && { coverageResults: testResults }),
+    // Default layout for page components
+    layout: 'fullscreen',
     backgrounds: {
       default: 'light',
       options: {
@@ -84,7 +99,7 @@ const preview = definePreview({
   },
 
   decorators: [
-    // Show jest results if available
+    // Theme and provider decorator
     (Story, context) => {
       const forcedTheme =
         context.globals.theme === 'system' ? undefined : (context.globals.theme as 'light' | 'dark')
@@ -97,14 +112,42 @@ const preview = definePreview({
           <MuiThemeProvider theme={theme}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <WrapBalancer>
-                <div className="w-full max-w-2xl px-4 py-6">
-                  <Story />
-                </div>
+                <Story />
               </WrapBalancer>
             </LocalizationProvider>
           </MuiThemeProvider>
         </NextThemeProvider>
       );
+    },
+    // Container decorator - only applies when container parameter is true
+    // This allows components to opt-in to container wrapping instead of defaulting to it
+    (Story, context) => {
+      const shouldUseContainer = 
+        context.parameters.container === true ||
+        (context.parameters.layout !== 'fullscreen' && 
+         context.parameters.fullscreen !== true &&
+         context.parameters.container !== false)
+
+      // If explicitly set to false or fullscreen, don't wrap
+      if (context.parameters.container === false || 
+          context.parameters.layout === 'fullscreen' || 
+          context.parameters.fullscreen === true) {
+        return <Story />
+      }
+
+      // Only apply container if explicitly requested
+      if (!shouldUseContainer) {
+        return <Story />
+      }
+
+      const containerWidth = context.parameters.containerWidth || 'max-w-2xl'
+      const containerPadding = context.parameters.containerPadding || 'px-4 py-6'
+
+      return (
+        <div className={clsx('w-full', containerWidth, containerPadding)}>
+          <Story />
+        </div>
+      )
     },
   ],
 

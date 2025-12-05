@@ -1,12 +1,15 @@
+import type { ReactNode, FC } from 'react'
+
 type TimelineItemProps = {
+  id?: string | number
   name: string
   date: string
   action: string
   content: string
-  icon: React.ReactNode
+  icon: ReactNode
 }
 
-const TimelineItem: React.FC<TimelineItemProps> = ({
+const TimelineItem: FC<TimelineItemProps> = ({
   name,
   date,
   action,
@@ -65,29 +68,40 @@ export type TimelineProps = {
   items: TimelineItemProps[]
 }
 
-export const Timeline: React.FC<TimelineProps> = ({ items }) => (
-  <div className={`
-    space-y-8 relative
-    before:absolute before:inset-0
-    before:ml-5 before:-translate-x-px
-    md:before:ml-[8.75rem] md:before:translate-x-0
-    before:h-full before:w-0.5
-    before:bg-gradient-to-b
-    before:from-transparent before:via-slate-300 dark:before:via-slate-600
-    before:to-transparent
-    before:transition-colors duration-200
-  `}>
-    {items.map((item, index) => (
-      <TimelineItem
-        key={index}
-        date={item.date}
-        name={item.name}
-        action={item.action}
-        content={item.content}
-        icon={item.icon}
-      />
-    ))}
-  </div>
-)
+export const Timeline: FC<TimelineProps> = ({ items }) => {
+  const getItemKey = (item: TimelineItemProps, index: number): string | number => {
+    // Use id if provided, otherwise create a stable key from item properties
+    if (item.id !== undefined) {
+      return item.id
+    }
+    // Create a stable key from date, name, and action
+    return `${item.date}-${item.name}-${item.action}` || index
+  }
+
+  return (
+    <div className={`
+      space-y-8 relative
+      before:absolute before:inset-0
+      before:ml-5 before:-translate-x-px
+      md:before:ml-[8.75rem] md:before:translate-x-0
+      before:h-full before:w-0.5
+      before:bg-gradient-to-b
+      before:from-transparent before:via-slate-300 dark:before:via-slate-600
+      before:to-transparent
+      before:transition-colors duration-200
+    `}>
+      {items.map((item, index) => (
+        <TimelineItem
+          key={getItemKey(item, index)}
+          date={item.date}
+          name={item.name}
+          action={item.action}
+          content={item.content}
+          icon={item.icon}
+        />
+      ))}
+    </div>
+  )
+}
 
 export default Timeline

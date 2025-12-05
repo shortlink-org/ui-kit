@@ -1,35 +1,62 @@
-import React from 'react'
+import React, { useId } from 'react'
+import { useControllableState } from '../../utils/useControllableState'
 
 import './styles.css'
 
 type ToggleDarkModeProps = {
-  id: string
+  id?: string
+  /** Controlled value */
   checked?: boolean
+  /** Default value for uncontrolled mode */
+  defaultChecked?: boolean
+  /** Callback when toggle state changes (receives new checked state) */
+  onChange?: (checked: boolean) => void
+  /** Legacy onClick handler (deprecated: use onChange instead) */
   onClick?: () => void
+  /** Custom accessible label */
   ariaLabel?: string
 }
 
 export const ToggleDarkMode: React.FC<ToggleDarkModeProps> = ({
   id,
-  checked = false,
+  checked: checkedProp,
+  defaultChecked = false,
+  onChange,
   onClick,
-  ariaLabel = 'Toggle',
+  ariaLabel = 'Toggle dark mode',
 }) => {
-  const handleChange = () => {
-    onClick?.()
+  const inputId = useId()
+  const finalInputId = id ? `${id}-input` : inputId
+  const wrapperId = id || `toggle-wrapper-${inputId}`
+
+  const [checked, setChecked] = useControllableState({
+    value: checkedProp,
+    defaultValue: defaultChecked,
+    onChange,
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newChecked = e.target.checked
+    setChecked(newChecked)
+    // Support legacy onClick for backward compatibility
+    if (onClick && !onChange) {
+      onClick()
+    }
   }
 
   return (
-    <div id={id} className="toggleWrapper">
+    <div id={wrapperId} className="toggleWrapper">
       <input
         type="checkbox"
         className="dn"
-        id={id}
+        id={finalInputId}
         onChange={handleChange}
         checked={checked}
+        role="switch"
+        aria-checked={checked}
         aria-label={ariaLabel}
       />
-      <label htmlFor={id} className="toggle">
+      <label htmlFor={finalInputId} className="toggle">
         <span className="toggle__handler">
           <span className="crater crater--1" />
           <span className="crater crater--2" />

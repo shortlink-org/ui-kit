@@ -1,46 +1,80 @@
 import React from 'react'
-import Collapse from '@mui/material/Collapse'
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
+import { clsx } from 'clsx'
 
-import Tooltip from '@mui/material/Tooltip'
-import ExpandLessIcon from '@mui/icons-material/ExpandLess'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+interface CollapsibleMenuProps {
+  mode: 'full' | 'mini'
+  icon: React.ComponentType<{ className?: string }>
+  title: string
+  children: React.ReactNode
+  collapsed?: boolean
+  onCollapseChange?: (collapsed: boolean) => void
+}
 
-// @ts-ignore
-const CollapsibleMenu = ({ mode, icon, title, children }) => {
+const CollapsibleMenu = ({ mode, icon: Icon, title, children, collapsed, onCollapseChange }: CollapsibleMenuProps) => {
   const iconClassName =
     'text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
-  let bodyClassName =
-    'flex items-center cursor-pointer w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
 
-  const [isOpen, setIsOpen] = React.useState(false)
+  const baseButtonClassName =
+    'flex items-center cursor-pointer w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-800'
 
-  const toggleCollapse = () => setIsOpen(!isOpen)
+  const buttonClassName = clsx(
+    baseButtonClassName,
+    mode === 'mini' && 'justify-center'
+  )
 
-  if (mode === 'mini') {
-    bodyClassName += ' justify-center'
+  const [isOpen, setIsOpen] = React.useState(collapsed === undefined ? true : !collapsed)
+
+  // Sync with collapsed prop when it changes externally
+  React.useEffect(() => {
+    if (collapsed !== undefined) {
+      setIsOpen(!collapsed)
+    }
+  }, [collapsed])
+
+  const handleToggle = (open: boolean) => {
+    setIsOpen(open)
+    if (onCollapseChange) {
+      onCollapseChange(!open)
+    }
   }
 
   return (
-    <li className={'w-full'}>
-      <Tooltip title={title} placement={'right'}>
-        <div className={bodyClassName} onClick={toggleCollapse}>
-          {React.createElement(icon, { className: iconClassName })}
+    <li className="w-full">
+      <Disclosure open={isOpen} onChange={handleToggle}>
+        {({ open }) => (
+          <div>
+            {mode === 'mini' ? (
+              <DisclosureButton
+                className={buttonClassName}
+                aria-label={title}
+                title={title}
+              >
+                <Icon className={iconClassName} />
+              </DisclosureButton>
+            ) : (
+              <DisclosureButton className={buttonClassName}>
+                <Icon className={iconClassName} />
+                <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
+                  {title}
+                </span>
+                {open ? (
+                  <ChevronUpIcon className="size-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+                ) : (
+                  <ChevronDownIcon className="size-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+                )}
+              </DisclosureButton>
+            )}
 
-          {mode === 'full' && (
-            <React.Fragment>
-              <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
-                {title}
-              </span>
-
-              {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-            </React.Fragment>
-          )}
-        </div>
-      </Tooltip>
-
-      <Collapse in={isOpen} timeout="auto" unmountOnExit>
-        <ul className="py-2 px-4 space-y-2">{children}</ul>
-      </Collapse>
+            <DisclosurePanel>
+              <ul className="py-2 px-4 space-y-2" role="group">
+                {children}
+              </ul>
+            </DisclosurePanel>
+          </div>
+        )}
+      </Disclosure>
     </li>
   )
 }

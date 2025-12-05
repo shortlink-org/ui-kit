@@ -1,7 +1,7 @@
 import { OverridableStringUnion } from '@mui/types'
-import Button, { ButtonPropsVariantOverrides } from '@mui/material/Button'
+import Button, { ButtonProps, ButtonPropsVariantOverrides } from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
-import React, { useState } from 'react'
+import React, { useMemo } from 'react'
 import Balancer from 'react-wrap-balancer'
 
 import PricingToggle from './PricingToggle'
@@ -9,63 +9,149 @@ import PricingToggle from './PricingToggle'
 type Tier = {
   title: string
   subheader: string
-  price: number
+  /** Monthly price in the base currency */
+  monthlyPrice: number
+  /** Yearly price in the base currency (if not provided, calculated as monthlyPrice * 12 * 0.8) */
+  yearlyPrice?: number
+  /** Currency code (default: 'USD') */
+  currency?: string
+  /** Badge text to display (e.g., 'Most Popular') */
+  badge?: string
+  /** Whether this tier is featured (affects styling) */
+  isFeatured?: boolean
+  /** Custom background color for featured badge (default: 'emerald-500') */
+  labelColor?: string
   description: string[]
-  buttonVariant: OverridableStringUnion<
+  /** Custom CTA button props (if not provided, uses default buttonVariant and buttonText) */
+  ctaButton?: ButtonProps
+  /** @deprecated Use monthlyPrice instead */
+  price?: number
+  buttonVariant?: OverridableStringUnion<
     'text' | 'outlined' | 'contained',
     ButtonPropsVariantOverrides
   >
-  buttonText: string
+  buttonText?: string
+  /** Optional CTA URL for link-based actions */
+  ctaUrl?: string
 }
 
 export type TiersProps = {
   tiers: Tier[]
 }
 
+/**
+ * Formats a price using Intl.NumberFormat
+ */
+function formatPrice(
+  amount: number,
+  currency: string = 'USD',
+  locale: string = 'en-US',
+): { formatted: string; currencySymbol: string } {
+  const formatter = new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  })
+
+  const parts = formatter.formatToParts(amount)
+  const currencySymbol = parts.find((part) => part.type === 'currency')?.value || '$'
+  const formatted = parts
+    .filter((part) => part.type !== 'currency')
+    .map((part) => part.value)
+    .join('')
+
+  return { formatted, currencySymbol }
+}
+
 export const PriceTable: React.FC<TiersProps> = ({ tiers }) => {
-  const [isAnnual, setIsAnnual] = useState<boolean>(true)
+  const [isAnnual, setIsAnnual] = React.useState<boolean>(true)
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-24">
       <PricingToggle isAnnual={isAnnual} setIsAnnual={setIsAnnual} />
 
       <div className="max-w-sm mx-auto grid gap-6 lg:grid-cols-3 items-start lg:max-w-none">
-        {tiers.map((tier) => (
-          // Enterprise card is full width at sm breakpoint
-          <div
-            className={`relative flex flex-col h-full p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-900 shadow shadow-slate-950/5 ${
-              tier.title === 'Pro' && 'bg-green-50 dark:bg-green-900'
-            }`}
-            key={tier.title}
-          >
-            {tier.title === 'Pro' && (
-              <div className="absolute top-0 right-0 mr-6 -mt-4">
-                <div className="inline-flex items-center text-xs font-semibold py-1.5 px-3 bg-emerald-500 text-white rounded-full shadow-sm shadow-slate-950/5">
-                  Most Popular
-                </div>
-              </div>
-            )}
-            <div className="mb-5">
-              <div className="text-slate-900 dark:text-slate-200 font-semibold mb-1">
-                {tier.title}
-              </div>
-              <div className="inline-flex items-baseline mb-2">
-                <span className="text-slate-900 dark:text-slate-200 font-bold text-3xl">
-                  $
-                </span>
-                <span className="text-slate-900 dark:text-slate-200 font-bold text-4xl">
-                  {isAnnual ? tier.price : tier.price * 1.2}
-                </span>
-                <span className="text-slate-500 font-medium">/mo</span>
-              </div>
-              <div className="text-sm text-slate-500 mb-5">
-                <Balancer>{tier.subheader}</Balancer>
-              </div>
+        {tiers.map((tier) => {
+          // Calculate prices: use monthlyPrice/yearlyPrice if provided, otherwise calculate
+          const monthlyPrice = tier.monthlyPrice ?? tier.price ?? 0
+          const yearlyPrice =
+            tier.yearlyPrice ?? monthlyPrice * 12 * 0.8 // 20% discount for yearly
+          const displayPrice = isAnnual ? yearlyPrice : monthlyPrice
+          const pricePeriod = isAnnual ? '/year' : '/mo'
 
-              <Button fullWidth variant={tier.buttonVariant}>
-                {tier.buttonText}
-              </Button>
-            </div>
+          // Format price
+          const currency = tier.currency ?? 'USD'
+          const { formatted, currencySymbol } = formatPrice(displayPrice, currency)
+
+          // Determine if featured
+          const isFeatured = tier.isFeatured ?? false
+          const badgeText = tier.badge
+          const labelColor = tier.labelColor ?? 'emerald-500'
+
+          // CTA button configuration
+          const defaultButtonProps: ButtonProps = {
+            fullWidth: true,
+            variant: tier.buttonVariant ?? tier.ctaButton?.variant ?? 'contained',
+            children: tier.buttonText ?? tier.ctaButton?.children ?? 'Get Started',
+            ...tier.ctaButton,
+          }
+
+          return (
+            <div
+              className={`relative flex flex-col h-full p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-900 shadow shadow-slate-950/5 ${
+                isFeatured ? 'bg-green-50 dark:bg-green-900' : ''
+              }`}
+              key={tier.title}
+            >
+              {badgeText && (
+                <div className="absolute top-0 right-0 mr-6 -mt-4">
+                  <div
+                    className="inline-flex items-center text-xs font-semibold py-1.5 px-3 text-white rounded-full shadow-sm shadow-slate-950/5"
+                    style={{
+                      backgroundColor:
+                        labelColor === 'emerald-500'
+                          ? '#10b981'
+                          : labelColor === 'blue-500'
+                            ? '#3b82f6'
+                            : labelColor === 'purple-500'
+                              ? '#a855f7'
+                              : labelColor.startsWith('#')
+                                ? labelColor
+                                : `var(--${labelColor})`,
+                    }}
+                  >
+                    {badgeText}
+                  </div>
+                </div>
+              )}
+              <div className="mb-5">
+                <div className="text-slate-900 dark:text-slate-200 font-semibold mb-1">
+                  {tier.title}
+                </div>
+                <div className="inline-flex items-baseline mb-2">
+                  <span className="text-slate-900 dark:text-slate-200 font-bold text-3xl">
+                    {currencySymbol}
+                  </span>
+                  <span className="text-slate-900 dark:text-slate-200 font-bold text-4xl">
+                    {formatted}
+                  </span>
+                  <span className="text-slate-500 font-medium">{pricePeriod}</span>
+                </div>
+                <div className="text-sm text-slate-500 mb-5">
+                  <Balancer>{tier.subheader}</Balancer>
+                </div>
+
+                {tier.ctaUrl ? (
+                  <Button
+                    component="a"
+                    href={tier.ctaUrl}
+                    {...defaultButtonProps}
+                  />
+                ) : (
+                  <Button {...defaultButtonProps} />
+                )}
+              </div>
 
             <div className="text-slate-900 dark:text-slate-200 font-medium mb-3">
               Includes:
@@ -93,8 +179,9 @@ export const PriceTable: React.FC<TiersProps> = ({ tiers }) => {
                 </Typography>
               ))}
             </ul>
-          </div>
-        ))}
+            </div>
+          )
+        })}
       </div>
     </div>
   )

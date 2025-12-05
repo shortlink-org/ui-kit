@@ -20,7 +20,6 @@ export default defineConfig({
       external: [
         'react',
         'react-dom',
-        'material-react-table',
         '@emotion/react',
         '@mui/styled-engine-sc',
         '@mui/system',
@@ -28,6 +27,7 @@ export default defineConfig({
         '@mui/material/styles',
         '@mui/x-date-pickers',
         '@mui/icons-material',
+        'gsap',
       ],
       input: Object.fromEntries(
         glob

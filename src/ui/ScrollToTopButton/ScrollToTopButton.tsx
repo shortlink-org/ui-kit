@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react'
+import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react'
 import { ArrowUpward } from '@mui/icons-material'
 import clsx from 'clsx'
 
@@ -26,6 +26,12 @@ export interface ScrollToTopButtonProps {
   scrollThreshold?: number
   /** Icon size (px) */
   iconSize?: number
+  /**
+   * Enable global Home key shortcut. Default: true.
+   * Set to false when button is in isolated scroll containers (modals, Storybook)
+   * to prevent intercepting keys for entire app.
+   */
+  enableGlobalHotkey?: boolean
 }
 
 const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
@@ -34,6 +40,7 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
   label = 'Scroll to top',
   scrollThreshold = 500,
   iconSize = 24,
+  enableGlobalHotkey = true,
 }) => {
   // root element may be null on first render when ref is still empty → copy into state once it exists
   const [root, setRoot] = useState<HTMLElement | Window | null>(scrollContainer)
@@ -44,17 +51,31 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
     if (scrollContainer && scrollContainer !== root) setRoot(scrollContainer)
   }, [scrollContainer])
 
+  const scrollToTop = useCallback(() => {
+    if (!root) return
+    if (root === window) {
+      ;(root as Window).scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      ;(root as HTMLElement).scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [root])
+
   // Show / hide by observing a 1‑px sentinel at the top of the scroll area
   useEffect(() => {
     if (!root) return
 
-    const parent: HTMLElement = root === window ? document.body : (root as HTMLElement)
-    const sentinel = document.createElement('div')
-    sentinel.setAttribute('data-scrolltop-sentinel', 'true')
-    sentinel.style.cssText =
-      'position:absolute;top:0;left:0;height:1px;width:1px;pointer-events:none;'
-    // ensure the sentinel sits at the real scroll start
-    parent.prepend(sentinel)
+    const parent: HTMLElement = root === window ? document.documentElement : (root as HTMLElement)
+    
+    // Check if sentinel already exists (for multiple buttons)
+    let sentinel = parent.querySelector('[data-scrolltop-sentinel="true"]') as HTMLElement
+    if (!sentinel) {
+      sentinel = document.createElement('div')
+      sentinel.setAttribute('data-scrolltop-sentinel', 'true')
+      sentinel.style.cssText =
+        'position:absolute;top:0;left:0;height:1px;width:1px;pointer-events:none;'
+      // Insert at the beginning, but only if it doesn't exist
+      parent.insertBefore(sentinel, parent.firstChild)
+    }
 
     let tearDown: () => void = () => {}
 
@@ -84,27 +105,46 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
 
     return () => {
       tearDown()
-      sentinel.remove()
+      // Only remove sentinel if no other instances are using it
+      // Check if there are other sentinels or if this is the last one
+      const allSentinels = document.querySelectorAll('[data-scrolltop-sentinel="true"]')
+      if (allSentinels.length === 1 && allSentinels[0] === sentinel) {
+        sentinel.remove()
+      }
     }
   }, [root, scrollThreshold])
 
-  // global keyboard shortcut: Home → top
+  // keyboard shortcut: Home → top
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Home') scrollToTop()
-    }
-    window.addEventListener('keyup', onKey)
-    return () => window.removeEventListener('keyup', onKey)
-  }, [root])
-
-  const scrollToTop = () => {
     if (!root) return
-    if (root === window) {
-      ;(root as Window).scrollTo({ top: 0, behavior: 'smooth' })
-    } else {
-      ;(root as HTMLElement).scrollTo({ top: 0, behavior: 'smooth' })
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Home') {
+        // If global hotkey is disabled, only handle when focused on the scroll container
+        if (!enableGlobalHotkey) {
+          // Check if the active element is within the scroll container
+          const activeElement = document.activeElement
+          if (root === window) {
+            // For window, only handle if no modal/dialog is open
+            if (activeElement && activeElement.closest('[role="dialog"]')) {
+              return
+            }
+          } else {
+            // For container, only handle if focus is within it
+            const container = root as HTMLElement
+            if (activeElement && !container.contains(activeElement)) {
+              return
+            }
+          }
+        }
+        scrollToTop()
+      }
     }
-  }
+
+    const target = enableGlobalHotkey ? window : (root === window ? window : root as HTMLElement)
+    target.addEventListener('keyup', onKey)
+    return () => target.removeEventListener('keyup', onKey)
+  }, [root, enableGlobalHotkey, scrollToTop])
 
   const buttonClass = clsx(
     'fixed bottom-5 right-5 z-[9999]',
