@@ -27,7 +27,7 @@ export function TableFooter<TData>({
   }
 
   return (
-    <tfoot className="bg-gray-50 dark:bg-gray-800 border-t-2 border-gray-300 dark:border-gray-600">
+    <tfoot className="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
       {footerGroups.map((footerGroup) => (
         <tr key={footerGroup.id}>
           {enableRowSelection && (

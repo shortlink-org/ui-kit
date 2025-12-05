@@ -203,12 +203,12 @@ export function DataTable<TData extends Record<string, unknown>>({
       <div className="flex flex-col mt-6">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-            <div className="overflow-hidden border border-[var(--table-border)] md:rounded-lg shadow-sm bg-white dark:bg-gray-900">
+            <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg bg-white dark:bg-gray-900">
               {enableVirtualization ? (
                 <div ref={scrollElementRef} className="overflow-auto max-h-[600px]">
                   <table className={clsx(
                     'min-w-full divide-y',
-                    'divide-[var(--table-border)]',
+                    'divide-gray-200 dark:divide-gray-700',
                     densityClasses[density].cell,
                     tableClassName
                   )}>
@@ -224,7 +224,7 @@ export function DataTable<TData extends Record<string, unknown>>({
                     />
                     <tbody className={clsx(
                       'bg-white dark:bg-gray-900 divide-y',
-                      'divide-[var(--table-border)]',
+                      'divide-gray-200 dark:divide-gray-700',
                       bodyClassName
                     )}>
                       <VirtualizedTableBody
@@ -253,7 +253,7 @@ export function DataTable<TData extends Record<string, unknown>>({
               ) : (
                 <table className={clsx(
                   'min-w-full divide-y',
-                  'divide-[var(--table-border)]',
+                  'divide-gray-200 dark:divide-gray-700',
                   densityClasses[density].cell,
                   tableClassName
                 )}>
@@ -269,13 +269,13 @@ export function DataTable<TData extends Record<string, unknown>>({
                   />
                   <tbody className={clsx(
                     'bg-white dark:bg-gray-900 divide-y',
-                    'divide-[var(--table-border)]',
+                    'divide-gray-200 dark:divide-gray-700',
                     bodyClassName
                   )}>
                     {loading ? (
                       <tr>
                         <td colSpan={columnCount} className="p-0">
-                          <div className="p-8 text-center text-gray-500 dark:text-gray-400 border-t border-[var(--table-border)]">
+                          <div className="p-8 text-center text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700">
                             <Loader />
                           </div>
                         </td>
@@ -283,7 +283,7 @@ export function DataTable<TData extends Record<string, unknown>>({
                     ) : rows.length === 0 ? (
                       <tr>
                         <td colSpan={columnCount} className="p-0">
-                          <div className="p-8 text-center text-gray-500 dark:text-gray-400 border-t border-[var(--table-border)]">
+                          <div className="p-8 text-center text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700">
                             <EmptyState message={emptyMessage} />
                           </div>
                         </td>

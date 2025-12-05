@@ -3,6 +3,7 @@ import Button, { ButtonProps, ButtonPropsVariantOverrides } from '@mui/material/
 import Typography from '@mui/material/Typography'
 import React, { useMemo } from 'react'
 import Balancer from 'react-wrap-balancer'
+import clsx from 'clsx'
 
 import PricingToggle from './PricingToggle'
 
@@ -87,7 +88,20 @@ export const PriceTable: React.FC<TiersProps> = ({ tiers }) => {
           // Determine if featured
           const isFeatured = tier.isFeatured ?? false
           const badgeText = tier.badge
-          const labelColor = tier.labelColor ?? 'emerald-500'
+          const labelColor = tier.labelColor ?? '#10b981'
+          const isClassColor = typeof labelColor === 'string' && labelColor.startsWith('bg-')
+          const badgeStyle =
+            !labelColor || isClassColor
+              ? undefined
+              : {
+                  backgroundColor:
+                    labelColor.startsWith('#') ||
+                    labelColor.startsWith('rgb') ||
+                    labelColor.startsWith('hsl') ||
+                    labelColor.startsWith('var(')
+                      ? labelColor
+                      : `var(--${labelColor})`,
+                }
 
           // CTA button configuration
           const defaultButtonProps: ButtonProps = {
@@ -107,19 +121,11 @@ export const PriceTable: React.FC<TiersProps> = ({ tiers }) => {
               {badgeText && (
                 <div className="absolute top-0 right-0 mr-6 -mt-4">
                   <div
-                    className="inline-flex items-center text-xs font-semibold py-1.5 px-3 text-white rounded-full shadow-sm shadow-slate-950/5"
-                    style={{
-                      backgroundColor:
-                        labelColor === 'emerald-500'
-                          ? '#10b981'
-                          : labelColor === 'blue-500'
-                            ? '#3b82f6'
-                            : labelColor === 'purple-500'
-                              ? '#a855f7'
-                              : labelColor.startsWith('#')
-                                ? labelColor
-                                : `var(--${labelColor})`,
-                    }}
+                    className={clsx(
+                      'inline-flex items-center text-xs font-semibold py-1.5 px-3 text-white rounded-full shadow-sm shadow-slate-950/5',
+                      isClassColor ? labelColor : undefined
+                    )}
+                    style={badgeStyle}
                   >
                     {badgeText}
                   </div>

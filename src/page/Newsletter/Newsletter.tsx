@@ -30,6 +30,8 @@ export interface NewsletterProps {
   loading?: boolean
   /** Test ID for E2E/integration testing */
   'data-testid'?: string
+  /** Optional input id override */
+  inputId?: string
 }
 
 export function Newsletter({
@@ -42,9 +44,12 @@ export function Newsletter({
   className = '',
   loading = false,
   'data-testid': dataTestId,
+  inputId,
 }: NewsletterProps) {
   const [email, setEmail] = React.useState('')
   const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const generatedId = React.useId()
+  const emailInputId = inputId ?? generatedId
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -121,11 +126,11 @@ export function Newsletter({
             <h2 className="text-4xl font-semibold tracking-tight text-white">{heading}</h2>
             <p className="mt-4 text-lg text-gray-300 dark:text-gray-400">{description}</p>
             <form onSubmit={handleSubmit} className="mt-6 flex max-w-md gap-x-4">
-              <label htmlFor="email-address" className="sr-only">
+              <label htmlFor={emailInputId} className="sr-only">
                 Email address
               </label>
               <input
-                id="email-address"
+                id={emailInputId}
                 name="email"
                 type="email"
                 required
@@ -155,8 +160,8 @@ export function Newsletter({
             </form>
           </div>
           <dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:pt-2">
-            {displayFeatures.map((feature, index) => (
-              <div key={index} className="flex flex-col items-start">
+            {displayFeatures.map((feature) => (
+              <div key={feature.title} className="flex flex-col items-start">
                 <div className="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
                   <div className="text-white">{feature.icon}</div>
                 </div>

@@ -42,9 +42,10 @@ export function TableRow<TData>({
       className={clsx(
         'group transition-all duration-150',
         densityClasses[density].row,
-        'hover:bg-[var(--table-row-hover)]',
+        'bg-white dark:bg-gray-900',
+        'hover:bg-gray-50 dark:hover:bg-gray-800/50',
         onRowClick && 'cursor-pointer',
-        isSelected && 'bg-[var(--table-row-selected)] border-l-4 border-l-[var(--table-row-selected-border)]',
+        isSelected && 'bg-gray-100 dark:bg-gray-800 border-l-4 border-l-indigo-500',
         isGrouped && 'bg-gray-100 dark:bg-gray-800 font-semibold',
         isPinned && 'sticky bg-white dark:bg-gray-900 z-10',
         rowClassName
@@ -101,8 +102,7 @@ export function TableRow<TData>({
             key={cell.id}
             className={clsx(
               densityClasses[density].cell,
-              'font-medium whitespace-nowrap',
-              'text-gray-800 dark:text-white',
+              'text-sm whitespace-nowrap',
               'transition-colors duration-150',
               cellIsPinned && 'sticky bg-white dark:bg-gray-900 z-10',
               cellClassName

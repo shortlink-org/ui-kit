@@ -153,6 +153,8 @@ export function Sidebar({
         icon: item.icon,
         name: item.name,
         activePath,
+        activeClassName,
+        inactiveClassName,
       })
 
     if (renderItem) {
@@ -187,11 +189,11 @@ export function Sidebar({
                 </CollapsibleMenu>
               )
             } else {
-              return (
-                <>
-                  {section.items.map((item) => renderSidebarItem(item))}
-                </>
-              )
+              return section.items.map((item) => (
+                <React.Fragment key={`simple-${item.url}`}>
+                  {renderSidebarItem(item)}
+                </React.Fragment>
+              ))
             }
           })}
         </ul>

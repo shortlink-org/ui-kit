@@ -181,7 +181,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
             </div>
 
             {/* Mobile menu */}
-            <MobileMenuPanel items={navigation} currentPath={currentPath} />
+            <MobileMenuPanel items={navigation} currentPath={currentPath} LinkComponent={LinkComponent} />
           </>
         )}
       </Disclosure>

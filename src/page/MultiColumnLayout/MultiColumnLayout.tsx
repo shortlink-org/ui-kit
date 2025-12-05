@@ -17,6 +17,8 @@ export interface ColumnSpan {
 export interface ColumnConfig {
   /** Content to render in the column */
   content: ReactNode
+  /** Optional stable id for React keys */
+  id?: string
   /** Number of grid columns this column should span (default: 1) - legacy, use span object for responsive */
   span?: number | ColumnSpan
   /** Additional CSS classes for the column */
@@ -127,17 +129,9 @@ export function MultiColumnLayout({
     })
     
     if (hasSpanColumns) {
-      // Use proportional sizing based on spans, but last column takes all remaining space
+      // Use proportional sizing based on spans (including last column)
       return validColumns
-        .map((col, idx) => {
-          const span = getSpanValue(col.span, bp)
-          // Last column should always stretch to fill all remaining space (1fr)
-          if (idx === validColumns.length - 1) {
-            return '1fr'
-          }
-          // Other columns use proportional sizing
-          return `${span}fr`
-        })
+        .map((col) => `${getSpanValue(col.span, bp)}fr`)
         .join(' ')
     } else {
       // Use auto-sizing: auto for menus, 1fr for last column (content)
@@ -187,35 +181,16 @@ export function MultiColumnLayout({
     return styles.join('\n')
   }
 
-  // Generate all column span styles upfront to avoid Fragment issues
-  // Note: When using proportional grid (fr units), we don't need grid-column spans
-  // as the grid template columns already define the column sizes
-  const generateAllColumnStyles = (): string => {
-    // Check if we're using proportional grid (hasSpanColumns with fr units)
-    // If so, we don't need to apply grid-column spans
-    const hasSpanColumns = validColumns.some(col => {
-      const span = col.span
-      if (!span) return false
-      if (typeof span === 'number') return span > 1
-      return isResponsiveSpan(span)
-    })
-    
-    // When using proportional grid (fr), spans are handled by grid-template-columns
-    // so we don't need additional grid-column styles
-    if (hasSpanColumns) {
-      return ''
-    }
-    
-    // For non-span layouts, return empty (handled by grid-template-columns)
-    return ''
-  }
-
-  const allColumnStyles = generateAllColumnStyles()
+  // Memoize styles to avoid remounting style tags on every render
+  const responsiveStyles = React.useMemo(() => generateResponsiveStyles(), [
+    hasResponsiveSpans,
+    stackAt,
+    validColumns,
+  ])
 
   return (
     <div className={clsx('w-full h-full', className)} data-testid={dataTestId}>
-      <style>{generateResponsiveStyles()}</style>
-      {allColumnStyles && <style>{allColumnStyles}</style>}
+      <style>{responsiveStyles}</style>
       <div
         data-layout-id={layoutId}
         className={clsx(
@@ -248,7 +223,7 @@ export function MultiColumnLayout({
 
           return (
             <div 
-              key={index}
+              key={column.id ?? index}
               data-column-id={columnId}
               className={columnClasses} 
               style={columnStyles}
