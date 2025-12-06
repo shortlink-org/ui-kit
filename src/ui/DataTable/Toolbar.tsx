@@ -21,7 +21,7 @@ export interface ToolbarProps<TData> {
   enableRefresh?: boolean
 }
 
-export function Toolbar<TData>({
+export function Toolbar<TData extends Record<string, unknown>>({
   table,
   onCreate,
   onBulkDelete,
@@ -39,18 +39,21 @@ export function Toolbar<TData>({
   const pageRows = table.getRowModel().rows.map((row) => row.original)
 
   const handleExportAll = () => {
-    const csv = generateCsv(csvConfig)(allData)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const csv = generateCsv(csvConfig)(allData as any)
     download(csvConfig)(csv)
   }
 
   const handleExportPage = () => {
-    const csv = generateCsv(csvConfig)(pageRows)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const csv = generateCsv(csvConfig)(pageRows as any)
     download(csvConfig)(csv)
   }
 
   const handleExportSelected = () => {
     const selectedData = selectedRows.map((row) => row.original)
-    const csv = generateCsv(csvConfig)(selectedData)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const csv = generateCsv(csvConfig)(selectedData as any)
     download(csvConfig)(csv)
   }
 

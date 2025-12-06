@@ -20,12 +20,6 @@ export function MobileMenuPanel({ items, currentPath, LinkComponent }: MobileMen
     linkClassName: string,
     ariaCurrent?: 'page'
   ) => {
-    const linkProps = {
-      href: item.href,
-      className: linkClassName,
-      'aria-current': ariaCurrent,
-    }
-
     if (LinkComponent) {
       return (
         <DisclosureButton as={LinkComponent} key={item.name} href={item.href} className={linkClassName} aria-current={ariaCurrent}>

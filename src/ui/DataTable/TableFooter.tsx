@@ -1,4 +1,3 @@
-import React from 'react'
 import { flexRender, type Table as TanStackTable } from '@tanstack/react-table'
 import { clsx } from 'clsx'
 
@@ -49,8 +48,8 @@ export function TableFooter<TData>({
                 )}
                 style={{
                   width: enableColumnResizing ? header.getSize() : undefined,
-                  left: isPinned === 'left' ? `${header.getStart('left')}px` : undefined,
-                  right: isPinned === 'right' ? `${header.getStart('right')}px` : undefined,
+                  left: isPinned === 'left' ? `${(header as { getStart: (side: 'left' | 'right') => number }).getStart('left')}px` : undefined,
+                  right: isPinned === 'right' ? `${(header as { getStart: (side: 'left' | 'right') => number }).getStart('right')}px` : undefined,
                 }}
               >
                 {header.isPlaceholder

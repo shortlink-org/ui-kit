@@ -1,4 +1,5 @@
 import type { ComponentProps } from 'react'
+import React from 'react'
 import preview from '#.storybook/preview'
 import { Footer } from './Footer'
 
@@ -82,7 +83,7 @@ export const Minimal = meta.story({
 
 export const WithNextJsLink = meta.story({
   args: {
-    LinkComponent: ({ href, children, className }) => {
+    LinkComponent: ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => {
       // This is a mock for Next.js Link - in real usage, import Link from 'next/link'
       return (
         <a href={href} className={className}>

@@ -200,16 +200,16 @@ export const StatesAndInteractions = meta.story({
       <section>
         <h3 className="text-lg font-semibold mb-4 dark:text-white">As Links</h3>
         <div className="flex flex-wrap items-center gap-4">
-          <Button as="a" href="#" variant="primary">
+          <Button as="a" asProps={{ href: '#' }} variant="primary">
             Primary Link
           </Button>
-          <Button as="a" href="#" variant="secondary">
+          <Button as="a" asProps={{ href: '#' }} variant="secondary">
             Secondary Link
           </Button>
-          <Button as="a" href="#" variant="outline">
+          <Button as="a" asProps={{ href: '#' }} variant="outline">
             Outline Link
           </Button>
-          <Button as="a" href="#" variant="link">
+          <Button as="a" asProps={{ href: '#' }} variant="link">
             Text Link
           </Button>
         </div>
@@ -247,7 +247,7 @@ export const StatesAndInteractions = meta.story({
       </section>
     </div>
   ),
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const canvas = within(canvasElement)
     const button = canvas.getByRole('button', { name: 'Click me' })
     await userEvent.click(button)
@@ -313,20 +313,20 @@ export const UseCases = meta.story({
       <section>
         <h3 className="text-lg font-semibold mb-4 dark:text-white">Navigation</h3>
         <div className="flex flex-wrap items-center gap-4">
-          <Button as="a" href="#" variant="link">
+          <Button as="a" asProps={{ href: '#' }} variant="link">
             Home
           </Button>
-          <Button as="a" href="#" variant="link">
+          <Button as="a" asProps={{ href: '#' }} variant="link">
             About
           </Button>
-          <Button as="a" href="#" variant="link">
+          <Button as="a" asProps={{ href: '#' }} variant="link">
             Services
           </Button>
-          <Button as="a" href="#" variant="link">
+          <Button as="a" asProps={{ href: '#' }} variant="link">
             Contact
           </Button>
           <div className="ml-auto">
-            <Button as="a" href="#" variant="primary" size="sm">
+            <Button as="a" asProps={{ href: '#' }} variant="primary" size="sm">
               Sign In
             </Button>
           </div>

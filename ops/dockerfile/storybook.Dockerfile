@@ -26,7 +26,7 @@ ARG BUILD_DATE
 # pnpm only needed here
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PNPM_HOME}:${PATH}"
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN npm install -g pnpm@latest
 
 WORKDIR /app
 

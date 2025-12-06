@@ -107,7 +107,7 @@ export function Drawer({
                     >
                       <span className="absolute -inset-2.5" />
                       <span className="sr-only">Close panel</span>
-                      <CloseIcon aria-hidden="true" className="size-6" />
+                      <CloseIcon aria-hidden className="size-6" />
                     </button>
                   </div>
                 </TransitionChild>

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { AppHeaderProfile } from '../types'
 

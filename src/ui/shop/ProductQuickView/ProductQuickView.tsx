@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ProductReviews } from '../ProductReviews/ProductReviews'

@@ -9,7 +9,7 @@ import {
   type ColumnDef,
   type TableOptions,
   type SortingState,
-  type ColumnVisibilityState,
+  type VisibilityState,
   type PaginationState,
   type ColumnSizingState,
   type ColumnPinningState,
@@ -21,7 +21,7 @@ import { useState, useMemo } from 'react'
 
 export interface UseDataTableOptions<TData> {
   data: TData[]
-  columns: ColumnDef<TData, any>[]
+  columns: ColumnDef<TData, unknown>[]
   sorting?: boolean
   pagination?: boolean
   filters?: boolean
@@ -37,7 +37,7 @@ export interface UseDataTableOptions<TData> {
   columnResizeMode?: 'onChange' | 'onEnd'
   initialState?: {
     sorting?: SortingState
-    columnVisibility?: ColumnVisibilityState
+    columnVisibility?: VisibilityState
     pagination?: Partial<PaginationState>
     globalFilter?: string
     columnSizing?: ColumnSizingState
@@ -72,7 +72,7 @@ export function useDataTable<TData>({
   )
 
   // Column visibility state
-  const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>(
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
     initialState?.columnVisibility ?? {}
   )
 
@@ -210,10 +210,10 @@ export function useDataTable<TData>({
       paginationState,
       globalFilterState,
       rowSelection,
-      pageSize,
     ]
   )
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable(tableOptions)
 
   return {

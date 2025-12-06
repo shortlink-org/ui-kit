@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React from 'react'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { type Table as TanStackTable } from '@tanstack/react-table'
 import { TableRow } from './TableRow'
@@ -16,7 +16,7 @@ export interface VirtualizedTableBodyProps<TData> {
   emptyMessage?: string
   columnCount: number
   estimateSize?: number
-  scrollElementRef?: React.RefObject<HTMLElement>
+  scrollElementRef?: React.RefObject<HTMLElement | null>
   rowClassName?: string
 }
 
@@ -36,6 +36,7 @@ export function VirtualizedTableBody<TData>({
 }: VirtualizedTableBodyProps<TData>) {
   const rows = table.getRowModel().rows
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const virtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => scrollElementRef?.current || null,

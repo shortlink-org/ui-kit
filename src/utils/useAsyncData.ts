@@ -3,7 +3,13 @@ import { useMemo } from 'react'
 /**
  * Cache for promises to prevent duplicate requests
  */
-const promiseCache = new Map<string, Promise<any>>()
+const promiseCache = new Map<string, Promise<unknown>>()
+
+// Helper to cast cached promise to correct type
+function getCachedPromise<T>(key: string): Promise<T> | undefined {
+  const cached = promiseCache.get(key)
+  return cached as Promise<T> | undefined
+}
 
 /**
  * Creates a cached promise for data fetching.
@@ -32,8 +38,9 @@ export function useAsyncData<T>(
 ): Promise<T> {
   return useMemo(() => {
     // Return cached promise if it exists
-    if (promiseCache.has(key)) {
-      return promiseCache.get(key)!
+    const cached = getCachedPromise<T>(key)
+    if (cached) {
+      return cached
     }
 
     // Create new promise and cache it

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ElectricBorderCard } from './ElectricBorderCard'
 
 const meta: Meta<typeof ElectricBorderCard> = {

@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import clsx from 'clsx'
 
 export type FeedbackVariant = 'loading' | 'error' | 'empty'

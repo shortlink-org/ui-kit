@@ -1,6 +1,5 @@
 import React, { Suspense } from 'react'
 import { DataTable, type DataTableProps } from './DataTable'
-import { SuspenseFallback } from '../SuspenseFallback/SuspenseFallback'
 
 export interface DataTableWithSuspenseProps<TData extends Record<string, unknown> = Record<string, unknown>>
   extends DataTableProps<TData> {
@@ -30,7 +29,6 @@ export interface DataTableWithSuspenseProps<TData extends Record<string, unknown
  */
 export function DataTableWithSuspense<TData extends Record<string, unknown> = Record<string, unknown>>({
   suspenseFallback,
-  suspenseMessage,
   ...dataTableProps
 }: DataTableWithSuspenseProps<TData>) {
   return (

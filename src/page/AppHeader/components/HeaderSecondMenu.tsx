@@ -61,7 +61,16 @@ export function HeaderSecondMenu({ items, label, LinkComponent }: HeaderSecondMe
                   <div key={itemKey} className="group relative flex gap-x-6 rounded-lg p-4 hover:bg-white/5">
                     {IconComponent && (
                       <div className="mt-1 flex size-11 flex-none items-center justify-center rounded-lg bg-gray-700/50 group-hover:bg-gray-700">
-                        <IconComponent aria-hidden="true" className="size-6 text-gray-400 group-hover:text-white" />
+                        {typeof IconComponent === 'function' ? (
+                          React.createElement(IconComponent as unknown as React.ComponentType<{ className?: string; 'aria-hidden'?: boolean }>, {
+                            'aria-hidden': true,
+                            className: 'size-6 text-gray-400 group-hover:text-white'
+                          })
+                        ) : (
+                          <span className="size-6 text-gray-400 group-hover:text-white flex items-center justify-center">
+                            {IconComponent}
+                          </span>
+                        )}
                       </div>
                     )}
                     {!IconComponent && item.icon && (

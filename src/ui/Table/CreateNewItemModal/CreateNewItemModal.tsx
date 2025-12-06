@@ -2,13 +2,21 @@ import type { ColumnDef } from '@tanstack/react-table'
 import { useState, useTransition } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Button } from '@headlessui/react'
 import { clsx } from 'clsx'
-import { Button as UIButton } from '../../../Button/Button'
+import { Button as UIButton } from '../../Button/Button'
 
 interface CreateModalProps<TData extends Record<string, unknown> = Record<string, unknown>> {
-  columns: ColumnDef<TData, any>[]
+  columns: ColumnDef<TData, unknown>[]
   onClose: () => void
   onSubmit: (values: TData) => void
   open: boolean
+}
+
+// Helper function to safely get accessorKey from a column
+function getAccessorKey<TData>(column: ColumnDef<TData, unknown>): string | undefined {
+  if ('accessorKey' in column && typeof column.accessorKey === 'string') {
+    return column.accessorKey
+  }
+  return undefined
 }
 
 export const CreateNewItemModal = <TData extends Record<string, unknown> = Record<string, unknown>>({
@@ -19,7 +27,7 @@ export const CreateNewItemModal = <TData extends Record<string, unknown> = Recor
 }: CreateModalProps<TData>) => {
   const [values, setValues] = useState<Partial<TData>>(() =>
     columns.reduce((acc, column) => {
-      const key = column.accessorKey as keyof TData
+      const key = getAccessorKey<TData>(column) as keyof TData | undefined
       if (key) {
         acc[key] = '' as TData[keyof TData]
       }
@@ -32,7 +40,7 @@ export const CreateNewItemModal = <TData extends Record<string, unknown> = Recor
   async function submitAction(formData: FormData) {
     const formValues = {} as Partial<TData>
     columns.forEach((column) => {
-      const key = column.accessorKey as keyof TData
+      const key = getAccessorKey<TData>(column) as keyof TData | undefined
       if (key) {
         formValues[key] = (formData.get(key as string) || '') as TData[keyof TData]
       }
@@ -45,7 +53,7 @@ export const CreateNewItemModal = <TData extends Record<string, unknown> = Recor
       // Reset form
       setValues(
         columns.reduce((acc, column) => {
-          const key = column.accessorKey as keyof TData
+          const key = getAccessorKey<TData>(column) as keyof TData | undefined
           if (key) {
             acc[key] = '' as TData[keyof TData]
           }
@@ -79,9 +87,14 @@ export const CreateNewItemModal = <TData extends Record<string, unknown> = Recor
             <form action={submitAction}>
               <div className="space-y-4 mb-6">
                 {columns.map((column) => {
-                  const key = column.accessorKey as keyof TData
+                  const key = getAccessorKey<TData>(column) as keyof TData | undefined
                   const keyStr = key ? String(key) : ''
                   const label = (column.header as string) || keyStr
+                  
+                  // Skip columns without accessorKey
+                  if (!key) {
+                    return null
+                  }
 
                   return (
                     <div key={keyStr}>

@@ -18,7 +18,7 @@ export type TableDensity = 'compact' | 'normal' | 'comfortable'
 
 export interface DataTableProps<TData> {
   data: TData[]
-  columns: ColumnDef<TData, any>[]
+  columns: ColumnDef<TData, unknown>[]
   sorting?: boolean
   pagination?: boolean
   filters?: boolean

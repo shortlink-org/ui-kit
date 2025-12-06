@@ -1,5 +1,5 @@
 import { type Column } from '@tanstack/react-table'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { clsx } from 'clsx'
 import { useDebounce } from '../../utils/useDebounce'
 
@@ -10,13 +10,27 @@ export interface ColumnFilterProps<TData, TValue> {
 }
 
 export function ColumnFilter<TData, TValue>({ column, debounceMs = 300, density = 'normal' }: ColumnFilterProps<TData, TValue>) {
-  const [filterValue, setFilterValue] = useState<string>('')
+  // Track column ID to detect changes
+  const columnIdRef = React.useRef(column.id)
+  
+  // Initialize state with current column value
+  const [filterValue, setFilterValue] = useState<string>(() => {
+    const initialValue = column.getFilterValue() as string | undefined
+    return initialValue ?? ''
+  })
+  
   const debouncedValue = useDebounce(filterValue, debounceMs)
 
-  // Sync with column filter value
-  useEffect(() => {
-    const columnFilterValue = column.getFilterValue() as string | undefined
-    setFilterValue(columnFilterValue ?? '')
+  // Sync with column filter value when column changes externally
+  // Use queueMicrotask to avoid synchronous setState in effect
+  React.useEffect(() => {
+    if (column.id !== columnIdRef.current) {
+      columnIdRef.current = column.id
+      const newValue = column.getFilterValue() as string | undefined
+      queueMicrotask(() => {
+        setFilterValue(newValue ?? '')
+      })
+    }
   }, [column])
 
   // Apply debounced value to column filter

@@ -1,8 +1,7 @@
-import * as React from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Button } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
-import { Button as UIButton } from '../../Button/Button'
+import { Button as UIButton } from '../Button/Button'
 
 export interface ConfirmDeleteModalProps {
   open: boolean

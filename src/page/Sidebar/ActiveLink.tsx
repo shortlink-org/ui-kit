@@ -2,8 +2,7 @@
 
 import Link, { LinkProps } from 'next/link'
 import { usePathname } from 'next/navigation'
-// @ts-ignore
-import React, { useState, useEffect, ReactElement, Children } from 'react'
+import { useState, useEffect, type ReactElement, Children, cloneElement } from 'react'
 
 export type ActiveLinkProps = LinkProps & {
   children: ReactElement
@@ -81,7 +80,7 @@ function ActiveLink({ children, activeClassName, activePath, ...props }: ActiveL
     // usePathname() may throw or return null/undefined outside Next.js context
     const pathname = usePathname()
     currentPath = pathname || null
-  } catch (error) {
+  } catch {
     // usePathname might not be available outside Next.js context
     currentPath = null
   }
@@ -90,7 +89,7 @@ function ActiveLink({ children, activeClassName, activePath, ...props }: ActiveL
   const effectivePath = activePath !== undefined ? activePath : currentPath
 
   const child = Children.only(children) as ReactElement
-  const childClassName = (child.props as any).className || ''
+  const childClassName = (child.props as { className?: string }).className || ''
   const [className, setClassName] = useState(childClassName)
   const [isActive, setIsActive] = useState(false)
 
@@ -124,7 +123,7 @@ function ActiveLink({ children, activeClassName, activePath, ...props }: ActiveL
       if (newClassName !== className) {
         setClassName(newClassName)
       }
-    } catch (error) {
+    } catch {
       // Fallback to simple string comparison if URL parsing fails
       const active = hrefValue === effectivePath
       setIsActive(active)
@@ -148,10 +147,10 @@ function ActiveLink({ children, activeClassName, activePath, ...props }: ActiveL
 
   return (
     <Link {...props}>
-      {React.cloneElement(child, {
+      {cloneElement(child, {
         className: className || null,
         'aria-current': isActive ? 'page' : undefined,
-      } as any)}
+      } as { className?: string | null; 'aria-current'?: 'page' | undefined })}
     </Link>
   )
 }

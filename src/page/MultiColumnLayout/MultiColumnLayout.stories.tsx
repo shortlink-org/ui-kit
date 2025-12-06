@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import React, { useState } from 'react'
 import { MultiColumnLayout, ColumnConfig } from './MultiColumnLayout'
 import { Sidebar } from '../Sidebar/Sidebar'
@@ -303,7 +303,6 @@ export const AsymmetricLayout: Story = {
 }
 
 export const WithStickySidebar: Story = {
-  name: 'With Sticky Sidebar',
   args: {
     columns: [
       {
@@ -326,7 +325,6 @@ export const WithStickySidebar: Story = {
 }
 
 export const DarkMode: Story = {
-  name: 'Dark Mode',
   parameters: {
     backgrounds: { default: 'dark' },
   },
@@ -480,9 +478,17 @@ const InteractiveExample = () => {
 
   const currentMenu = getCurrentMenu(activePath)
 
-  // Create custom Sidebar with click tracking
-  const CustomSidebar = () => {
-    // Wrap Sidebar and intercept link clicks
+  // Navigation items for AppHeader
+  const navigationItems = [
+    { name: 'Add Link', href: '/add-link' },
+    { name: 'Links', href: '/links' },
+    { name: 'Profile', href: '/profile' },
+  ]
+
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+
+  // Create custom Sidebar wrapper function that returns JSX (not a component)
+  const createCustomSidebar = (activePath: string, setActivePath: (path: string) => void) => {
     const handleLinkClick = (e: React.MouseEvent) => {
       const link = (e.target as HTMLElement).closest('a')
       if (link?.href) {
@@ -503,22 +509,13 @@ const InteractiveExample = () => {
     )
   }
 
-  // Navigation items for AppHeader
-  const navigationItems = [
-    { name: 'Add Link', href: '/add-link' },
-    { name: 'Links', href: '/links' },
-    { name: 'Profile', href: '/profile' },
-  ]
-
-  const [sidebarOpen, setSidebarOpen] = useState(true)
-
   // Build columns conditionally based on sidebarOpen state
   const columns: ColumnConfig[] = [
     // Sidebar column - only shown when sidebarOpen is true
     ...(sidebarOpen
       ? [
           {
-            content: <CustomSidebar />,
+            content: createCustomSidebar(activePath, setActivePath),
             className: 'border-r border-gray-200 dark:border-gray-700',
             sticky: true,
             stickyOffset: '0',

@@ -1,6 +1,5 @@
 import preview from '#.storybook/preview'
-import type { ComponentProps } from 'react'
-import { useState } from 'react'
+import { useState, type ComponentProps } from 'react'
 import { ProductQuickView } from './ProductQuickView'
 import type { ProductQuickViewProps } from './ProductQuickView'
 import { Button } from '../../Button/Button'
@@ -69,14 +68,14 @@ function QuickViewWrapper(args: Omit<ProductQuickViewProps, 'open' | 'onClose'>)
 }
 
 export const Default = meta.story({
-  render: (args) => <QuickViewWrapper {...args} />,
+  render: (args: ComponentProps<typeof ProductQuickView>) => <QuickViewWrapper {...args} />,
   args: {
     product: mockProduct,
   },
 })
 
 export const WithSelectedOptions = meta.story({
-  render: (args) => <QuickViewWrapper {...args} />,
+  render: (args: ComponentProps<typeof ProductQuickView>) => <QuickViewWrapper {...args} />,
   args: {
     product: mockProduct,
     selectedColorId: 'black',
@@ -85,7 +84,7 @@ export const WithSelectedOptions = meta.story({
 })
 
 export const WithoutReviews = meta.story({
-  render: (args) => <QuickViewWrapper {...args} />,
+  render: (args: ComponentProps<typeof ProductQuickView>) => <QuickViewWrapper {...args} />,
   args: {
     product: {
       ...mockProduct,
@@ -96,7 +95,7 @@ export const WithoutReviews = meta.story({
 })
 
 export const HighRating = meta.story({
-  render: (args) => <QuickViewWrapper {...args} />,
+  render: (args: ComponentProps<typeof ProductQuickView>) => <QuickViewWrapper {...args} />,
   args: {
     product: {
       ...mockProduct,
@@ -107,7 +106,7 @@ export const HighRating = meta.story({
 })
 
 export const ManyColors = meta.story({
-  render: (args) => <QuickViewWrapper {...args} />,
+  render: (args: ComponentProps<typeof ProductQuickView>) => <QuickViewWrapper {...args} />,
   args: {
     product: {
       ...mockProduct,
@@ -124,7 +123,7 @@ export const ManyColors = meta.story({
 })
 
 export const ManySizes = meta.story({
-  render: (args) => <QuickViewWrapper {...args} />,
+  render: (args: ComponentProps<typeof ProductQuickView>) => <QuickViewWrapper {...args} />,
   args: {
     product: {
       ...mockProduct,
@@ -145,7 +144,7 @@ export const ManySizes = meta.story({
 })
 
 export const WithSizeGuide = meta.story({
-  render: (args) => <QuickViewWrapper {...args} />,
+  render: (args: ComponentProps<typeof ProductQuickView>) => <QuickViewWrapper {...args} />,
   args: {
     product: mockProduct,
     sizeGuideHref: '#size-guide',
@@ -153,13 +152,13 @@ export const WithSizeGuide = meta.story({
 })
 
 export const WithCallbacks = meta.story({
-  render: (args) => <QuickViewWrapper {...args} />,
+  render: (args: ComponentProps<typeof ProductQuickView>) => <QuickViewWrapper {...args} />,
   args: {
     product: mockProduct,
-    onColorChange: (colorId) => {
+    onColorChange: (colorId: string | number) => {
       console.log('Color changed:', colorId)
     },
-    onSizeChange: (sizeId) => {
+    onSizeChange: (sizeId: string | number) => {
       console.log('Size changed:', sizeId)
     },
     onAddToCart: async () => {
@@ -170,7 +169,7 @@ export const WithCallbacks = meta.story({
 })
 
 export const MinimalProduct = meta.story({
-  render: (args) => <QuickViewWrapper {...args} />,
+  render: (args: ComponentProps<typeof ProductQuickView>) => <QuickViewWrapper {...args} />,
   args: {
     product: {
       name: 'Simple Product',
@@ -189,7 +188,7 @@ export const MinimalProduct = meta.story({
 })
 
 export const LongProductName = meta.story({
-  render: (args) => <QuickViewWrapper {...args} />,
+  render: (args: ComponentProps<typeof ProductQuickView>) => <QuickViewWrapper {...args} />,
   args: {
     product: {
       ...mockProduct,

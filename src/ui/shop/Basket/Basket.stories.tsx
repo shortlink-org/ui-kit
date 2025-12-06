@@ -1,6 +1,5 @@
 import preview from '#.storybook/preview'
-import type { ComponentProps } from 'react'
-import { useState } from 'react'
+import { useState, type ComponentProps } from 'react'
 import { Basket } from './Basket'
 import type { BasketProps } from './Basket'
 import { Button } from '../../Button/Button'
@@ -85,7 +84,7 @@ function BasketWrapper(args: Omit<BasketProps, 'open' | 'onClose'>) {
 }
 
 export const Default = meta.story({
-  render: (args) => <BasketWrapper {...args} />,
+  render: (args: ComponentProps<typeof Basket>) => <BasketWrapper {...args} />,
   args: {
     items: mockItems,
     subtotal: '$262.00',
@@ -93,7 +92,7 @@ export const Default = meta.story({
 })
 
 export const Empty = meta.story({
-  render: (args) => <BasketWrapper {...args} />,
+  render: (args: ComponentProps<typeof Basket>) => <BasketWrapper {...args} />,
   args: {
     items: [],
     subtotal: '$0.00',

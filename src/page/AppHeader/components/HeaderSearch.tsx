@@ -1,4 +1,3 @@
-import React from 'react'
 import SearchForm from '../../../ui/SearchForm/SearchForm'
 
 interface HeaderSearchProps {
@@ -14,7 +13,7 @@ export function HeaderSearch({ placeholder, onSearch, defaultQuery }: HeaderSear
         <SearchForm
           placeholder={placeholder || 'Search…'}
           onSearch={onSearch}
-          defaultQuery={defaultQuery}
+          defaultValue={defaultQuery}
           className="my-1 bg-white/10 border-white/20 text-white placeholder:text-white/70 [&_input]:text-white [&_input]:placeholder:text-white/70"
         />
       </div>

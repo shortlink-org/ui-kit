@@ -1,4 +1,3 @@
-import React from 'react'
 import { AppHeaderBrand } from './types'
 
 export const defaultBrand: AppHeaderBrand = {

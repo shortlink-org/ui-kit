@@ -1,4 +1,3 @@
-import React from 'react'
 import { DataTable, type DataTableProps } from './DataTable'
 import { ErrorBoundary } from '../ErrorBoundary/ErrorBoundary'
 import type { ErrorBoundaryProps } from '../ErrorBoundary/ErrorBoundary'

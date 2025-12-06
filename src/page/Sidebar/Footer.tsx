@@ -39,7 +39,7 @@ const ProfileLink = () => {
   )
 }
 
-// @ts-ignore
+// @ts-expect-error - Storybook args types
 function Footer({ mode }) {
   return (
     <div className="flex bg-indigo-500 items-center justify-center space-x-2 py-4 px-3 w-full h-16 mt-auto">

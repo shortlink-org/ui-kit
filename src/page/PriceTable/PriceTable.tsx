@@ -1,7 +1,7 @@
 import { OverridableStringUnion } from '@mui/types'
 import Button, { ButtonProps, ButtonPropsVariantOverrides } from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
-import React, { useMemo } from 'react'
+import React from 'react'
 import Balancer from 'react-wrap-balancer'
 import clsx from 'clsx'
 

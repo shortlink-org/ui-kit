@@ -26,6 +26,9 @@ const CollapsibleMenu = ({ mode, icon: Icon, title, children, collapsed, onColla
 
   const [isOpen, setIsOpen] = React.useState(collapsed === undefined ? true : !collapsed)
 
+  // Sync disclosure state with internal state
+  const prevOpenRef = React.useRef(isOpen)
+  
   // Sync with collapsed prop when it changes externally
   React.useEffect(() => {
     if (collapsed !== undefined) {
@@ -33,47 +36,51 @@ const CollapsibleMenu = ({ mode, icon: Icon, title, children, collapsed, onColla
     }
   }, [collapsed])
 
-  const handleToggle = (open: boolean) => {
-    setIsOpen(open)
-    if (onCollapseChange) {
-      onCollapseChange(!open)
-    }
-  }
-
   return (
     <li className="w-full">
-      <Disclosure open={isOpen} onChange={handleToggle}>
-        {({ open }) => (
-          <div>
-            {mode === 'mini' ? (
-              <DisclosureButton
-                className={buttonClassName}
-                aria-label={title}
-                title={title}
-              >
-                <Icon className={iconClassName} />
-              </DisclosureButton>
-            ) : (
-              <DisclosureButton className={buttonClassName}>
-                <Icon className={iconClassName} />
-                <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
-                  {title}
-                </span>
-                {open ? (
-                  <ChevronUpIcon className="size-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
-                ) : (
-                  <ChevronDownIcon className="size-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
-                )}
-              </DisclosureButton>
-            )}
+      <Disclosure defaultOpen={isOpen}>
+        {({ open }) => {
+          // Update state when disclosure changes (only if different)
+          if (open !== prevOpenRef.current) {
+            prevOpenRef.current = open
+            setIsOpen(open)
+            if (onCollapseChange) {
+              onCollapseChange(!open)
+            }
+          }
+          
+          return (
+            <div>
+              {mode === 'mini' ? (
+                <DisclosureButton
+                  className={buttonClassName}
+                  aria-label={title}
+                  title={title}
+                >
+                  <Icon className={iconClassName} />
+                </DisclosureButton>
+              ) : (
+                <DisclosureButton className={buttonClassName}>
+                  <Icon className={iconClassName} />
+                  <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
+                    {title}
+                  </span>
+                  {open ? (
+                    <ChevronUpIcon className="size-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+                  ) : (
+                    <ChevronDownIcon className="size-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+                  )}
+                </DisclosureButton>
+              )}
 
-            <DisclosurePanel>
-              <ul className="py-2 px-4 space-y-2" role="group">
-                {children}
-              </ul>
-            </DisclosurePanel>
-          </div>
-        )}
+              <DisclosurePanel>
+                <ul className="py-2 px-4 space-y-2" role="group">
+                  {children}
+                </ul>
+              </DisclosurePanel>
+            </div>
+          )
+        }}
       </Disclosure>
     </li>
   )

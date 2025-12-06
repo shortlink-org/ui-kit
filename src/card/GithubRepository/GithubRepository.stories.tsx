@@ -48,8 +48,7 @@ Default.parameters = {
   },
 }
 
-// @ts-ignore
-Default.play = async ({ canvasElement }) => {
+Default.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   const canvas = within(canvasElement)
 
   // Check if the link has the correct href attribute

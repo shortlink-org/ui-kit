@@ -15,21 +15,19 @@ export interface TableRowProps<TData> {
 }
 
 export function TableRow<TData>({ 
-  table, 
   row, 
   onRowClick, 
   enableRowSelection, 
   enableExpanding = false,
   enableColumnResizing = false,
   density = 'normal', 
-  index = 0,
   rowClassName
 }: TableRowProps<TData>) {
   const isSelected = row.getIsSelected()
   const isExpanded = row.getIsExpanded()
   const canExpand = enableExpanding && row.getCanExpand()
   const isGrouped = row.getIsGrouped()
-  const isPinned = enableColumnResizing && row.getIsPinned()
+  const isPinned = enableColumnResizing ? row.getIsPinned() : false
 
   const densityClasses = {
     compact: { cell: 'px-2 py-1 text-xs', row: 'h-8', checkbox: 'h-3 w-3' },
@@ -51,10 +49,6 @@ export function TableRow<TData>({
         rowClassName
       )}
       onClick={() => onRowClick?.(row.original)}
-      style={{
-        left: isPinned === 'left' ? `${row.getLeft('left')}px` : undefined,
-        right: isPinned === 'right' ? `${row.getRight('right')}px` : undefined,
-      }}
     >
       {enableRowSelection && (
         <td className={clsx(densityClasses[density].cell, 'w-12')}>
@@ -109,8 +103,8 @@ export function TableRow<TData>({
             )}
             style={{
               width: enableColumnResizing ? cell.column.getSize() : undefined,
-              left: cellIsPinned === 'left' ? `${cell.column.getStart('left')}px` : undefined,
-              right: cellIsPinned === 'right' ? `${cell.column.getStart('right')}px` : undefined,
+              left: cellIsPinned === 'left' ? `${(cell.column as { getStart: (side: 'left' | 'right') => number }).getStart('left')}px` : undefined,
+              right: cellIsPinned === 'right' ? `${(cell.column as { getStart: (side: 'left' | 'right') => number }).getStart('right')}px` : undefined,
             }}
           >
             {isGrouped ? (

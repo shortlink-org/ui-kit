@@ -63,7 +63,6 @@ export function TableHeader<TData>({
             {headerGroup.headers.map((header) => {
               const canSort = header.column.getCanSort()
               const sortDirection = header.column.getIsSorted()
-              const canFilter = header.column.getCanFilter()
               const isGrouped = enableGrouping && header.column.getIsGrouped()
               const canGroup = enableGrouping && header.column.getCanGroup()
               const meta = header.column.columnDef.meta
@@ -88,15 +87,15 @@ export function TableHeader<TData>({
                     width: enableColumnResizing ? header.getSize() : (header.getSize() !== 150 ? header.getSize() : undefined),
                     minWidth: enableColumnResizing ? header.getSize() : undefined,
                     maxWidth: enableColumnResizing ? header.getSize() : undefined,
-                    left: isPinned === 'left' ? `${header.getStart('left')}px` : undefined,
-                    right: isPinned === 'right' ? `${header.getStart('right')}px` : undefined,
+                    left: isPinned === 'left' ? `${(header as { getStart: (side: 'left' | 'right') => number }).getStart('left')}px` : undefined,
+                    right: isPinned === 'right' ? `${(header as { getStart: (side: 'left' | 'right') => number }).getStart('right')}px` : undefined,
                   }}
                   onClick={canSort ? header.column.getToggleSortingHandler() : undefined}
                 >
                   <div className="flex items-center gap-2">
                     {enableExpanding && header.subHeaders.length > 0 && (
                       <button
-                        onClick={header.getToggleGroupingHandler()}
+                        onClick={() => header.column.toggleGrouping()}
                         className="p-0.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
                       >
                         <ChevronRightIcon 

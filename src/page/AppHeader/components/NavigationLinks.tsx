@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { AppHeaderNavigationItem, LinkComponent } from '../types'
 import { classNames, isNavigationItemActive } from '../utils'
 

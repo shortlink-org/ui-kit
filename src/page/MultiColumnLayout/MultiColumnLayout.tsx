@@ -90,12 +90,8 @@ export function MultiColumnLayout({
   const validColumns = columns.filter((col) => col.content !== null && col.content !== undefined)
   const columnCount = validColumns.length
 
-  if (columnCount === 0) {
-    return null
-  }
-
   // Helper to get span value (supports number or ColumnSpan object)
-  const getSpanValue = (span: number | ColumnSpan | undefined, breakpoint: keyof typeof breakpointMap): number => {
+  const getSpanValue = React.useCallback((span: number | ColumnSpan | undefined, breakpoint: keyof typeof breakpointMap): number => {
     if (!span) return 1
     if (typeof span === 'number') return span
     // For responsive spans, get the value for current breakpoint or fallback to smaller breakpoint
@@ -108,7 +104,7 @@ export function MultiColumnLayout({
       }
     }
     return 1
-  }
+  }, [])
 
   // Helper to check if span is responsive object
   const isResponsiveSpan = (span: number | ColumnSpan | undefined): span is ColumnSpan => {
@@ -121,7 +117,7 @@ export function MultiColumnLayout({
   const breakpoint = breakpointMap[stackAt]
   
   // Generate grid template columns for each breakpoint if responsive spans are used
-  const generateGridTemplate = (bp: keyof typeof breakpointMap): string => {
+  const generateGridTemplate = React.useCallback((bp: keyof typeof breakpointMap): string => {
     // Check if any column has explicit span > 1 at this breakpoint
     const hasSpanColumns = validColumns.some(col => {
       const span = getSpanValue(col.span, bp)
@@ -146,10 +142,10 @@ export function MultiColumnLayout({
         })
         .join(' ')
     }
-  }
+  }, [validColumns, getSpanValue])
 
   // Generate CSS for responsive grid template columns
-  const generateResponsiveStyles = (): string => {
+  const generateResponsiveStyles = React.useCallback((): string => {
     if (!hasResponsiveSpans) {
       // Simple case: generate only for stackAt breakpoint
       const gridTemplateColumns = generateGridTemplate(stackAt)
@@ -179,14 +175,14 @@ export function MultiColumnLayout({
     })
 
     return styles.join('\n')
-  }
+  }, [hasResponsiveSpans, stackAt, layoutId, breakpoint, generateGridTemplate])
 
   // Memoize styles to avoid remounting style tags on every render
-  const responsiveStyles = React.useMemo(() => generateResponsiveStyles(), [
-    hasResponsiveSpans,
-    stackAt,
-    validColumns,
-  ])
+  const responsiveStyles = React.useMemo(() => generateResponsiveStyles(), [generateResponsiveStyles])
+
+  if (columnCount === 0) {
+    return null
+  }
 
   return (
     <div className={clsx('w-full h-full', className)} data-testid={dataTestId}>

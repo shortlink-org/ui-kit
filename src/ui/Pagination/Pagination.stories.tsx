@@ -1,7 +1,6 @@
-import React from 'react'
 import { useReactTable, getCoreRowModel, getPaginationRowModel, type ColumnDef } from '@tanstack/react-table'
 import preview from '#.storybook/preview'
-import { Pagination, type PaginationProps } from './Pagination'
+import { Pagination } from './Pagination'
 import { createDataTableColumnHelper } from '../DataTable/columnConverter'
 
 type SampleData = {
@@ -13,11 +12,11 @@ type SampleData = {
 
 const columnHelper = createDataTableColumnHelper<SampleData>()
 
-const columns: ColumnDef<SampleData, any>[] = [
+const columns = [
   columnHelper.accessor('name', { header: 'Name', size: 150 }),
   columnHelper.accessor('email', { header: 'Email', size: 200 }),
   columnHelper.accessor('role', { header: 'Role', size: 150 }),
-]
+] as ColumnDef<SampleData, unknown>[]
 
 const sampleData: SampleData[] = Array.from({ length: 150 }, (_, i) => ({
   id: i + 1,
@@ -37,6 +36,7 @@ function PaginationWrapper({
   pageSizeOptions?: number[]
   mobilePageSizeControl?: boolean
 }) {
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: sampleData,
     columns,
@@ -55,7 +55,7 @@ function PaginationWrapper({
 
 const meta = preview.meta({
   title: 'UI/Pagination',
-  component: Pagination as any,
+  component: Pagination as typeof Pagination,
   tags: ['autodocs'],
   parameters: {
     chromatic: {
@@ -120,19 +120,18 @@ export const WithoutMobileControl = meta.story({
  */
 export const Responsive = meta.story({
   render: () => {
-    const table = createTable(10, 0)
     return (
       <div className="space-y-8 p-8">
         <div>
           <h3 className="text-lg font-semibold mb-4 dark:text-white">Mobile View ({'<'} 768px)</h3>
           <div className="max-w-sm border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-            <Pagination table={table} />
+            <PaginationWrapper pageSize={10} pageIndex={0} />
           </div>
         </div>
         <div>
           <h3 className="text-lg font-semibold mb-4 dark:text-white">Desktop View (≥ 768px)</h3>
           <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-            <Pagination table={table} />
+            <PaginationWrapper pageSize={10} pageIndex={0} />
           </div>
         </div>
       </div>

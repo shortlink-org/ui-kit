@@ -1,6 +1,7 @@
 import React, { ReactNode, useMemo } from 'react'
 
 // Valid Tailwind color classes for gradients
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const VALID_GRADIENT_COLORS = [
   'indigo-500',
   'indigo-600',
@@ -27,6 +28,7 @@ const VALID_GRADIENT_COLORS = [
 ] as const
 
 // Valid Tailwind color classes with opacity for decoration gradients
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const VALID_DECORATION_COLORS = [
   'indigo-500/5',
   'indigo-500/10',

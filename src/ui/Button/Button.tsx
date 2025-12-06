@@ -24,7 +24,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   /** Render as a different element (e.g., 'a' for links) */
   as?: React.ElementType
   /** Props to pass when using 'as' prop */
-  asProps?: Record<string, any>
+  asProps?: Record<string, unknown>
 }
 
 export function Button({
@@ -88,10 +88,10 @@ export function Button({
             className: clsx(
               'flex-shrink-0 leading-none block',
               size === 'sm' ? '!h-3.5 !w-3.5' : size === 'lg' ? '!h-5 !w-5' : '!h-4 !w-4',
-              (icon as any).props?.className,
+              (icon.props as { className?: string })?.className,
             ),
             fontSize: size === 'sm' ? 'small' : size === 'lg' ? 'large' : 'medium',
-          } as any)
+          } as React.HTMLAttributes<HTMLElement>)
         : icon}
     </span>
   )

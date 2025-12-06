@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { RadioGroup, Radio } from '@headlessui/react'
 import { clsx } from 'clsx'
 

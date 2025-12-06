@@ -100,7 +100,8 @@ const preview = definePreview({
 
   decorators: [
     // Theme and provider decorator
-    (Story, context) => {
+    // @ts-expect-error - Storybook decorator types
+    (Story: any, context: any) => {
       const forcedTheme =
         context.globals.theme === 'system' ? undefined : (context.globals.theme as 'light' | 'dark')
 
@@ -121,7 +122,8 @@ const preview = definePreview({
     },
     // Container decorator - only applies when container parameter is true
     // This allows components to opt-in to container wrapping instead of defaulting to it
-    (Story, context) => {
+    // @ts-expect-error - Storybook decorator types
+    (Story: any, context: any) => {
       const shouldUseContainer = 
         context.parameters.container === true ||
         (context.parameters.layout !== 'fullscreen' && 

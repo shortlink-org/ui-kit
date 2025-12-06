@@ -25,10 +25,11 @@ export interface DataTableColumnMeta {
    * Custom filter component
    * @param props - Filter component props
    */
-  filterComponent?: (props: { column: Column<any, any>; density?: 'compact' | 'normal' | 'comfortable' }) => React.ReactNode
+  filterComponent?: <TData, TValue>(props: { column: Column<TData, TValue>; density?: 'compact' | 'normal' | 'comfortable' }) => React.ReactNode
 }
 
 declare module '@tanstack/react-table' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface ColumnMeta<TData, TValue> extends DataTableColumnMeta {}
 }
 

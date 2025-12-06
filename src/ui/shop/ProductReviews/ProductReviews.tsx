@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { clsx } from 'clsx'
 

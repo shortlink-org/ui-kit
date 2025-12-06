@@ -1,14 +1,16 @@
-import { fn, expect, within, userEvent } from 'storybook/test'
+import { expect, within, userEvent } from 'storybook/test'
 import preview from '#.storybook/preview'
+import { type ComponentProps } from 'react'
 import { FlyoutMenu } from './FlyoutMenu'
 import type { FlyoutMenuItem, FlyoutMenuCallToAction } from './FlyoutMenu'
-import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import {
   ArrowPathIcon,
   ChartPieIcon,
   CursorArrowRaysIcon,
   FingerPrintIcon,
   SquaresPlusIcon,
+  PlayCircleIcon,
+  PhoneIcon,
 } from '@heroicons/react/24/outline'
 
 const solutions: FlyoutMenuItem[] = [
@@ -80,7 +82,7 @@ export const Default = meta.story({
     items: solutions,
     callsToAction,
   },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const canvas = within(canvasElement)
     const button = canvas.getByRole('button', { name: /Solutions/i })
     await userEvent.click(button)
@@ -125,12 +127,12 @@ export const DarkBackground = meta.story({
 })
 
 export const Interactive = meta.story({
-  render: (args) => (
+  render: (args: ComponentProps<typeof FlyoutMenu>) => (
     <div className="p-8 bg-gray-900">
       <FlyoutMenu {...args} />
     </div>
   ),
-  play: async ({ canvasElement, args }) => {
+  play: async ({ canvasElement, args }: { canvasElement: HTMLElement; args: ComponentProps<typeof FlyoutMenu> }) => {
     const canvas = within(canvasElement)
     const button = canvas.getByRole('button', { name: args.label })
     await userEvent.click(button)

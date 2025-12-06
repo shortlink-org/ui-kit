@@ -1,6 +1,6 @@
-import { fn, expect, within, userEvent } from 'storybook/test'
+import { expect, within, userEvent } from 'storybook/test'
 import preview from '#.storybook/preview'
-import { useState } from 'react'
+import { useState, type ComponentProps } from 'react'
 import { Drawer } from './Drawer'
 import type { DrawerProps } from './Drawer'
 import { Button } from '../Button/Button'
@@ -49,7 +49,7 @@ function DrawerWrapper(args: Omit<DrawerProps, 'open' | 'onClose'>) {
 }
 
 export const Default = meta.story({
-  render: (args) => <DrawerWrapper {...args} />,
+  render: (args: ComponentProps<typeof Drawer>) => <DrawerWrapper {...args} />,
   args: {
     title: 'Panel title',
     children: (
@@ -60,7 +60,7 @@ export const Default = meta.story({
       </div>
     ),
   },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const canvas = within(canvasElement)
     const button = canvas.getByRole('button', { name: /Open drawer/i })
     await userEvent.click(button)
@@ -69,7 +69,7 @@ export const Default = meta.story({
 })
 
 export const LeftPosition = meta.story({
-  render: (args) => <DrawerWrapper {...args} />,
+  render: (args: ComponentProps<typeof Drawer>) => <DrawerWrapper {...args} />,
   args: {
     title: 'Left Drawer',
     position: 'left',
@@ -82,7 +82,7 @@ export const LeftPosition = meta.story({
 })
 
 export const RightPosition = meta.story({
-  render: (args) => <DrawerWrapper {...args} />,
+  render: (args: ComponentProps<typeof Drawer>) => <DrawerWrapper {...args} />,
   args: {
     title: 'Right Drawer',
     position: 'right',
@@ -95,7 +95,7 @@ export const RightPosition = meta.story({
 })
 
 export const SmallSize = meta.story({
-  render: (args) => <DrawerWrapper {...args} />,
+  render: (args: ComponentProps<typeof Drawer>) => <DrawerWrapper {...args} />,
   args: {
     title: 'Small Drawer',
     size: 'sm',
@@ -108,7 +108,7 @@ export const SmallSize = meta.story({
 })
 
 export const LargeSize = meta.story({
-  render: (args) => <DrawerWrapper {...args} />,
+  render: (args: ComponentProps<typeof Drawer>) => <DrawerWrapper {...args} />,
   args: {
     title: 'Large Drawer',
     size: 'lg',
@@ -121,7 +121,7 @@ export const LargeSize = meta.story({
 })
 
 export const FullSize = meta.story({
-  render: (args) => <DrawerWrapper {...args} />,
+  render: (args: ComponentProps<typeof Drawer>) => <DrawerWrapper {...args} />,
   args: {
     title: 'Full Width Drawer',
     size: 'full',
@@ -134,7 +134,7 @@ export const FullSize = meta.story({
 })
 
 export const WithoutCloseButton = meta.story({
-  render: (args) => <DrawerWrapper {...args} />,
+  render: (args: ComponentProps<typeof Drawer>) => <DrawerWrapper {...args} />,
   args: {
     title: 'No Close Button',
     showCloseButton: false,
@@ -149,7 +149,7 @@ export const WithoutCloseButton = meta.story({
 })
 
 export const WithoutTitle = meta.story({
-  render: (args) => <DrawerWrapper {...args} />,
+  render: (args: ComponentProps<typeof Drawer>) => <DrawerWrapper {...args} />,
   args: {
     children: (
       <div>
@@ -161,7 +161,7 @@ export const WithoutTitle = meta.story({
 })
 
 export const WithRichContent = meta.story({
-  render: (args) => <DrawerWrapper {...args} />,
+  render: (args: ComponentProps<typeof Drawer>) => <DrawerWrapper {...args} />,
   args: {
     title: 'Rich Content Example',
     children: (
@@ -189,7 +189,7 @@ export const WithRichContent = meta.story({
 })
 
 export const LongContent = meta.story({
-  render: (args) => <DrawerWrapper {...args} />,
+  render: (args: ComponentProps<typeof Drawer>) => <DrawerWrapper {...args} />,
   args: {
     title: 'Scrollable Content',
     children: (
@@ -211,7 +211,7 @@ export const DarkMode = meta.story({
   parameters: {
     backgrounds: { default: 'dark' },
   },
-  render: (args) => <DrawerWrapper {...args} />,
+  render: (args: ComponentProps<typeof Drawer>) => <DrawerWrapper {...args} />,
   args: {
     title: 'Dark Mode Drawer',
     children: (

@@ -6,7 +6,6 @@ import PersonIcon from '@mui/icons-material/Person'
 import SettingsIcon from '@mui/icons-material/Settings'
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
 import GroupAddIcon from '@mui/icons-material/GroupAdd'
-import PeopleIcon from '@mui/icons-material/People'
 
 const meta = preview.meta({
   title: 'Page/Sidebar',
@@ -23,7 +22,7 @@ export const Default = meta.story({
     mode: 'full',
   },
 
-  render: (args: any) => {
+  render: (args: Parameters<typeof Sidebar>[0]) => {
     let className = 'h-screen w-96'
 
     if (args.mode === 'mini') {
@@ -104,7 +103,7 @@ export const WithCustomSections = meta.story({
     activePath: '/dashboard',
   },
 
-  render: (args: any) => {
+  render: (args: Parameters<typeof Sidebar>[0]) => {
     return (
       <div className="h-screen w-80">
         <Sidebar {...args} />
@@ -119,7 +118,7 @@ export const WithActivePath = meta.story({
     activePath: '/links',
   },
 
-  render: (args: any) => {
+  render: (args: Parameters<typeof Sidebar>[0]) => {
     return (
       <div className="h-screen w-80">
         <Sidebar {...args} />
@@ -134,7 +133,7 @@ export const Collapsed = meta.story({
     collapsed: true,
   },
 
-  render: (args: any) => {
+  render: (args: Parameters<typeof Sidebar>[0]) => {
     return (
       <div className="h-screen w-14">
         <Sidebar {...args} />
@@ -149,7 +148,7 @@ export const CustomWidth = meta.story({
     width: '16rem',
   },
 
-  render: (args: any) => {
+  render: (args: Parameters<typeof Sidebar>[0]) => {
     return (
       <div className="h-screen" style={{ width: args.width }}>
         <Sidebar {...args} />
@@ -170,7 +169,7 @@ export const WithCustomFooter = meta.story({
     ),
   },
 
-  render: (args: any) => {
+  render: (args: Parameters<typeof Sidebar>[0]) => {
     return (
       <div className="h-screen w-80">
         <Sidebar {...args} />
@@ -185,7 +184,7 @@ export const WithoutFooter = meta.story({
     footerSlot: null,
   },
 
-  render: (args: any) => {
+  render: (args: Parameters<typeof Sidebar>[0]) => {
     return (
       <div className="h-screen w-80">
         <Sidebar {...args} />
@@ -200,7 +199,7 @@ export const StickyVariant = meta.story({
     variant: 'sticky',
   },
 
-  render: (args: any) => {
+  render: (args: Parameters<typeof Sidebar>[0]) => {
     return (
       <div className="h-[200vh]">
         <div className="sticky top-0 w-80">
@@ -226,7 +225,7 @@ export const MiniMode = meta.story({
     mode: 'mini',
   },
 
-  render: (args: any) => {
+  render: (args: Parameters<typeof Sidebar>[0]) => {
     return (
       <div className="h-screen w-14">
         <Sidebar {...args} />

@@ -1,4 +1,4 @@
-import React, { useState, type ComponentProps } from 'react'
+import { useState, type ComponentProps } from 'react'
 import preview from '#.storybook/preview'
 
 import Header from './Header'

@@ -113,7 +113,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   return (
     <nav className={clsx('relative', className)}>
       <Disclosure>
-        {({ open }) => (
+        {() => (
           <>
             <div
               className={clsx(

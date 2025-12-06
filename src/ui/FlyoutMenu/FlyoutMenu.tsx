@@ -118,7 +118,7 @@ export function FlyoutMenu({
       const itemContent = (
         <div className="group relative flex gap-x-6 rounded-lg p-4 hover:bg-white/5">
           <div className="mt-1 flex size-11 flex-none items-center justify-center rounded-lg bg-gray-700/50 group-hover:bg-gray-700">
-            <item.icon aria-hidden="true" className="size-6 text-gray-400 group-hover:text-white" />
+            <item.icon aria-hidden className="size-6 text-gray-400 group-hover:text-white" />
           </div>
           <div>
             {item.href ? (
@@ -168,7 +168,7 @@ export function FlyoutMenu({
       return renderLink(
         item.href,
         <>
-          <item.icon aria-hidden="true" className="size-5 flex-none text-gray-500" />
+          <item.icon aria-hidden className="size-5 flex-none text-gray-500" />
           {item.name}
         </>,
         'flex items-center justify-center gap-x-2.5 p-3 font-semibold text-white hover:bg-gray-700/50'
@@ -180,7 +180,7 @@ export function FlyoutMenu({
         onClick={handleClick}
         className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-white hover:bg-gray-700/50"
       >
-        <item.icon aria-hidden="true" className="size-5 flex-none text-gray-500" />
+        <item.icon aria-hidden className="size-5 flex-none text-gray-500" />
         {item.name}
       </button>
     )
@@ -199,7 +199,7 @@ export function FlyoutMenu({
         )}
       >
         <span>{label}</span>
-        {showChevron && <ChevronIcon aria-hidden="true" className="size-5" />}
+        {showChevron && <ChevronIcon aria-hidden className="size-5" />}
       </PopoverButton>
       <PopoverPanel
         transition

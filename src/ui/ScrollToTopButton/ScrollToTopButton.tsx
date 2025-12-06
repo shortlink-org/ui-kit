@@ -49,7 +49,7 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
   // keep root in sync if the prop changes after mount (e.g. ref.current becomes defined)
   useLayoutEffect(() => {
     if (scrollContainer && scrollContainer !== root) setRoot(scrollContainer)
-  }, [scrollContainer])
+  }, [scrollContainer, root])
 
   const scrollToTop = useCallback(() => {
     if (!root) return
@@ -142,8 +142,9 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
     }
 
     const target = enableGlobalHotkey ? window : (root === window ? window : root as HTMLElement)
-    target.addEventListener('keyup', onKey)
-    return () => target.removeEventListener('keyup', onKey)
+    const handler = onKey as (e: Event) => void
+    target.addEventListener('keyup', handler)
+    return () => target.removeEventListener('keyup', handler)
   }, [root, enableGlobalHotkey, scrollToTop])
 
   const buttonClass = clsx(

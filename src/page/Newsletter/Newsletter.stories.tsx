@@ -41,7 +41,7 @@ export default meta
 
 export const Default = meta.story({
   args: {},
-  play: async ({ canvasElement, args }) => {
+  play: async ({ canvasElement, args }: { canvasElement: HTMLElement; args: { onSubmit?: (email: string) => void | Promise<void> } }) => {
     const canvas = within(canvasElement)
     const emailInput = canvas.getByPlaceholderText('Enter your email')
     const subscribeButton = canvas.getByRole('button', { name: 'Subscribe' })
@@ -88,7 +88,7 @@ export const Loading = meta.story({
 
 export const WithCustomSubmit = meta.story({
   args: {
-    onSubmit: async (email) => {
+    onSubmit: async (email: string) => {
       console.log('Subscribing:', email)
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000))

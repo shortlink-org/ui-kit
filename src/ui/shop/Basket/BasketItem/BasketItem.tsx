@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { clsx } from 'clsx'
 
 export interface BasketItem {
@@ -23,7 +22,7 @@ export interface BasketItemProps {
   className?: string
 }
 
-export function BasketItem({ item, onRemove, onQuantityChange, className }: BasketItemProps) {
+export function BasketItem({ item, onRemove, className }: BasketItemProps) {
   const handleRemove = () => {
     onRemove?.(item.id)
   }

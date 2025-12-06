@@ -61,7 +61,7 @@ describe('useAsyncData', () => {
 
     try {
       await result.current
-    } catch (error) {
+    } catch {
       // Expected to fail
     }
 
