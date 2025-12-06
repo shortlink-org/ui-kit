@@ -28,10 +28,12 @@ export default defineMain({
         : 'development'
 
     // Make sure React (and other libs) see the correct NODE_ENV
-    config.define = {
-      ...(config.define ?? {}),
-      'process.env.NODE_ENV': JSON.stringify(nodeEnv),
+    // IMPORTANT: Preserve all Storybook internal definitions
+    if (!config.define) {
+      config.define = {}
     }
+    // Only set NODE_ENV, don't override Storybook's internal definitions
+    config.define['process.env.NODE_ENV'] = JSON.stringify(nodeEnv)
 
     // Ensure React is properly resolved and deduplicated
     config.resolve = config.resolve ?? {}
@@ -58,6 +60,7 @@ export default defineMain({
         : false
 
     // Optimize chunk splitting for better performance
+    // CRITICAL: Don't split Storybook modules - let Storybook handle its own chunks
     config.build.rollupOptions = config.build.rollupOptions ?? {}
     config.build.rollupOptions.output =
       config.build.rollupOptions.output ?? {}
@@ -70,6 +73,16 @@ export default defineMain({
       if (typeof originalManualChunks === 'function') {
         const result = originalManualChunks(id)
         if (result) return result
+      }
+
+      // CRITICAL: Never split Storybook internal modules
+      // Storybook needs its modules to load correctly in production
+      if (
+        id.includes('@storybook') ||
+        id.includes('storybook/') ||
+        id.includes('.storybook/')
+      ) {
+        return undefined
       }
 
       // Only split node_modules; app code stays as is
