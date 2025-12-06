@@ -11,7 +11,6 @@ export default defineMain({
     '@chromatic-com/storybook',
     '@storybook/addon-a11y',
     '@storybook/addon-docs',
-    '@storybook/addon-viewport',
   ],
   core: {
     builder: '@storybook/builder-vite',
@@ -21,6 +20,22 @@ export default defineMain({
   typescript: {},
   docs: {},
   async viteFinal(config) {
+    // Ensure React runs in development mode for Storybook dev
+    config.define = {
+      ...config.define,
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+    }
+    
+    // Ensure React is properly resolved and deduplicated
+    config.resolve = config.resolve || {}
+    config.resolve.dedupe = config.resolve.dedupe || []
+    if (!config.resolve.dedupe.includes('react')) {
+      config.resolve.dedupe.push('react')
+    }
+    if (!config.resolve.dedupe.includes('react-dom')) {
+      config.resolve.dedupe.push('react-dom')
+    }
+    
     // Optimize chunk splitting for better performance
     config.build = config.build || {}
     config.build.rollupOptions = config.build.rollupOptions || {}
