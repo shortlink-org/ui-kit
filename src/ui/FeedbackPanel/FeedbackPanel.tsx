@@ -58,7 +58,10 @@ const defaultIcons: Record<FeedbackVariant, ReactNode> = {
   ),
 }
 
-const variantStyles: Record<FeedbackVariant, { container: string; title: string; message: string }> = {
+const variantStyles: Record<
+  FeedbackVariant,
+  { container: string; title: string; message: string }
+> = {
   loading: {
     container: 'border-[var(--color-border)]',
     title: 'text-[var(--color-foreground)]',
@@ -108,15 +111,19 @@ export function FeedbackPanel({
         'bg-[var(--color-surface)] rounded-lg border border-[var(--color-border)] shadow-sm',
         styles.container,
         sizeClasses[size],
-        className
+        className,
       )}
     >
       <div className="flex items-center gap-2">
         {displayIcon}
-        <h3 className={clsx('text-lg font-semibold', styles.title)}>{titleMap[variant]}</h3>
+        <h3 className={clsx('text-lg font-semibold', styles.title)}>
+          {titleMap[variant]}
+        </h3>
       </div>
       {message && (
-        <p className={clsx('text-sm text-center max-w-md', styles.message)}>{message}</p>
+        <p className={clsx('text-sm text-center max-w-md', styles.message)}>
+          {message}
+        </p>
       )}
       {children}
       {action && <div className="mt-2">{action}</div>}
@@ -125,4 +132,3 @@ export function FeedbackPanel({
 }
 
 export default FeedbackPanel
-

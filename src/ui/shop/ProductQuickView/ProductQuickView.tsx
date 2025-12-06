@@ -67,7 +67,11 @@ export function ProductQuickView({
   className,
 }: ProductQuickViewProps) {
   return (
-    <Dialog open={open} onClose={onClose} className={clsx('relative z-10', className)}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      className={clsx('relative z-10', className)}
+    >
       <DialogBackdrop
         transition
         className="fixed inset-0 hidden bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in md:block dark:bg-gray-900/75"
@@ -101,24 +105,34 @@ export function ProductQuickView({
                     {product.name}
                   </h2>
 
-                  <section aria-labelledby="information-heading" className="mt-2">
-                    <h3 id="information-heading" className="sr-only">Product information</h3>
-                    <p className="text-2xl text-gray-900 dark:text-white">{product.price}</p>
+                  <section
+                    aria-labelledby="information-heading"
+                    className="mt-2"
+                  >
+                    <h3 id="information-heading" className="sr-only">
+                      Product information
+                    </h3>
+                    <p className="text-2xl text-gray-900 dark:text-white">
+                      {product.price}
+                    </p>
 
                     {/* Reviews */}
-                    {product.rating !== undefined && product.reviewCount !== undefined && (
-                      <div className="mt-6">
-                        <ProductReviews
-                          average={product.rating}
-                          totalCount={product.reviewCount}
-                          href={product.reviewsHref}
-                        />
-                      </div>
-                    )}
+                    {product.rating !== undefined &&
+                      product.reviewCount !== undefined && (
+                        <div className="mt-6">
+                          <ProductReviews
+                            average={product.rating}
+                            totalCount={product.reviewCount}
+                            href={product.reviewsHref}
+                          />
+                        </div>
+                      )}
                   </section>
 
                   <section aria-labelledby="options-heading" className="mt-10">
-                    <h3 id="options-heading" className="sr-only">Product options</h3>
+                    <h3 id="options-heading" className="sr-only">
+                      Product options
+                    </h3>
                     <form>
                       {/* Colors */}
                       <ProductColorSelector
@@ -152,4 +166,3 @@ export function ProductQuickView({
 }
 
 export default ProductQuickView
-

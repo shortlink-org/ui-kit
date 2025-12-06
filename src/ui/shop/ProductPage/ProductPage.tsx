@@ -115,7 +115,9 @@ export function ProductPage({
           {/* Options */}
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h2 className="sr-only">Product information</h2>
-            <p className="text-3xl tracking-tight text-[var(--color-foreground)]">{price}</p>
+            <p className="text-3xl tracking-tight text-[var(--color-foreground)]">
+              {price}
+            </p>
 
             {reviews && (
               <ProductReviews
@@ -161,4 +163,3 @@ export function ProductPage({
 }
 
 export default ProductPage
-

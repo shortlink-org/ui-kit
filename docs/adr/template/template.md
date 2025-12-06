@@ -17,4 +17,3 @@ Date: {DATE}
 ## Consequences
 
 {What becomes easier or more difficult to do and any risks introduced by this change.}
-

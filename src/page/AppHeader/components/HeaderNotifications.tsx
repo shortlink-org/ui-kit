@@ -5,11 +5,16 @@ interface HeaderNotificationsProps {
   notifications: AppHeaderNotification
 }
 
-export function HeaderNotifications({ notifications }: HeaderNotificationsProps) {
+export function HeaderNotifications({
+  notifications,
+}: HeaderNotificationsProps) {
   if (notifications.render) {
     return (
       <div className="relative">
-        {notifications.render({ count: notifications.count, items: notifications.items })}
+        {notifications.render({
+          count: notifications.count,
+          items: notifications.items,
+        })}
       </div>
     )
   }
@@ -30,4 +35,3 @@ export function HeaderNotifications({ notifications }: HeaderNotificationsProps)
     </div>
   )
 }
-

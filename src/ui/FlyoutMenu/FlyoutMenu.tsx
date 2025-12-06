@@ -49,7 +49,10 @@ export interface FlyoutMenuProps {
   /** Whether to show the chevron icon */
   showChevron?: boolean
   /** Custom chevron icon component */
-  chevronIcon?: React.ComponentType<{ className?: string; 'aria-hidden'?: boolean }>
+  chevronIcon?: React.ComponentType<{
+    className?: string
+    'aria-hidden'?: boolean
+  }>
   /** Custom Link component (e.g., Next.js Link) */
   LinkComponent?: React.ComponentType<{
     href: string
@@ -89,7 +92,11 @@ export function FlyoutMenu({
     return []
   }, [sectionsProp, legacyItems])
 
-  const renderLink = (href: string, children: React.ReactNode, className?: string) => {
+  const renderLink = (
+    href: string,
+    children: React.ReactNode,
+    className?: string,
+  ) => {
     if (LinkComponent) {
       return (
         <LinkComponent href={href} className={className}>
@@ -118,7 +125,10 @@ export function FlyoutMenu({
       const itemContent = (
         <div className="group relative flex gap-x-6 rounded-lg p-4 hover:bg-white/5">
           <div className="mt-1 flex size-11 flex-none items-center justify-center rounded-lg bg-gray-700/50 group-hover:bg-gray-700">
-            <item.icon aria-hidden className="size-6 text-gray-400 group-hover:text-white" />
+            <item.icon
+              aria-hidden
+              className="size-6 text-gray-400 group-hover:text-white"
+            />
           </div>
           <div>
             {item.href ? (
@@ -128,7 +138,7 @@ export function FlyoutMenu({
                   <span className="font-semibold text-white">{item.name}</span>
                   <span className="absolute inset-0" />
                 </>,
-                'block'
+                'block',
               )
             ) : (
               <button
@@ -150,11 +160,7 @@ export function FlyoutMenu({
       return itemContent
     }
 
-    return (
-      <React.Fragment key={key}>
-        {defaultRender()}
-      </React.Fragment>
-    )
+    return <React.Fragment key={key}>{defaultRender()}</React.Fragment>
   }
 
   const renderCallToAction = (item: FlyoutMenuCallToAction) => {
@@ -171,7 +177,7 @@ export function FlyoutMenu({
           <item.icon aria-hidden className="size-5 flex-none text-gray-500" />
           {item.name}
         </>,
-        'flex items-center justify-center gap-x-2.5 p-3 font-semibold text-white hover:bg-gray-700/50'
+        'flex items-center justify-center gap-x-2.5 p-3 font-semibold text-white hover:bg-gray-700/50',
       )
     }
 
@@ -218,7 +224,10 @@ export function FlyoutMenu({
                   </h3>
                 )}
                 {section.items.map((item, itemIndex) =>
-                  renderMenuItem(item, item.id || `${sectionIndex}-${itemIndex}`)
+                  renderMenuItem(
+                    item,
+                    item.id || `${sectionIndex}-${itemIndex}`,
+                  ),
                 )}
               </React.Fragment>
             ))}
@@ -239,4 +248,3 @@ export function FlyoutMenu({
 }
 
 export default FlyoutMenu
-

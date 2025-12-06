@@ -33,7 +33,18 @@ const meta: Meta<typeof FeatureCard> = {
     linkColor: {
       description: 'Link text color',
       control: 'select',
-      options: ['indigo', 'purple', 'blue', 'green', 'red', 'yellow', 'pink', 'teal', 'cyan', 'orange'],
+      options: [
+        'indigo',
+        'purple',
+        'blue',
+        'green',
+        'red',
+        'yellow',
+        'pink',
+        'teal',
+        'cyan',
+        'orange',
+      ],
     },
   },
 }
@@ -42,7 +53,12 @@ export default meta
 type Story = StoryObj<typeof FeatureCard>
 
 const LinkIcon = (
-  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-8 h-8 text-white"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -53,7 +69,12 @@ const LinkIcon = (
 )
 
 const ChartIcon = (
-  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-8 h-8 text-white"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -64,7 +85,12 @@ const ChartIcon = (
 )
 
 const SyncIcon = (
-  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg
+    className="w-8 h-8 text-white"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -135,6 +161,3 @@ export const DarkMode: Story = {
     onLinkClick: () => alert('Link clicked!'),
   },
 }
-
-
-

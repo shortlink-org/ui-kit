@@ -48,7 +48,9 @@ type Story = StoryObj<typeof MultiColumnLayout>
 
 const SampleMiddleContent = () => (
   <div className="p-6">
-    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Main Content</h2>
+    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+      Main Content
+    </h2>
     <div className="space-y-4">
       {[1, 2, 3, 4].map((item) => (
         <div
@@ -59,8 +61,8 @@ const SampleMiddleContent = () => (
             Content Item {item}
           </h3>
           <p className="text-gray-600 dark:text-gray-400">
-            This is the main content area. You can place any content here, such as articles, lists,
-            or interactive elements.
+            This is the main content area. You can place any content here, such
+            as articles, lists, or interactive elements.
           </p>
         </div>
       ))}
@@ -70,16 +72,22 @@ const SampleMiddleContent = () => (
 
 const SampleRightContent = () => (
   <div className="p-6">
-    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Right Column</h2>
+    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+      Right Column
+    </h2>
     <div className="space-y-4">
       <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Sidebar Item 1</h3>
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+          Sidebar Item 1
+        </h3>
         <p className="text-sm text-gray-600 dark:text-gray-400">
           Additional information or actions can be placed here.
         </p>
       </div>
       <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Sidebar Item 2</h3>
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+          Sidebar Item 2
+        </h3>
         <p className="text-sm text-gray-600 dark:text-gray-400">
           This column is perfect for secondary content or widgets.
         </p>
@@ -87,7 +95,6 @@ const SampleRightContent = () => (
     </div>
   </div>
 )
-
 
 // Secondary menu items example (like in CodePen)
 const secondaryMenuItems = [
@@ -112,7 +119,8 @@ const getDefaultColumns = (): ColumnConfig[] => [
   },
   {
     content: <SampleRightContent />,
-    className: 'bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700',
+    className:
+      'bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700',
     span: 1,
   },
 ]
@@ -126,24 +134,52 @@ const UserProfileContent = () => (
           MC
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Mert Cukuren</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Sales Department</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Mert Cukuren
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Sales Department
+          </p>
         </div>
       </div>
       <div className="flex items-center gap-6">
         <div>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Account balance</p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">$2,794.00</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+            Account balance
+          </p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">
+            $2,794.00
+          </p>
         </div>
       </div>
     </div>
 
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Recent Activities</h2>
+      <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+        Recent Activities
+      </h2>
       {[
-        { type: 'Card', where: 'PayPal', description: 'Subscription renewal', amount: '- $120.00', date: '24.12.2020 11:16 AM' },
-        { type: 'Card', where: 'Microsoft', description: 'Subscription renewal', amount: '- $9.99', date: '24.12.2020 07:16 AM' },
-        { type: 'Income', where: 'Client', description: 'Invoice payment', amount: '+ $1,200.00', date: '23.12.2020 14:30 PM' },
+        {
+          type: 'Card',
+          where: 'PayPal',
+          description: 'Subscription renewal',
+          amount: '- $120.00',
+          date: '24.12.2020 11:16 AM',
+        },
+        {
+          type: 'Card',
+          where: 'Microsoft',
+          description: 'Subscription renewal',
+          amount: '- $9.99',
+          date: '24.12.2020 07:16 AM',
+        },
+        {
+          type: 'Income',
+          where: 'Client',
+          description: 'Invoice payment',
+          amount: '+ $1,200.00',
+          date: '23.12.2020 14:30 PM',
+        },
       ].map((activity, index) => (
         <div
           key={index}
@@ -154,14 +190,22 @@ const UserProfileContent = () => (
               <span className="px-2 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded">
                 {activity.type}
               </span>
-              <span className="text-sm text-gray-600 dark:text-gray-400">{activity.where}</span>
+              <span className="text-sm text-gray-600 dark:text-gray-400">
+                {activity.where}
+              </span>
             </div>
-            <span className={`text-sm font-semibold ${activity.amount.startsWith('+') ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+            <span
+              className={`text-sm font-semibold ${activity.amount.startsWith('+') ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
+            >
               {activity.amount}
             </span>
           </div>
-          <p className="text-sm text-gray-900 dark:text-white mb-1">{activity.description}</p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{activity.date}</p>
+          <p className="text-sm text-gray-900 dark:text-white mb-1">
+            {activity.description}
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            {activity.date}
+          </p>
         </div>
       ))}
     </div>
@@ -235,8 +279,12 @@ export const FourColumns: Story = {
       {
         content: (
           <div className="p-4 bg-blue-50 dark:bg-blue-900/20">
-            <h3 className="font-semibold text-blue-900 dark:text-blue-100">Column 1</h3>
-            <p className="text-sm text-blue-700 dark:text-blue-300">Narrow sidebar</p>
+            <h3 className="font-semibold text-blue-900 dark:text-blue-100">
+              Column 1
+            </h3>
+            <p className="text-sm text-blue-700 dark:text-blue-300">
+              Narrow sidebar
+            </p>
           </div>
         ),
         className: 'border-r border-gray-200 dark:border-gray-700',
@@ -245,8 +293,12 @@ export const FourColumns: Story = {
       {
         content: (
           <div className="p-4 bg-green-50 dark:bg-green-900/20">
-            <h3 className="font-semibold text-green-900 dark:text-green-100">Column 2</h3>
-            <p className="text-sm text-green-700 dark:text-green-300">Secondary menu</p>
+            <h3 className="font-semibold text-green-900 dark:text-green-100">
+              Column 2
+            </h3>
+            <p className="text-sm text-green-700 dark:text-green-300">
+              Secondary menu
+            </p>
           </div>
         ),
         className: 'border-r border-gray-200 dark:border-gray-700',
@@ -259,7 +311,8 @@ export const FourColumns: Story = {
       },
       {
         content: <SampleRightContent />,
-        className: 'bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700',
+        className:
+          'bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700',
         span: 1,
       },
     ],
@@ -317,7 +370,8 @@ export const WithStickySidebar: Story = {
       },
       {
         content: <SampleRightContent />,
-        className: 'bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700',
+        className:
+          'bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700',
       },
     ],
     gap: 'md',
@@ -382,8 +436,12 @@ const InteractiveExample = () => {
       ],
       content: (
         <div className="p-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Add Link</h1>
-          <p className="text-gray-600 dark:text-gray-400">Add new links and manage URL settings.</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Add Link
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Add new links and manage URL settings.
+          </p>
         </div>
       ),
     },
@@ -408,8 +466,12 @@ const InteractiveExample = () => {
       ],
       content: (
         <div className="p-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Profile Settings</h1>
-          <p className="text-gray-600 dark:text-gray-400">Manage your profile and account settings.</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Profile Settings
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Manage your profile and account settings.
+          </p>
         </div>
       ),
     },
@@ -423,8 +485,12 @@ const InteractiveExample = () => {
       ],
       content: (
         <div className="p-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">User Management</h1>
-          <p className="text-gray-600 dark:text-gray-400">Manage users and their permissions.</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            User Management
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Manage users and their permissions.
+          </p>
         </div>
       ),
     },
@@ -437,8 +503,12 @@ const InteractiveExample = () => {
       ],
       content: (
         <div className="p-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Link Administration</h1>
-          <p className="text-gray-600 dark:text-gray-400">Admin tools for link management.</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Link Administration
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Admin tools for link management.
+          </p>
         </div>
       ),
     },
@@ -451,8 +521,12 @@ const InteractiveExample = () => {
       ],
       content: (
         <div className="p-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Group Management</h1>
-          <p className="text-gray-600 dark:text-gray-400">Manage user groups and memberships.</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Group Management
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Manage user groups and memberships.
+          </p>
         </div>
       ),
     },
@@ -488,7 +562,10 @@ const InteractiveExample = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true)
 
   // Create custom Sidebar wrapper function that returns JSX (not a component)
-  const createCustomSidebar = (activePath: string, setActivePath: (path: string) => void) => {
+  const createCustomSidebar = (
+    activePath: string,
+    setActivePath: (path: string) => void,
+  ) => {
     const handleLinkClick = (e: React.MouseEvent) => {
       const link = (e.target as HTMLElement).closest('a')
       if (link?.href) {
@@ -503,7 +580,10 @@ const InteractiveExample = () => {
     }
 
     return (
-      <div onClick={handleLinkClick} className="w-full max-w-full lg:max-w-xs h-full">
+      <div
+        onClick={handleLinkClick}
+        className="w-full max-w-full lg:max-w-xs h-full"
+      >
         <Sidebar mode="full" activePath={activePath} />
       </div>
     )
@@ -582,7 +662,8 @@ const InteractiveExample = () => {
         }}
         showProfile={true}
         profile={{
-          avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=64&h=64&fit=crop',
+          avatar:
+            'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=64&h=64&fit=crop',
           name: 'Mert Cukuren',
           email: 'mert@example.com',
           menuItems: [

@@ -1,5 +1,11 @@
 import * as React from 'react'
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, TransitionChild } from '@headlessui/react'
+import {
+  Dialog,
+  DialogBackdrop,
+  DialogPanel,
+  DialogTitle,
+  TransitionChild,
+} from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
 
@@ -30,7 +36,10 @@ export interface DrawerProps {
   /** Custom className for the content area */
   contentClassName?: string
   /** Custom close button icon */
-  closeIcon?: React.ComponentType<{ className?: string; 'aria-hidden'?: boolean }>
+  closeIcon?: React.ComponentType<{
+    className?: string
+    'aria-hidden'?: boolean
+  }>
 }
 
 const sizeClasses: Record<DrawerSize, string> = {
@@ -116,12 +125,24 @@ export function Drawer({
               <div className="relative flex h-full flex-col overflow-y-auto bg-white py-6 shadow-xl dark:bg-gray-900">
                 {title && (
                   <div className="px-4 sm:px-6">
-                    <DialogTitle className={clsx('text-base font-semibold text-gray-900 dark:text-white', titleClassName)}>
+                    <DialogTitle
+                      className={clsx(
+                        'text-base font-semibold text-gray-900 dark:text-white',
+                        titleClassName,
+                      )}
+                    >
                       {title}
                     </DialogTitle>
                   </div>
                 )}
-                <div className={clsx('relative mt-6 flex-1 px-4 sm:px-6', contentClassName)}>{children}</div>
+                <div
+                  className={clsx(
+                    'relative mt-6 flex-1 px-4 sm:px-6',
+                    contentClassName,
+                  )}
+                >
+                  {children}
+                </div>
               </div>
             </DialogPanel>
           </div>
@@ -132,4 +153,3 @@ export function Drawer({
 }
 
 export default Drawer
-

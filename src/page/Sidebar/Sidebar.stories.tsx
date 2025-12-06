@@ -206,7 +206,9 @@ export const StickyVariant = meta.story({
           <Sidebar {...args} />
         </div>
         <div className="p-8">
-          <p className="mb-4">Scroll down to see the sticky sidebar behavior.</p>
+          <p className="mb-4">
+            Scroll down to see the sticky sidebar behavior.
+          </p>
           <div className="space-y-4">
             {Array.from({ length: 20 }, (_, i) => (
               <div key={i} className="p-4 bg-gray-100 dark:bg-gray-800 rounded">

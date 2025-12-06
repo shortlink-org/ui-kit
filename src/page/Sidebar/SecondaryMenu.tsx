@@ -1,5 +1,10 @@
 import * as React from 'react'
-import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/react'
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOptions,
+  ListboxOption,
+} from '@headlessui/react'
 import { ChevronDownIcon, CheckIcon } from '@heroicons/react/24/outline'
 import ActiveLink from './ActiveLink'
 import { clsx } from 'clsx'
@@ -114,7 +119,9 @@ export function SecondaryMenu({
     const defaultRender = () => {
       const itemClassName = clsx(
         'flex items-center justify-between px-3 py-2 text-sm rounded-md transition-colors duration-150 group',
-        isActive ? activeClassName : clsx(inactiveClassName, 'hover:bg-gray-100 dark:hover:bg-gray-800'),
+        isActive
+          ? activeClassName
+          : clsx(inactiveClassName, 'hover:bg-gray-100 dark:hover:bg-gray-800'),
       )
 
       const linkProps = {
@@ -148,11 +155,7 @@ export function SecondaryMenu({
         )
       }
 
-      return (
-        <ActiveLink {...linkProps}>
-          {linkContent}
-        </ActiveLink>
-      )
+      return <ActiveLink {...linkProps}>{linkContent}</ActiveLink>
     }
 
     if (renderItem) {
@@ -168,9 +171,14 @@ export function SecondaryMenu({
       <div className={clsx('relative', className)}>
         <Listbox value={activeItem?.url} onChange={() => {}}>
           <ListboxButton className="relative w-full cursor-pointer rounded-md bg-white dark:bg-gray-800 py-2 pl-3 pr-10 text-left text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm">
-            <span className="block truncate">{activeItem?.name || normalizedSections[0]?.title || 'Select...'}</span>
+            <span className="block truncate">
+              {activeItem?.name || normalizedSections[0]?.title || 'Select...'}
+            </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-              <ChevronDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+              <ChevronDownIcon
+                className="h-5 w-5 text-gray-400"
+                aria-hidden="true"
+              />
             </span>
           </ListboxButton>
           <ListboxOptions
@@ -187,12 +195,17 @@ export function SecondaryMenu({
                     'relative cursor-pointer select-none py-2 pl-3 pr-9',
                     isActive
                       ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-900 dark:text-indigo-100'
-                      : 'text-gray-900 dark:text-gray-100 data-focus:bg-gray-100 dark:data-focus:bg-gray-700'
+                      : 'text-gray-900 dark:text-gray-100 data-focus:bg-gray-100 dark:data-focus:bg-gray-700',
                   )}
                 >
                   {({ selected }) => (
                     <>
-                      <span className={clsx('block truncate', selected ? 'font-medium' : 'font-normal')}>
+                      <span
+                        className={clsx(
+                          'block truncate',
+                          selected ? 'font-medium' : 'font-normal',
+                        )}
+                      >
                         {item.name}
                       </span>
                       {selected && (
@@ -232,7 +245,12 @@ export function SecondaryMenu({
                 </h2>
               </div>
             )}
-            <ul className={clsx('px-2 py-4 space-y-1', sectionIndex > 0 && 'mt-2')}>
+            <ul
+              className={clsx(
+                'px-2 py-4 space-y-1',
+                sectionIndex > 0 && 'mt-2',
+              )}
+            >
               {section.items.map((item) => (
                 <li key={item.url} className="w-full">
                   {renderMenuItem(item)}

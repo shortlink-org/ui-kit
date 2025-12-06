@@ -66,20 +66,23 @@ export const WithAuthenticatedUser = meta.story({
           title: 'Sara Salah',
           message: 'replied on the Upload Image article',
           time: '2 minutes ago',
-          avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=64&h=64&fit=crop',
+          avatar:
+            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=64&h=64&fit=crop',
         },
         {
           id: '2',
           title: 'Slick Net',
           message: 'started following you',
           time: '45 minutes ago',
-          avatar: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=64&h=64&fit=crop',
+          avatar:
+            'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=64&h=64&fit=crop',
         },
       ],
       seeAllHref: '/notifications',
     },
     profile: {
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=64&h=64&fit=crop',
+      avatar:
+        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=64&h=64&fit=crop',
       name: 'John Doe',
       email: 'john@example.com',
       menuItems: [
@@ -176,7 +179,8 @@ export const WithNavigation = meta.story({
       count: 3,
     },
     profile: {
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=64&h=64&fit=crop',
+      avatar:
+        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=64&h=64&fit=crop',
       name: 'John Doe',
       email: 'john@example.com',
       menuItems: [
@@ -201,7 +205,8 @@ export const MobileView = meta.story({
     showNotifications: true,
     showProfile: true,
     profile: {
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=64&h=64&fit=crop',
+      avatar:
+        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=64&h=64&fit=crop',
       menuItems: [
         { name: 'Your Profile', href: '/profile' },
         { name: 'Settings', href: '/settings' },
@@ -215,4 +220,3 @@ export const MobileView = meta.story({
     },
   },
 })
-

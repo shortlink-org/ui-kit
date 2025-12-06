@@ -9,7 +9,11 @@ interface MobileMenuPanelProps {
   LinkComponent?: LinkComponent
 }
 
-export function MobileMenuPanel({ items, currentPath, LinkComponent }: MobileMenuPanelProps) {
+export function MobileMenuPanel({
+  items,
+  currentPath,
+  LinkComponent,
+}: MobileMenuPanelProps) {
   if (items.length === 0) {
     return null
   }
@@ -18,18 +22,30 @@ export function MobileMenuPanel({ items, currentPath, LinkComponent }: MobileMen
     item: AppHeaderNavigationItem,
     children: React.ReactNode,
     linkClassName: string,
-    ariaCurrent?: 'page'
+    ariaCurrent?: 'page',
   ) => {
     if (LinkComponent) {
       return (
-        <DisclosureButton as={LinkComponent} key={item.name} href={item.href} className={linkClassName} aria-current={ariaCurrent}>
+        <DisclosureButton
+          as={LinkComponent}
+          key={item.name}
+          href={item.href}
+          className={linkClassName}
+          aria-current={ariaCurrent}
+        >
           {children}
         </DisclosureButton>
       )
     }
 
     return (
-      <DisclosureButton as="a" key={item.name} href={item.href} aria-current={ariaCurrent} className={linkClassName}>
+      <DisclosureButton
+        as="a"
+        key={item.name}
+        href={item.href}
+        aria-current={ariaCurrent}
+        className={linkClassName}
+      >
         {children}
       </DisclosureButton>
     )
@@ -41,13 +57,19 @@ export function MobileMenuPanel({ items, currentPath, LinkComponent }: MobileMen
         {items.map((item) => {
           const isActive = isNavigationItemActive(item, currentPath)
           const linkClassName = classNames(
-            isActive ? 'bg-white/10 text-white' : 'text-white/70 hover:bg-white/5 hover:text-white',
-            'block rounded-md px-3 py-2 text-base font-medium'
+            isActive
+              ? 'bg-white/10 text-white'
+              : 'text-white/70 hover:bg-white/5 hover:text-white',
+            'block rounded-md px-3 py-2 text-base font-medium',
           )
-          return renderLink(item, item.name, linkClassName, isActive ? 'page' : undefined)
+          return renderLink(
+            item,
+            item.name,
+            linkClassName,
+            isActive ? 'page' : undefined,
+          )
         })}
       </div>
     </DisclosurePanel>
   )
 }
-

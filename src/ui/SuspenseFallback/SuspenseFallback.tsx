@@ -28,4 +28,3 @@ export const SuspenseFallback: React.FC<SuspenseFallbackProps> = ({
 }
 
 export default SuspenseFallback
-

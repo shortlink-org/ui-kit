@@ -134,7 +134,10 @@ const SearchForm: React.FC<SearchFormProps> = ({
       </label>
       <div className="flex flex-1 items-center gap-2">
         <MagnifyingGlassIcon
-          className={clsx('h-5 w-5 text-gray-400 dark:text-gray-500', loading && 'animate-spin')}
+          className={clsx(
+            'h-5 w-5 text-gray-400 dark:text-gray-500',
+            loading && 'animate-spin',
+          )}
           aria-hidden="true"
         />
         <input

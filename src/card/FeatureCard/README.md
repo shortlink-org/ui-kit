@@ -27,7 +27,12 @@ import { FeatureCard } from '@shortlink-org/ui-kit'
 
 function App() {
   const LinkIcon = (
-    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg
+      className="w-8 h-8 text-white"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -107,16 +112,16 @@ function Features() {
 
 ## Props
 
-| Prop                 | Type       | Default                                      | Description                        |
-| -------------------- | ---------- | -------------------------------------------- | ---------------------------------- |
-| `icon`               | `ReactNode`| **Required**                                 | Icon element (SVG or component)    |
-| `title`              | `string`   | **Required**                                 | Card title                         |
-| `description`        | `string`   | **Required**                                 | Card description                   |
-| `linkText`           | `string`   | `'Learn more'`                               | Optional link text                 |
-| `onLinkClick`        | `() => void` | `undefined`                                | Optional link click handler        |
-| `iconGradient`       | `{ from: string, to: string }` | `{ from: 'indigo-500', to: 'purple-600' }` | Icon background gradient colors    |
+| Prop                 | Type                           | Default                                        | Description                        |
+| -------------------- | ------------------------------ | ---------------------------------------------- | ---------------------------------- |
+| `icon`               | `ReactNode`                    | **Required**                                   | Icon element (SVG or component)    |
+| `title`              | `string`                       | **Required**                                   | Card title                         |
+| `description`        | `string`                       | **Required**                                   | Card description                   |
+| `linkText`           | `string`                       | `'Learn more'`                                 | Optional link text                 |
+| `onLinkClick`        | `() => void`                   | `undefined`                                    | Optional link click handler        |
+| `iconGradient`       | `{ from: string, to: string }` | `{ from: 'indigo-500', to: 'purple-600' }`     | Icon background gradient colors    |
 | `decorationGradient` | `{ from: string, to: string }` | `{ from: 'indigo-500/5', to: 'purple-500/5' }` | Background decoration gradient     |
-| `linkColor`          | `string`   | `'indigo-600 dark:text-indigo-400'`          | Link text color (Tailwind classes) |
+| `linkColor`          | `string`                       | `'indigo-600 dark:text-indigo-400'`            | Link text color (Tailwind classes) |
 
 ## Styling
 
@@ -165,6 +170,3 @@ pnpm storybook
 ## License
 
 MIT
-
-
-

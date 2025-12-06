@@ -26,7 +26,10 @@ export function Breadcrumbs({
   className,
 }: BreadcrumbsProps) {
   return (
-    <nav aria-label="Breadcrumb" className={clsx('bg-gray-200 dark:bg-gray-800', className)}>
+    <nav
+      aria-label="Breadcrumb"
+      className={clsx('bg-gray-200 dark:bg-gray-800', className)}
+    >
       <div className="container flex items-center px-6 py-4 mx-auto overflow-x-auto whitespace-nowrap">
         {showHome && (
           <>
@@ -70,10 +73,13 @@ export function Breadcrumbs({
                 'flex items-center text-gray-600 -px-2 dark:text-gray-200 transition-all duration-200',
                 'hover:text-gray-900 dark:hover:text-gray-100 hover:underline',
                 'hover:translate-x-0.5 active:translate-x-0',
-                index === breadcrumbs.length - 1 && 'text-blue-600 dark:text-blue-400'
+                index === breadcrumbs.length - 1 &&
+                  'text-blue-600 dark:text-blue-400',
               )}
             >
-              {breadcrumb.icon && <span className="w-6 h-6 mx-2">{breadcrumb.icon}</span>}
+              {breadcrumb.icon && (
+                <span className="w-6 h-6 mx-2">{breadcrumb.icon}</span>
+              )}
               <span className="mx-2">{breadcrumb.name}</span>
             </a>
             {index < breadcrumbs.length - 1 && (
@@ -100,4 +106,3 @@ export function Breadcrumbs({
 }
 
 export default Breadcrumbs
-

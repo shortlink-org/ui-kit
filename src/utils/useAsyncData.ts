@@ -14,11 +14,11 @@ function getCachedPromise<T>(key: string): Promise<T> | undefined {
 /**
  * Creates a cached promise for data fetching.
  * Useful with React 19's use() hook and Suspense.
- * 
+ *
  * @param key - Unique cache key (should change when you want to refetch)
  * @param fetcher - Function that returns a promise. Should be stable (use useCallback if needed)
  * @returns The promise (can be used with use() hook)
- * 
+ *
  * @example
  * ```tsx
  * function UserProfile({ userId }: { userId: string }) {
@@ -27,7 +27,7 @@ function getCachedPromise<T>(key: string): Promise<T> | undefined {
  *     useCallback(() => fetchUser(userId), [userId])
  *   )
  *   const user = use(userPromise)
- *   
+ *
  *   return <div>{user.name}</div>
  * }
  * ```
@@ -74,4 +74,3 @@ export function clearPromiseCache(key?: string) {
     promiseCache.clear()
   }
 }
-

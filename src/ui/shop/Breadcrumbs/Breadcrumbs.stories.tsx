@@ -144,4 +144,3 @@ export const WithoutHome = meta.story({
     showHome: false,
   },
 })
-

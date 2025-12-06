@@ -2,8 +2,9 @@ import { DataTable, type DataTableProps } from './DataTable'
 import { ErrorBoundary } from '../ErrorBoundary/ErrorBoundary'
 import type { ErrorBoundaryProps } from '../ErrorBoundary/ErrorBoundary'
 
-export interface DataTableWithErrorBoundaryProps<TData extends Record<string, unknown> = Record<string, unknown>>
-  extends DataTableProps<TData> {
+export interface DataTableWithErrorBoundaryProps<
+  TData extends Record<string, unknown> = Record<string, unknown>,
+> extends DataTableProps<TData> {
   errorFallback?: ErrorBoundaryProps['fallback']
   onError?: ErrorBoundaryProps['onError']
 }
@@ -11,7 +12,7 @@ export interface DataTableWithErrorBoundaryProps<TData extends Record<string, un
 /**
  * DataTable component wrapped with ErrorBoundary.
  * Catches errors thrown in transitions (React 19 Actions) and other component errors.
- * 
+ *
  * @example
  * ```tsx
  * <DataTableWithErrorBoundary
@@ -21,7 +22,9 @@ export interface DataTableWithErrorBoundaryProps<TData extends Record<string, un
  * />
  * ```
  */
-export function DataTableWithErrorBoundary<TData extends Record<string, unknown> = Record<string, unknown>>({
+export function DataTableWithErrorBoundary<
+  TData extends Record<string, unknown> = Record<string, unknown>,
+>({
   errorFallback,
   onError,
   ...dataTableProps
@@ -34,4 +37,3 @@ export function DataTableWithErrorBoundary<TData extends Record<string, unknown>
 }
 
 export default DataTableWithErrorBoundary
-

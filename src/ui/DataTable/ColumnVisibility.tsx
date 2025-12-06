@@ -7,8 +7,12 @@ export interface ColumnVisibilityProps<TData> {
   table: TanStackTable<TData>
 }
 
-export function ColumnVisibility<TData>({ table }: ColumnVisibilityProps<TData>) {
-  const allColumns = table.getAllColumns().filter((column) => column.getCanHide())
+export function ColumnVisibility<TData>({
+  table,
+}: ColumnVisibilityProps<TData>) {
+  const allColumns = table
+    .getAllColumns()
+    .filter((column) => column.getCanHide())
 
   if (allColumns.length === 0) {
     return null
@@ -23,7 +27,7 @@ export function ColumnVisibility<TData>({ table }: ColumnVisibilityProps<TData>)
           'border border-gray-300 dark:border-gray-600',
           'bg-white dark:bg-gray-800',
           'hover:bg-gray-50 dark:hover:bg-gray-700',
-          'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+          'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
         )}
       >
         <EyeIcon className="size-4" />
@@ -38,7 +42,7 @@ export function ColumnVisibility<TData>({ table }: ColumnVisibilityProps<TData>)
           'focus:outline-none',
           'transition data-closed:scale-95 data-closed:transform data-closed:opacity-0',
           'data-enter:duration-100 data-enter:ease-out',
-          'data-leave:duration-75 data-leave:ease-in'
+          'data-leave:duration-75 data-leave:ease-in',
         )}
       >
         {allColumns.map((column) => {
@@ -52,7 +56,7 @@ export function ColumnVisibility<TData>({ table }: ColumnVisibilityProps<TData>)
                 className={clsx(
                   'group flex w-full items-center gap-2 px-4 py-2 text-sm',
                   'text-gray-700 dark:text-gray-300',
-                  'data-focus:bg-gray-100 dark:data-focus:bg-gray-700'
+                  'data-focus:bg-gray-100 dark:data-focus:bg-gray-700',
                 )}
               >
                 <span
@@ -60,7 +64,7 @@ export function ColumnVisibility<TData>({ table }: ColumnVisibilityProps<TData>)
                     'flex size-4 items-center justify-center rounded border',
                     isVisible
                       ? 'border-indigo-500 bg-indigo-500'
-                      : 'border-gray-300 dark:border-gray-600'
+                      : 'border-gray-300 dark:border-gray-600',
                   )}
                 >
                   {isVisible && <CheckIcon className="size-3 text-white" />}
@@ -74,4 +78,3 @@ export function ColumnVisibility<TData>({ table }: ColumnVisibilityProps<TData>)
     </Menu>
   )
 }
-

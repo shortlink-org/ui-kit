@@ -16,7 +16,14 @@ export interface GithubRepositoryProps {
 }
 
 export const GithubRepository: FC<GithubRepositoryProps> = memo(
-  ({ url, title, accentColor = '#3b82f6', hoverColor, fullWidth = true, className }) => {
+  ({
+    url,
+    title,
+    accentColor = '#3b82f6',
+    hoverColor,
+    fullWidth = true,
+    className,
+  }) => {
     const overlayStyle: CSSProperties = {
       background: `linear-gradient(90deg, ${accentColor}, ${accentColor}, ${hoverColor || accentColor})`,
     }

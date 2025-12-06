@@ -41,12 +41,8 @@ describe('useAsyncData', () => {
   it('creates new promise for different keys', () => {
     const fetcher = jest.fn(() => Promise.resolve({ data: 'test' }))
 
-    const { result: result1 } = renderHook(() =>
-      useAsyncData('key-1', fetcher),
-    )
-    const { result: result2 } = renderHook(() =>
-      useAsyncData('key-2', fetcher),
-    )
+    const { result: result1 } = renderHook(() => useAsyncData('key-1', fetcher))
+    const { result: result2 } = renderHook(() => useAsyncData('key-2', fetcher))
 
     expect(fetcher).toHaveBeenCalledTimes(2)
     expect(result1.current).not.toBe(result2.current)
@@ -71,10 +67,8 @@ describe('useAsyncData', () => {
     })
 
     // Cache should be cleared after rejection, so new call should create new promise
-    renderHook(() =>
-      useAsyncData('fail-key', failingFetcher),
-    )
-    
+    renderHook(() => useAsyncData('fail-key', failingFetcher))
+
     await waitFor(() => {
       expect(failingFetcher).toHaveBeenCalledTimes(2)
     })
@@ -91,9 +85,7 @@ describe('useAsyncData', () => {
     jest.advanceTimersByTime(5000)
 
     // Cache should be cleared, so new call should create new promise
-    renderHook(() =>
-      useAsyncData('timeout-key', fetcher),
-    )
+    renderHook(() => useAsyncData('timeout-key', fetcher))
 
     await waitFor(() => {
       // Should create new promise since cache was cleared
@@ -153,4 +145,3 @@ describe('useAsyncData', () => {
     await expect(result.current).rejects.toThrow('Test error')
   })
 })
-

@@ -4,11 +4,7 @@
   "exitZeroOnChanges": true,
   "autoAcceptChanges": false,
   "onlyChanged": true,
-  "untraced": [
-    "**/*.stories.tsx",
-    "**/*.stories.js",
-    "**/*.stories.mdx"
-  ],
+  "untraced": ["**/*.stories.tsx", "**/*.stories.js", "**/*.stories.mdx"],
   "viewport": {
     "width": 1280,
     "height": 720

@@ -1,4 +1,10 @@
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Button } from '@headlessui/react'
+import {
+  Dialog,
+  DialogBackdrop,
+  DialogPanel,
+  DialogTitle,
+  Button,
+} from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
 import { Button as UIButton } from '../Button/Button'
@@ -29,7 +35,10 @@ export function ConfirmDeleteModal({
   }
 
   const displayMessage =
-    message || (count !== undefined ? `Are you sure you want to delete ${count} item(s)? This action cannot be undone.` : 'Are you sure you want to delete this item? This action cannot be undone.')
+    message ||
+    (count !== undefined
+      ? `Are you sure you want to delete ${count} item(s)? This action cannot be undone.`
+      : 'Are you sure you want to delete this item? This action cannot be undone.')
 
   return (
     <Dialog open={open} onClose={onClose} className="relative z-50">
@@ -46,14 +55,22 @@ export function ConfirmDeleteModal({
           >
             <div className="sm:flex sm:items-start">
               <div className="mx-auto flex size-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/20 sm:mx-0 sm:size-10">
-                <ExclamationTriangleIcon className="size-6 text-red-600 dark:text-red-400" aria-hidden="true" />
+                <ExclamationTriangleIcon
+                  className="size-6 text-red-600 dark:text-red-400"
+                  aria-hidden="true"
+                />
               </div>
               <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                <DialogTitle as="h3" className="text-base font-semibold leading-6 text-gray-900 dark:text-white">
+                <DialogTitle
+                  as="h3"
+                  className="text-base font-semibold leading-6 text-gray-900 dark:text-white"
+                >
                   {title}
                 </DialogTitle>
                 <div className="mt-2">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{displayMessage}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    {displayMessage}
+                  </p>
                 </div>
               </div>
             </div>
@@ -77,7 +94,7 @@ export function ConfirmDeleteModal({
                   'ring-1 ring-inset ring-gray-300 dark:ring-gray-600',
                   'hover:bg-gray-50 dark:hover:bg-gray-700',
                   'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
-                  'sm:mt-0 sm:w-auto'
+                  'sm:mt-0 sm:w-auto',
                 )}
               >
                 {cancelText}
@@ -91,4 +108,3 @@ export function ConfirmDeleteModal({
 }
 
 export default ConfirmDeleteModal
-

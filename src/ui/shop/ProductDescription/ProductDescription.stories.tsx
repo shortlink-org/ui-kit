@@ -77,4 +77,3 @@ export const ManyHighlights = meta.story({
     details: 'This product comes with a comprehensive warranty and support.',
   },
 })
-

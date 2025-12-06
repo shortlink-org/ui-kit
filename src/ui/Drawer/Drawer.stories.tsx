@@ -75,7 +75,9 @@ export const LeftPosition = meta.story({
     position: 'left',
     children: (
       <div>
-        <p className="text-gray-600 dark:text-gray-400">This drawer opens from the left side.</p>
+        <p className="text-gray-600 dark:text-gray-400">
+          This drawer opens from the left side.
+        </p>
       </div>
     ),
   },
@@ -88,7 +90,9 @@ export const RightPosition = meta.story({
     position: 'right',
     children: (
       <div>
-        <p className="text-gray-600 dark:text-gray-400">This drawer opens from the right side.</p>
+        <p className="text-gray-600 dark:text-gray-400">
+          This drawer opens from the right side.
+        </p>
       </div>
     ),
   },
@@ -101,7 +105,9 @@ export const SmallSize = meta.story({
     size: 'sm',
     children: (
       <div>
-        <p className="text-gray-600 dark:text-gray-400">This is a small drawer with max-width of 24rem.</p>
+        <p className="text-gray-600 dark:text-gray-400">
+          This is a small drawer with max-width of 24rem.
+        </p>
       </div>
     ),
   },
@@ -114,7 +120,9 @@ export const LargeSize = meta.story({
     size: 'lg',
     children: (
       <div>
-        <p className="text-gray-600 dark:text-gray-400">This is a large drawer with max-width of 32rem.</p>
+        <p className="text-gray-600 dark:text-gray-400">
+          This is a large drawer with max-width of 32rem.
+        </p>
       </div>
     ),
   },
@@ -127,7 +135,9 @@ export const FullSize = meta.story({
     size: 'full',
     children: (
       <div>
-        <p className="text-gray-600 dark:text-gray-400">This drawer takes the full available width.</p>
+        <p className="text-gray-600 dark:text-gray-400">
+          This drawer takes the full available width.
+        </p>
       </div>
     ),
   },
@@ -153,8 +163,12 @@ export const WithoutTitle = meta.story({
   args: {
     children: (
       <div>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Content without title prop</h2>
-        <p className="text-gray-600 dark:text-gray-400">This drawer doesn't use the title prop.</p>
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          Content without title prop
+        </h2>
+        <p className="text-gray-600 dark:text-gray-400">
+          This drawer doesn't use the title prop.
+        </p>
       </div>
     ),
   },
@@ -167,13 +181,17 @@ export const WithRichContent = meta.story({
     children: (
       <div className="space-y-4">
         <div>
-          <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2">Section 1</h3>
+          <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
+            Section 1
+          </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
             This drawer contains multiple sections with rich content.
           </p>
         </div>
         <div>
-          <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2">Section 2</h3>
+          <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
+            Section 2
+          </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
             You can add any content you need inside the drawer.
           </p>
@@ -196,9 +214,12 @@ export const LongContent = meta.story({
       <div className="space-y-4">
         {Array.from({ length: 20 }, (_, i) => (
           <div key={i} className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Item {i + 1}</h4>
+            <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+              Item {i + 1}
+            </h4>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              This is item number {i + 1}. The drawer should be scrollable when content exceeds the viewport height.
+              This is item number {i + 1}. The drawer should be scrollable when
+              content exceeds the viewport height.
             </p>
           </div>
         ))}
@@ -216,9 +237,10 @@ export const DarkMode = meta.story({
     title: 'Dark Mode Drawer',
     children: (
       <div>
-        <p className="text-gray-400">This drawer adapts to dark mode automatically.</p>
+        <p className="text-gray-400">
+          This drawer adapts to dark mode automatically.
+        </p>
       </div>
     ),
   },
 })
-

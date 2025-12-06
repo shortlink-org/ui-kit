@@ -132,11 +132,16 @@ export const Interactive = meta.story({
       <FlyoutMenu {...args} />
     </div>
   ),
-  play: async ({ canvasElement, args }: { canvasElement: HTMLElement; args: ComponentProps<typeof FlyoutMenu> }) => {
+  play: async ({
+    canvasElement,
+    args,
+  }: {
+    canvasElement: HTMLElement
+    args: ComponentProps<typeof FlyoutMenu>
+  }) => {
     const canvas = within(canvasElement)
     const button = canvas.getByRole('button', { name: args.label })
     await userEvent.click(button)
     await expect(canvas.getByText('Analytics')).toBeInTheDocument()
   },
 })
-

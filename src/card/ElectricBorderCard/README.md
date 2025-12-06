@@ -88,15 +88,15 @@ function App() {
 
 ## Props
 
-| Prop          | Type        | Default     | Description                          |
-| ------------- | ----------- | ----------- | ------------------------------------ |
-| `badge`       | `string`    | `'Dramatic'`| Badge text displayed at the top      |
-| `title`       | `string`    | **Required**| Card title                           |
-| `description` | `string`    | **Required**| Card description                     |
-| `children`    | `ReactNode` | `undefined` | Optional children content            |
-| `borderColor` | `string`    | `'#dd8448'` | Border color in hex format           |
-| `width`       | `number`    | `350`       | Card width in pixels                 |
-| `height`      | `number`    | `500`       | Card height in pixels                |
+| Prop          | Type        | Default      | Description                     |
+| ------------- | ----------- | ------------ | ------------------------------- |
+| `badge`       | `string`    | `'Dramatic'` | Badge text displayed at the top |
+| `title`       | `string`    | **Required** | Card title                      |
+| `description` | `string`    | **Required** | Card description                |
+| `children`    | `ReactNode` | `undefined`  | Optional children content       |
+| `borderColor` | `string`    | `'#dd8448'`  | Border color in hex format      |
+| `width`       | `number`    | `350`        | Card width in pixels            |
+| `height`      | `number`    | `500`        | Card height in pixels           |
 
 ## Styling
 
@@ -145,4 +145,3 @@ pnpm storybook
 ## License
 
 MIT
-

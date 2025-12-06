@@ -1,4 +1,9 @@
-import { useReactTable, getCoreRowModel, getPaginationRowModel, type ColumnDef } from '@tanstack/react-table'
+import {
+  useReactTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+  type ColumnDef,
+} from '@tanstack/react-table'
 import preview from '#.storybook/preview'
 import { Pagination } from './Pagination'
 import { createDataTableColumnHelper } from '../DataTable/columnConverter'
@@ -50,7 +55,13 @@ function PaginationWrapper({
     },
   })
 
-  return <Pagination table={table} pageSizeOptions={pageSizeOptions} mobilePageSizeControl={mobilePageSizeControl} />
+  return (
+    <Pagination
+      table={table}
+      pageSizeOptions={pageSizeOptions}
+      mobilePageSizeControl={mobilePageSizeControl}
+    />
+  )
 }
 
 const meta = preview.meta({
@@ -79,7 +90,13 @@ export const Default = meta.story({
  * Allows users to choose from different page sizes.
  */
 export const CustomPageSizes = meta.story({
-  render: () => <PaginationWrapper pageSize={20} pageIndex={0} pageSizeOptions={[5, 10, 20, 50, 100]} />,
+  render: () => (
+    <PaginationWrapper
+      pageSize={20}
+      pageIndex={0}
+      pageSizeOptions={[5, 10, 20, 50, 100]}
+    />
+  ),
 })
 
 /**
@@ -111,7 +128,13 @@ export const LargeDataset = meta.story({
  * Useful when you want to hide the mobile dropdown.
  */
 export const WithoutMobileControl = meta.story({
-  render: () => <PaginationWrapper pageSize={10} pageIndex={0} mobilePageSizeControl={false} />,
+  render: () => (
+    <PaginationWrapper
+      pageSize={10}
+      pageIndex={0}
+      mobilePageSizeControl={false}
+    />
+  ),
 })
 
 /**
@@ -123,13 +146,17 @@ export const Responsive = meta.story({
     return (
       <div className="space-y-8 p-8">
         <div>
-          <h3 className="text-lg font-semibold mb-4 dark:text-white">Mobile View ({'<'} 768px)</h3>
+          <h3 className="text-lg font-semibold mb-4 dark:text-white">
+            Mobile View ({'<'} 768px)
+          </h3>
           <div className="max-w-sm border border-gray-200 dark:border-gray-700 rounded-lg p-4">
             <PaginationWrapper pageSize={10} pageIndex={0} />
           </div>
         </div>
         <div>
-          <h3 className="text-lg font-semibold mb-4 dark:text-white">Desktop View (≥ 768px)</h3>
+          <h3 className="text-lg font-semibold mb-4 dark:text-white">
+            Desktop View (≥ 768px)
+          </h3>
           <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
             <PaginationWrapper pageSize={10} pageIndex={0} />
           </div>
@@ -147,28 +174,42 @@ export const Showcase = meta.story({
   render: () => (
     <div className="space-y-12 p-8">
       <section>
-        <h3 className="text-lg font-semibold mb-4 dark:text-white">First Page</h3>
+        <h3 className="text-lg font-semibold mb-4 dark:text-white">
+          First Page
+        </h3>
         <PaginationWrapper pageSize={10} pageIndex={0} />
       </section>
 
       <section>
-        <h3 className="text-lg font-semibold mb-4 dark:text-white">Middle Page (Page 5)</h3>
+        <h3 className="text-lg font-semibold mb-4 dark:text-white">
+          Middle Page (Page 5)
+        </h3>
         <PaginationWrapper pageSize={10} pageIndex={4} />
       </section>
 
       <section>
-        <h3 className="text-lg font-semibold mb-4 dark:text-white">Last Page</h3>
+        <h3 className="text-lg font-semibold mb-4 dark:text-white">
+          Last Page
+        </h3>
         <PaginationWrapper pageSize={10} pageIndex={14} />
       </section>
 
       <section>
-        <h3 className="text-lg font-semibold mb-4 dark:text-white">Large Dataset (30 pages)</h3>
+        <h3 className="text-lg font-semibold mb-4 dark:text-white">
+          Large Dataset (30 pages)
+        </h3>
         <PaginationWrapper pageSize={5} pageIndex={10} />
       </section>
 
       <section>
-        <h3 className="text-lg font-semibold mb-4 dark:text-white">Custom Page Sizes</h3>
-        <PaginationWrapper pageSize={10} pageIndex={0} pageSizeOptions={[5, 10, 25, 50, 100]} />
+        <h3 className="text-lg font-semibold mb-4 dark:text-white">
+          Custom Page Sizes
+        </h3>
+        <PaginationWrapper
+          pageSize={10}
+          pageIndex={0}
+          pageSizeOptions={[5, 10, 25, 50, 100]}
+        />
       </section>
     </div>
   ),

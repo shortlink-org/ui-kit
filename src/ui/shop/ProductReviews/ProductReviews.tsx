@@ -12,7 +12,12 @@ export interface ProductReviewsProps {
   className?: string
 }
 
-export function ProductReviews({ average, totalCount, href = '#', className }: ProductReviewsProps) {
+export function ProductReviews({
+  average,
+  totalCount,
+  href = '#',
+  className,
+}: ProductReviewsProps) {
   const roundedAverage = Math.round(average * 2) / 2 // Round to nearest 0.5
 
   return (
@@ -25,7 +30,9 @@ export function ProductReviews({ average, totalCount, href = '#', className }: P
               key={rating}
               aria-hidden="true"
               className={clsx(
-                roundedAverage > rating ? 'text-gray-900 dark:text-yellow-400' : 'text-gray-200 dark:text-gray-700',
+                roundedAverage > rating
+                  ? 'text-gray-900 dark:text-yellow-400'
+                  : 'text-gray-200 dark:text-gray-700',
                 'size-5 shrink-0',
               )}
             />
@@ -44,4 +51,3 @@ export function ProductReviews({ average, totalCount, href = '#', className }: P
 }
 
 export default ProductReviews
-

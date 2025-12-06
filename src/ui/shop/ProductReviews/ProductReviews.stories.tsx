@@ -63,4 +63,3 @@ export const PartialRating = meta.story({
     totalCount: 89,
   },
 })
-

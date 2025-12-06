@@ -75,7 +75,17 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
     const check = checkRef.current
     const wrapper = wrapperRef.current
 
-    if (!dummy || !cart || !text || !item || !staticBorder || !animatedBorder || !completeBorder || !check || !wrapper) {
+    if (
+      !dummy ||
+      !cart ||
+      !text ||
+      !item ||
+      !staticBorder ||
+      !animatedBorder ||
+      !completeBorder ||
+      !check ||
+      !wrapper
+    ) {
       setRunning(false)
       setAdding(false)
       return
@@ -302,13 +312,21 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
           </span>
         </span>
         <span className="atc__border atc__border--animated atc__border--demo"></span>
-        <span ref={animatedBorderRef} className="atc__border atc__border--animated"></span>
-        <span ref={staticBorderRef} className="atc__border atc__border--static"></span>
-        <span ref={completeBorderRef} className="atc__border atc__border--complete"></span>
+        <span
+          ref={animatedBorderRef}
+          className="atc__border atc__border--animated"
+        ></span>
+        <span
+          ref={staticBorderRef}
+          className="atc__border atc__border--static"
+        ></span>
+        <span
+          ref={completeBorderRef}
+          className="atc__border atc__border--complete"
+        ></span>
       </button>
     </div>
   )
 }
 
 export default AddToCartButton
-

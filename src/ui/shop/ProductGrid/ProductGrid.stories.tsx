@@ -8,7 +8,8 @@ const mockProducts: Product[] = [
     id: 1,
     name: 'Basic Tee',
     href: '#',
-    imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg',
+    imageSrc:
+      'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg',
     imageAlt: "Front of men's Basic Tee in black.",
     price: '$35',
     color: 'Black',
@@ -17,7 +18,8 @@ const mockProducts: Product[] = [
     id: 2,
     name: 'Basic Tee',
     href: '#',
-    imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg',
+    imageSrc:
+      'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg',
     imageAlt: "Front of men's Basic Tee in white.",
     price: '$35',
     color: 'Aspen White',
@@ -26,7 +28,8 @@ const mockProducts: Product[] = [
     id: 3,
     name: 'Basic Tee',
     href: '#',
-    imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg',
+    imageSrc:
+      'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg',
     imageAlt: "Front of men's Basic Tee in dark gray.",
     price: '$35',
     color: 'Charcoal',
@@ -35,8 +38,10 @@ const mockProducts: Product[] = [
     id: 4,
     name: 'Artwork Tee',
     href: '#',
-    imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg',
-    imageAlt: "Front of men's Artwork Tee in peach with white and brown dots forming an isometric cube.",
+    imageSrc:
+      'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg',
+    imageAlt:
+      "Front of men's Artwork Tee in peach with white and brown dots forming an isometric cube.",
     price: '$35',
     color: 'Iso Dots',
   },
@@ -109,7 +114,8 @@ export const WithDescriptions: Story = {
   args: {
     products: mockProducts.map((product) => ({
       ...product,
-      description: 'Comfortable and stylish basic tee made from premium cotton.',
+      description:
+        'Comfortable and stylish basic tee made from premium cotton.',
     })),
     title: 'Recommended for You',
   },
@@ -124,7 +130,8 @@ export const ManyProducts: Story = {
         id: 5,
         name: 'Premium Tee',
         href: '#',
-        imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg',
+        imageSrc:
+          'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg',
         imageAlt: "Front of men's Premium Tee.",
         price: '$45',
         color: 'Navy',
@@ -133,7 +140,8 @@ export const ManyProducts: Story = {
         id: 6,
         name: 'Classic Tee',
         href: '#',
-        imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg',
+        imageSrc:
+          'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg',
         imageAlt: "Front of men's Classic Tee.",
         price: '$30',
         color: 'Gray',
@@ -142,7 +150,8 @@ export const ManyProducts: Story = {
         id: 7,
         name: 'Sport Tee',
         href: '#',
-        imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg',
+        imageSrc:
+          'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg',
         imageAlt: "Front of men's Sport Tee.",
         price: '$40',
         color: 'Blue',
@@ -151,7 +160,8 @@ export const ManyProducts: Story = {
         id: 8,
         name: 'Casual Tee',
         href: '#',
-        imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg',
+        imageSrc:
+          'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg',
         imageAlt: "Front of men's Casual Tee.",
         price: '$32',
         color: 'Green',
@@ -209,4 +219,3 @@ export const WithAddToCart: Story = {
     title: 'Products with Add to Cart',
   },
 }
-

@@ -21,4 +21,3 @@ adr new Implement as Unix shell scripts
 
 - **Front-end/React**
   - [1. Adopt React 19 Async Patterns](./0001-adopt-react-19-async-patterns.md)
-

@@ -130,7 +130,12 @@ export function ElectricBorderCard({
             </feOffset>
             <feComposite in="offsetNoise1" in2="offsetNoise2" result="part1" />
             <feComposite in="offsetNoise3" in2="offsetNoise4" result="part2" />
-            <feBlend in="part1" in2="part2" mode="color-dodge" result="combinedNoise" />
+            <feBlend
+              in="part1"
+              in2="part2"
+              mode="color-dodge"
+              result="combinedNoise"
+            />
             <feDisplacementMap
               in="SourceGraphic"
               in2="combinedNoise"
@@ -159,7 +164,10 @@ export function ElectricBorderCard({
       >
         <div className={styles.innerContainer}>
           <div className={styles.borderOuter}>
-            <div className={styles.mainCard} style={{ filter: `url(#${filterId})` }}></div>
+            <div
+              className={styles.mainCard}
+              style={{ filter: `url(#${filterId})` }}
+            ></div>
           </div>
           <div className={styles.glowLayer1}></div>
           <div className={styles.glowLayer2}></div>
@@ -169,9 +177,7 @@ export function ElectricBorderCard({
         <div className={styles.backgroundGlow}></div>
         <div className={styles.contentContainer}>
           <div className={styles.contentTop}>
-            {badge && (
-              <div className={styles.scrollbarGlass}>{badge}</div>
-            )}
+            {badge && <div className={styles.scrollbarGlass}>{badge}</div>}
             <p className={styles.title}>{title}</p>
           </div>
           <hr className={styles.divider} />

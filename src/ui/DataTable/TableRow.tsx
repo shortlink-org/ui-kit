@@ -1,4 +1,8 @@
-import { flexRender, type Row, type Table as TanStackTable } from '@tanstack/react-table'
+import {
+  flexRender,
+  type Row,
+  type Table as TanStackTable,
+} from '@tanstack/react-table'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
 
@@ -14,14 +18,14 @@ export interface TableRowProps<TData> {
   rowClassName?: string
 }
 
-export function TableRow<TData>({ 
-  row, 
-  onRowClick, 
-  enableRowSelection, 
+export function TableRow<TData>({
+  row,
+  onRowClick,
+  enableRowSelection,
   enableExpanding = false,
   enableColumnResizing = false,
-  density = 'normal', 
-  rowClassName
+  density = 'normal',
+  rowClassName,
 }: TableRowProps<TData>) {
   const isSelected = row.getIsSelected()
   const isExpanded = row.getIsExpanded()
@@ -32,7 +36,11 @@ export function TableRow<TData>({
   const densityClasses = {
     compact: { cell: 'px-2 py-1 text-xs', row: 'h-8', checkbox: 'h-3 w-3' },
     normal: { cell: 'px-4 py-2 text-sm', row: 'h-10', checkbox: 'h-4 w-4' },
-    comfortable: { cell: 'px-6 py-3 text-base', row: 'h-12', checkbox: 'h-5 w-5' },
+    comfortable: {
+      cell: 'px-6 py-3 text-base',
+      row: 'h-12',
+      checkbox: 'h-5 w-5',
+    },
   }
 
   return (
@@ -43,10 +51,11 @@ export function TableRow<TData>({
         'bg-white dark:bg-gray-900',
         'hover:bg-gray-50 dark:hover:bg-gray-800/50',
         onRowClick && 'cursor-pointer',
-        isSelected && 'bg-gray-100 dark:bg-gray-800 border-l-4 border-l-indigo-500',
+        isSelected &&
+          'bg-gray-100 dark:bg-gray-800 border-l-4 border-l-indigo-500',
         isGrouped && 'bg-gray-100 dark:bg-gray-800 font-semibold',
         isPinned && 'sticky bg-white dark:bg-gray-900 z-10',
-        rowClassName
+        rowClassName,
       )}
       onClick={() => onRowClick?.(row.original)}
     >
@@ -63,7 +72,7 @@ export function TableRow<TData>({
               'rounded border-[var(--color-border)] text-[var(--color-primary-600)]',
               'focus:ring-2 focus:ring-[var(--color-primary-500)] focus:ring-offset-2',
               'transition-all cursor-pointer',
-              densityClasses[density].checkbox
+              densityClasses[density].checkbox,
             )}
           />
         </td>
@@ -77,11 +86,11 @@ export function TableRow<TData>({
             }}
             className="p-0.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
           >
-            <ChevronRightIcon 
+            <ChevronRightIcon
               className={clsx(
                 'h-4 w-4 transition-transform',
-                isExpanded && 'rotate-90'
-              )} 
+                isExpanded && 'rotate-90',
+              )}
             />
           </button>
         </td>
@@ -90,7 +99,7 @@ export function TableRow<TData>({
         const meta = cell.column.columnDef.meta
         const cellClassName = meta?.cellClassName || meta?.className
         const cellIsPinned = enableColumnResizing && cell.column.getIsPinned()
-        
+
         return (
           <td
             key={cell.id}
@@ -99,12 +108,18 @@ export function TableRow<TData>({
               'text-sm whitespace-nowrap',
               'transition-colors duration-150',
               cellIsPinned && 'sticky bg-white dark:bg-gray-900 z-10',
-              cellClassName
+              cellClassName,
             )}
             style={{
               width: enableColumnResizing ? cell.column.getSize() : undefined,
-              left: cellIsPinned === 'left' ? `${(cell.column as { getStart: (side: 'left' | 'right') => number }).getStart('left')}px` : undefined,
-              right: cellIsPinned === 'right' ? `${(cell.column as { getStart: (side: 'left' | 'right') => number }).getStart('right')}px` : undefined,
+              left:
+                cellIsPinned === 'left'
+                  ? `${(cell.column as { getStart: (side: 'left' | 'right') => number }).getStart('left')}px`
+                  : undefined,
+              right:
+                cellIsPinned === 'right'
+                  ? `${(cell.column as { getStart: (side: 'left' | 'right') => number }).getStart('right')}px`
+                  : undefined,
             }}
           >
             {isGrouped ? (
@@ -116,11 +131,11 @@ export function TableRow<TData>({
                   }}
                   className="p-0.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
                 >
-                  <ChevronRightIcon 
+                  <ChevronRightIcon
                     className={clsx(
                       'h-4 w-4 transition-transform',
-                      isExpanded && 'rotate-90'
-                    )} 
+                      isExpanded && 'rotate-90',
+                    )}
                   />
                 </button>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -137,4 +152,3 @@ export function TableRow<TData>({
     </tr>
   )
 }
-

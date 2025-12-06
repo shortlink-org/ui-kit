@@ -24,7 +24,12 @@ const ScrollableContainer = React.forwardRef<
 >(({ children }, ref) => (
   <div
     ref={ref}
-    style={{ height: '300vh', overflowY: 'auto', position: 'relative', padding: 20 }}
+    style={{
+      height: '300vh',
+      overflowY: 'auto',
+      position: 'relative',
+      padding: 20,
+    }}
   >
     <h1>Scroll to trigger the button</h1>
     <p>The button appears once you pass the threshold.</p>

@@ -114,12 +114,19 @@ export function Sidebar({
   activeClassName,
   inactiveClassName,
 }: SidebarProps) {
-  const [collapsedState, setCollapsedState] = React.useState<Record<string, boolean>>({})
+  const [collapsedState, setCollapsedState] = React.useState<
+    Record<string, boolean>
+  >({})
 
   const effectiveMode = sidebarCollapsed ? 'mini' : mode
-  const effectiveWidth = width !== undefined 
-    ? (typeof width === 'number' ? `${width}px` : width)
-    : (effectiveMode === 'mini' ? '3.5rem' : undefined)
+  const effectiveWidth =
+    width !== undefined
+      ? typeof width === 'number'
+        ? `${width}px`
+        : width
+      : effectiveMode === 'mini'
+        ? '3.5rem'
+        : undefined
 
   const containerClassName = clsx(
     'w-full h-full bg-gray-50 dark:bg-gray-800 flex justify-between flex-col min-h-0',
@@ -127,16 +134,16 @@ export function Sidebar({
     variant === 'scrollable' && 'overflow-y-auto',
     effectiveWidth && !width && effectiveMode === 'mini' && 'max-w-[3.5rem]',
     !effectiveWidth && effectiveMode === 'full' && 'max-w-xs',
-    className
+    className,
   )
 
   const navClassName = clsx(
     'space-y-2 font-medium flex-grow w-full px-2 py-4',
-    variant === 'scrollable' && 'overflow-y-auto'
+    variant === 'scrollable' && 'overflow-y-auto',
   )
 
   const handleCollapseChange = (sectionTitle: string, collapsed: boolean) => {
-    setCollapsedState(prev => ({ ...prev, [sectionTitle]: collapsed }))
+    setCollapsedState((prev) => ({ ...prev, [sectionTitle]: collapsed }))
   }
 
   const isItemActive = (itemUrl: string): boolean => {
@@ -167,15 +174,22 @@ export function Sidebar({
   return (
     <aside
       className={containerClassName}
-      style={effectiveWidth ? { width: effectiveWidth, maxWidth: effectiveWidth } : undefined}
+      style={
+        effectiveWidth
+          ? { width: effectiveWidth, maxWidth: effectiveWidth }
+          : undefined
+      }
       aria-label={ariaLabel}
     >
       <nav aria-label={ariaLabel}>
         <ul className={navClassName}>
           {sections.map((section, sectionIndex) => {
             if (section.type === 'collapsible') {
-              const isCollapsed = collapsedState[section.title] ?? section.defaultCollapsed ?? false
-              
+              const isCollapsed =
+                collapsedState[section.title] ??
+                section.defaultCollapsed ??
+                false
+
               return (
                 <CollapsibleMenu
                   key={`collapsible-${sectionIndex}-${section.title}`}
@@ -183,7 +197,9 @@ export function Sidebar({
                   title={section.title}
                   mode={effectiveMode}
                   collapsed={isCollapsed}
-                  onCollapseChange={(collapsed) => handleCollapseChange(section.title, collapsed)}
+                  onCollapseChange={(collapsed) =>
+                    handleCollapseChange(section.title, collapsed)
+                  }
                 >
                   {section.items.map((item) => renderSidebarItem(item))}
                 </CollapsibleMenu>

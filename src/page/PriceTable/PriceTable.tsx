@@ -1,5 +1,8 @@
 import { OverridableStringUnion } from '@mui/types'
-import Button, { ButtonProps, ButtonPropsVariantOverrides } from '@mui/material/Button'
+import Button, {
+  ButtonProps,
+  ButtonPropsVariantOverrides,
+} from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import React from 'react'
 import Balancer from 'react-wrap-balancer'
@@ -56,7 +59,8 @@ function formatPrice(
   })
 
   const parts = formatter.formatToParts(amount)
-  const currencySymbol = parts.find((part) => part.type === 'currency')?.value || '$'
+  const currencySymbol =
+    parts.find((part) => part.type === 'currency')?.value || '$'
   const formatted = parts
     .filter((part) => part.type !== 'currency')
     .map((part) => part.value)
@@ -76,20 +80,23 @@ export const PriceTable: React.FC<TiersProps> = ({ tiers }) => {
         {tiers.map((tier) => {
           // Calculate prices: use monthlyPrice/yearlyPrice if provided, otherwise calculate
           const monthlyPrice = tier.monthlyPrice ?? tier.price ?? 0
-          const yearlyPrice =
-            tier.yearlyPrice ?? monthlyPrice * 12 * 0.8 // 20% discount for yearly
+          const yearlyPrice = tier.yearlyPrice ?? monthlyPrice * 12 * 0.8 // 20% discount for yearly
           const displayPrice = isAnnual ? yearlyPrice : monthlyPrice
           const pricePeriod = isAnnual ? '/year' : '/mo'
 
           // Format price
           const currency = tier.currency ?? 'USD'
-          const { formatted, currencySymbol } = formatPrice(displayPrice, currency)
+          const { formatted, currencySymbol } = formatPrice(
+            displayPrice,
+            currency,
+          )
 
           // Determine if featured
           const isFeatured = tier.isFeatured ?? false
           const badgeText = tier.badge
           const labelColor = tier.labelColor ?? '#10b981'
-          const isClassColor = typeof labelColor === 'string' && labelColor.startsWith('bg-')
+          const isClassColor =
+            typeof labelColor === 'string' && labelColor.startsWith('bg-')
           const badgeStyle =
             !labelColor || isClassColor
               ? undefined
@@ -106,8 +113,10 @@ export const PriceTable: React.FC<TiersProps> = ({ tiers }) => {
           // CTA button configuration
           const defaultButtonProps: ButtonProps = {
             fullWidth: true,
-            variant: tier.buttonVariant ?? tier.ctaButton?.variant ?? 'contained',
-            children: tier.buttonText ?? tier.ctaButton?.children ?? 'Get Started',
+            variant:
+              tier.buttonVariant ?? tier.ctaButton?.variant ?? 'contained',
+            children:
+              tier.buttonText ?? tier.ctaButton?.children ?? 'Get Started',
             ...tier.ctaButton,
           }
 
@@ -123,7 +132,7 @@ export const PriceTable: React.FC<TiersProps> = ({ tiers }) => {
                   <div
                     className={clsx(
                       'inline-flex items-center text-xs font-semibold py-1.5 px-3 text-white rounded-full shadow-sm shadow-slate-950/5',
-                      isClassColor ? labelColor : undefined
+                      isClassColor ? labelColor : undefined,
                     )}
                     style={badgeStyle}
                   >
@@ -142,7 +151,9 @@ export const PriceTable: React.FC<TiersProps> = ({ tiers }) => {
                   <span className="text-slate-900 dark:text-slate-200 font-bold text-4xl">
                     {formatted}
                   </span>
-                  <span className="text-slate-500 font-medium">{pricePeriod}</span>
+                  <span className="text-slate-500 font-medium">
+                    {pricePeriod}
+                  </span>
                 </div>
                 <div className="text-sm text-slate-500 mb-5">
                   <Balancer>{tier.subheader}</Balancer>
@@ -159,32 +170,32 @@ export const PriceTable: React.FC<TiersProps> = ({ tiers }) => {
                 )}
               </div>
 
-            <div className="text-slate-900 dark:text-slate-200 font-medium mb-3">
-              Includes:
-            </div>
-            <ul className="text-slate-600 dark:text-slate-400 text-sm space-y-3 grow">
-              {tier.description.map((line: string) => (
-                <Typography
-                  component="li"
-                  variant="subtitle1"
-                  align="center"
-                  className="flex items-center"
-                  key={line}
-                >
-                  <svg
-                    className="w-3 h-3 fill-emerald-500 mr-3 shrink-0"
-                    viewBox="0 0 12 12"
-                    xmlns="http://www.w3.org/2000/svg"
+              <div className="text-slate-900 dark:text-slate-200 font-medium mb-3">
+                Includes:
+              </div>
+              <ul className="text-slate-600 dark:text-slate-400 text-sm space-y-3 grow">
+                {tier.description.map((line: string) => (
+                  <Typography
+                    component="li"
+                    variant="subtitle1"
+                    align="center"
+                    className="flex items-center"
+                    key={line}
                   >
-                    <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
-                  </svg>
+                    <svg
+                      className="w-3 h-3 fill-emerald-500 mr-3 shrink-0"
+                      viewBox="0 0 12 12"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z" />
+                    </svg>
 
-                  <span>
-                    <Balancer>{line}</Balancer>
-                  </span>
-                </Typography>
-              ))}
-            </ul>
+                    <span>
+                      <Balancer>{line}</Balancer>
+                    </span>
+                  </Typography>
+                ))}
+              </ul>
             </div>
           )
         })}

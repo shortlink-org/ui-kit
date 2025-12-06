@@ -3,13 +3,13 @@ import { useState, useCallback, useRef, useEffect } from 'react'
 /**
  * Hook for managing controlled/uncontrolled component state.
  * Similar to Radix UI's useControllableState pattern.
- * 
+ *
  * @param props - Configuration object
  * @param props.value - Controlled value (if provided, component is controlled)
  * @param props.defaultValue - Default value for uncontrolled mode
  * @param props.onChange - Callback when value changes
  * @returns [state, setState] tuple
- * 
+ *
  * @example
  * ```tsx
  * // Uncontrolled
@@ -17,7 +17,7 @@ import { useState, useCallback, useRef, useEffect } from 'react'
  *   defaultValue: false,
  *   onChange: (value) => console.log(value)
  * })
- * 
+ *
  * // Controlled
  * const [checked, setChecked] = useControllableState({
  *   value: props.checked,
@@ -52,7 +52,10 @@ export function useControllableState<T>({
 
   const setValue = useCallback(
     (newValue: T | ((prev: T) => T)) => {
-      const nextValue = typeof newValue === 'function' ? (newValue as (prev: T) => T)(value) : newValue
+      const nextValue =
+        typeof newValue === 'function'
+          ? (newValue as (prev: T) => T)(value)
+          : newValue
 
       if (!isControlled) {
         setInternalValue(nextValue)
@@ -65,4 +68,3 @@ export function useControllableState<T>({
 
   return [value, setValue]
 }
-

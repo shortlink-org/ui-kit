@@ -100,12 +100,13 @@ export function DataTable<TData extends Record<string, unknown>>({
   // Add actions column if renderRowActions is provided
   const columnsWithActions = React.useMemo(() => {
     if (!renderRowActions) return columns
-    
+
     const columnHelper = createDataTableColumnHelper<TData>()
     const actionsColumn = columnHelper.display({
       id: '__actions',
       header: () => <span className="sr-only">Actions</span>,
-      cell: ({ row }: { row: { original: TData } }) => renderRowActions(row.original),
+      cell: ({ row }: { row: { original: TData } }) =>
+        renderRowActions(row.original),
       enableSorting: false,
       enableHiding: false,
       size: 50,
@@ -113,8 +114,8 @@ export function DataTable<TData extends Record<string, unknown>>({
         className: 'text-right',
       },
     })
-    
-    return actionsPosition === 'start' 
+
+    return actionsPosition === 'start'
       ? [actionsColumn, ...columns]
       : [...columns, actionsColumn]
   }, [columns, renderRowActions, actionsPosition])
@@ -138,8 +139,11 @@ export function DataTable<TData extends Record<string, unknown>>({
   })
 
   const rows = table.getRowModel().rows
-  const columnCount = columnsWithActions.length + (enableRowSelection ? 1 : 0) + (enableExpanding ? 1 : 0)
-  
+  const columnCount =
+    columnsWithActions.length +
+    (enableRowSelection ? 1 : 0) +
+    (enableExpanding ? 1 : 0)
+
   // Ref for virtualization scroll container
   const scrollElementRef = React.useRef<HTMLDivElement>(null)
 
@@ -183,7 +187,7 @@ export function DataTable<TData extends Record<string, unknown>>({
       {/* Global Filter */}
       {globalFilter && (
         <div className="mb-4">
-          <GlobalFilter 
+          <GlobalFilter
             table={table}
             globalFilterValue={globalFilterState}
             setGlobalFilterValue={setGlobalFilterState}
@@ -205,16 +209,21 @@ export function DataTable<TData extends Record<string, unknown>>({
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
             <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg bg-white dark:bg-gray-900">
               {enableVirtualization ? (
-                <div ref={scrollElementRef} className="overflow-auto max-h-[600px]">
-                  <table className={clsx(
-                    'min-w-full divide-y',
-                    'divide-gray-200 dark:divide-gray-700',
-                    densityClasses[density].cell,
-                    tableClassName
-                  )}>
-                    <TableHeader 
-                      table={table} 
-                      showFilters={filters} 
+                <div
+                  ref={scrollElementRef}
+                  className="overflow-auto max-h-[600px]"
+                >
+                  <table
+                    className={clsx(
+                      'min-w-full divide-y',
+                      'divide-gray-200 dark:divide-gray-700',
+                      densityClasses[density].cell,
+                      tableClassName,
+                    )}
+                  >
+                    <TableHeader
+                      table={table}
+                      showFilters={filters}
                       enableRowSelection={enableRowSelection}
                       enableColumnResizing={enableColumnResizing}
                       enableGrouping={enableGrouping}
@@ -222,11 +231,13 @@ export function DataTable<TData extends Record<string, unknown>>({
                       density={density}
                       headerClassName={headerClassName}
                     />
-                    <tbody className={clsx(
-                      'bg-white dark:bg-gray-900 divide-y',
-                      'divide-gray-200 dark:divide-gray-700',
-                      bodyClassName
-                    )}>
+                    <tbody
+                      className={clsx(
+                        'bg-white dark:bg-gray-900 divide-y',
+                        'divide-gray-200 dark:divide-gray-700',
+                        bodyClassName,
+                      )}
+                    >
                       <VirtualizedTableBody
                         table={table}
                         onRowClick={onRowClick}
@@ -251,15 +262,17 @@ export function DataTable<TData extends Record<string, unknown>>({
                   </table>
                 </div>
               ) : (
-                <table className={clsx(
-                  'min-w-full divide-y',
-                  'divide-gray-200 dark:divide-gray-700',
-                  densityClasses[density].cell,
-                  tableClassName
-                )}>
-                  <TableHeader 
-                    table={table} 
-                    showFilters={filters} 
+                <table
+                  className={clsx(
+                    'min-w-full divide-y',
+                    'divide-gray-200 dark:divide-gray-700',
+                    densityClasses[density].cell,
+                    tableClassName,
+                  )}
+                >
+                  <TableHeader
+                    table={table}
+                    showFilters={filters}
                     enableRowSelection={enableRowSelection}
                     enableColumnResizing={enableColumnResizing}
                     enableGrouping={enableGrouping}
@@ -267,11 +280,13 @@ export function DataTable<TData extends Record<string, unknown>>({
                     density={density}
                     headerClassName={headerClassName}
                   />
-                  <tbody className={clsx(
-                    'bg-white dark:bg-gray-900 divide-y',
-                    'divide-gray-200 dark:divide-gray-700',
-                    bodyClassName
-                  )}>
+                  <tbody
+                    className={clsx(
+                      'bg-white dark:bg-gray-900 divide-y',
+                      'divide-gray-200 dark:divide-gray-700',
+                      bodyClassName,
+                    )}
+                  >
                     {loading ? (
                       <tr>
                         <td colSpan={columnCount} className="p-0">
@@ -320,8 +335,8 @@ export function DataTable<TData extends Record<string, unknown>>({
 
       {/* Pagination */}
       {pagination && (
-        <Pagination 
-          table={table} 
+        <Pagination
+          table={table}
           pageSizeOptions={pageSizeOptions}
           mobilePageSizeControl={mobilePageSizeControl}
         />
@@ -330,13 +345,8 @@ export function DataTable<TData extends Record<string, unknown>>({
   )
 
   if (wrapperClassName !== undefined) {
-    return (
-      <div className={clsx(wrapperClassName, className)}>
-        {content}
-      </div>
-    )
+    return <div className={clsx(wrapperClassName, className)}>{content}</div>
   }
 
   return <div className={className}>{content}</div>
 }
-

@@ -11,7 +11,11 @@ export interface FooterLink {
   /** Open in new tab */
   target?: '_blank' | '_self'
   /** Custom render function (optional, for Next.js Link or custom components) */
-  render?: (props: { href: string; children: ReactNode; className?: string }) => ReactNode
+  render?: (props: {
+    href: string
+    children: ReactNode
+    className?: string
+  }) => ReactNode
 }
 
 export interface SocialLink {
@@ -50,14 +54,19 @@ export interface FooterProps {
 const defaultLinks: FooterLink[] = [
   { label: 'FAQ', href: '/faq' },
   { label: 'Privacy', href: '/privacy' },
-  { label: 'Github', href: 'https://github.com/shortlink-org/shortlink', target: '_blank' },
+  {
+    label: 'Github',
+    href: 'https://github.com/shortlink-org/shortlink',
+    target: '_blank',
+  },
 ]
 
 const defaultSocialLinks: SocialLink[] = [
   {
     name: 'Facebook',
     href: '#',
-    iconPath: 'M1343 12v264h-157q-86 0-116 36t-30 108v189h293l-39 296h-254v759h-306v-759h-255v-296h255v-218q0-186 104-288.5t277-102.5q147 0 228 12z',
+    iconPath:
+      'M1343 12v264h-157q-86 0-116 36t-30 108v189h293l-39 296h-254v759h-306v-759h-255v-296h255v-218q0-186 104-288.5t277-102.5q147 0 228 12z',
   },
   {
     name: 'Twitter',
@@ -101,7 +110,7 @@ export const Footer: React.FC<FooterProps> = ({
     if (!link.href || link.href.trim() === '') {
       if (process.env.NODE_ENV === 'development') {
         console.error(
-          `Footer: Link "${link.label}" has empty or invalid href. Links must have a valid href.`
+          `Footer: Link "${link.label}" has empty or invalid href. Links must have a valid href.`,
         )
       }
       return null
@@ -111,12 +120,20 @@ export const Footer: React.FC<FooterProps> = ({
       'text-gray-400 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition-colors duration-200'
 
     if (link.render) {
-      return link.render({ href: link.href, children: link.label, className: linkClassName })
+      return link.render({
+        href: link.href,
+        children: link.label,
+        className: linkClassName,
+      })
     }
 
     if (LinkComponent) {
       return (
-        <LinkComponent href={link.href} className={linkClassName} target={link.target}>
+        <LinkComponent
+          href={link.href}
+          className={linkClassName}
+          target={link.target}
+        >
           {link.label}
         </LinkComponent>
       )
@@ -138,7 +155,7 @@ export const Footer: React.FC<FooterProps> = ({
     <footer
       className={clsx(
         'bg-white dark:bg-gray-800 w-full py-8 mt-5 rounded-t-lg content-center max-w-7xl mx-auto',
-        className
+        className,
       )}
     >
       <div className="max-w-screen-xl mx-auto px-4">
@@ -146,7 +163,9 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="mb-8 text-center">
             {logoSlot && <div className="mb-4">{logoSlot}</div>}
             {description && (
-              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">{description}</p>
+              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                {description}
+              </p>
             )}
           </div>
         )}
@@ -197,4 +216,3 @@ export const Footer: React.FC<FooterProps> = ({
 }
 
 export default Footer
-

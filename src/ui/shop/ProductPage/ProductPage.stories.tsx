@@ -137,9 +137,15 @@ export const WithSelectedOptions = meta.story({
 })
 
 export const Interactive = meta.story({
-  render: function InteractiveTemplate(args: ComponentProps<typeof ProductPage>) {
-    const [selectedColor, setSelectedColor] = useState<string | undefined>(args.selectedColorId)
-    const [selectedSize, setSelectedSize] = useState<string | number | undefined>(args.selectedSizeId)
+  render: function InteractiveTemplate(
+    args: ComponentProps<typeof ProductPage>,
+  ) {
+    const [selectedColor, setSelectedColor] = useState<string | undefined>(
+      args.selectedColorId,
+    )
+    const [selectedSize, setSelectedSize] = useState<
+      string | number | undefined
+    >(args.selectedSizeId)
     const [, setAddToCartLoading] = useState(false)
 
     const handleAddToCart = async () => {
@@ -186,11 +192,18 @@ export const CustomSlots = meta.story({
     headerSlot: (
       <div className="px-4 pt-6 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4">
-          <a href="#" className="text-sm text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]">
+          <a
+            href="#"
+            className="text-sm text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
+          >
             ← Back to products
           </a>
-          <span className="text-sm text-[var(--color-muted-foreground)]">/</span>
-          <span className="text-sm font-medium text-[var(--color-foreground)]">{clothingProduct.name}</span>
+          <span className="text-sm text-[var(--color-muted-foreground)]">
+            /
+          </span>
+          <span className="text-sm font-medium text-[var(--color-foreground)]">
+            {clothingProduct.name}
+          </span>
         </div>
       </div>
     ),
@@ -238,7 +251,10 @@ export const EdgeCases = meta.story({
       'This is a very detailed product description that goes on for multiple paragraphs. ' +
       'It includes information about the materials used, the manufacturing process, care instructions, ' +
       'sustainability practices, and more. '.repeat(5),
-    highlights: Array.from({ length: 10 }, (_, i) => `Feature ${i + 1}: Important product feature`),
+    highlights: Array.from(
+      { length: 10 },
+      (_, i) => `Feature ${i + 1}: Important product feature`,
+    ),
     images: [
       ...clothingProduct.images,
       {
@@ -288,7 +304,8 @@ export const FashionEcommerce = meta.story({
       { name: 'L', inStock: false },
       { name: 'XL', inStock: true },
     ],
-    description: 'Premium genuine leather jacket with modern design. Perfect for any occasion.',
+    description:
+      'Premium genuine leather jacket with modern design. Perfect for any occasion.',
     highlights: [
       '100% Genuine Leather',
       'Handcrafted',

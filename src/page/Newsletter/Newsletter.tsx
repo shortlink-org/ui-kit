@@ -123,9 +123,16 @@ export function Newsletter({
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
           <div className="max-w-xl lg:max-w-lg">
-            <h2 className="text-4xl font-semibold tracking-tight text-white">{heading}</h2>
-            <p className="mt-4 text-lg text-gray-300 dark:text-gray-400">{description}</p>
-            <form onSubmit={handleSubmit} className="mt-6 flex max-w-md gap-x-4">
+            <h2 className="text-4xl font-semibold tracking-tight text-white">
+              {heading}
+            </h2>
+            <p className="mt-4 text-lg text-gray-300 dark:text-gray-400">
+              {description}
+            </p>
+            <form
+              onSubmit={handleSubmit}
+              className="mt-6 flex max-w-md gap-x-4"
+            >
               <label htmlFor={emailInputId} className="sr-only">
                 Email address
               </label>
@@ -165,7 +172,9 @@ export function Newsletter({
                 <div className="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
                   <div className="text-white">{feature.icon}</div>
                 </div>
-                <dt className="mt-4 text-base font-semibold text-white">{feature.title}</dt>
+                <dt className="mt-4 text-base font-semibold text-white">
+                  {feature.title}
+                </dt>
                 <dd className="mt-2 text-base/7 text-gray-400 dark:text-gray-500">
                   {feature.description}
                 </dd>
@@ -191,4 +200,3 @@ export function Newsletter({
 }
 
 export default Newsletter
-

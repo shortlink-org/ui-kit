@@ -64,10 +64,13 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
   useEffect(() => {
     if (!root) return
 
-    const parent: HTMLElement = root === window ? document.documentElement : (root as HTMLElement)
-    
+    const parent: HTMLElement =
+      root === window ? document.documentElement : (root as HTMLElement)
+
     // Check if sentinel already exists (for multiple buttons)
-    let sentinel = parent.querySelector('[data-scrolltop-sentinel="true"]') as HTMLElement
+    let sentinel = parent.querySelector(
+      '[data-scrolltop-sentinel="true"]',
+    ) as HTMLElement
     if (!sentinel) {
       sentinel = document.createElement('div')
       sentinel.setAttribute('data-scrolltop-sentinel', 'true')
@@ -94,7 +97,10 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
         if (ticking) return
         ticking = true
         requestAnimationFrame(() => {
-          const scrollTop = target === window ? window.scrollY : (target as HTMLElement).scrollTop
+          const scrollTop =
+            target === window
+              ? window.scrollY
+              : (target as HTMLElement).scrollTop
           setIsVisible(scrollTop > scrollThreshold)
           ticking = false
         })
@@ -107,7 +113,9 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
       tearDown()
       // Only remove sentinel if no other instances are using it
       // Check if there are other sentinels or if this is the last one
-      const allSentinels = document.querySelectorAll('[data-scrolltop-sentinel="true"]')
+      const allSentinels = document.querySelectorAll(
+        '[data-scrolltop-sentinel="true"]',
+      )
       if (allSentinels.length === 1 && allSentinels[0] === sentinel) {
         sentinel.remove()
       }
@@ -141,7 +149,11 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
       }
     }
 
-    const target = enableGlobalHotkey ? window : (root === window ? window : root as HTMLElement)
+    const target = enableGlobalHotkey
+      ? window
+      : root === window
+        ? window
+        : (root as HTMLElement)
     const handler = onKey as (e: Event) => void
     target.addEventListener('keyup', handler)
     return () => target.removeEventListener('keyup', handler)
@@ -163,7 +175,7 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
           'hover:bg-blue-700 dark:hover:bg-blue-600',
           'active:bg-blue-800 dark:active:bg-blue-700',
           'active:scale-95',
-          'focus-visible:ring-blue-500 dark:focus-visible:ring-blue-400'
+          'focus-visible:ring-blue-500 dark:focus-visible:ring-blue-400',
         )
       : clsx(
           'bg-white/80 dark:bg-gray-800/80 backdrop-blur-md',
@@ -172,12 +184,17 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
           'hover:bg-white dark:hover:bg-gray-800',
           'hover:ring-blue-500 dark:hover:ring-blue-400',
           'active:scale-95',
-          'focus-visible:ring-blue-500 dark:focus-visible:ring-blue-400'
+          'focus-visible:ring-blue-500 dark:focus-visible:ring-blue-400',
         ),
   )
 
   return (
-    <button onClick={scrollToTop} aria-label={label} type="button" className={buttonClass}>
+    <button
+      onClick={scrollToTop}
+      aria-label={label}
+      type="button"
+      className={buttonClass}
+    >
       <ArrowUpward style={{ width: iconSize, height: iconSize }} />
     </button>
   )

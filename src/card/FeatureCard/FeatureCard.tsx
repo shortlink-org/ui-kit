@@ -143,7 +143,8 @@ const getColorValue = (colorStr: string): string => {
   if (colorStr.includes('/')) {
     const [baseColor, opacityKey] = colorStr.split('/')
     const baseValue = COLOR_MAP[baseColor] || baseColor
-    const opacity = OPACITY_MAP[`/${opacityKey}`] || parseFloat(`0.${opacityKey}`) || 1
+    const opacity =
+      OPACITY_MAP[`/${opacityKey}`] || parseFloat(`0.${opacityKey}`) || 1
     // Convert hex to rgba
     if (baseValue.startsWith('#')) {
       return hexToRgba(baseValue, opacity)
@@ -159,7 +160,7 @@ const gradientStyleCache = new Map<string, React.CSSProperties>()
 // Helper to get Tailwind gradient classes or fallback to inline styles - optimized with caching
 const getGradientStyle = (from: string, to: string): React.CSSProperties => {
   const cacheKey = `${from}-${to}`
-  
+
   if (gradientStyleCache.has(cacheKey)) {
     return gradientStyleCache.get(cacheKey)!
   }
@@ -182,17 +183,18 @@ export function FeatureCard({
   decorationGradient = { from: 'indigo-500/5', to: 'purple-500/5' },
   linkColor = 'indigo',
 }: FeatureCardProps) {
-  const linkColorClass = VALID_LINK_COLORS[linkColor] || VALID_LINK_COLORS.indigo
+  const linkColorClass =
+    VALID_LINK_COLORS[linkColor] || VALID_LINK_COLORS.indigo
 
   // Memoize gradient styles to avoid recalculation on every render
   const iconGradientStyle = useMemo(
     () => getGradientStyle(iconGradient.from, iconGradient.to),
-    [iconGradient.from, iconGradient.to]
+    [iconGradient.from, iconGradient.to],
   )
 
   const decorationGradientStyle = useMemo(
     () => getGradientStyle(decorationGradient.from, decorationGradient.to),
-    [decorationGradient.from, decorationGradient.to]
+    [decorationGradient.from, decorationGradient.to],
   )
 
   return (
@@ -229,8 +231,18 @@ export function FeatureCard({
             className={`flex items-center ${linkColorClass} font-semibold group-hover:translate-x-2 transition-transform duration-300 cursor-pointer`}
           >
             <span>{linkText}</span>
-            <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <svg
+              className="w-5 h-5 ml-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
             </svg>
           </button>
         )}
@@ -240,6 +252,3 @@ export function FeatureCard({
 }
 
 export default FeatureCard
-
-
-

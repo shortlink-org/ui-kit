@@ -5,26 +5,41 @@ describe('SuspenseFallback', () => {
   it('renders with default message', () => {
     render(<SuspenseFallback />)
 
-    expect(screen.getByText('Loading...', { selector: 'p' })).toBeInTheDocument()
+    expect(
+      screen.getByText('Loading...', { selector: 'p' }),
+    ).toBeInTheDocument()
     expect(screen.getByRole('status')).toBeInTheDocument()
-    expect(screen.getByRole('status')).toHaveAttribute('aria-label', 'Loading...')
+    expect(screen.getByRole('status')).toHaveAttribute(
+      'aria-label',
+      'Loading...',
+    )
   })
 
   it('renders with custom message', () => {
     render(<SuspenseFallback message="Загрузка данных..." />)
 
-    expect(screen.getByText('Загрузка данных...', { selector: 'p' })).toBeInTheDocument()
+    expect(
+      screen.getByText('Загрузка данных...', { selector: 'p' }),
+    ).toBeInTheDocument()
     expect(screen.getByRole('status')).toBeInTheDocument()
-    expect(screen.getByRole('status')).toHaveAttribute('aria-label', 'Загрузка данных...')
+    expect(screen.getByRole('status')).toHaveAttribute(
+      'aria-label',
+      'Загрузка данных...',
+    )
   })
 
   it('renders without visible message when message is empty string', () => {
     render(<SuspenseFallback message="" />)
 
     // Message should not be visible, but aria-label should still have "Loading..."
-    expect(screen.queryByText('Loading...', { selector: 'p' })).not.toBeInTheDocument()
+    expect(
+      screen.queryByText('Loading...', { selector: 'p' }),
+    ).not.toBeInTheDocument()
     expect(screen.getByRole('status')).toBeInTheDocument()
-    expect(screen.getByRole('status')).toHaveAttribute('aria-label', 'Loading...')
+    expect(screen.getByRole('status')).toHaveAttribute(
+      'aria-label',
+      'Loading...',
+    )
   })
 
   it('has correct structure with spinner and message', () => {
@@ -32,7 +47,9 @@ describe('SuspenseFallback', () => {
 
     const spinner = screen.getByRole('status')
     expect(spinner).toBeInTheDocument()
-    expect(screen.getByText('Loading data', { selector: 'p' })).toBeInTheDocument()
+    expect(
+      screen.getByText('Loading data', { selector: 'p' }),
+    ).toBeInTheDocument()
 
     // Check that it's a flex container
     const box = container.firstChild
@@ -60,4 +77,3 @@ describe('SuspenseFallback', () => {
     expect(box).toHaveClass('custom-class')
   })
 })
-

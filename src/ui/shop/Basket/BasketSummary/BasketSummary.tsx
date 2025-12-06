@@ -38,13 +38,20 @@ export function BasketSummary({
   }
 
   return (
-    <div className={clsx('border-t border-gray-200 dark:border-gray-700 px-4 py-6 sm:px-6', className)}>
+    <div
+      className={clsx(
+        'border-t border-gray-200 dark:border-gray-700 px-4 py-6 sm:px-6',
+        className,
+      )}
+    >
       <div className="flex justify-between text-base font-medium text-gray-900 dark:text-white">
         <p>Subtotal</p>
         <p>{subtotal}</p>
       </div>
       {shippingNote && (
-        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">{shippingNote}</p>
+        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
+          {shippingNote}
+        </p>
       )}
       <div className="mt-6">
         {checkoutHref ? (
@@ -84,4 +91,3 @@ export function BasketSummary({
 }
 
 export default BasketSummary
-

@@ -9,7 +9,11 @@ export function HeaderProfile({ profile }: HeaderProfileProps) {
   if (profile.render) {
     return (
       <div className="relative ml-3">
-        {profile.render({ avatar: profile.avatar, name: profile.name, email: profile.email })}
+        {profile.render({
+          avatar: profile.avatar,
+          name: profile.name,
+          email: profile.email,
+        })}
       </div>
     )
   }
@@ -23,7 +27,10 @@ export function HeaderProfile({ profile }: HeaderProfileProps) {
             <span className="sr-only">Open user menu</span>
             <img
               className="size-8 rounded-full bg-white/10 outline outline-1 -outline-offset-1 outline-white/10"
-              src={profile.avatar || 'https://ui-avatars.com/api/?name=User&background=random'}
+              src={
+                profile.avatar ||
+                'https://ui-avatars.com/api/?name=User&background=random'
+              }
               alt={profile.name || 'User profile'}
             />
           </MenuButton>
@@ -61,10 +68,12 @@ export function HeaderProfile({ profile }: HeaderProfileProps) {
       <span className="sr-only">User profile</span>
       <img
         className="size-8 rounded-full bg-white/10 outline outline-1 -outline-offset-1 outline-white/10"
-        src={profile.avatar || 'https://ui-avatars.com/api/?name=User&background=random'}
+        src={
+          profile.avatar ||
+          'https://ui-avatars.com/api/?name=User&background=random'
+        }
         alt={profile.name || 'User profile'}
       />
     </div>
   )
 }
-

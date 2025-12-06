@@ -8,11 +8,11 @@ export interface TableFooterProps<TData> {
   density?: 'compact' | 'normal' | 'comfortable'
 }
 
-export function TableFooter<TData>({ 
-  table, 
+export function TableFooter<TData>({
+  table,
   enableRowSelection = false,
   enableColumnResizing = false,
-  density = 'normal' 
+  density = 'normal',
 }: TableFooterProps<TData>) {
   const densityClasses = {
     compact: { cell: 'px-2 py-1 text-xs' },
@@ -21,7 +21,10 @@ export function TableFooter<TData>({
   }
 
   const footerGroups = table.getFooterGroups()
-  if (footerGroups.length === 0 || footerGroups[0].headers.every(h => !h.column.columnDef.footer)) {
+  if (
+    footerGroups.length === 0 ||
+    footerGroups[0].headers.every((h) => !h.column.columnDef.footer)
+  ) {
     return null
   }
 
@@ -44,17 +47,26 @@ export function TableFooter<TData>({
                   densityClasses[density].cell,
                   'font-semibold text-gray-700 dark:text-gray-300',
                   isPinned && 'sticky bg-gray-50 dark:bg-gray-800 z-20',
-                  footerClassName
+                  footerClassName,
                 )}
                 style={{
                   width: enableColumnResizing ? header.getSize() : undefined,
-                  left: isPinned === 'left' ? `${(header as { getStart: (side: 'left' | 'right') => number }).getStart('left')}px` : undefined,
-                  right: isPinned === 'right' ? `${(header as { getStart: (side: 'left' | 'right') => number }).getStart('right')}px` : undefined,
+                  left:
+                    isPinned === 'left'
+                      ? `${(header as { getStart: (side: 'left' | 'right') => number }).getStart('left')}px`
+                      : undefined,
+                  right:
+                    isPinned === 'right'
+                      ? `${(header as { getStart: (side: 'left' | 'right') => number }).getStart('right')}px`
+                      : undefined,
                 }}
               >
                 {header.isPlaceholder
                   ? null
-                  : flexRender(header.column.columnDef.footer, header.getContext())}
+                  : flexRender(
+                      header.column.columnDef.footer,
+                      header.getContext(),
+                    )}
               </td>
             )
           })}
@@ -63,4 +75,3 @@ export function TableFooter<TData>({
     </tfoot>
   )
 }
-

@@ -26,7 +26,9 @@ export const CardSkeleton: React.FC<CardSkeletonProps> = ({
     maxWidth === 'xl' && 'max-w-xl',
     maxWidth === '2xl' && 'max-w-2xl',
     maxWidth === 'full' && 'max-w-full',
-    typeof maxWidth === 'string' && !['sm', 'md', 'lg', 'xl', '2xl', 'full'].includes(maxWidth) && `max-w-[${maxWidth}]`,
+    typeof maxWidth === 'string' &&
+      !['sm', 'md', 'lg', 'xl', '2xl', 'full'].includes(maxWidth) &&
+      `max-w-[${maxWidth}]`,
     className,
   )
 
@@ -63,4 +65,3 @@ export const CardSkeleton: React.FC<CardSkeletonProps> = ({
 }
 
 export default CardSkeleton
-

@@ -35,7 +35,9 @@ export const Skeleton: React.FC<SkeletonProps> = ({
 
   const skeletonStyle: React.CSSProperties = {
     ...(width && { width: typeof width === 'number' ? `${width}px` : width }),
-    ...(height && { height: typeof height === 'number' ? `${height}px` : height }),
+    ...(height && {
+      height: typeof height === 'number' ? `${height}px` : height,
+    }),
     ...style,
   }
 
@@ -47,4 +49,3 @@ export const Skeleton: React.FC<SkeletonProps> = ({
 }
 
 export default Skeleton
-

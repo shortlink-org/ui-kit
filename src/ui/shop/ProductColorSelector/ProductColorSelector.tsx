@@ -37,7 +37,9 @@ export function ProductColorSelector({
 
   return (
     <div className={className}>
-      <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">Color</h3>
+      <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
+        Color
+      </h3>
       <RadioGroup
         value={selectedColorId}
         onChange={(value) => handleChange(value)}
@@ -62,7 +64,7 @@ export function ProductColorSelector({
                   'size-8 rounded-full forced-color-adjust-none',
                   'focus:outline-none focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-indigo-600',
                   'data-checked:outline-2 data-checked:outline-offset-2 data-checked:outline-black/20',
-                  'cursor-pointer border border-gray-300 dark:border-gray-600'
+                  'cursor-pointer border border-gray-300 dark:border-gray-600',
                 )}
                 aria-label={color.name}
               />
@@ -75,4 +77,3 @@ export function ProductColorSelector({
 }
 
 export default ProductColorSelector
-

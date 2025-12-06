@@ -5,9 +5,17 @@ import React from 'react'
 import SearchForm from './SearchForm'
 
 describe('SearchForm', () => {
-  const setup = (props: Partial<React.ComponentProps<typeof SearchForm>> = {}) => {
+  const setup = (
+    props: Partial<React.ComponentProps<typeof SearchForm>> = {},
+  ) => {
     const user = userEvent.setup()
-    render(<SearchForm placeholder="Search articles" label="Search articles" {...props} />)
+    render(
+      <SearchForm
+        placeholder="Search articles"
+        label="Search articles"
+        {...props}
+      />,
+    )
     const input = screen.getByLabelText(/search articles/i)
     return { user, input }
   }
@@ -56,14 +64,23 @@ describe('SearchForm', () => {
     render(<SearchForm placeholder="Search" label="Search input" disabled />)
     const input = screen.getByLabelText(/search input/i)
     expect(input).toBeDisabled()
-    expect(screen.queryByRole('button', { name: /clear search/i })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: /clear search/i }),
+    ).not.toBeInTheDocument()
   })
 
   it('calls onSearch after debounce delay if configured', async () => {
     jest.useFakeTimers()
     const onSearch = jest.fn()
     const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime })
-    render(<SearchForm placeholder="Search" label="Search input" onSearch={onSearch} debounceMs={300} />)
+    render(
+      <SearchForm
+        placeholder="Search"
+        label="Search input"
+        onSearch={onSearch}
+        debounceMs={300}
+      />,
+    )
     const input = screen.getByLabelText(/search input/i)
 
     await user.type(input, 'abc')

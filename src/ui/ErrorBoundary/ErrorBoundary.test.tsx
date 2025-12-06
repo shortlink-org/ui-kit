@@ -28,7 +28,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <div>Test content</div>
-      </ErrorBoundary>
+      </ErrorBoundary>,
     )
 
     expect(screen.getByText('Test content')).toBeInTheDocument()
@@ -38,12 +38,14 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     )
 
     expect(screen.getByText('Something went wrong')).toBeInTheDocument()
     expect(screen.getByText('Test error')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /try again/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /try again/i }),
+    ).toBeInTheDocument()
   })
 
   it('renders custom fallback when provided', () => {
@@ -52,7 +54,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary fallback={customFallback}>
         <ThrowError shouldThrow />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     )
 
     expect(screen.getByText('Custom error message')).toBeInTheDocument()
@@ -65,7 +67,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary onError={onError}>
         <ThrowError shouldThrow />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     )
 
     expect(onError).toHaveBeenCalled()
@@ -81,7 +83,7 @@ describe('ErrorBoundary', () => {
     const { rerender } = render(
       <ErrorBoundary>
         <ThrowError shouldThrow />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     )
 
     expect(screen.getByText('Something went wrong')).toBeInTheDocument()
@@ -93,7 +95,7 @@ describe('ErrorBoundary', () => {
     rerender(
       <ErrorBoundary>
         <ThrowError shouldThrow={false} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     )
 
     expect(screen.queryByText('Something went wrong')).not.toBeInTheDocument()
@@ -108,11 +110,10 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <CustomError />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     )
 
     expect(screen.getByText('Something went wrong')).toBeInTheDocument()
     expect(screen.getByText('Type error occurred')).toBeInTheDocument()
   })
 })
-

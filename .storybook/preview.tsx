@@ -22,17 +22,10 @@ import { theme } from '../src/theme/theme'
 /**
  * Optional Jest results. If the file doesn't exist, we pass `undefined`
  * so the addon silently does nothing (no runtime error).
- * Using dynamic import with error handling for better compatibility.
+ * Note: Dynamic import removed to avoid Rollup static analysis issues during build.
+ * If test-results.json is needed, it should be generated before the build.
  */
-let testResults: any = undefined
-try {
-  // @ts-ignore – file may not exist in CI/locally
-  const testResultsModule = await import('../test-results.json')
-  testResults = testResultsModule.default || testResultsModule
-} catch {
-  // Silently ignore if file doesn't exist
-  testResults = undefined
-}
+const testResults: any = undefined
 
 // Viewport presets for both Storybook viewport addon and Chromatic
 const viewportPresets = {
@@ -103,11 +96,18 @@ const preview = definePreview({
     // @ts-expect-error - Storybook decorator types
     (Story: any, context: any) => {
       const forcedTheme =
-        context.globals.theme === 'system' ? undefined : (context.globals.theme as 'light' | 'dark')
+        context.globals.theme === 'system'
+          ? undefined
+          : (context.globals.theme as 'light' | 'dark')
 
       return (
         // next-themes uses the `class` attribute to toggle `.dark`
-        <NextThemeProvider enableSystem attribute="class" defaultTheme="light" forcedTheme={forcedTheme}>
+        <NextThemeProvider
+          enableSystem
+          attribute="class"
+          defaultTheme="light"
+          forcedTheme={forcedTheme}
+        >
           {/* MUI color-scheme script is safe here for Storybook */}
           <InitColorSchemeScript />
           <MuiThemeProvider theme={theme}>
@@ -118,22 +118,24 @@ const preview = definePreview({
             </LocalizationProvider>
           </MuiThemeProvider>
         </NextThemeProvider>
-      );
+      )
     },
     // Container decorator - only applies when container parameter is true
     // This allows components to opt-in to container wrapping instead of defaulting to it
     // @ts-expect-error - Storybook decorator types
     (Story: any, context: any) => {
-      const shouldUseContainer = 
+      const shouldUseContainer =
         context.parameters.container === true ||
-        (context.parameters.layout !== 'fullscreen' && 
-         context.parameters.fullscreen !== true &&
-         context.parameters.container !== false)
+        (context.parameters.layout !== 'fullscreen' &&
+          context.parameters.fullscreen !== true &&
+          context.parameters.container !== false)
 
       // If explicitly set to false or fullscreen, don't wrap
-      if (context.parameters.container === false || 
-          context.parameters.layout === 'fullscreen' || 
-          context.parameters.fullscreen === true) {
+      if (
+        context.parameters.container === false ||
+        context.parameters.layout === 'fullscreen' ||
+        context.parameters.fullscreen === true
+      ) {
         return <Story />
       }
 
@@ -143,7 +145,8 @@ const preview = definePreview({
       }
 
       const containerWidth = context.parameters.containerWidth || 'max-w-2xl'
-      const containerPadding = context.parameters.containerPadding || 'px-4 py-6'
+      const containerPadding =
+        context.parameters.containerPadding || 'px-4 py-6'
 
       return (
         <div className={clsx('w-full', containerWidth, containerPadding)}>

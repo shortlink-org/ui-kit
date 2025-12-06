@@ -23,11 +23,10 @@ export function SidebarMenuButton({
         'rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-white/50',
         'disabled:opacity-50 disabled:cursor-not-allowed',
         'hover:scale-105 active:scale-95',
-        hasNavigation && 'hidden sm:block'
+        hasNavigation && 'hidden sm:block',
       )}
     >
       <Bars3Icon className="size-6" />
     </button>
   )
 }
-

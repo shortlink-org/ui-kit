@@ -13,12 +13,20 @@ type AppProps = {
   inactiveClassName?: string
 }
 
-function getItem({ mode, url, icon, name, activePath, activeClassName, inactiveClassName }: AppProps) {
+function getItem({
+  mode,
+  url,
+  icon,
+  name,
+  activePath,
+  activeClassName,
+  inactiveClassName,
+}: AppProps) {
   const iconClassName =
     'text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
   let linkClassName = clsx(
     'flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group',
-    inactiveClassName
+    inactiveClassName,
   )
 
   if (mode === 'mini') {
@@ -26,7 +34,10 @@ function getItem({ mode, url, icon, name, activePath, activeClassName, inactiveC
   }
 
   const linkContent = (
-    <div className={linkClassName} aria-label={mode === 'mini' ? name : undefined}>
+    <div
+      className={linkClassName}
+      aria-label={mode === 'mini' ? name : undefined}
+    >
       {React.cloneElement(icon, { className: iconClassName })}
       {mode === 'full' && <span className="ms-3">{name}</span>}
     </div>
@@ -34,9 +45,9 @@ function getItem({ mode, url, icon, name, activePath, activeClassName, inactiveC
 
   return (
     <li key={url} className={'w-full'}>
-      <ActiveLink 
-        href={url} 
-        passHref 
+      <ActiveLink
+        href={url}
+        passHref
         activeClassName={activeClassName ?? 'md:text-blue-700'}
         activePath={activePath}
       >

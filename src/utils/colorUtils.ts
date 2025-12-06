@@ -34,4 +34,3 @@ export function lightenColor(
     b: Math.min(255, Math.round(b * factor)),
   }
 }
-

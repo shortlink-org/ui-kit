@@ -19,7 +19,9 @@ const meta = preview.meta({
 export default meta
 
 function Template(args: ComponentProps<typeof ProductSizeSelector>) {
-  const [selectedSize, setSelectedSize] = useState<string | number | undefined>(args.selectedSizeId)
+  const [selectedSize, setSelectedSize] = useState<string | number | undefined>(
+    args.selectedSizeId,
+  )
 
   return (
     <ProductSizeSelector
@@ -110,4 +112,3 @@ export const WithSizeGuide = meta.story({
     sizeGuideHref: '#size-guide',
   },
 })
-

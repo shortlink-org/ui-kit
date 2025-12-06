@@ -38,7 +38,9 @@ export function ProductSizeSelector({
   return (
     <div className={clsx('mt-10', className)}>
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">Size</h3>
+        <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
+          Size
+        </h3>
         {sizeGuideHref && (
           <a
             href={sizeGuideHref}
@@ -73,10 +75,12 @@ export function ProductSizeSelector({
                   'data-disabled:border-gray-400 data-disabled:bg-gray-200 data-disabled:opacity-25',
                   'dark:border-gray-600 dark:bg-gray-800',
                   'dark:data-checked:border-indigo-500 dark:data-checked:bg-indigo-600',
-                  'cursor-pointer disabled:cursor-not-allowed'
+                  'cursor-pointer disabled:cursor-not-allowed',
                 )}
                 aria-label={size.name}
-                aria-describedby={size.description ? `size-desc-${sizeIdStr}` : undefined}
+                aria-describedby={
+                  size.description ? `size-desc-${sizeIdStr}` : undefined
+                }
               >
                 <span
                   className={clsx(
@@ -103,4 +107,3 @@ export function ProductSizeSelector({
 }
 
 export default ProductSizeSelector
-

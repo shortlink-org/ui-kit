@@ -83,7 +83,15 @@ export const Minimal = meta.story({
 
 export const WithNextJsLink = meta.story({
   args: {
-    LinkComponent: ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => {
+    LinkComponent: ({
+      href,
+      children,
+      className,
+    }: {
+      href: string
+      children: React.ReactNode
+      className?: string
+    }) => {
       // This is a mock for Next.js Link - in real usage, import Link from 'next/link'
       return (
         <a href={href} className={className}>
@@ -95,9 +103,9 @@ export const WithNextJsLink = meta.story({
   parameters: {
     docs: {
       description: {
-        story: 'Example of using Footer with Next.js Link component. In your app, import Link from "next/link" and pass it as LinkComponent prop.',
+        story:
+          'Example of using Footer with Next.js Link component. In your app, import Link from "next/link" and pass it as LinkComponent prop.',
       },
     },
   },
 })
-

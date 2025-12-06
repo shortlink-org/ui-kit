@@ -12,8 +12,8 @@ export interface GlobalFilterProps<TData> {
   density?: 'compact' | 'normal' | 'comfortable'
 }
 
-export function GlobalFilter<TData>({ 
-  table, 
+export function GlobalFilter<TData>({
+  table,
   globalFilterValue,
   setGlobalFilterValue,
   placeholder = 'Search all columns...',
@@ -60,7 +60,7 @@ export function GlobalFilter<TData>({
           'placeholder-gray-400 dark:placeholder-gray-500',
           'focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500',
           'transition-all duration-200',
-          densityClasses[density]
+          densityClasses[density],
         )}
       />
       {value && (
@@ -69,7 +69,7 @@ export function GlobalFilter<TData>({
           className={clsx(
             'absolute inset-y-0 right-0 flex items-center pr-3',
             'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300',
-            'transition-colors'
+            'transition-colors',
           )}
         >
           <XMarkIcon className="size-4" />
@@ -78,4 +78,3 @@ export function GlobalFilter<TData>({
     </div>
   )
 }
-

@@ -84,7 +84,13 @@ export const Interactive = meta.story({
       const [last, setLast] = React.useState('')
       return (
         <div className="space-y-3">
-          <SearchForm {...args} onSearch={(q) => { setLast(q); args.onSearch?.(q) }} />
+          <SearchForm
+            {...args}
+            onSearch={(q) => {
+              setLast(q)
+              args.onSearch?.(q)
+            }}
+          />
           <div className="text-sm text-gray-600 dark:text-gray-300">
             <span className="font-medium">Last query:</span>{' '}
             <span data-testid="last-query">{last || '—'}</span>

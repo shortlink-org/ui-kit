@@ -47,7 +47,8 @@ export interface MultiColumnLayoutProps {
 }
 
 // Helper for base column classes
-const baseColumnClass = 'transition-colors duration-500 w-full h-full min-h-0 flex flex-col'
+const baseColumnClass =
+  'transition-colors duration-500 w-full h-full min-h-0 flex flex-col'
 
 // Default configuration
 const defaultConfig = {
@@ -85,64 +86,85 @@ export function MultiColumnLayout({
 }: MultiColumnLayoutProps) {
   // Generate unique ID for this layout instance to scope styles (must be called before any conditional returns)
   const layoutId = React.useId().replace(/:/g, '-')
-  
+
   // Filter out empty columns
-  const validColumns = columns.filter((col) => col.content !== null && col.content !== undefined)
+  const validColumns = columns.filter(
+    (col) => col.content !== null && col.content !== undefined,
+  )
   const columnCount = validColumns.length
 
   // Helper to get span value (supports number or ColumnSpan object)
-  const getSpanValue = React.useCallback((span: number | ColumnSpan | undefined, breakpoint: keyof typeof breakpointMap): number => {
-    if (!span) return 1
-    if (typeof span === 'number') return span
-    // For responsive spans, get the value for current breakpoint or fallback to smaller breakpoint
-    const breakpointOrder: (keyof typeof breakpointMap)[] = ['sm', 'md', 'lg', 'xl', '2xl']
-    const currentIndex = breakpointOrder.indexOf(breakpoint)
-    for (let i = currentIndex; i >= 0; i--) {
-      const bp = breakpointOrder[i]
-      if (span[bp] !== undefined) {
-        return span[bp]!
+  const getSpanValue = React.useCallback(
+    (
+      span: number | ColumnSpan | undefined,
+      breakpoint: keyof typeof breakpointMap,
+    ): number => {
+      if (!span) return 1
+      if (typeof span === 'number') return span
+      // For responsive spans, get the value for current breakpoint or fallback to smaller breakpoint
+      const breakpointOrder: (keyof typeof breakpointMap)[] = [
+        'sm',
+        'md',
+        'lg',
+        'xl',
+        '2xl',
+      ]
+      const currentIndex = breakpointOrder.indexOf(breakpoint)
+      for (let i = currentIndex; i >= 0; i--) {
+        const bp = breakpointOrder[i]
+        if (span[bp] !== undefined) {
+          return span[bp]!
+        }
       }
-    }
-    return 1
-  }, [])
+      return 1
+    },
+    [],
+  )
 
   // Helper to check if span is responsive object
-  const isResponsiveSpan = (span: number | ColumnSpan | undefined): span is ColumnSpan => {
+  const isResponsiveSpan = (
+    span: number | ColumnSpan | undefined,
+  ): span is ColumnSpan => {
     return typeof span === 'object' && span !== null && !Array.isArray(span)
   }
 
   // Check if any column uses responsive spans
-  const hasResponsiveSpans = validColumns.some(col => isResponsiveSpan(col.span))
+  const hasResponsiveSpans = validColumns.some((col) =>
+    isResponsiveSpan(col.span),
+  )
 
   const breakpoint = breakpointMap[stackAt]
-  
+
   // Generate grid template columns for each breakpoint if responsive spans are used
-  const generateGridTemplate = React.useCallback((bp: keyof typeof breakpointMap): string => {
-    // Check if any column has explicit span > 1 at this breakpoint
-    const hasSpanColumns = validColumns.some(col => {
-      const span = getSpanValue(col.span, bp)
-      return span > 1
-    })
-    
-    if (hasSpanColumns) {
-      // Use proportional sizing based on spans (including last column)
-      return validColumns
-        .map((col) => `${getSpanValue(col.span, bp)}fr`)
-        .join(' ')
-    } else {
-      // Use auto-sizing: auto for menus, 1fr for last column (content)
-      return validColumns
-        .map((_, idx) => {
-          // Last column always takes remaining space with 1fr
-          if (idx === validColumns.length - 1) {
-            return '1fr'
-          }
-          // Other columns use auto (for menus with max-width)
-          return 'auto'
-        })
-        .join(' ')
-    }
-  }, [validColumns, getSpanValue])
+  const generateGridTemplate = React.useCallback(
+    (bp: keyof typeof breakpointMap): string => {
+      // Check if any column has explicit span > 1 at this breakpoint
+      const hasSpanColumns = validColumns.some((col) => {
+        const span = getSpanValue(col.span, bp)
+        return span > 1
+      })
+
+      if (hasSpanColumns) {
+        // Use proportional sizing based on spans (including last column)
+        return validColumns
+          .map((col) => `${getSpanValue(col.span, bp)}fr`)
+          .join(' ')
+      } else {
+        // Use auto-sizing: auto for menus, 1fr for last column (content)
+        return validColumns
+          .map((_, idx) => {
+            // Last column always takes remaining space with 1fr
+            if (idx === validColumns.length - 1) {
+              return '1fr'
+            }
+            // Other columns use auto (for menus with max-width)
+            return 'auto'
+          })
+          .join(' ')
+      }
+    },
+    [validColumns, getSpanValue],
+  )
 
   // Generate CSS for responsive grid template columns
   const generateResponsiveStyles = React.useCallback((): string => {
@@ -160,8 +182,14 @@ export function MultiColumnLayout({
 
     // Complex case: generate for each breakpoint
     const styles: string[] = []
-    const breakpointOrder: (keyof typeof breakpointMap)[] = ['sm', 'md', 'lg', 'xl', '2xl']
-    
+    const breakpointOrder: (keyof typeof breakpointMap)[] = [
+      'sm',
+      'md',
+      'lg',
+      'xl',
+      '2xl',
+    ]
+
     breakpointOrder.forEach((bp) => {
       const bpValue = breakpointMap[bp]
       const gridTemplateColumns = generateGridTemplate(bp)
@@ -178,7 +206,10 @@ export function MultiColumnLayout({
   }, [hasResponsiveSpans, stackAt, layoutId, breakpoint, generateGridTemplate])
 
   // Memoize styles to avoid remounting style tags on every render
-  const responsiveStyles = React.useMemo(() => generateResponsiveStyles(), [generateResponsiveStyles])
+  const responsiveStyles = React.useMemo(
+    () => generateResponsiveStyles(),
+    [generateResponsiveStyles],
+  )
 
   if (columnCount === 0) {
     return null
@@ -218,10 +249,10 @@ export function MultiColumnLayout({
           }
 
           return (
-            <div 
+            <div
               key={column.id ?? index}
               data-column-id={columnId}
-              className={columnClasses} 
+              className={columnClasses}
               style={columnStyles}
             >
               {column.content}

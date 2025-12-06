@@ -46,10 +46,10 @@ dast:
   variables:
     GIT_STRATEGY: none
     DAST_WEBSITE: $ENVIRONMENT_URL
-    DAST_FULL_SCAN_ENABLED: "true" # do a full scan
-    DAST_ZAP_USE_AJAX_SPIDER: "true" # use the ajax spider
+    DAST_FULL_SCAN_ENABLED: 'true' # do a full scan
+    DAST_ZAP_USE_AJAX_SPIDER: 'true' # use the ajax spider
     GITLAB_FEATURES: dast
-    DAST_BROWSER_SCAN: "true"
+    DAST_BROWSER_SCAN: 'true'
   before_script:
     - echo "${DAST_WEBSITE}" > environment_url.txt
   rules:

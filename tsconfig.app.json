@@ -29,5 +29,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", ".storybook/**/*.ts", ".storybook/**/*.tsx", "types/**/*.d.ts"]
+  "include": [
+    "src",
+    ".storybook/**/*.ts",
+    ".storybook/**/*.tsx",
+    "types/**/*.d.ts"
+  ]
 }

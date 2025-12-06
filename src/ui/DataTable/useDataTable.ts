@@ -68,42 +68,42 @@ export function useDataTable<TData>({
 }: UseDataTableOptions<TData>) {
   // Sorting state
   const [sortingState, setSortingState] = useState<SortingState>(
-    initialState?.sorting ?? []
+    initialState?.sorting ?? [],
   )
 
   // Column visibility state
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
-    initialState?.columnVisibility ?? {}
+    initialState?.columnVisibility ?? {},
   )
 
   // Column sizing state
   const [columnSizing, setColumnSizing] = useState<ColumnSizingState>(
-    initialState?.columnSizing ?? {}
+    initialState?.columnSizing ?? {},
   )
 
   // Column pinning state
   const [columnPinning, setColumnPinning] = useState<ColumnPinningState>(
-    initialState?.columnPinning ?? { left: [], right: [] }
+    initialState?.columnPinning ?? { left: [], right: [] },
   )
 
   // Column ordering state
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>(
-    initialState?.columnOrder ?? []
+    initialState?.columnOrder ?? [],
   )
 
   // Expanded state
   const [expanded, setExpanded] = useState<ExpandedState>(
-    initialState?.expanded ?? {}
+    initialState?.expanded ?? {},
   )
 
   // Grouping state
   const [grouping, setGrouping] = useState<GroupingState>(
-    initialState?.grouping ?? []
+    initialState?.grouping ?? [],
   )
 
   // Global filter state (only if enabled)
   const [globalFilterState, setGlobalFilterState] = useState<string>(
-    initialState?.globalFilter ?? ''
+    initialState?.globalFilter ?? '',
   )
 
   // Pagination state
@@ -210,7 +210,7 @@ export function useDataTable<TData>({
       paginationState,
       globalFilterState,
       rowSelection,
-    ]
+    ],
   )
 
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -240,4 +240,3 @@ export function useDataTable<TData>({
     setGlobalFilterState,
   }
 }
-

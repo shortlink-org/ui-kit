@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* CSS Variables for Theme Colors (Tailwind v4 approach) */
 :root {
@@ -42,37 +42,37 @@
   --color-surface: #ffffff;
   --color-surface-hover: var(--color-gray-50);
   --color-surface-active: var(--color-gray-100);
-  
+
   /* Semantic colors - Background & Foreground */
   --color-background: var(--color-gray-50);
   --color-foreground: var(--color-gray-900);
   --color-border: var(--color-gray-200);
   --color-muted: var(--color-gray-100);
   --color-muted-foreground: var(--color-gray-500);
-  
+
   /* Spacing tokens */
-  --spacing-xs: 0.25rem;    /* 4px */
-  --spacing-sm: 0.5rem;      /* 8px */
-  --spacing-md: 1rem;        /* 16px */
-  --spacing-lg: 1.5rem;      /* 24px */
-  --spacing-xl: 2rem;        /* 32px */
-  --spacing-2xl: 3rem;       /* 48px */
-  --spacing-3xl: 4rem;       /* 64px */
-  
+  --spacing-xs: 0.25rem; /* 4px */
+  --spacing-sm: 0.5rem; /* 8px */
+  --spacing-md: 1rem; /* 16px */
+  --spacing-lg: 1.5rem; /* 24px */
+  --spacing-xl: 2rem; /* 32px */
+  --spacing-2xl: 3rem; /* 48px */
+  --spacing-3xl: 4rem; /* 64px */
+
   /* Border radius tokens */
-  --radius-sm: 0.25rem;      /* 4px */
-  --radius-md: 0.5rem;       /* 8px */
-  --radius-lg: 0.75rem;      /* 12px */
-  --radius-xl: 1rem;         /* 16px */
-  --radius-2xl: 1.5rem;      /* 24px */
+  --radius-sm: 0.25rem; /* 4px */
+  --radius-md: 0.5rem; /* 8px */
+  --radius-lg: 0.75rem; /* 12px */
+  --radius-xl: 1rem; /* 16px */
+  --radius-2xl: 1.5rem; /* 24px */
   --radius-full: 9999px;
-  
+
   /* Focus ring tokens */
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
   --focus-ring-color: var(--color-primary-300);
   --focus-ring-color-error: var(--color-error-300);
-  
+
   /* Table tokens */
   --table-row-hover: var(--color-gray-50);
   --table-row-selected: var(--color-primary-50);
@@ -87,13 +87,13 @@
   --color-surface: var(--color-gray-800);
   --color-surface-hover: var(--color-gray-700);
   --color-surface-active: var(--color-gray-600);
-  
+
   --color-background: var(--color-gray-900);
   --color-foreground: var(--color-gray-50);
   --color-border: var(--color-gray-700);
   --color-muted: var(--color-gray-800);
   --color-muted-foreground: var(--color-gray-400);
-  
+
   /* Table tokens - dark mode */
   --table-row-hover: rgba(31, 41, 55, 0.5); /* gray-800 with opacity */
   --table-row-selected: rgba(37, 99, 235, 0.2); /* indigo-600 with opacity */
@@ -112,7 +112,8 @@
 
 /* Smooth transitions for theme switching */
 * {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-property:
+    color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -120,7 +121,7 @@
 /* Exclude elements that use GSAP animations from global transitions */
 .atc-wrapper,
 .atc-wrapper *,
-[class*="gsap"],
+[class*='gsap'],
 .gsap-animated {
   transition-property: none !important;
   transition-duration: 0s !important;
@@ -141,15 +142,17 @@
   /* Button tokens */
   --btn-radius: var(--radius-md);
   --btn-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --btn-shadow-hover: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --btn-shadow-hover:
+    0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --btn-transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  
+
   /* Card tokens */
   --card-radius: var(--radius-lg);
   --card-padding: var(--spacing-md);
   --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --card-shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  
+  --card-shadow-hover:
+    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
   /* Semantic colors for Tailwind utilities */
   --color-surface: var(--color-surface);
   --color-surface-hover: var(--color-surface-hover);
@@ -169,24 +172,24 @@
     --tw-ring-color: var(--focus-ring-color);
     --tw-ring-offset-color: var(--color-background);
   }
-  
+
   .focus-ring-error {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
     --tw-ring-color: var(--focus-ring-color-error);
     --tw-ring-offset-color: var(--color-background);
   }
-  
+
   /* Card shell utility - consistent card styling */
   .card-shell {
     @apply bg-[var(--color-surface)] rounded-[var(--card-radius)] p-[var(--card-padding)] border border-[var(--color-border)];
     box-shadow: var(--card-shadow);
     @apply transition-shadow duration-150 ease-in-out;
   }
-  
+
   .card-shell:hover {
     box-shadow: var(--card-shadow-hover);
   }
-  
+
   /* Button component styles using CSS variables */
   .btn {
     @apply inline-flex items-center justify-center gap-2 font-medium;
@@ -205,7 +208,7 @@
     --tw-ring-color: var(--focus-ring-color-error);
     --tw-ring-offset-color: var(--color-background);
   }
-  
+
   /* Respect prefers-reduced-motion */
   @media (prefers-reduced-motion: reduce) {
     .btn {
@@ -220,7 +223,11 @@
   }
 
   .btn[data-variant='secondary'] {
-    background-color: color-mix(in srgb, var(--color-primary-600) 10%, transparent);
+    background-color: color-mix(
+      in srgb,
+      var(--color-primary-600) 10%,
+      transparent
+    );
     @apply text-[var(--color-primary-700)] dark:bg-[color-mix(in_srgb,var(--color-primary-400)_10%,transparent)] dark:text-[var(--color-primary-300)] hover:bg-[color-mix(in_srgb,var(--color-primary-600)_20%,transparent)] dark:hover:bg-[color-mix(in_srgb,var(--color-primary-400)_20%,transparent)];
   }
 
@@ -275,7 +282,7 @@
 
   /* Ensure icons are properly aligned */
   .btn svg,
-  .btn [class*="MuiSvgIcon"] {
+  .btn [class*='MuiSvgIcon'] {
     @apply block;
   }
 }
@@ -288,7 +295,7 @@
 
   .btn-spinner {
     @apply animate-spin;
-    
+
     @media (prefers-reduced-motion: reduce) {
       @apply animate-none;
     }
@@ -308,39 +315,39 @@
     /* Base typography styles - prose equivalent */
     @apply text-base leading-7;
   }
-  
+
   .prose-shortlink :where(h1, h2, h3, h4, h5, h6) {
     color: var(--color-foreground);
     font-weight: 600;
   }
-  
+
   .prose-shortlink :where(a) {
     color: var(--color-primary-600);
     text-decoration: none;
     transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
   }
-  
+
   .prose-shortlink :where(a:hover) {
     color: var(--color-primary-700);
     text-decoration: underline;
   }
-  
+
   .prose-shortlink :where(ul, ol) {
     margin-top: 1.25em;
     margin-bottom: 1.25em;
     padding-left: 1.625em;
   }
-  
+
   .prose-shortlink :where(li) {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
   }
-  
+
   .prose-shortlink :where(blockquote) {
     border-left-color: var(--color-primary-300);
     color: var(--color-muted-foreground);
   }
-  
+
   .prose-shortlink :where(code) {
     background-color: var(--color-muted);
     color: var(--color-foreground);
@@ -348,22 +355,22 @@
     border-radius: var(--radius-sm);
     font-size: 0.875em;
   }
-  
+
   .prose-shortlink :where(pre) {
     background-color: var(--color-muted);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
   }
-  
+
   /* Dark mode adjustments */
   .dark .prose-shortlink :where(a) {
     color: var(--color-primary-400);
   }
-  
+
   .dark .prose-shortlink :where(a:hover) {
     color: var(--color-primary-300);
   }
-  
+
   .dark .prose-shortlink :where(blockquote) {
     border-left-color: var(--color-primary-500);
   }

@@ -41,7 +41,13 @@ export default meta
 
 export const Default = meta.story({
   args: {},
-  play: async ({ canvasElement, args }: { canvasElement: HTMLElement; args: { onSubmit?: (email: string) => void | Promise<void> } }) => {
+  play: async ({
+    canvasElement,
+    args,
+  }: {
+    canvasElement: HTMLElement
+    args: { onSubmit?: (email: string) => void | Promise<void> }
+  }) => {
     const canvas = within(canvasElement)
     const emailInput = canvas.getByPlaceholderText('Enter your email')
     const subscribeButton = canvas.getByRole('button', { name: 'Subscribe' })
@@ -104,4 +110,3 @@ export const Minimal = meta.story({
     description: 'Subscribe to receive our latest news.',
   },
 })
-

@@ -1,7 +1,17 @@
 import { type Table as TanStackTable } from '@tanstack/react-table'
-import { ChevronLeftIcon, ChevronRightIcon, EllipsisVerticalIcon } from '@heroicons/react/24/outline'
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  EllipsisVerticalIcon,
+} from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
-import { Button, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
+import {
+  Button,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+} from '@headlessui/react'
 
 export interface PaginationProps<TData> {
   table: TanStackTable<TData>
@@ -11,7 +21,11 @@ export interface PaginationProps<TData> {
 
 const DEFAULT_PAGE_SIZES = [10, 20, 30, 50, 100]
 
-export function Pagination<TData>({ table, pageSizeOptions = DEFAULT_PAGE_SIZES, mobilePageSizeControl = true }: PaginationProps<TData>) {
+export function Pagination<TData>({
+  table,
+  pageSizeOptions = DEFAULT_PAGE_SIZES,
+  mobilePageSizeControl = true,
+}: PaginationProps<TData>) {
   const {
     getCanPreviousPage,
     getCanNextPage,
@@ -29,7 +43,10 @@ export function Pagination<TData>({ table, pageSizeOptions = DEFAULT_PAGE_SIZES,
   const currentPageSize = pagination.pageSize
   const totalRows = table.getRowCount()
   const startRow = pagination.pageIndex * pagination.pageSize + 1
-  const endRow = Math.min((pagination.pageIndex + 1) * pagination.pageSize, totalRows)
+  const endRow = Math.min(
+    (pagination.pageIndex + 1) * pagination.pageSize,
+    totalRows,
+  )
 
   if (totalPages <= 1 && currentPageSize >= totalRows) {
     return null
@@ -41,7 +58,8 @@ export function Pagination<TData>({ table, pageSizeOptions = DEFAULT_PAGE_SIZES,
       {mobilePageSizeControl && (
         <div className="flex sm:hidden items-center justify-between w-full">
           <span className="text-sm text-gray-700 dark:text-gray-300">
-            Showing <span className="font-medium">{startRow}</span> to <span className="font-medium">{endRow}</span> of{' '}
+            Showing <span className="font-medium">{startRow}</span> to{' '}
+            <span className="font-medium">{endRow}</span> of{' '}
             <span className="font-medium">{totalRows}</span>
           </span>
           <Menu as="div" className="relative">
@@ -51,7 +69,7 @@ export function Pagination<TData>({ table, pageSizeOptions = DEFAULT_PAGE_SIZES,
                 'text-gray-700 dark:text-gray-300',
                 'hover:bg-gray-100 dark:hover:bg-gray-700',
                 'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
-                'transition-all duration-200'
+                'transition-all duration-200',
               )}
             >
               <EllipsisVerticalIcon className="w-5 h-5" />
@@ -66,7 +84,7 @@ export function Pagination<TData>({ table, pageSizeOptions = DEFAULT_PAGE_SIZES,
                 'focus:outline-none',
                 'transition data-closed:scale-95 data-closed:transform data-closed:opacity-0',
                 'data-enter:duration-100 data-enter:ease-out',
-                'data-leave:duration-75 data-leave:ease-in'
+                'data-leave:duration-75 data-leave:ease-in',
               )}
             >
               <div className="px-3 py-2 text-xs font-medium text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
@@ -83,7 +101,8 @@ export function Pagination<TData>({ table, pageSizeOptions = DEFAULT_PAGE_SIZES,
                       'w-full text-left px-3 py-2 text-sm',
                       'text-gray-700 dark:text-gray-300',
                       'data-focus:bg-gray-100 dark:data-focus:bg-gray-700',
-                      currentPageSize === size && 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400'
+                      currentPageSize === size &&
+                        'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400',
                     )}
                   >
                     {size}
@@ -103,7 +122,7 @@ export function Pagination<TData>({ table, pageSizeOptions = DEFAULT_PAGE_SIZES,
             'flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200',
             'bg-white border border-gray-300 dark:border-gray-700 rounded-md gap-x-2',
             'hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-800',
-            'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white'
+            'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white',
           )}
         >
           <ChevronLeftIcon className="w-5 h-5 rtl:-scale-x-100" />
@@ -118,14 +137,18 @@ export function Pagination<TData>({ table, pageSizeOptions = DEFAULT_PAGE_SIZES,
               'px-2 py-1 text-sm rounded-md transition-colors duration-200',
               currentPage === 1
                 ? 'text-blue-500 dark:bg-gray-800 bg-blue-100/60'
-                : 'text-gray-500 dark:text-gray-300 dark:hover:bg-gray-800 hover:bg-gray-100'
+                : 'text-gray-500 dark:text-gray-300 dark:hover:bg-gray-800 hover:bg-gray-100',
             )}
           >
             1
           </button>
 
           {/* Show pages around current page */}
-          {currentPage > 3 && <span className="px-2 py-1 text-sm text-gray-500 dark:text-gray-400">...</span>}
+          {currentPage > 3 && (
+            <span className="px-2 py-1 text-sm text-gray-500 dark:text-gray-400">
+              ...
+            </span>
+          )}
 
           {Array.from({ length: totalPages }, (_, i) => i + 1)
             .filter((page) => {
@@ -140,7 +163,7 @@ export function Pagination<TData>({ table, pageSizeOptions = DEFAULT_PAGE_SIZES,
                   'px-2 py-1 text-sm rounded-md transition-colors duration-200',
                   page === currentPage
                     ? 'text-blue-500 dark:bg-gray-800 bg-blue-100/60'
-                    : 'text-gray-500 dark:text-gray-300 dark:hover:bg-gray-800 hover:bg-gray-100'
+                    : 'text-gray-500 dark:text-gray-300 dark:hover:bg-gray-800 hover:bg-gray-100',
                 )}
               >
                 {page}
@@ -148,7 +171,11 @@ export function Pagination<TData>({ table, pageSizeOptions = DEFAULT_PAGE_SIZES,
             ))}
 
           {/* Show ellipsis if needed */}
-          {currentPage < totalPages - 2 && <span className="px-2 py-1 text-sm text-gray-500 dark:text-gray-400">...</span>}
+          {currentPage < totalPages - 2 && (
+            <span className="px-2 py-1 text-sm text-gray-500 dark:text-gray-400">
+              ...
+            </span>
+          )}
 
           {/* Always show last page if more than 1 page */}
           {totalPages > 1 && (
@@ -158,7 +185,7 @@ export function Pagination<TData>({ table, pageSizeOptions = DEFAULT_PAGE_SIZES,
                 'px-2 py-1 text-sm rounded-md transition-colors duration-200',
                 currentPage === totalPages
                   ? 'text-blue-500 dark:bg-gray-800 bg-blue-100/60'
-                  : 'text-gray-500 dark:text-gray-300 dark:hover:bg-gray-800 hover:bg-gray-100'
+                  : 'text-gray-500 dark:text-gray-300 dark:hover:bg-gray-800 hover:bg-gray-100',
               )}
             >
               {totalPages}
@@ -173,7 +200,7 @@ export function Pagination<TData>({ table, pageSizeOptions = DEFAULT_PAGE_SIZES,
             'flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200',
             'bg-white border border-gray-300 dark:border-gray-700 rounded-md gap-x-2',
             'hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-800',
-            'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white'
+            'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white',
           )}
         >
           <span className="hidden sm:inline">Next</span>
@@ -184,11 +211,14 @@ export function Pagination<TData>({ table, pageSizeOptions = DEFAULT_PAGE_SIZES,
       {/* Desktop: Show range and page size control */}
       <div className="hidden sm:flex items-center gap-4">
         <span className="text-sm text-gray-700 dark:text-gray-300">
-          Showing <span className="font-medium">{startRow}</span> to <span className="font-medium">{endRow}</span> of{' '}
+          Showing <span className="font-medium">{startRow}</span> to{' '}
+          <span className="font-medium">{endRow}</span> of{' '}
           <span className="font-medium">{totalRows}</span>
         </span>
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-700 dark:text-gray-300">Rows per page:</span>
+          <span className="text-sm text-gray-700 dark:text-gray-300">
+            Rows per page:
+          </span>
           <Menu as="div" className="relative">
             <MenuButton
               className={clsx(
@@ -199,7 +229,7 @@ export function Pagination<TData>({ table, pageSizeOptions = DEFAULT_PAGE_SIZES,
                 'hover:bg-gray-50 dark:hover:bg-gray-700',
                 'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
                 'transition-all duration-200',
-                'min-w-[70px]'
+                'min-w-[70px]',
               )}
             >
               {currentPageSize}
@@ -213,7 +243,7 @@ export function Pagination<TData>({ table, pageSizeOptions = DEFAULT_PAGE_SIZES,
                 'focus:outline-none',
                 'transition data-closed:scale-95 data-closed:transform data-closed:opacity-0',
                 'data-enter:duration-100 data-enter:ease-out',
-                'data-leave:duration-75 data-leave:ease-in'
+                'data-leave:duration-75 data-leave:ease-in',
               )}
             >
               {pageSizeOptions.map((size) => (
@@ -227,7 +257,8 @@ export function Pagination<TData>({ table, pageSizeOptions = DEFAULT_PAGE_SIZES,
                       'w-full text-left px-3 py-2 text-sm',
                       'text-gray-700 dark:text-gray-300',
                       'data-focus:bg-gray-100 dark:data-focus:bg-gray-700',
-                      currentPageSize === size && 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400'
+                      currentPageSize === size &&
+                        'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400',
                     )}
                   >
                     {size}
@@ -241,4 +272,3 @@ export function Pagination<TData>({ table, pageSizeOptions = DEFAULT_PAGE_SIZES,
     </div>
   )
 }
-

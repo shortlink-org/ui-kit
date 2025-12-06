@@ -3,7 +3,10 @@ import { clsx } from 'clsx'
 import { AddToCartButton } from '../AddToCartButton/AddToCartButton'
 import { Skeleton } from '../../Skeleton/Skeleton'
 import { HeartIcon, EyeIcon, StarIcon } from '@heroicons/react/24/outline'
-import { HeartIcon as HeartSolidIcon, StarIcon as StarSolidIcon } from '@heroicons/react/24/solid'
+import {
+  HeartIcon as HeartSolidIcon,
+  StarIcon as StarSolidIcon,
+} from '@heroicons/react/24/solid'
 
 export type Breakpoint = 'base' | 'sm' | 'md' | 'lg' | 'xl'
 
@@ -154,7 +157,7 @@ export function ProductGrid({
   aspectDesktop = '4/5',
 }: ProductGridProps) {
   const effectiveColumns = { ...defaultColumns, ...columns }
-  
+
   const handleProductClick = (product: Product) => {
     onProductClick?.(product)
   }
@@ -163,12 +166,12 @@ export function ProductGrid({
   const gridId = React.useId().replace(/:/g, '-')
   const generateGridStyles = (): string => {
     const mediaQueries: string[] = []
-    
+
     Object.entries(effectiveColumns).forEach(([bp, count]) => {
       if (bp === 'base') {
         return // Handled by default grid-cols-1
       }
-      
+
       const breakpointValue = breakpointMap[bp as Breakpoint]
       mediaQueries.push(`
         @media (min-width: ${breakpointValue}) {
@@ -178,16 +181,18 @@ export function ProductGrid({
         }
       `)
     })
-    
+
     return mediaQueries.join('\n')
   }
-  
+
   const generateGridClasses = (): string => {
     return clsx('grid grid-cols-1 gap-x-6 gap-y-16 lg:gap-x-8', gridClassName)
   }
 
   // Format price
-  const formatPrice = (price: ProductPrice | string): { formatted: string; original?: string; discount?: number } => {
+  const formatPrice = (
+    price: ProductPrice | string,
+  ): { formatted: string; original?: string; discount?: number } => {
     if (typeof price === 'string') {
       return { formatted: price }
     }
@@ -208,7 +213,9 @@ export function ProductGrid({
         currency,
       }).format(price.original)
 
-      discount = price.discount || Math.round(((price.original - price.current) / price.original) * 100)
+      discount =
+        price.discount ||
+        Math.round(((price.original - price.current) / price.original) * 100)
     }
 
     return { formatted, original, discount }
@@ -219,12 +226,15 @@ export function ProductGrid({
     const badges: ProductBadge[] = []
 
     // Legacy support: convert onSale to badge
-    if (product.onSale && !product.badges?.some(b => b.label === 'Sale')) {
+    if (product.onSale && !product.badges?.some((b) => b.label === 'Sale')) {
       badges.push({ label: 'Sale', tone: 'error' })
     }
 
     // Legacy support: convert badge prop to badges
-    if (product.badge && !product.badges?.some(b => b.label === product.badge)) {
+    if (
+      product.badge &&
+      !product.badges?.some((b) => b.label === product.badge)
+    ) {
       badges.push({ label: product.badge, tone: 'info' })
     }
 
@@ -251,13 +261,19 @@ export function ProductGrid({
   return (
     <div className={clsx('bg-[var(--color-background)]', className)}>
       <style>{generateGridStyles()}</style>
-      <div className={clsx('mx-auto max-w-2xl lg:max-w-7xl', spacing.y, spacingXValue.x)}>
+      <div
+        className={clsx(
+          'mx-auto max-w-2xl lg:max-w-7xl',
+          spacing.y,
+          spacingXValue.x,
+        )}
+      >
         {title && (
           <h2
             className={clsx(
               'font-bold tracking-tight text-[var(--color-foreground)]',
               'text-xl sm:text-2xl lg:text-3xl',
-              'mb-6 sm:mb-8'
+              'mb-6 sm:mb-8',
             )}
           >
             {title}
@@ -266,7 +282,11 @@ export function ProductGrid({
         <div data-grid-id={gridId} className={generateGridClasses()}>
           {loading
             ? Array.from({ length: skeletonCount }).map((_, index) => (
-                <ProductCardSkeleton key={`skeleton-${index}`} aspectMobile={aspectMobile} aspectDesktop={aspectDesktop} />
+                <ProductCardSkeleton
+                  key={`skeleton-${index}`}
+                  aspectMobile={aspectMobile}
+                  aspectDesktop={aspectDesktop}
+                />
               ))
             : products.map((product) => (
                 <ProductCard
@@ -292,7 +312,11 @@ interface ProductCardProps {
   className?: string
   aspectMobile: string
   aspectDesktop: string
-  formatPrice: (price: ProductPrice | string) => { formatted: string; original?: string; discount?: number }
+  formatPrice: (price: ProductPrice | string) => {
+    formatted: string
+    original?: string
+    discount?: number
+  }
   getProductBadges: (product: Product) => ProductBadge[]
   onProductClick: (product: Product) => void
 }
@@ -306,10 +330,12 @@ function ProductCard({
   getProductBadges,
   onProductClick,
 }: ProductCardProps) {
-  const [isFavorite, setIsFavorite] = React.useState(product.isFavorite || false)
+  const [isFavorite, setIsFavorite] = React.useState(
+    product.isFavorite || false,
+  )
   const [imageLoaded, setImageLoaded] = React.useState(false)
   const cardId = React.useId().replace(/:/g, '-')
-  
+
   const { formatted, original, discount } = formatPrice(product.price)
   const badges = getProductBadges(product)
   const isOutOfStock = product.inventory?.status === 'out_of_stock'
@@ -346,175 +372,193 @@ function ProductCard({
           'group relative flex flex-col h-full',
           'bg-[var(--color-surface)] rounded-lg overflow-hidden',
           'transition-shadow duration-200 hover:shadow-lg',
-          className
+          className,
         )}
       >
         {/* Image container */}
         <div className="relative w-full overflow-hidden bg-[var(--color-muted)] product-image-container">
-        {!imageLoaded && (
-          <div className="absolute inset-0 animate-pulse bg-[var(--color-muted-foreground)]/20" />
-        )}
-        <img
-          src={product.imageSrc}
-          alt={product.imageAlt}
-          loading="lazy"
-          decoding="async"
-          onLoad={() => setImageLoaded(true)}
-          className={clsx(
-            'w-full h-full object-cover transition-transform duration-300',
-            'group-hover:scale-105',
-            !imageLoaded && 'opacity-0',
-            imageLoaded && 'opacity-100'
+          {!imageLoaded && (
+            <div className="absolute inset-0 animate-pulse bg-[var(--color-muted-foreground)]/20" />
           )}
-        />
+          <img
+            src={product.imageSrc}
+            alt={product.imageAlt}
+            loading="lazy"
+            decoding="async"
+            onLoad={() => setImageLoaded(true)}
+            className={clsx(
+              'w-full h-full object-cover transition-transform duration-300',
+              'group-hover:scale-105',
+              !imageLoaded && 'opacity-0',
+              imageLoaded && 'opacity-100',
+            )}
+          />
 
-        {/* Badges */}
-        {badges.length > 0 && (
-          <div className="absolute top-2 left-2 flex flex-col gap-2">
-            {badges.map((badge, index) => (
-              <span
-                key={index}
-                className={clsx(
-                  'rounded px-2 py-1 text-xs font-semibold text-white',
-                  badgeToneMap[badge.tone || 'neutral'],
-                  badge.icon && 'flex items-center gap-1'
-                )}
-                aria-live="polite"
-              >
-                {badge.icon}
-                {badge.label}
-              </span>
-            ))}
-          </div>
-        )}
+          {/* Badges */}
+          {badges.length > 0 && (
+            <div className="absolute top-2 left-2 flex flex-col gap-2">
+              {badges.map((badge, index) => (
+                <span
+                  key={index}
+                  className={clsx(
+                    'rounded px-2 py-1 text-xs font-semibold text-white',
+                    badgeToneMap[badge.tone || 'neutral'],
+                    badge.icon && 'flex items-center gap-1',
+                  )}
+                  aria-live="polite"
+                >
+                  {badge.icon}
+                  {badge.label}
+                </span>
+              ))}
+            </div>
+          )}
 
-        {/* CTA Actions overlay */}
-        <div
-          className={clsx(
-            'absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-200',
-            'group-hover:opacity-100 group-focus-within:opacity-100',
-            'flex items-center justify-center gap-2'
-          )}
-        >
-          {product.cta?.onQuickView && (
-            <button
-              onClick={handleQuickView}
-              className="rounded-full bg-[var(--color-surface)] p-2 text-[var(--color-foreground)] hover:bg-[var(--color-surface-hover)] focus-ring"
-              aria-label={`Quick view ${product.name}`}
-            >
-              <EyeIcon className="size-5" aria-hidden="true" />
-            </button>
-          )}
-          {product.cta?.onFavorite && (
-            <button
-              onClick={handleFavorite}
-              className={clsx(
-                'rounded-full bg-[var(--color-surface)] p-2 transition-colors focus-ring',
-                isFavorite ? 'text-red-600' : 'text-[var(--color-foreground)]',
-                'hover:bg-[var(--color-surface-hover)]'
-              )}
-              aria-label={isFavorite ? `Remove ${product.name} from favorites` : `Add ${product.name} to favorites`}
-            >
-              {isFavorite ? (
-                <HeartSolidIcon className="size-5" aria-hidden="true" />
-              ) : (
-                <HeartIcon className="size-5" aria-hidden="true" />
-              )}
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Product info */}
-      <div className="flex flex-col flex-1 p-4">
-        <h3 className="text-sm font-medium text-[var(--color-foreground)] group-hover:text-[var(--color-muted-foreground)]">
-          <a
-            href={product.href}
-            onClick={(e) => {
-              e.preventDefault()
-              onProductClick(product)
-            }}
-            className="focus-ring rounded"
+          {/* CTA Actions overlay */}
+          <div
+            className={clsx(
+              'absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-200',
+              'group-hover:opacity-100 group-focus-within:opacity-100',
+              'flex items-center justify-center gap-2',
+            )}
           >
-            {product.name}
-          </a>
-        </h3>
-
-        {product.description && (
-          <p className="mt-1 text-sm text-[var(--color-muted-foreground)] line-clamp-2">{product.description}</p>
-        )}
-
-        {/* Rating */}
-        {product.cta?.rating && (
-          <div className="mt-2 flex items-center gap-1">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <span key={star} className="text-yellow-400" aria-hidden="true">
-                {star <= Math.round(product.cta!.rating!) ? (
-                  <StarSolidIcon className="size-4" />
+            {product.cta?.onQuickView && (
+              <button
+                onClick={handleQuickView}
+                className="rounded-full bg-[var(--color-surface)] p-2 text-[var(--color-foreground)] hover:bg-[var(--color-surface-hover)] focus-ring"
+                aria-label={`Quick view ${product.name}`}
+              >
+                <EyeIcon className="size-5" aria-hidden="true" />
+              </button>
+            )}
+            {product.cta?.onFavorite && (
+              <button
+                onClick={handleFavorite}
+                className={clsx(
+                  'rounded-full bg-[var(--color-surface)] p-2 transition-colors focus-ring',
+                  isFavorite
+                    ? 'text-red-600'
+                    : 'text-[var(--color-foreground)]',
+                  'hover:bg-[var(--color-surface-hover)]',
+                )}
+                aria-label={
+                  isFavorite
+                    ? `Remove ${product.name} from favorites`
+                    : `Add ${product.name} to favorites`
+                }
+              >
+                {isFavorite ? (
+                  <HeartSolidIcon className="size-5" aria-hidden="true" />
                 ) : (
-                  <StarIcon className="size-4" />
+                  <HeartIcon className="size-5" aria-hidden="true" />
                 )}
-              </span>
-            ))}
-            {product.cta.reviewCount && (
-              <span className="ml-1 text-xs text-[var(--color-muted-foreground)]">
-                ({product.cta.reviewCount})
-              </span>
+              </button>
             )}
+          </div>
+        </div>
+
+        {/* Product info */}
+        <div className="flex flex-col flex-1 p-4">
+          <h3 className="text-sm font-medium text-[var(--color-foreground)] group-hover:text-[var(--color-muted-foreground)]">
+            <a
+              href={product.href}
+              onClick={(e) => {
+                e.preventDefault()
+                onProductClick(product)
+              }}
+              className="focus-ring rounded"
+            >
+              {product.name}
+            </a>
+          </h3>
+
+          {product.description && (
+            <p className="mt-1 text-sm text-[var(--color-muted-foreground)] line-clamp-2">
+              {product.description}
+            </p>
+          )}
+
+          {/* Rating */}
+          {product.cta?.rating && (
+            <div className="mt-2 flex items-center gap-1">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span key={star} className="text-yellow-400" aria-hidden="true">
+                  {star <= Math.round(product.cta!.rating!) ? (
+                    <StarSolidIcon className="size-4" />
+                  ) : (
+                    <StarIcon className="size-4" />
+                  )}
+                </span>
+              ))}
+              {product.cta.reviewCount && (
+                <span className="ml-1 text-xs text-[var(--color-muted-foreground)]">
+                  ({product.cta.reviewCount})
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Price and Add to Cart */}
+          <div className="mt-auto pt-4 flex items-center justify-between">
+            <div className="flex flex-col">
+              <span className="text-base font-semibold text-[var(--color-foreground)]">
+                {formatted}
+              </span>
+              {original && (
+                <>
+                  <span className="text-sm text-[var(--color-muted-foreground)] line-through">
+                    {original}
+                  </span>
+                  {discount && (
+                    <span
+                      className="text-xs text-red-600 dark:text-red-400"
+                      aria-label={`${discount}% off`}
+                    >
+                      -{discount}%
+                    </span>
+                  )}
+                </>
+              )}
+            </div>
+
+            <div className="flex-shrink-0">
+              {product.onAddToCart && (
+                <AddToCartButton
+                  text="Add to cart"
+                  onAddToCart={product.onAddToCart}
+                  ariaLabel={`Add ${product.name} to cart`}
+                  scale={0.75}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Out of stock overlay */}
+        {isOutOfStock && (
+          <div className="absolute inset-0 flex items-center justify-center bg-[var(--color-background)]/80 rounded-lg">
+            <span className="px-4 py-2 text-sm font-semibold text-[var(--color-foreground)] bg-[var(--color-surface)] rounded border-2 border-[var(--color-border)]">
+              Out of stock
+            </span>
           </div>
         )}
-
-        {/* Price and Add to Cart */}
-        <div className="mt-auto pt-4 flex items-center justify-between">
-          <div className="flex flex-col">
-            <span className="text-base font-semibold text-[var(--color-foreground)]">{formatted}</span>
-            {original && (
-              <>
-                <span className="text-sm text-[var(--color-muted-foreground)] line-through">{original}</span>
-                {discount && (
-                  <span className="text-xs text-red-600 dark:text-red-400" aria-label={`${discount}% off`}>
-                    -{discount}%
-                  </span>
-                )}
-              </>
-            )}
-          </div>
-
-          <div className="flex-shrink-0">
-            {product.onAddToCart && (
-              <AddToCartButton
-                text="Add to cart"
-                onAddToCart={product.onAddToCart}
-                ariaLabel={`Add ${product.name} to cart`}
-                scale={0.75}
-              />
-            )}
-          </div>
-        </div>
       </div>
-
-      {/* Out of stock overlay */}
-      {isOutOfStock && (
-        <div className="absolute inset-0 flex items-center justify-center bg-[var(--color-background)]/80 rounded-lg">
-          <span className="px-4 py-2 text-sm font-semibold text-[var(--color-foreground)] bg-[var(--color-surface)] rounded border-2 border-[var(--color-border)]">
-            Out of stock
-          </span>
-        </div>
-      )}
-    </div>
     </>
   )
 }
 
 // Skeleton Component
 interface ProductCardSkeletonProps {
-  aspectMobile: string;
-  aspectDesktop: string;
+  aspectMobile: string
+  aspectDesktop: string
 }
 
-function ProductCardSkeleton({ aspectMobile, aspectDesktop }: ProductCardSkeletonProps) {
+function ProductCardSkeleton({
+  aspectMobile,
+  aspectDesktop,
+}: ProductCardSkeletonProps) {
   const skeletonId = React.useId().replace(/:/g, '-')
-  
+
   return (
     <>
       <style>{`
@@ -527,23 +571,26 @@ function ProductCardSkeleton({ aspectMobile, aspectDesktop }: ProductCardSkeleto
           }
         }
       `}</style>
-      <div data-skeleton-id={skeletonId} className="flex flex-col h-full bg-[var(--color-surface)] rounded-lg overflow-hidden">
+      <div
+        data-skeleton-id={skeletonId}
+        className="flex flex-col h-full bg-[var(--color-surface)] rounded-lg overflow-hidden"
+      >
         <Skeleton className="w-full skeleton-image" />
-      <div className="flex flex-col flex-1 p-4 space-y-3">
-        <Skeleton height={16} width="80%" />
-        <Skeleton height={12} width="60%" />
-        <div className="flex gap-1 mt-2">
-          <Skeleton height={12} width={12} circular />
-          <Skeleton height={12} width={12} circular />
-          <Skeleton height={12} width={12} circular />
-          <Skeleton height={12} width={12} circular />
-          <Skeleton height={12} width={12} circular />
+        <div className="flex flex-col flex-1 p-4 space-y-3">
+          <Skeleton height={16} width="80%" />
+          <Skeleton height={12} width="60%" />
+          <div className="flex gap-1 mt-2">
+            <Skeleton height={12} width={12} circular />
+            <Skeleton height={12} width={12} circular />
+            <Skeleton height={12} width={12} circular />
+            <Skeleton height={12} width={12} circular />
+            <Skeleton height={12} width={12} circular />
+          </div>
+          <div className="mt-auto pt-4 flex items-center justify-between">
+            <Skeleton height={20} width={60} />
+            <Skeleton height={32} width={100} />
+          </div>
         </div>
-        <div className="mt-auto pt-4 flex items-center justify-between">
-          <Skeleton height={20} width={60} />
-          <Skeleton height={32} width={100} />
-        </div>
-      </div>
       </div>
     </>
   )

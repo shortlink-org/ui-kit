@@ -9,16 +9,20 @@ export interface ColumnFilterProps<TData, TValue> {
   density?: 'compact' | 'normal' | 'comfortable'
 }
 
-export function ColumnFilter<TData, TValue>({ column, debounceMs = 300, density = 'normal' }: ColumnFilterProps<TData, TValue>) {
+export function ColumnFilter<TData, TValue>({
+  column,
+  debounceMs = 300,
+  density = 'normal',
+}: ColumnFilterProps<TData, TValue>) {
   // Track column ID to detect changes
   const columnIdRef = React.useRef(column.id)
-  
+
   // Initialize state with current column value
   const [filterValue, setFilterValue] = useState<string>(() => {
     const initialValue = column.getFilterValue() as string | undefined
     return initialValue ?? ''
   })
-  
+
   const debouncedValue = useDebounce(filterValue, debounceMs)
 
   // Sync with column filter value when column changes externally
@@ -60,9 +64,8 @@ export function ColumnFilter<TData, TValue>({ column, debounceMs = 300, density 
         'dark:bg-gray-700 dark:text-white',
         'transition-all duration-200',
         'focus:ring-2 focus:ring-offset-1',
-        densityClasses[density]
+        densityClasses[density],
       )}
     />
   )
 }
-

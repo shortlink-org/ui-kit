@@ -5,7 +5,10 @@ interface HeaderLoginButtonProps {
   onClick?: () => void
 }
 
-export function HeaderLoginButton({ label = 'Log in', onClick }: HeaderLoginButtonProps) {
+export function HeaderLoginButton({
+  label = 'Log in',
+  onClick,
+}: HeaderLoginButtonProps) {
   return (
     <button
       type="button"
@@ -14,11 +17,10 @@ export function HeaderLoginButton({ label = 'Log in', onClick }: HeaderLoginButt
         'px-4 py-2 text-sm font-medium rounded-md',
         'border border-white text-white',
         'hover:bg-white/10 transition-colors duration-200',
-        'focus:outline-none focus:ring-2 focus:ring-white/50'
+        'focus:outline-none focus:ring-2 focus:ring-white/50',
       )}
     >
       {label}
     </button>
   )
 }
-

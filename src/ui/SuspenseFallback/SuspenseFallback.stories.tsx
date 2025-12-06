@@ -1,6 +1,9 @@
 import { Suspense } from 'react'
 import preview from '#.storybook/preview'
-import { SuspenseFallback, type SuspenseFallbackProps } from './SuspenseFallback'
+import {
+  SuspenseFallback,
+  type SuspenseFallbackProps,
+} from './SuspenseFallback'
 
 const meta = preview.meta({
   title: 'UI/SuspenseFallback',
@@ -46,4 +49,3 @@ export const NoMessage = meta.story({
   },
   render: (args: SuspenseFallbackProps) => <SuspenseFallback {...args} />,
 })
-

@@ -29,7 +29,8 @@
   }
 
   [data-reveal='true'] .atc__border--animated:not(.atc__border--demo) {
-    mask: linear-gradient(#ffffff50 0 0) padding-box,
+    mask:
+      linear-gradient(#ffffff50 0 0) padding-box,
       linear-gradient(#fff 0 0) border-box;
   }
 }
@@ -127,7 +128,8 @@
     inset: -2px;
     container-type: inline-size;
     border: 2px solid transparent;
-    mask: linear-gradient(#fff 0 0) padding-box,
+    mask:
+      linear-gradient(#fff 0 0) padding-box,
       linear-gradient(#fff 0 0) border-box;
     mask-composite: exclude;
     border-radius: inherit;
@@ -191,4 +193,3 @@
     }
   }
 }
-

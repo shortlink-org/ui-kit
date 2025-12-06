@@ -19,7 +19,11 @@ const ThrowError = ({ shouldThrow = false }: { shouldThrow?: boolean }) => {
   if (shouldThrow) {
     throw new Error('This is a test error for ErrorBoundary')
   }
-  return <div style={{ padding: '20px', background: '#f0f0f0' }}>No error - component works fine</div>
+  return (
+    <div style={{ padding: '20px', background: '#f0f0f0' }}>
+      No error - component works fine
+    </div>
+  )
 }
 
 export const Default = meta.story({
@@ -40,7 +44,13 @@ export const CustomFallback = meta.story({
   args: {
     children: <ThrowError shouldThrow />,
     fallback: (
-      <div style={{ padding: '20px', border: '2px solid red', borderRadius: '8px' }}>
+      <div
+        style={{
+          padding: '20px',
+          border: '2px solid red',
+          borderRadius: '8px',
+        }}
+      >
         <h3>Custom Error Message</h3>
         <p>Something went wrong, but we're handling it gracefully!</p>
       </div>
@@ -59,4 +69,3 @@ export const WithOnErrorCallback = meta.story({
   },
   render: (args: ErrorBoundaryProps) => <ErrorBoundary {...args} />,
 })
-

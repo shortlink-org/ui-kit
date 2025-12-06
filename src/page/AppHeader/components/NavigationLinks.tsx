@@ -8,8 +8,17 @@ interface NavigationLinksProps {
   LinkComponent?: LinkComponent
 }
 
-export function NavigationLinks({ items, currentPath, LinkComponent }: NavigationLinksProps) {
-  const renderLink = (href: string, children: ReactNode | string, linkClassName?: string, ariaCurrent?: 'page' | undefined) => {
+export function NavigationLinks({
+  items,
+  currentPath,
+  LinkComponent,
+}: NavigationLinksProps) {
+  const renderLink = (
+    href: string,
+    children: ReactNode | string,
+    linkClassName?: string,
+    ariaCurrent?: 'page' | undefined,
+  ) => {
     const linkProps: {
       href: string
       className?: string
@@ -18,7 +27,7 @@ export function NavigationLinks({ items, currentPath, LinkComponent }: Navigatio
       href,
       className: linkClassName,
     }
-    
+
     if (ariaCurrent) {
       linkProps['aria-current'] = ariaCurrent
     }
@@ -31,7 +40,11 @@ export function NavigationLinks({ items, currentPath, LinkComponent }: Navigatio
       )
     }
     return (
-      <a href={linkProps.href} className={linkProps.className} aria-current={linkProps['aria-current']}>
+      <a
+        href={linkProps.href}
+        className={linkProps.className}
+        aria-current={linkProps['aria-current']}
+      >
         {children}
       </a>
     )
@@ -53,13 +66,12 @@ export function NavigationLinks({ items, currentPath, LinkComponent }: Navigatio
               isActive
                 ? 'bg-white/10 text-white'
                 : 'text-white/70 hover:bg-white/5 hover:text-white',
-              'rounded-md px-3 py-2 text-sm font-medium'
+              'rounded-md px-3 py-2 text-sm font-medium',
             ),
-            isActive ? 'page' : undefined
+            isActive ? 'page' : undefined,
           )
         })}
       </div>
     </div>
   )
 }
-

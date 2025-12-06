@@ -1,5 +1,9 @@
 import React from 'react'
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+} from '@headlessui/react'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
 
@@ -12,7 +16,14 @@ interface CollapsibleMenuProps {
   onCollapseChange?: (collapsed: boolean) => void
 }
 
-const CollapsibleMenu = ({ mode, icon: Icon, title, children, collapsed, onCollapseChange }: CollapsibleMenuProps) => {
+const CollapsibleMenu = ({
+  mode,
+  icon: Icon,
+  title,
+  children,
+  collapsed,
+  onCollapseChange,
+}: CollapsibleMenuProps) => {
   const iconClassName =
     'text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
 
@@ -21,14 +32,16 @@ const CollapsibleMenu = ({ mode, icon: Icon, title, children, collapsed, onColla
 
   const buttonClassName = clsx(
     baseButtonClassName,
-    mode === 'mini' && 'justify-center'
+    mode === 'mini' && 'justify-center',
   )
 
-  const [isOpen, setIsOpen] = React.useState(collapsed === undefined ? true : !collapsed)
+  const [isOpen, setIsOpen] = React.useState(
+    collapsed === undefined ? true : !collapsed,
+  )
 
   // Sync disclosure state with internal state
   const prevOpenRef = React.useRef(isOpen)
-  
+
   // Sync with collapsed prop when it changes externally
   React.useEffect(() => {
     if (collapsed !== undefined) {
@@ -48,7 +61,7 @@ const CollapsibleMenu = ({ mode, icon: Icon, title, children, collapsed, onColla
               onCollapseChange(!open)
             }
           }
-          
+
           return (
             <div>
               {mode === 'mini' ? (
@@ -66,9 +79,15 @@ const CollapsibleMenu = ({ mode, icon: Icon, title, children, collapsed, onColla
                     {title}
                   </span>
                   {open ? (
-                    <ChevronUpIcon className="size-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+                    <ChevronUpIcon
+                      className="size-5 text-gray-500 dark:text-gray-400"
+                      aria-hidden="true"
+                    />
                   ) : (
-                    <ChevronDownIcon className="size-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+                    <ChevronDownIcon
+                      className="size-5 text-gray-500 dark:text-gray-400"
+                      aria-hidden="true"
+                    />
                   )}
                 </DisclosureButton>
               )}

@@ -1,7 +1,18 @@
 import { type Table as TanStackTable } from '@tanstack/react-table'
-import { ArrowDownTrayIcon, PlusIcon, TrashIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
+import {
+  ArrowDownTrayIcon,
+  PlusIcon,
+  TrashIcon,
+  ArrowPathIcon,
+} from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
-import { Button, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
+import {
+  Button,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+} from '@headlessui/react'
 import { mkConfig, generateCsv, download } from 'export-to-csv'
 
 const csvConfig = mkConfig({
@@ -32,7 +43,9 @@ export function Toolbar<TData extends Record<string, unknown>>({
   enableRefresh = false,
 }: ToolbarProps<TData>) {
   const selectedRows = table.getFilteredSelectedRowModel().rows
-  const pageSelectedRows = table.getRowModel().rows.filter(row => row.getIsSelected())
+  const pageSelectedRows = table
+    .getRowModel()
+    .rows.filter((row) => row.getIsSelected())
   const hasSelection = selectedRows.length > 0
   const hasPageSelection = pageSelectedRows.length > 0
   const allData = table.getCoreRowModel().rows.map((row) => row.original)
@@ -75,7 +88,7 @@ export function Toolbar<TData extends Record<string, unknown>>({
               'inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium',
               'text-white bg-indigo-600 hover:bg-indigo-700',
               'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
-              'transition-all duration-200 shadow-sm hover:shadow-md'
+              'transition-all duration-200 shadow-sm hover:shadow-md',
             )}
           >
             <PlusIcon className="size-4" />
@@ -92,7 +105,7 @@ export function Toolbar<TData extends Record<string, unknown>>({
                 'text-white bg-red-600 hover:bg-red-700',
                 'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500',
                 'disabled:opacity-50 disabled:cursor-not-allowed',
-                'transition-all duration-200 shadow-sm hover:shadow-md'
+                'transition-all duration-200 shadow-sm hover:shadow-md',
               )}
             >
               <TrashIcon className="size-4" />
@@ -108,7 +121,7 @@ export function Toolbar<TData extends Record<string, unknown>>({
                     'bg-white dark:bg-gray-800',
                     'hover:bg-gray-50 dark:hover:bg-gray-700',
                     'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
-                    'transition-all duration-200'
+                    'transition-all duration-200',
                   )}
                 >
                   Selection Actions
@@ -122,7 +135,7 @@ export function Toolbar<TData extends Record<string, unknown>>({
                     'focus:outline-none',
                     'transition data-closed:scale-95 data-closed:transform data-closed:opacity-0',
                     'data-enter:duration-100 data-enter:ease-out',
-                    'data-leave:duration-75 data-leave:ease-in'
+                    'data-leave:duration-75 data-leave:ease-in',
                   )}
                 >
                   <MenuItem>
@@ -169,7 +182,7 @@ export function Toolbar<TData extends Record<string, unknown>>({
               'bg-white dark:bg-gray-800',
               'hover:bg-gray-50 dark:hover:bg-gray-700',
               'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
-              'transition-all duration-200'
+              'transition-all duration-200',
             )}
           >
             <ArrowPathIcon className="size-4" />
@@ -189,7 +202,7 @@ export function Toolbar<TData extends Record<string, unknown>>({
               'bg-white dark:bg-gray-800',
               'hover:bg-gray-50 dark:hover:bg-gray-700',
               'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
-              'transition-all duration-200'
+              'transition-all duration-200',
             )}
           >
             <ArrowDownTrayIcon className="size-4" />
@@ -206,7 +219,7 @@ export function Toolbar<TData extends Record<string, unknown>>({
               'hover:bg-gray-50 dark:hover:bg-gray-700',
               'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
               'disabled:opacity-50 disabled:cursor-not-allowed',
-              'transition-all duration-200'
+              'transition-all duration-200',
             )}
           >
             <ArrowDownTrayIcon className="size-4" />
@@ -222,7 +235,7 @@ export function Toolbar<TData extends Record<string, unknown>>({
                 'bg-white dark:bg-gray-800',
                 'hover:bg-gray-50 dark:hover:bg-gray-700',
                 'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
-                'transition-all duration-200'
+                'transition-all duration-200',
               )}
             >
               <ArrowDownTrayIcon className="size-4" />
@@ -234,4 +247,3 @@ export function Toolbar<TData extends Record<string, unknown>>({
     </div>
   )
 }
-

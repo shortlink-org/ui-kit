@@ -2,7 +2,13 @@ import * as React from 'react'
 import { clsx } from 'clsx'
 import './Button.css'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'link' | 'destructive'
+export type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'outline'
+  | 'ghost'
+  | 'link'
+  | 'destructive'
 export type ButtonSize = 'sm' | 'md' | 'lg' | 'icon'
 export type IconPosition = 'left' | 'right' | 'only'
 
@@ -40,14 +46,11 @@ export function Button({
   asProps,
   ...props
 }: ButtonProps) {
-  const isIconOnly = size === 'icon' || iconPosition === 'only' || (!children && icon)
+  const isIconOnly =
+    size === 'icon' || iconPosition === 'only' || (!children && icon)
   const effectiveIconPosition = isIconOnly ? 'only' : iconPosition
 
-  const buttonClasses = clsx(
-    'btn',
-    loading && 'btn-loading',
-    className,
-  )
+  const buttonClasses = clsx('btn', loading && 'btn-loading', className)
 
   const dataAttributes = {
     'data-variant': variant,
@@ -57,7 +60,10 @@ export function Button({
   }
 
   const spinner = loading && (
-    <span className="btn-spinner inline-flex items-center justify-center" aria-hidden="true">
+    <span
+      className="btn-spinner inline-flex items-center justify-center"
+      aria-hidden="true"
+    >
       <svg
         className="h-4 w-4"
         xmlns="http://www.w3.org/2000/svg"
@@ -82,16 +88,27 @@ export function Button({
   )
 
   const iconElement = icon && !loading && (
-    <span className="inline-flex items-center justify-center flex-shrink-0 leading-none" aria-hidden="true">
+    <span
+      className="inline-flex items-center justify-center flex-shrink-0 leading-none"
+      aria-hidden="true"
+    >
       {React.isValidElement(icon) && typeof icon === 'object'
-        ? React.cloneElement(icon as React.ReactElement, {
-            className: clsx(
-              'flex-shrink-0 leading-none block',
-              size === 'sm' ? '!h-3.5 !w-3.5' : size === 'lg' ? '!h-5 !w-5' : '!h-4 !w-4',
-              (icon.props as { className?: string })?.className,
-            ),
-            fontSize: size === 'sm' ? 'small' : size === 'lg' ? 'large' : 'medium',
-          } as React.HTMLAttributes<HTMLElement>)
+        ? React.cloneElement(
+            icon as React.ReactElement,
+            {
+              className: clsx(
+                'flex-shrink-0 leading-none block',
+                size === 'sm'
+                  ? '!h-3.5 !w-3.5'
+                  : size === 'lg'
+                    ? '!h-5 !w-5'
+                    : '!h-4 !w-4',
+                (icon.props as { className?: string })?.className,
+              ),
+              fontSize:
+                size === 'sm' ? 'small' : size === 'lg' ? 'large' : 'medium',
+            } as React.HTMLAttributes<HTMLElement>,
+          )
         : icon}
     </span>
   )
@@ -137,4 +154,3 @@ export function Button({
 }
 
 export default Button
-

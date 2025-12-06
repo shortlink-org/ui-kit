@@ -46,4 +46,3 @@ export const Default = meta.story({
     reveal: false,
   },
 })
-

@@ -1,10 +1,18 @@
 import type { ColumnDef } from '@tanstack/react-table'
 import { useState, useTransition } from 'react'
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Button } from '@headlessui/react'
+import {
+  Dialog,
+  DialogBackdrop,
+  DialogPanel,
+  DialogTitle,
+  Button,
+} from '@headlessui/react'
 import { clsx } from 'clsx'
 import { Button as UIButton } from '../../Button/Button'
 
-interface CreateModalProps<TData extends Record<string, unknown> = Record<string, unknown>> {
+interface CreateModalProps<
+  TData extends Record<string, unknown> = Record<string, unknown>,
+> {
   columns: ColumnDef<TData, unknown>[]
   onClose: () => void
   onSubmit: (values: TData) => void
@@ -12,14 +20,18 @@ interface CreateModalProps<TData extends Record<string, unknown> = Record<string
 }
 
 // Helper function to safely get accessorKey from a column
-function getAccessorKey<TData>(column: ColumnDef<TData, unknown>): string | undefined {
+function getAccessorKey<TData>(
+  column: ColumnDef<TData, unknown>,
+): string | undefined {
   if ('accessorKey' in column && typeof column.accessorKey === 'string') {
     return column.accessorKey
   }
   return undefined
 }
 
-export const CreateNewItemModal = <TData extends Record<string, unknown> = Record<string, unknown>>({
+export const CreateNewItemModal = <
+  TData extends Record<string, unknown> = Record<string, unknown>,
+>({
   open,
   columns,
   onClose,
@@ -42,10 +54,11 @@ export const CreateNewItemModal = <TData extends Record<string, unknown> = Recor
     columns.forEach((column) => {
       const key = getAccessorKey<TData>(column) as keyof TData | undefined
       if (key) {
-        formValues[key] = (formData.get(key as string) || '') as TData[keyof TData]
+        formValues[key] = (formData.get(key as string) ||
+          '') as TData[keyof TData]
       }
     })
-    
+
     // put your validation logic here
     startTransition(async () => {
       await onSubmit(formValues as TData)
@@ -80,17 +93,22 @@ export const CreateNewItemModal = <TData extends Record<string, unknown> = Recor
             transition
             className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-left align-middle shadow-xl transition-all data-closed:opacity-0 data-closed:scale-95 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
           >
-            <DialogTitle as="h3" className="text-center text-lg font-medium leading-6 text-gray-900 dark:text-white mb-6">
+            <DialogTitle
+              as="h3"
+              className="text-center text-lg font-medium leading-6 text-gray-900 dark:text-white mb-6"
+            >
               Create New Item
             </DialogTitle>
 
             <form action={submitAction}>
               <div className="space-y-4 mb-6">
                 {columns.map((column) => {
-                  const key = getAccessorKey<TData>(column) as keyof TData | undefined
+                  const key = getAccessorKey<TData>(column) as
+                    | keyof TData
+                    | undefined
                   const keyStr = key ? String(key) : ''
                   const label = (column.header as string) || keyStr
-                  
+
                   // Skip columns without accessorKey
                   if (!key) {
                     return null
@@ -98,7 +116,10 @@ export const CreateNewItemModal = <TData extends Record<string, unknown> = Recor
 
                   return (
                     <div key={keyStr}>
-                      <label htmlFor={keyStr} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label
+                        htmlFor={keyStr}
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                      >
                         {label}
                       </label>
                       <input
@@ -107,7 +128,10 @@ export const CreateNewItemModal = <TData extends Record<string, unknown> = Recor
                         type="text"
                         value={(values[key] as string) || ''}
                         onChange={(e) =>
-                          setValues({ ...values, [e.target.name]: e.target.value } as Partial<TData>)
+                          setValues({
+                            ...values,
+                            [e.target.name]: e.target.value,
+                          } as Partial<TData>)
                         }
                         required
                         disabled={isPending}
@@ -116,7 +140,7 @@ export const CreateNewItemModal = <TData extends Record<string, unknown> = Recor
                           'shadow-sm focus:border-indigo-500 focus:ring-indigo-500',
                           'dark:bg-gray-700 dark:text-white',
                           'px-3 py-2 text-sm',
-                          'disabled:opacity-50 disabled:cursor-not-allowed'
+                          'disabled:opacity-50 disabled:cursor-not-allowed',
                         )}
                       />
                     </div>
@@ -135,7 +159,7 @@ export const CreateNewItemModal = <TData extends Record<string, unknown> = Recor
                     'text-gray-700 dark:text-gray-300',
                     'hover:bg-gray-50 dark:hover:bg-gray-700',
                     'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
-                    'disabled:opacity-50 disabled:cursor-not-allowed'
+                    'disabled:opacity-50 disabled:cursor-not-allowed',
                   )}
                 >
                   Cancel

@@ -5,7 +5,9 @@ interface HeaderThemeToggleProps {
   themeToggleComponent?: React.ReactNode
 }
 
-export function HeaderThemeToggle({ themeToggleComponent }: HeaderThemeToggleProps) {
+export function HeaderThemeToggle({
+  themeToggleComponent,
+}: HeaderThemeToggleProps) {
   return (
     <div className="hidden sm:block relative mr-2">
       {themeToggleComponent || (
@@ -15,7 +17,9 @@ export function HeaderThemeToggle({ themeToggleComponent }: HeaderThemeTogglePro
           onChange={(checked) => {
             // This will be handled by next-themes or your theme provider
             if (typeof window !== 'undefined') {
-              const event = new CustomEvent('theme-toggle', { detail: { checked } })
+              const event = new CustomEvent('theme-toggle', {
+                detail: { checked },
+              })
               window.dispatchEvent(event)
             }
           }}
@@ -24,4 +28,3 @@ export function HeaderThemeToggle({ themeToggleComponent }: HeaderThemeTogglePro
     </div>
   )
 }
-

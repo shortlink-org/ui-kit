@@ -39,10 +39,5 @@ export default {
   variants: {
     typography: ['light', 'dark'],
   },
-  plugins: [
-    typography,
-    forms,
-    aspectRatio,
-    containerQueries,
-  ],
+  plugins: [typography, forms, aspectRatio, containerQueries],
 }

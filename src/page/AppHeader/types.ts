@@ -8,7 +8,11 @@ export interface AppHeaderBrand {
   /** Link to home page */
   href?: string
   /** Custom render function for brand link */
-  render?: (props: { href: string; children: ReactNode; className?: string }) => ReactNode
+  render?: (props: {
+    href: string
+    children: ReactNode
+    className?: string
+  }) => ReactNode
 }
 
 export interface AppHeaderMenuItem {
@@ -46,7 +50,10 @@ export interface AppHeaderNotification {
   /** "See all" link */
   seeAllHref?: string
   /** Custom render function for notification dropdown */
-  render?: (props: { count?: number; items?: AppHeaderNotification['items'] }) => ReactNode
+  render?: (props: {
+    count?: number
+    items?: AppHeaderNotification['items']
+  }) => ReactNode
 }
 
 export interface AppHeaderProfile {
@@ -64,7 +71,11 @@ export interface AppHeaderProfile {
     onClick?: () => void
   }>
   /** Custom render function for profile dropdown */
-  render?: (props: { avatar?: string; name?: string; email?: string }) => ReactNode
+  render?: (props: {
+    avatar?: string
+    name?: string
+    email?: string
+  }) => ReactNode
 }
 
 export interface LinkComponentProps {
@@ -74,4 +85,3 @@ export interface LinkComponentProps {
 }
 
 export type LinkComponent = React.ComponentType<LinkComponentProps>
-

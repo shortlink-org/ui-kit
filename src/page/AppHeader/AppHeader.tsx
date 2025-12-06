@@ -120,7 +120,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                 'bg-gradient-to-r from-pink-600 via-purple-700 to-indigo-800',
                 'dark:from-indigo-800 dark:via-purple-800 dark:to-indigo-900',
                 'text-white shadow-lg border-b border-indigo-500/20 dark:border-purple-500/30',
-                'backdrop-blur-sm z-50'
+                'backdrop-blur-sm z-50',
               )}
             >
               <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
@@ -140,15 +140,27 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                     )}
 
                     {/* Brand */}
-                    <HeaderBrand brand={brand} LinkComponent={LinkComponent} hasNavigation={hasNavigation} />
+                    <HeaderBrand
+                      brand={brand}
+                      LinkComponent={LinkComponent}
+                      hasNavigation={hasNavigation}
+                    />
                   </div>
 
                   {/* Center: Navigation links */}
-                  <NavigationLinks items={navigation} currentPath={currentPath} LinkComponent={LinkComponent} />
+                  <NavigationLinks
+                    items={navigation}
+                    currentPath={currentPath}
+                    LinkComponent={LinkComponent}
+                  />
 
                   {/* Right: Controls */}
                   <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                    {showThemeToggle && <HeaderThemeToggle themeToggleComponent={themeToggleComponent} />}
+                    {showThemeToggle && (
+                      <HeaderThemeToggle
+                        themeToggleComponent={themeToggleComponent}
+                      />
+                    )}
 
                     {showSecondMenu && (
                       <HeaderSecondMenu
@@ -170,10 +182,15 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                       <HeaderNotifications notifications={notifications} />
                     )}
 
-                    {showProfile && profile && <HeaderProfile profile={profile} />}
+                    {showProfile && profile && (
+                      <HeaderProfile profile={profile} />
+                    )}
 
                     {showLogin && !showProfile && (
-                      <HeaderLoginButton label={loginButton?.label} onClick={loginButton?.onClick} />
+                      <HeaderLoginButton
+                        label={loginButton?.label}
+                        onClick={loginButton?.onClick}
+                      />
                     )}
                   </div>
                 </div>
@@ -181,7 +198,11 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
             </div>
 
             {/* Mobile menu */}
-            <MobileMenuPanel items={navigation} currentPath={currentPath} LinkComponent={LinkComponent} />
+            <MobileMenuPanel
+              items={navigation}
+              currentPath={currentPath}
+              LinkComponent={LinkComponent}
+            />
           </>
         )}
       </Disclosure>

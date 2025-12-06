@@ -8,7 +8,11 @@ interface HeaderBrandProps {
   hasNavigation?: boolean
 }
 
-export function HeaderBrand({ brand, LinkComponent, hasNavigation = false }: HeaderBrandProps) {
+export function HeaderBrand({
+  brand,
+  LinkComponent,
+  hasNavigation = false,
+}: HeaderBrandProps) {
   const brandClassName =
     'group flex items-center gap-1.5 sm:gap-2 transition-all duration-200'
   const brandContent = (
@@ -20,7 +24,11 @@ export function HeaderBrand({ brand, LinkComponent, hasNavigation = false }: Hea
     </>
   )
 
-  const renderLink = (href: string, children: ReactNode | string, linkClassName?: string) => {
+  const renderLink = (
+    href: string,
+    children: ReactNode | string,
+    linkClassName?: string,
+  ) => {
     if (LinkComponent) {
       return (
         <LinkComponent href={href} className={linkClassName}>
@@ -36,7 +44,11 @@ export function HeaderBrand({ brand, LinkComponent, hasNavigation = false }: Hea
   }
 
   if (brand.render && brand.href) {
-    return brand.render({ href: brand.href, children: brandContent, className: brandClassName })
+    return brand.render({
+      href: brand.href,
+      children: brandContent,
+      className: brandClassName,
+    })
   }
 
   if (brand.href) {
@@ -44,9 +56,10 @@ export function HeaderBrand({ brand, LinkComponent, hasNavigation = false }: Hea
   }
 
   return (
-    <div className={classNames(brandClassName, hasNavigation && 'ml-10 sm:ml-0')}>
+    <div
+      className={classNames(brandClassName, hasNavigation && 'ml-10 sm:ml-0')}
+    >
       {brandContent}
     </div>
   )
 }
-

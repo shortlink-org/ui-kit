@@ -30,7 +30,11 @@ export function BasketItem({ item, onRemove, className }: BasketItemProps) {
   return (
     <li className={clsx('flex py-6', className)}>
       <div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-gray-700">
-        <img alt={item.imageAlt} src={item.imageSrc} className="size-full object-cover" />
+        <img
+          alt={item.imageAlt}
+          src={item.imageSrc}
+          className="size-full object-cover"
+        />
       </div>
       <div className="ml-4 flex flex-1 flex-col">
         <div>
@@ -46,11 +50,15 @@ export function BasketItem({ item, onRemove, className }: BasketItemProps) {
             <p className="ml-4">{item.price}</p>
           </div>
           {item.color && (
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{item.color}</p>
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              {item.color}
+            </p>
           )}
         </div>
         <div className="flex flex-1 items-end justify-between text-sm">
-          <p className="text-gray-500 dark:text-gray-400">Qty {item.quantity}</p>
+          <p className="text-gray-500 dark:text-gray-400">
+            Qty {item.quantity}
+          </p>
           <div className="flex">
             <button
               type="button"
@@ -67,4 +75,3 @@ export function BasketItem({ item, onRemove, className }: BasketItemProps) {
 }
 
 export default BasketItem
-

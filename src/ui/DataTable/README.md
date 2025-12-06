@@ -128,27 +128,27 @@ const columns: ColumnDef<User, any>[] = [
 
 ### DataTableProps
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `data` | `TData[]` | required | Array of data rows |
-| `columns` | `ColumnDef<TData, any>[]` | required | Column definitions |
-| `sorting` | `boolean` | `true` | Enable column sorting |
-| `pagination` | `boolean` | `true` | Enable pagination |
-| `filters` | `boolean` | `false` | Show filter row |
-| `pageSize` | `number` | `10` | Rows per page |
-| `onRowClick` | `(row: TData) => void` | - | Callback when row is clicked |
-| `loading` | `boolean` | `false` | Show loading state |
-| `emptyMessage` | `string` | - | Custom empty state message |
-| `enableColumnVisibility` | `boolean` | `true` | Show column visibility toggle |
-| `enableRowSelection` | `boolean` | `false` | Enable row selection checkboxes |
-| `enableExport` | `boolean` | `false` | Show export buttons |
-| `enableCreate` | `boolean` | `false` | Show create button |
-| `enableBulkDelete` | `boolean` | `false` | Show bulk delete button |
-| `enableRefresh` | `boolean` | `false` | Show refresh button |
-| `onCreate` | `() => void` | - | Create button callback |
-| `onBulkDelete` | `(rows: TData[]) => void` | - | Bulk delete callback |
-| `onRefresh` | `() => void` | - | Refresh button callback |
-| `renderRowActions` | `(row: TData) => React.ReactNode` | - | Custom row actions |
+| Prop                     | Type                              | Default  | Description                     |
+| ------------------------ | --------------------------------- | -------- | ------------------------------- |
+| `data`                   | `TData[]`                         | required | Array of data rows              |
+| `columns`                | `ColumnDef<TData, any>[]`         | required | Column definitions              |
+| `sorting`                | `boolean`                         | `true`   | Enable column sorting           |
+| `pagination`             | `boolean`                         | `true`   | Enable pagination               |
+| `filters`                | `boolean`                         | `false`  | Show filter row                 |
+| `pageSize`               | `number`                          | `10`     | Rows per page                   |
+| `onRowClick`             | `(row: TData) => void`            | -        | Callback when row is clicked    |
+| `loading`                | `boolean`                         | `false`  | Show loading state              |
+| `emptyMessage`           | `string`                          | -        | Custom empty state message      |
+| `enableColumnVisibility` | `boolean`                         | `true`   | Show column visibility toggle   |
+| `enableRowSelection`     | `boolean`                         | `false`  | Enable row selection checkboxes |
+| `enableExport`           | `boolean`                         | `false`  | Show export buttons             |
+| `enableCreate`           | `boolean`                         | `false`  | Show create button              |
+| `enableBulkDelete`       | `boolean`                         | `false`  | Show bulk delete button         |
+| `enableRefresh`          | `boolean`                         | `false`  | Show refresh button             |
+| `onCreate`               | `() => void`                      | -        | Create button callback          |
+| `onBulkDelete`           | `(rows: TData[]) => void`         | -        | Bulk delete callback            |
+| `onRefresh`              | `() => void`                      | -        | Refresh button callback         |
+| `renderRowActions`       | `(row: TData) => React.ReactNode` | -        | Custom row actions              |
 
 ## Styling
 
@@ -171,8 +171,8 @@ DataTable uses TailwindCSS v4 utility classes. All styling is done via className
 ## Examples
 
 See `DataTable.stories.tsx` for complete examples including:
+
 - Basic table
 - With filters
 - With row actions
 - With bulk actions and selection
-

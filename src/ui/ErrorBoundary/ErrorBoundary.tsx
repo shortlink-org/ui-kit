@@ -7,13 +7,19 @@ export interface ErrorBoundaryProps {
   /** Custom ReactNode to render when error occurs (deprecated: use fallbackRender instead) */
   fallback?: ReactNode
   /** Render function that receives error and resetErrorBoundary callback */
-  fallbackRender?: (props: { error: Error; resetErrorBoundary: () => void }) => ReactNode
+  fallbackRender?: (props: {
+    error: Error
+    resetErrorBoundary: () => void
+  }) => ReactNode
   /** Called when error is caught */
   onError?: (error: Error, errorInfo: React.ErrorInfo) => void
   /** Array of values that, when changed, will reset the error boundary */
   resetKeys?: Array<string | number>
   /** Called when resetKeys change */
-  onResetKeysChange?: (prevResetKeys: Array<string | number> | undefined, resetKeys: Array<string | number> | undefined) => void
+  onResetKeysChange?: (
+    prevResetKeys: Array<string | number> | undefined,
+    resetKeys: Array<string | number> | undefined,
+  ) => void
   /** Called when error boundary is reset */
   onReset?: () => void
   className?: string
@@ -27,10 +33,13 @@ interface ErrorBoundaryState {
 /**
  * ErrorBoundary component that catches errors in React components,
  * especially useful for errors thrown in transitions (React 19 Actions).
- * 
+ *
  * Errors thrown inside transitions automatically bubble to error boundaries.
  */
-export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class ErrorBoundary extends Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   constructor(props: ErrorBoundaryProps) {
     super(props)
     this.state = {
@@ -119,7 +128,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             'focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2',
             'dark:focus:ring-offset-gray-900',
             'transition-colors duration-200',
-            'disabled:opacity-50 disabled:cursor-not-allowed'
+            'disabled:opacity-50 disabled:cursor-not-allowed',
           )}
         >
           Try again
@@ -141,4 +150,3 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 }
 
 export default ErrorBoundary
-

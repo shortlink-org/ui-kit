@@ -6,7 +6,11 @@ interface HeaderSearchProps {
   defaultQuery?: string
 }
 
-export function HeaderSearch({ placeholder, onSearch, defaultQuery }: HeaderSearchProps) {
+export function HeaderSearch({
+  placeholder,
+  onSearch,
+  defaultQuery,
+}: HeaderSearchProps) {
   return (
     <div className="hidden md:block mr-2">
       <div className="w-64">

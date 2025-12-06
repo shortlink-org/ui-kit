@@ -21,6 +21,7 @@ This isn't a performance problem; it's a coordination problem. React 19 introduc
 - **Error Boundaries**: Catch errors from transitions automatically
 
 The UI Kit was using React 19.2.0, making these primitives available. However, components were still using imperative patterns:
+
 - Manual debounce logic in `SearchForm`
 - Manual loading states in `Table` mutations
 - Manual error handling scattered across components

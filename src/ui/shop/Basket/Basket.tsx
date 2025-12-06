@@ -67,7 +67,9 @@ export function Basket({
       <div className="flex h-full flex-col overflow-y-auto bg-white dark:bg-gray-900 shadow-xl">
         <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
           <div className="flex items-start justify-between">
-            <h2 className="text-lg font-medium text-gray-900 dark:text-white">Shopping cart</h2>
+            <h2 className="text-lg font-medium text-gray-900 dark:text-white">
+              Shopping cart
+            </h2>
             <div className="ml-3 flex h-7 items-center">
               <button
                 type="button"
@@ -100,7 +102,9 @@ export function Basket({
                         d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                       />
                     </svg>
-                    <h3 className="mt-2 text-sm font-semibold text-gray-900 dark:text-white">Your cart is empty</h3>
+                    <h3 className="mt-2 text-sm font-semibold text-gray-900 dark:text-white">
+                      Your cart is empty
+                    </h3>
                     <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                       Start adding items to your cart.
                     </p>
@@ -109,7 +113,13 @@ export function Basket({
               </div>
             ) : (
               <div className="flow-root">
-                <ul role="list" className={clsx('-my-6 divide-y divide-gray-200 dark:divide-gray-700', itemsClassName)}>
+                <ul
+                  role="list"
+                  className={clsx(
+                    '-my-6 divide-y divide-gray-200 dark:divide-gray-700',
+                    itemsClassName,
+                  )}
+                >
                   {items.map((item) => (
                     <BasketItem
                       key={item.id}
@@ -141,4 +151,3 @@ export function Basket({
 }
 
 export default Basket
-
