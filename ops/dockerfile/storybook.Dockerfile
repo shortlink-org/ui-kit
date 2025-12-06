@@ -82,7 +82,6 @@ USER nginx-user  # switch to non-root user for security
 ###############################################################################
 COPY ./ops/dockerfile/conf/ui.local     /etc/nginx/conf.d/default.conf
 COPY ./ops/dockerfile/conf/nginx.conf   /etc/nginx/nginx.conf
-COPY ./ops/dockerfile/conf/templates    /etc/nginx/template
 
 # Storybook build from the builder stage
 COPY --from=builder /app/storybook-static /usr/share/nginx/html
