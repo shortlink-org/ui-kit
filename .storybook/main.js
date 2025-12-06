@@ -16,9 +16,9 @@ export default defineMain({
     builder: '@storybook/builder-vite',
   },
   framework: '@storybook/nextjs-vite',
-  features: {},
-  typescript: {},
-  docs: {},
+  typescript: {
+    check: false,
+  },
 
   async viteFinal(config) {
     // Ensure NODE_ENV is aligned with Storybook mode
@@ -27,12 +27,12 @@ export default defineMain({
         ? 'production'
         : 'development'
 
-    // Make sure React (and other libs) see the correct NODE_ENV
-    // IMPORTANT: Preserve all Storybook internal definitions
+    // CRITICAL: Preserve all Storybook internal definitions
+    // Don't create a new object - modify existing one to preserve Storybook's defines
     if (!config.define) {
       config.define = {}
     }
-    // Only set NODE_ENV, don't override Storybook's internal definitions
+    // Only add/update NODE_ENV, preserve all other Storybook definitions
     config.define['process.env.NODE_ENV'] = JSON.stringify(nodeEnv)
 
     // Ensure React is properly resolved and deduplicated
@@ -55,85 +55,16 @@ export default defineMain({
       config.build.modulePreload !== false
         ? {
             resolveDependencies: (_filename, deps) =>
-              deps.filter(dep => !dep.includes('vite-inject-mocker-entry.js')),
+              deps.filter(
+                dep =>
+                  !dep.includes('vite-inject-mocker-entry.js') &&
+                  !dep.includes('vite-inject-mocker')
+              ),
           }
         : false
 
-    // Optimize chunk splitting for better performance
-    // CRITICAL: Don't split Storybook modules - let Storybook handle its own chunks
-    config.build.rollupOptions = config.build.rollupOptions ?? {}
-    config.build.rollupOptions.output =
-      config.build.rollupOptions.output ?? {}
-
-    const originalManualChunks =
-      config.build.rollupOptions.output.manualChunks
-
-    config.build.rollupOptions.output.manualChunks = id => {
-      // Respect existing manualChunks function if present
-      if (typeof originalManualChunks === 'function') {
-        const result = originalManualChunks(id)
-        if (result) return result
-      }
-
-      // CRITICAL: Never split Storybook internal modules
-      // Storybook needs its modules to load correctly in production
-      if (
-        id.includes('@storybook') ||
-        id.includes('storybook/') ||
-        id.includes('.storybook/')
-      ) {
-        return undefined
-      }
-
-      // Only split node_modules; app code stays as is
-      if (!id.includes('node_modules')) {
-        return undefined
-      }
-
-      // MUI packages
-      if (
-        id.includes('@mui/material') ||
-        id.includes('@mui/system') ||
-        id.includes('@mui/styled-engine')
-      ) {
-        return 'mui'
-      }
-      if (id.includes('@mui/icons-material')) {
-        return 'mui-icons'
-      }
-      if (id.includes('@mui/x-date-pickers')) {
-        return 'mui-date-pickers'
-      }
-
-      // TanStack packages
-      if (id.includes('@tanstack/react-table')) {
-        return 'tanstack-table'
-      }
-      if (id.includes('@tanstack/react-virtual')) {
-        return 'tanstack-virtual'
-      }
-
-      // GSAP
-      if (id.includes('gsap')) {
-        return 'gsap'
-      }
-
-      // Fonts
-      if (id.includes('@fontsource')) {
-        return 'fonts'
-      }
-
-      // React DOM
-      if (id.includes('react-dom')) {
-        return 'react-dom'
-      }
-
-      // Default vendor chunk
-      return 'vendor'
-    }
-
-    // Increase chunk size warning limit (KB)
-    config.build.chunkSizeWarningLimit = 1000
+    // Let Storybook handle its own chunk splitting - don't interfere
+    // This ensures all Storybook modules load correctly in production
 
     return config
   },
