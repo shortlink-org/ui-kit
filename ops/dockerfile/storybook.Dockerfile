@@ -25,6 +25,7 @@ ARG BUILD_DATE
 
 # pnpm only needed here
 ENV PNPM_HOME="/pnpm"
+ENV NODE_ENV=production
 ENV PATH="${PNPM_HOME}:${PATH}"
 RUN npm install -g pnpm@latest
 

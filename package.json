@@ -18,7 +18,7 @@
     "build": "tsc -b && vite build",
     "dev": "pnpm storybook dev -p 6006",
     "dev:with-tests": "pnpm test:generate-output && pnpm storybook dev -p 6006",
-    "build-storybook": "pnpm storybook build --config-dir .storybook",
+    "build-storybook": "NODE_ENV=production pnpm storybook build --config-dir .storybook",
     "semantic-release": "pnpm dlx semantic-release",
     "test": "NODE_ENV=test jest",
     "test:generate-output": "jest --json --outputFile=test-results.json",
