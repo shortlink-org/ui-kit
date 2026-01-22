@@ -55,6 +55,14 @@ const meta = preview.meta({
     open: {
       control: 'boolean',
     },
+    position: {
+      control: 'select',
+      options: ['left', 'right', 'bottom'],
+    },
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg', 'xl', 'full'],
+    },
     onColorChange: {
       action: 'colorChanged',
     },

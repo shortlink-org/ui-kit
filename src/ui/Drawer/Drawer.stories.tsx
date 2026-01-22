@@ -19,7 +19,7 @@ const meta = preview.meta({
     },
     position: {
       control: 'select',
-      options: ['left', 'right'],
+      options: ['left', 'right', 'bottom'],
     },
     size: {
       control: 'select',
@@ -92,6 +92,22 @@ export const RightPosition = meta.story({
       <div>
         <p className="text-gray-600 dark:text-gray-400">
           This drawer opens from the right side.
+        </p>
+      </div>
+    ),
+  },
+})
+
+export const BottomPosition = meta.story({
+  render: (args: ComponentProps<typeof Drawer>) => <DrawerWrapper {...args} />,
+  args: {
+    title: 'Bottom Drawer',
+    position: 'bottom',
+    size: 'lg',
+    children: (
+      <div>
+        <p className="text-gray-600 dark:text-gray-400">
+          This drawer slides from the bottom and works well for mobile layouts.
         </p>
       </div>
     ),

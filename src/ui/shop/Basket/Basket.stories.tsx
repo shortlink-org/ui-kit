@@ -1,5 +1,5 @@
 import preview from '#.storybook/preview'
-import { useState, type ComponentProps } from 'react'
+import { useEffect, useState, type ComponentProps } from 'react'
 import { Basket } from './Basket'
 import type { BasketProps } from './Basket'
 import { Button } from '../../Button/Button'
@@ -58,7 +58,7 @@ const meta = preview.meta({
     },
     position: {
       control: 'select',
-      options: ['left', 'right'],
+      options: ['left', 'right', 'bottom'],
     },
     size: {
       control: 'select',
@@ -80,11 +80,27 @@ export default meta
 
 function BasketWrapper(args: Omit<BasketProps, 'open' | 'onClose'>) {
   const [open, setOpen] = useState(false)
+  const [items, setItems] = useState(args.items)
+
+  useEffect(() => {
+    setItems(args.items)
+  }, [args.items])
+
+  const handleRemoveItem = (itemId: number | string) => {
+    setItems((prevItems) => prevItems.filter((item) => item.id !== itemId))
+    args.onRemoveItem?.(itemId)
+  }
 
   return (
     <div>
       <Button onClick={() => setOpen(true)}>Open basket</Button>
-      <Basket {...args} open={open} onClose={setOpen} />
+      <Basket
+        {...args}
+        items={items}
+        onRemoveItem={handleRemoveItem}
+        open={open}
+        onClose={setOpen}
+      />
     </div>
   )
 }
@@ -94,6 +110,8 @@ export const Default = meta.story({
   args: {
     items: mockItems,
     subtotal: '$262.00',
+    position: 'bottom',
+    size: 'full',
   },
 })
 
@@ -102,5 +120,7 @@ export const Empty = meta.story({
   args: {
     items: [],
     subtotal: '$0.00',
+    position: 'bottom',
+    size: 'full',
   },
 })

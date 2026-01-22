@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react'
 import { clsx } from 'clsx'
+import { Drawer } from '../../ui/Drawer/Drawer'
+import type { DrawerPosition, DrawerSize } from '../../ui/Drawer/Drawer'
 
 export interface ColumnSpan {
   /** Span for small screens (640px+) */
@@ -29,6 +31,29 @@ export interface ColumnConfig {
   stickyOffset?: string
 }
 
+export interface MobileDrawerConfig {
+  /** Column indexes (0-based, after filtering empty columns) to render inside a drawer on small screens */
+  columns: number[]
+  /** Drawer title */
+  title?: React.ReactNode
+  /** Trigger button label */
+  triggerLabel?: string
+  /** Trigger button aria-label */
+  triggerAriaLabel?: string
+  /** Drawer position (default: 'bottom') */
+  position?: DrawerPosition
+  /** Drawer size (default: 'full' for bottom, 'md' otherwise) */
+  size?: DrawerSize
+  /** Custom className for the trigger button */
+  triggerClassName?: string
+  /** Custom className for the trigger wrapper */
+  triggerWrapperClassName?: string
+  /** Custom className for the drawer panel */
+  panelClassName?: string
+  /** Custom className for the drawer content area */
+  contentClassName?: string
+}
+
 export interface MultiColumnLayoutProps {
   /** Array of column configurations */
   columns: ColumnConfig[]
@@ -44,6 +69,8 @@ export interface MultiColumnLayoutProps {
   stackAt?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
   /** Test ID for E2E/integration testing */
   dataTestId?: string
+  /** Optional mobile drawer config for sidebar-style columns */
+  mobileDrawer?: MobileDrawerConfig
 }
 
 // Helper for base column classes
@@ -75,6 +102,28 @@ const breakpointMap: Record<'sm' | 'md' | 'lg' | 'xl' | '2xl', string> = {
   '2xl': '1536px',
 }
 
+const showAtBreakpointClasses: Record<
+  'sm' | 'md' | 'lg' | 'xl' | '2xl',
+  string
+> = {
+  sm: 'sm:flex',
+  md: 'md:flex',
+  lg: 'lg:flex',
+  xl: 'xl:flex',
+  '2xl': '2xl:flex',
+}
+
+const hideAtBreakpointClasses: Record<
+  'sm' | 'md' | 'lg' | 'xl' | '2xl',
+  string
+> = {
+  sm: 'sm:hidden',
+  md: 'md:hidden',
+  lg: 'lg:hidden',
+  xl: 'xl:hidden',
+  '2xl': '2xl:hidden',
+}
+
 export function MultiColumnLayout({
   columns,
   className = '',
@@ -83,6 +132,7 @@ export function MultiColumnLayout({
   containerClassName = defaultConfig.containerClassName,
   stackAt = defaultConfig.stackAt,
   dataTestId,
+  mobileDrawer,
 }: MultiColumnLayoutProps) {
   // Generate unique ID for this layout instance to scope styles (must be called before any conditional returns)
   const layoutId = React.useId().replace(/:/g, '-')
@@ -92,6 +142,22 @@ export function MultiColumnLayout({
     (col) => col.content !== null && col.content !== undefined,
   )
   const columnCount = validColumns.length
+
+  const [mobileDrawerOpen, setMobileDrawerOpen] = React.useState(false)
+
+  const mobileDrawerColumnIndexes = (mobileDrawer?.columns ?? []).filter(
+    (index) => index >= 0 && index < columnCount,
+  )
+  const mobileDrawerColumnSet = new Set(mobileDrawerColumnIndexes)
+  const hasMobileDrawer = mobileDrawerColumnSet.size > 0
+  const mobileDrawerPosition = mobileDrawer?.position ?? 'bottom'
+  const mobileDrawerSize =
+    mobileDrawer?.size ??
+    (mobileDrawerPosition === 'bottom' ? 'full' : 'md')
+  const mobileDrawerTriggerLabel =
+    mobileDrawer?.triggerLabel ?? 'Open panel'
+  const showAtBreakpointClass = showAtBreakpointClasses[stackAt]
+  const hideAtBreakpointClass = hideAtBreakpointClasses[stackAt]
 
   // Helper to get span value (supports number or ColumnSpan object)
   const getSpanValue = React.useCallback(
@@ -218,6 +284,29 @@ export function MultiColumnLayout({
   return (
     <div className={clsx('w-full h-full', className)} data-testid={dataTestId}>
       <style>{responsiveStyles}</style>
+      {hasMobileDrawer && (
+        <div
+          className={clsx(
+            'flex items-center justify-end px-4 py-3',
+            hideAtBreakpointClass,
+            mobileDrawer?.triggerWrapperClassName,
+          )}
+        >
+          <button
+            type="button"
+            onClick={() => setMobileDrawerOpen(true)}
+            aria-label={
+              mobileDrawer?.triggerAriaLabel ?? mobileDrawerTriggerLabel
+            }
+            className={clsx(
+              'inline-flex items-center rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 shadow-sm transition hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800',
+              mobileDrawer?.triggerClassName,
+            )}
+          >
+            {mobileDrawerTriggerLabel}
+          </button>
+        </div>
+      )}
       <div
         data-layout-id={layoutId}
         className={clsx(
@@ -232,12 +321,15 @@ export function MultiColumnLayout({
         {validColumns.map((column, index) => {
           const isSticky = column.sticky === true
           const stickyOffset = column.stickyOffset || '0'
+          const isMobileDrawerColumn = mobileDrawerColumnSet.has(index)
 
           // Build column classes
           const columnClasses = clsx(
             baseColumnClass,
             column.className,
             isSticky && 'sticky self-start',
+            isMobileDrawerColumn && 'hidden',
+            isMobileDrawerColumn && showAtBreakpointClass,
           )
 
           // Generate column ID for CSS targeting
@@ -260,6 +352,31 @@ export function MultiColumnLayout({
           )
         })}
       </div>
+      {hasMobileDrawer && (
+        <Drawer
+          open={mobileDrawerOpen}
+          onClose={setMobileDrawerOpen}
+          position={mobileDrawerPosition}
+          size={mobileDrawerSize}
+          title={mobileDrawer?.title}
+          panelClassName={clsx(
+            mobileDrawerPosition === 'bottom' && 'rounded-t-3xl',
+            mobileDrawer?.panelClassName,
+          )}
+          contentClassName={clsx(
+            'space-y-6 pb-6',
+            mobileDrawer?.contentClassName,
+          )}
+        >
+          {validColumns
+            .filter((_, index) => mobileDrawerColumnSet.has(index))
+            .map((column, index) => (
+              <div key={column.id ?? index} className={column.className}>
+                {column.content}
+              </div>
+            ))}
+        </Drawer>
+      )}
     </div>
   )
 }

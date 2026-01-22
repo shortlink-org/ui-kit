@@ -38,6 +38,10 @@ const meta: Meta<typeof MultiColumnLayout> = {
       control: 'select',
       options: ['sm', 'md', 'lg', 'xl', '2xl'],
     },
+    mobileDrawer: {
+      description: 'Optional mobile drawer config for sidebar columns',
+      control: false,
+    },
   },
 }
 
@@ -216,6 +220,12 @@ export const Default: Story = {
   args: {
     columns: getDefaultColumns(),
     gap: 'md',
+    mobileDrawer: {
+      columns: [0, 2],
+      title: 'Side Panels',
+      triggerLabel: 'Open panels',
+      position: 'bottom',
+    },
   },
 }
 
@@ -248,6 +258,26 @@ export const WithSecondaryMenu: Story = {
       },
     ],
     gap: 'none', // No gap between menus for seamless connection
+    mobileDrawer: {
+      columns: [0, 1],
+      title: 'Menus',
+      triggerLabel: 'Open menus',
+      position: 'bottom',
+    },
+  },
+}
+
+export const WithMobileDrawer: Story = {
+  name: 'With Mobile Drawer (Sidebars)',
+  args: {
+    columns: getDefaultColumns(),
+    gap: 'md',
+    mobileDrawer: {
+      columns: [0, 2],
+      title: 'Panels',
+      triggerLabel: 'Open panels',
+      position: 'bottom',
+    },
   },
 }
 
@@ -269,6 +299,12 @@ export const TwoColumns: Story = {
       },
     ],
     gap: 'md',
+    mobileDrawer: {
+      columns: [0],
+      title: 'Menu',
+      triggerLabel: 'Open menu',
+      position: 'bottom',
+    },
   },
 }
 
@@ -352,6 +388,12 @@ export const AsymmetricLayout: Story = {
       },
     ],
     gap: 'md',
+    mobileDrawer: {
+      columns: [0],
+      title: 'Sidebar',
+      triggerLabel: 'Open sidebar',
+      position: 'bottom',
+    },
   },
 }
 
@@ -375,6 +417,12 @@ export const WithStickySidebar: Story = {
       },
     ],
     gap: 'md',
+    mobileDrawer: {
+      columns: [0, 2],
+      title: 'Side Panels',
+      triggerLabel: 'Open panels',
+      position: 'bottom',
+    },
   },
 }
 
@@ -409,6 +457,12 @@ export const DarkMode: Story = {
       },
     ],
     gap: 'none',
+    mobileDrawer: {
+      columns: [0, 1],
+      title: 'Menus',
+      triggerLabel: 'Open menus',
+      position: 'bottom',
+    },
   },
 }
 
@@ -675,7 +729,16 @@ const InteractiveExample = () => {
         LinkComponent={CustomLink}
       />
       <div className="flex-1 overflow-hidden">
-        <MultiColumnLayout columns={columns} gap="none" />
+        <MultiColumnLayout
+          columns={columns}
+          gap="none"
+          mobileDrawer={{
+            columns: [0, 1],
+            title: 'Menus',
+            triggerLabel: 'Open menus',
+            position: 'bottom',
+          }}
+        />
       </div>
     </div>
   )

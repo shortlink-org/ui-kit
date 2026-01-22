@@ -37,6 +37,7 @@ export type SidebarProps = {
   activePath?: string
   collapsed?: boolean
   width?: string | number
+  height?: string | number
   footerSlot?: React.ReactNode
   variant?: 'sticky' | 'scrollable'
   ariaLabel?: string
@@ -106,6 +107,7 @@ export function Sidebar({
   activePath,
   collapsed: sidebarCollapsed,
   width,
+  height,
   footerSlot,
   variant = 'scrollable',
   ariaLabel = 'Sidebar',
@@ -128,18 +130,24 @@ export function Sidebar({
         ? '3.5rem'
         : undefined
 
+  const effectiveHeight =
+    height !== undefined
+      ? typeof height === 'number'
+        ? `${height}px`
+        : height
+      : undefined
+
   const containerClassName = clsx(
     'w-full h-full bg-gray-50 dark:bg-gray-800 flex justify-between flex-col min-h-0',
     variant === 'sticky' && 'sticky top-0 self-start',
     variant === 'scrollable' && 'overflow-y-auto',
     effectiveWidth && !width && effectiveMode === 'mini' && 'max-w-[3.5rem]',
-    !effectiveWidth && effectiveMode === 'full' && 'max-w-xs',
     className,
   )
 
   const navClassName = clsx(
-    'space-y-2 font-medium flex-grow w-full px-2 py-4',
-    variant === 'scrollable' && 'overflow-y-auto',
+    'space-y-2 font-medium w-full px-2 py-4',
+    variant === 'scrollable' && 'flex-1 min-h-0 overflow-y-auto',
   )
 
   const handleCollapseChange = (sectionTitle: string, collapsed: boolean) => {
@@ -174,14 +182,18 @@ export function Sidebar({
   return (
     <aside
       className={containerClassName}
-      style={
-        effectiveWidth
+      style={{
+        ...(effectiveWidth
           ? { width: effectiveWidth, maxWidth: effectiveWidth }
-          : undefined
-      }
+          : null),
+        ...(effectiveHeight ? { height: effectiveHeight } : null),
+      }}
       aria-label={ariaLabel}
     >
-      <nav aria-label={ariaLabel}>
+      <nav
+        aria-label={ariaLabel}
+        className={clsx(variant === 'scrollable' && 'flex min-h-0 flex-1')}
+      >
         <ul className={navClassName}>
           {sections.map((section, sectionIndex) => {
             if (section.type === 'collapsible') {
