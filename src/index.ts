@@ -14,7 +14,6 @@ export type {
 export { ToggleDarkMode } from './ui/ToggleDarkMode/ToggleDarkMode'
 export { GithubRepository } from './card/GithubRepository/GithubRepository'
 export { FeatureCard } from './card/FeatureCard/FeatureCard'
-export { ElectricBorderCard } from './card/ElectricBorderCard/ElectricBorderCard'
 export { Timeline } from './ui/Timeline/Timeline'
 // DataTable - компонент для работы с таблицами
 export { DataTable } from './ui/DataTable/DataTable'
