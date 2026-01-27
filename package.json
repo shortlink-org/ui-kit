@@ -91,7 +91,7 @@
     "@storybook/addon-a11y": "10.0.6",
     "@storybook/addon-docs": "10.0.6",
     "@storybook/addon-links": "10.0.6",
-    "@storybook/addon-themes": "10.0.6",
+    "@storybook/addon-themes": "10.2.1",
     "@storybook/builder-vite": "10.2.0",
     "@storybook/nextjs": "10.0.6",
     "@storybook/nextjs-vite": "10.0.6",
