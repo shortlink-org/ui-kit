@@ -85,13 +85,6 @@ export type {
 export { FamilyDialog } from './ui/FamilyDialog/FamilyDialog'
 export type { FamilyDialogProps } from './ui/FamilyDialog/FamilyDialog'
 
-// DataTable types continued
-export type {
-  DrawerProps,
-  DrawerPosition,
-  DrawerSize,
-} from './ui/Drawer/Drawer'
-
 // Shop
 export { AddToCartButton } from './ui/shop/AddToCartButton/AddToCartButton'
 export type { AddToCartButtonProps } from './ui/shop/AddToCartButton/AddToCartButton'

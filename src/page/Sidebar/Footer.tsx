@@ -1,7 +1,7 @@
 import React from 'react'
 
 interface FooterProps {
-  mode?: 'full' | 'compact'
+  mode?: 'full' | 'compact' | 'mini'
   name?: string
   email?: string
   avatarUrl?: string

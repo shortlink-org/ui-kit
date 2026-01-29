@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { FamilyDialog } from '../FamilyDialog/FamilyDialog'
 import { TrashIcon } from '@heroicons/react/24/outline'
 

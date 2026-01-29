@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef, ReactNode } from 'react'
+import { useRef, ReactNode } from 'react'
 import {
   motion,
   useScroll,
