@@ -252,26 +252,26 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
   }
 
   return (
-    <div ref={wrapperRef} className={`atc-wrapper ${className}`}>
+    <div ref={wrapperRef} data-component="add-to-cart" className={className}>
       <button
         ref={buttonRef}
-        className="atc"
+        data-atc-button
         aria-label={ariaLabel}
         data-adding={adding}
         onClick={handleAddToCart}
         disabled={running}
       >
-        <span className="atc__content">
-          <span ref={cartRef} className="atc__cart">
+        <span data-atc-content>
+          <span ref={cartRef} data-atc-cart>
             <svg
-              className="atc__icon"
+              data-atc-icon
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
             >
               <rect
                 ref={itemRef}
-                className="atc__cart-content"
+                data-atc-cart-content
                 x="9"
                 y="-1"
                 width="10"
@@ -282,9 +282,9 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
               <path d="M2.25 2.25a.75.75 0 0 0 0 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 0 0-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 0 0 0-1.5H5.378A2.25 2.25 0 0 1 7.5 15h11.218a.75.75 0 0 0 .674-.421 60.358 60.358 0 0 0 2.96-7.228.75.75 0 0 0-.525-.965A60.864 60.864 0 0 0 5.68 4.509l-.232-.867A1.875 1.875 0 0 0 3.636 2.25H2.25ZM3.75 20.25a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM16.5 20.25a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" />
             </svg>
           </span>
-          <span ref={dummyRef} className="atc__cart--dummy">
+          <span ref={dummyRef} data-atc-cart-dummy>
             <svg
-              className="atc__icon"
+              data-atc-icon
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
@@ -292,9 +292,9 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
               <path d="M2.25 2.25a.75.75 0 0 0 0 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 0 0-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 0 0 0-1.5H5.378A2.25 2.25 0 0 1 7.5 15h11.218a.75.75 0 0 0 .674-.421 60.358 60.358 0 0 0 2.96-7.228.75.75 0 0 0-.525-.965A60.864 60.864 0 0 0 5.68 4.509l-.232-.867A1.875 1.875 0 0 0 3.636 2.25H2.25ZM3.75 20.25a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM16.5 20.25a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" />
             </svg>
           </span>
-          <span ref={checkRef} className="atc__check">
+          <span ref={checkRef} data-atc-check>
             <svg
-              className="atc__icon"
+              data-atc-icon
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -307,22 +307,25 @@ export const AddToCartButton: React.FC<AddToCartButtonProps> = ({
               />
             </svg>
           </span>
-          <span ref={textRef} className="atc__text">
+          <span ref={textRef} data-atc-text>
             {text}
           </span>
         </span>
-        <span className="atc__border atc__border--animated atc__border--demo"></span>
+        <span data-atc-border data-border-type="demo"></span>
         <span
           ref={animatedBorderRef}
-          className="atc__border atc__border--animated"
+          data-atc-border
+          data-border-type="animated"
         ></span>
         <span
           ref={staticBorderRef}
-          className="atc__border atc__border--static"
+          data-atc-border
+          data-border-type="static"
         ></span>
         <span
           ref={completeBorderRef}
-          className="atc__border atc__border--complete"
+          data-atc-border
+          data-border-type="complete"
         ></span>
       </button>
     </div>

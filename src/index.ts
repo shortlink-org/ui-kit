@@ -3,6 +3,19 @@ export { theme } from './theme/theme'
 // Import global styles - consumers get styles automatically
 import './theme/styles.css'
 
+// Animation utilities - CSS spring easings using Motion
+export {
+  springSnappy,
+  springDefault,
+  springBouncy,
+  springWobbly,
+  springGentle,
+  springStiff,
+  springSlow,
+  createSpring,
+  springCSSVariables,
+} from './utils/spring'
+
 // Components exports
 export { Button } from './ui/Button/Button'
 export type {
@@ -14,6 +27,8 @@ export type {
 export { ToggleDarkMode } from './ui/ToggleDarkMode/ToggleDarkMode'
 export { GithubRepository } from './card/GithubRepository/GithubRepository'
 export { FeatureCard } from './card/FeatureCard/FeatureCard'
+export { ParallaxCard } from './card/ParallaxCard/ParallaxCard'
+export type { ParallaxCardProps } from './card/ParallaxCard/ParallaxCard'
 export { Timeline } from './ui/Timeline/Timeline'
 // DataTable - компонент для работы с таблицами
 export { DataTable } from './ui/DataTable/DataTable'
@@ -60,6 +75,17 @@ export type {
 
 // Drawer
 export { Drawer } from './ui/Drawer/Drawer'
+export type {
+  DrawerProps,
+  DrawerPosition,
+  DrawerSize,
+} from './ui/Drawer/Drawer'
+
+// FamilyDialog
+export { FamilyDialog } from './ui/FamilyDialog/FamilyDialog'
+export type { FamilyDialogProps } from './ui/FamilyDialog/FamilyDialog'
+
+// DataTable types continued
 export type {
   DrawerProps,
   DrawerPosition,

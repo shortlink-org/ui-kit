@@ -196,17 +196,6 @@ export const TwoProducts: Story = {
   },
 }
 
-export const WithClickHandler: Story = {
-  render: Template,
-  args: {
-    products: mockProducts,
-    title: 'Click to View Details',
-    onProductClick: (product) => {
-      console.log('Product clicked:', product)
-    },
-  },
-}
-
 export const WithAddToCart: Story = {
   render: Template,
   args: {

@@ -156,7 +156,8 @@ const preview = definePreview({
     },
   ],
 
-  tags: [],
+  // Include 'test' tag for Vitest addon to run stories as tests
+  tags: ['autodocs', 'test'],
 }) as any
 
 export default preview

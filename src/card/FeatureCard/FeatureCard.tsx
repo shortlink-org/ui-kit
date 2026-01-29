@@ -1,4 +1,7 @@
-import React, { ReactNode, useMemo } from 'react'
+'use client'
+
+import React, { ReactNode, useMemo, useRef } from 'react'
+import { motion, useSpring, useMotionValue } from 'motion/react'
 
 // Valid Tailwind color classes for gradients
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -185,6 +188,33 @@ export function FeatureCard({
 }: FeatureCardProps) {
   const linkColorClass =
     VALID_LINK_COLORS[linkColor] || VALID_LINK_COLORS.indigo
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  // Tilt effect using Motion springs
+  // @see https://motion.dev/tutorials/react-tilt-card
+  const rotateX = useMotionValue(0)
+  const rotateY = useMotionValue(0)
+
+  const springRotateX = useSpring(rotateX, { stiffness: 150, damping: 20 })
+  const springRotateY = useSpring(rotateY, { stiffness: 150, damping: 20 })
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return
+    const rect = cardRef.current.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+    const mouseX = e.clientX - centerX
+    const mouseY = e.clientY - centerY
+    // Max tilt of 8 degrees for subtle effect
+    const maxTilt = 8
+    rotateY.set((mouseX / (rect.width / 2)) * maxTilt)
+    rotateX.set(-(mouseY / (rect.height / 2)) * maxTilt)
+  }
+
+  const handleMouseLeave = () => {
+    rotateX.set(0)
+    rotateY.set(0)
+  }
 
   // Memoize gradient styles to avoid recalculation on every render
   const iconGradientStyle = useMemo(
@@ -198,7 +228,17 @@ export function FeatureCard({
   )
 
   return (
-    <div className="relative p-8 lg:p-10 bg-white dark:bg-gray-800 rounded-3xl shadow-sm hover:shadow-md transition-all duration-500 border border-gray-200 dark:border-gray-700 overflow-hidden group hover:-translate-y-1">
+    <motion.div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        rotateX: springRotateX,
+        rotateY: springRotateY,
+        transformPerspective: 1000,
+      }}
+      className="relative p-8 lg:p-10 bg-white dark:bg-gray-800 rounded-3xl shadow-sm hover:shadow-md transition-shadow duration-500 border border-gray-200 dark:border-gray-700 overflow-hidden group"
+    >
       {/* Decorative background */}
       <div
         className="absolute top-0 right-0 w-40 h-40 rounded-full -mr-20 -mt-20 group-hover:scale-150 transition-transform duration-700"
@@ -247,7 +287,7 @@ export function FeatureCard({
           </button>
         )}
       </div>
-    </div>
+    </motion.div>
   )
 }
 

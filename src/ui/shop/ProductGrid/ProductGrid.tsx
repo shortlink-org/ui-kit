@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { clsx } from 'clsx'
+import { motion, useSpring, useMotionValue } from 'motion/react'
 import { AddToCartButton } from '../AddToCartButton/AddToCartButton'
 import { Skeleton } from '../../Skeleton/Skeleton'
 import { HeartIcon, EyeIcon, StarIcon } from '@heroicons/react/24/outline'
@@ -335,10 +336,37 @@ function ProductCard({
   )
   const [imageLoaded, setImageLoaded] = React.useState(false)
   const cardId = React.useId().replace(/:/g, '-')
+  const cardRef = React.useRef<HTMLDivElement>(null)
 
   const { formatted, original, discount } = formatPrice(product.price)
   const badges = getProductBadges(product)
   const isOutOfStock = product.inventory?.status === 'out_of_stock'
+
+  // Tilt effect using Motion springs
+  // @see https://motion.dev/tutorials/react-tilt-card
+  const rotateX = useMotionValue(0)
+  const rotateY = useMotionValue(0)
+
+  const springRotateX = useSpring(rotateX, { stiffness: 150, damping: 20 })
+  const springRotateY = useSpring(rotateY, { stiffness: 150, damping: 20 })
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return
+    const rect = cardRef.current.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+    const mouseX = e.clientX - centerX
+    const mouseY = e.clientY - centerY
+    // Max tilt of 10 degrees
+    const maxTilt = 10
+    rotateY.set((mouseX / (rect.width / 2)) * maxTilt)
+    rotateX.set(-(mouseY / (rect.height / 2)) * maxTilt)
+  }
+
+  const handleMouseLeave = () => {
+    rotateX.set(0)
+    rotateY.set(0)
+  }
 
   const handleFavorite = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -366,8 +394,16 @@ function ProductCard({
           }
         }
       `}</style>
-      <div
+      <motion.div
+        ref={cardRef}
         data-card-id={cardId}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          rotateX: springRotateX,
+          rotateY: springRotateY,
+          transformPerspective: 1000,
+        }}
         className={clsx(
           'group relative flex flex-col h-full',
           'bg-[var(--color-surface)] rounded-lg overflow-hidden',
@@ -542,7 +578,7 @@ function ProductCard({
             </span>
           </div>
         )}
-      </div>
+      </motion.div>
     </>
   )
 }

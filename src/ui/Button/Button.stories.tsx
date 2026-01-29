@@ -451,15 +451,21 @@ export const UseCases = meta.story({
           </p>
           <div className="flex gap-3">
             <Button
-              variant="secondary"
+              variant="outline"
               size="lg"
               onClick={fn()}
               icon={<ArrowForwardIcon />}
               iconPosition="right"
+              className="bg-white text-indigo-600 border-white hover:bg-indigo-50"
             >
               Start Free Trial
             </Button>
-            <Button variant="ghost" size="lg" onClick={fn()}>
+            <Button
+              variant="ghost"
+              size="lg"
+              onClick={fn()}
+              className="text-white hover:bg-white/20"
+            >
               Learn More
             </Button>
           </div>

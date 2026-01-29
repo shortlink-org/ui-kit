@@ -45,10 +45,9 @@ export const ToggleDarkMode: React.FC<ToggleDarkModeProps> = ({
   }
 
   return (
-    <div id={wrapperId} className="toggleWrapper">
+    <div id={wrapperId} data-component="toggle-dark-mode">
       <input
         type="checkbox"
-        className="dn"
         id={finalInputId}
         onChange={handleChange}
         checked={checked}
@@ -56,18 +55,18 @@ export const ToggleDarkMode: React.FC<ToggleDarkModeProps> = ({
         aria-checked={checked}
         aria-label={ariaLabel}
       />
-      <label htmlFor={finalInputId} className="toggle">
-        <span className="toggle__handler">
-          <span className="crater crater--1" />
-          <span className="crater crater--2" />
-          <span className="crater crater--3" />
+      <label htmlFor={finalInputId} data-toggle-track>
+        <span data-toggle-handler>
+          <span data-crater="1" />
+          <span data-crater="2" />
+          <span data-crater="3" />
         </span>
-        <span className="star star--1" />
-        <span className="star star--2" />
-        <span className="star star--3" />
-        <span className="star star--4" />
-        <span className="star star--5" />
-        <span className="star star--6" />
+        <span data-star="1" />
+        <span data-star="2" />
+        <span data-star="3" />
+        <span data-star="4" />
+        <span data-star="5" />
+        <span data-star="6" />
       </label>
     </div>
   )

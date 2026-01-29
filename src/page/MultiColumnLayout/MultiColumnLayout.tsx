@@ -314,7 +314,7 @@ export function MultiColumnLayout({
           'grid-cols-1',
           gapClasses[gap],
           minHeight,
-          'w-full',
+          'w-full h-full',
           containerClassName,
         )}
       >

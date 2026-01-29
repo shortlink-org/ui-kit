@@ -1,8 +1,49 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { AppHeaderProfile } from '../types'
+import { AppHeaderProfile, AppHeaderProfileMenuItem } from '../types'
+import { FamilyDialog } from '../../../ui/FamilyDialog/FamilyDialog'
 
 interface HeaderProfileProps {
   profile: AppHeaderProfile
+}
+
+function ProfileMenuItem({ menuItem }: { menuItem: AppHeaderProfileMenuItem }) {
+  // If the item has a confirmation dialog, wrap it in FamilyDialog
+  if (menuItem.confirmDialog && menuItem.onClick) {
+    return (
+      <FamilyDialog
+        trigger={menuItem.name}
+        title={menuItem.confirmDialog.title}
+        description={menuItem.confirmDialog.description}
+        confirmText={menuItem.confirmDialog.confirmText || menuItem.name}
+        cancelText={menuItem.confirmDialog.cancelText || 'Cancel'}
+        variant={menuItem.confirmDialog.variant || 'danger'}
+        onConfirm={menuItem.onClick}
+        triggerClassName="!bg-transparent !text-gray-700 dark:!text-gray-300 !p-0 !rounded-none !font-normal w-full text-left px-4 py-2 text-sm hover:!bg-gray-100 dark:hover:!bg-gray-700"
+      />
+    )
+  }
+
+  // Regular menu item with link
+  if (menuItem.href) {
+    return (
+      <a
+        href={menuItem.href}
+        className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
+      >
+        {menuItem.name}
+      </a>
+    )
+  }
+
+  // Regular menu item with onClick
+  return (
+    <button
+      onClick={menuItem.onClick}
+      className="block w-full text-left px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
+    >
+      {menuItem.name}
+    </button>
+  )
 }
 
 export function HeaderProfile({ profile }: HeaderProfileProps) {
@@ -36,25 +77,11 @@ export function HeaderProfile({ profile }: HeaderProfileProps) {
           </MenuButton>
           <MenuItems
             transition
-            className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg outline outline-black/5 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+            className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-gray-800 py-1 shadow-lg outline outline-black/5 dark:outline-white/10 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
           >
             {profile.menuItems.map((menuItem, index) => (
               <MenuItem key={menuItem.name || index}>
-                {menuItem.href ? (
-                  <a
-                    href={menuItem.href}
-                    className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
-                  >
-                    {menuItem.name}
-                  </a>
-                ) : (
-                  <button
-                    onClick={menuItem.onClick}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
-                  >
-                    {menuItem.name}
-                  </button>
-                )}
+                <ProfileMenuItem menuItem={menuItem} />
               </MenuItem>
             ))}
           </MenuItems>

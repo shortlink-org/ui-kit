@@ -177,8 +177,10 @@ export const Interactive = meta.story({
     ...clothingProduct,
     selectedColorId: 'white',
     selectedSizeId: 'M',
+    galleryVariant: 'stack',
+    enableZoom: true,
   },
-  name: 'Interactive - With State Management',
+  name: 'Interactive - With Card Stack Gallery',
 })
 
 // ============================================================================
@@ -266,6 +268,8 @@ export const EdgeCases = meta.story({
         alt: 'Additional product view 2',
       },
     ],
+    galleryVariant: 'stack',
+    enableZoom: true,
   },
   name: 'Edge Cases',
 })
@@ -316,6 +320,8 @@ export const FashionEcommerce = meta.story({
       average: 4.9,
       totalCount: 342,
     },
+    galleryVariant: 'stack',
+    enableZoom: true,
   },
   name: 'Real-World - Fashion E-commerce',
 })
@@ -363,6 +369,27 @@ export const TechProduct = meta.story({
       average: 4.7,
       totalCount: 521,
     },
+    galleryVariant: 'stack',
+    enableZoom: true,
   },
   name: 'Real-World - Tech Product',
+})
+
+export const WithBuyNow = meta.story({
+  render: function BuyNowTemplate(args: ComponentProps<typeof ProductPage>) {
+    const handleBuyNow = async () => {
+      // Simulate checkout redirect
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      alert('Redirecting to checkout...')
+    }
+
+    return <ProductPage {...args} onBuyNow={handleBuyNow} />
+  },
+  args: {
+    ...clothingProduct,
+    showBuyNow: true,
+    galleryVariant: 'stack',
+    enableZoom: true,
+  },
+  name: 'With Buy Now Button',
 })

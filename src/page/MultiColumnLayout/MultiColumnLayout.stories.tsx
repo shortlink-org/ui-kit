@@ -676,7 +676,7 @@ const InteractiveExample = () => {
           {currentMenu.content}
         </div>
       ),
-      className: 'bg-white dark:bg-gray-900',
+      className: 'bg-white dark:bg-gray-900 overflow-hidden',
     },
   ]
 
@@ -732,6 +732,7 @@ const InteractiveExample = () => {
         <MultiColumnLayout
           columns={columns}
           gap="none"
+          minHeight="h-full"
           mobileDrawer={{
             columns: [0, 1],
             title: 'Menus',

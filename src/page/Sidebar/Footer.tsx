@@ -1,5 +1,12 @@
 import React from 'react'
 
+interface FooterProps {
+  mode?: 'full' | 'compact'
+  name?: string
+  email?: string
+  avatarUrl?: string
+}
+
 const ProfileLink = () => {
   return (
     <button
@@ -39,22 +46,26 @@ const ProfileLink = () => {
   )
 }
 
-// @ts-expect-error - Storybook args types
-function Footer({ mode }) {
+function Footer({
+  mode = 'full',
+  name = 'User Name',
+  email = 'user@example.com',
+  avatarUrl = 'https://i.ibb.co/fxrbS6p/Ellipse-2-2.png',
+}: FooterProps) {
   return (
     <div className="flex bg-indigo-500 items-center justify-center space-x-2 py-4 px-3 w-full h-16 mt-auto">
       {mode === 'full' ? (
         <React.Fragment>
           <div className={'m-1'}>
-            <img src="https://i.ibb.co/fxrbS6p/Ellipse-2-2.png" alt="avatar" />
+            <img src={avatarUrl} alt="avatar" />
           </div>
 
           <div className="flex flex-col justify-start items-start space-y-2 m-1">
             <p className="cursor-pointer text-base leading-4 text-white">
-              Alexis Enache
+              {name}
             </p>
             <p className="cursor-pointer text-xs leading-3 text-gray-200">
-              alexis _enache@gmail.com
+              {email}
             </p>
           </div>
 

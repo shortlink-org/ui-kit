@@ -1,4 +1,5 @@
 import { clsx } from 'clsx'
+import { FamilyDialog } from '../../../FamilyDialog/FamilyDialog'
 
 export interface BasketItem {
   id: number | string
@@ -18,11 +19,18 @@ export interface BasketItemProps {
   onRemove?: (itemId: number | string) => void
   /** Callback when quantity changes */
   onQuantityChange?: (itemId: number | string, quantity: number) => void
+  /** Show confirmation dialog before removing */
+  confirmRemove?: boolean
   /** Custom className */
   className?: string
 }
 
-export function BasketItem({ item, onRemove, className }: BasketItemProps) {
+export function BasketItem({
+  item,
+  onRemove,
+  confirmRemove = true,
+  className,
+}: BasketItemProps) {
   const handleRemove = () => {
     onRemove?.(item.id)
   }
@@ -60,13 +68,26 @@ export function BasketItem({ item, onRemove, className }: BasketItemProps) {
             Qty {item.quantity}
           </p>
           <div className="flex">
-            <button
-              type="button"
-              onClick={handleRemove}
-              className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
-            >
-              Remove
-            </button>
+            {confirmRemove ? (
+              <FamilyDialog
+                trigger="Remove"
+                title="Remove from cart?"
+                description={`Remove "${item.name}" from your cart?`}
+                confirmText="Remove"
+                cancelText="Keep"
+                variant="danger"
+                onConfirm={handleRemove}
+                triggerClassName="!bg-transparent !text-indigo-600 hover:!text-indigo-500 dark:!text-indigo-400 dark:hover:!text-indigo-300 !p-0 !rounded-none font-medium"
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={handleRemove}
+                className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+              >
+                Remove
+              </button>
+            )}
           </div>
         </div>
       </div>

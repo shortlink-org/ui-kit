@@ -88,7 +88,17 @@ export const WithAuthenticatedUser = meta.story({
       menuItems: [
         { name: 'Your Profile', href: '/profile', icon: '👤' },
         { name: 'Settings', href: '/settings', icon: '⚙️' },
-        { name: 'Sign out', onClick: fn(), icon: '🚪' },
+        {
+          name: 'Sign out',
+          onClick: fn(),
+          icon: '🚪',
+          confirmDialog: {
+            title: 'Sign out?',
+            description: "You'll need to log in again to access your account.",
+            confirmText: 'Sign out',
+            variant: 'danger',
+          },
+        },
       ],
     },
   },
@@ -186,7 +196,16 @@ export const WithNavigation = meta.story({
       menuItems: [
         { name: 'Your Profile', href: '/profile' },
         { name: 'Settings', href: '/settings' },
-        { name: 'Sign out', onClick: fn() },
+        {
+          name: 'Sign out',
+          onClick: fn(),
+          confirmDialog: {
+            title: 'Sign out?',
+            description: "You'll need to log in again to access your account.",
+            confirmText: 'Sign out',
+            variant: 'danger',
+          },
+        },
       ],
     },
   },
@@ -210,7 +229,16 @@ export const MobileView = meta.story({
       menuItems: [
         { name: 'Your Profile', href: '/profile' },
         { name: 'Settings', href: '/settings' },
-        { name: 'Sign out', onClick: fn() },
+        {
+          name: 'Sign out',
+          onClick: fn(),
+          confirmDialog: {
+            title: 'Sign out?',
+            description: "You'll need to log in again to access your account.",
+            confirmText: 'Sign out',
+            variant: 'danger',
+          },
+        },
       ],
     },
   },

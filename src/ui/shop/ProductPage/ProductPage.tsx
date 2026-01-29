@@ -2,7 +2,10 @@ import * as React from 'react'
 import { Breadcrumbs } from '../Breadcrumbs/Breadcrumbs'
 import type { Breadcrumb } from '../Breadcrumbs/Breadcrumbs'
 import { ProductImageGallery } from '../ProductImageGallery/ProductImageGallery'
-import type { ProductImage } from '../ProductImageGallery/ProductImageGallery'
+import type {
+  ProductImage,
+  ProductImageGalleryVariant,
+} from '../ProductImageGallery/ProductImageGallery'
 import { ProductReviews } from '../ProductReviews/ProductReviews'
 import { ProductColorSelector } from '../ProductColorSelector/ProductColorSelector'
 import type { ProductColor } from '../ProductColorSelector/ProductColorSelector'
@@ -10,6 +13,7 @@ import { ProductSizeSelector } from '../ProductSizeSelector/ProductSizeSelector'
 import type { ProductSize } from '../ProductSizeSelector/ProductSizeSelector'
 import { ProductDescription } from '../ProductDescription/ProductDescription'
 import { AddToCartButton } from '../AddToCartButton/AddToCartButton'
+import { FamilyDialog } from '../../FamilyDialog/FamilyDialog'
 import { clsx } from 'clsx'
 
 export interface ProductPageProps {
@@ -49,6 +53,10 @@ export interface ProductPageProps {
   onSizeChange?: (sizeId: string | number) => void
   /** Callback when add to cart is clicked */
   onAddToCart?: () => void | Promise<void>
+  /** Callback when Buy Now is clicked */
+  onBuyNow?: () => void | Promise<void>
+  /** Show Buy Now button */
+  showBuyNow?: boolean
   /** Size guide link */
   sizeGuideHref?: string
   /** Custom header slot (replaces breadcrumbs + title) */
@@ -57,6 +65,10 @@ export interface ProductPageProps {
   actionSlot?: React.ReactNode
   /** Custom gallery slot (replaces ProductImageGallery) */
   gallerySlot?: React.ReactNode
+  /** Image gallery variant: 'grid' | 'carousel' | 'stack' */
+  galleryVariant?: ProductImageGalleryVariant
+  /** Enable zoom on images */
+  enableZoom?: boolean
   /** Custom className */
   className?: string
 }
@@ -78,10 +90,14 @@ export function ProductPage({
   onColorChange,
   onSizeChange,
   onAddToCart,
+  onBuyNow,
+  showBuyNow = false,
   sizeGuideHref,
   headerSlot,
   actionSlot,
   gallerySlot,
+  galleryVariant = 'grid',
+  enableZoom = true,
   className,
 }: ProductPageProps) {
   return (
@@ -102,7 +118,15 @@ export function ProductPage({
           />
         )}
 
-        {gallerySlot ? gallerySlot : <ProductImageGallery images={images} />}
+        {gallerySlot ? (
+          gallerySlot
+        ) : (
+          <ProductImageGallery
+            images={images}
+            variant={galleryVariant}
+            enableZoom={enableZoom}
+          />
+        )}
 
         {/* Product info */}
         <div className="mx-auto max-w-2xl px-4 pt-10 pb-16 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto_auto_1fr] lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">
@@ -144,8 +168,20 @@ export function ProductPage({
               {actionSlot ? (
                 <div className="mt-10">{actionSlot}</div>
               ) : (
-                <div className="mt-10">
+                <div className="mt-10 space-y-3">
                   <AddToCartButton onAddToCart={onAddToCart} />
+                  {showBuyNow && (
+                    <FamilyDialog
+                      trigger="Buy Now"
+                      title="Confirm Purchase"
+                      description={`You're about to purchase "${name}" for ${price}. Proceed to checkout?`}
+                      confirmText="Proceed to Checkout"
+                      cancelText="Continue Shopping"
+                      variant="success"
+                      onConfirm={onBuyNow}
+                      triggerClassName="w-full justify-center !bg-green-600 hover:!bg-green-700"
+                    />
+                  )}
                 </div>
               )}
             </form>

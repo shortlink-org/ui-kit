@@ -2,6 +2,17 @@
 
 /* CSS Variables for Theme Colors (Tailwind v4 approach) */
 :root {
+  /* Spring easing functions using CSS linear() for natural animations */
+  /* @see https://motion.dev/tutorials/react-css-spring */
+  --spring-snappy: 0.3s linear(0, 0.009, 0.035 2.1%, 0.141 4.4%, 0.723 12.9%, 0.938, 1.077 20.4%, 1.121, 1.149 24.3%, 1.159, 1.163 27%, 1.154 29.9%, 1.129 33%, 1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%, 0.997 69.8%, 1.003 76.9%, 1);
+  --spring-default: 0.4s linear(0, 0.006, 0.025 2.8%, 0.101 6.1%, 0.539 18.9%, 0.721 25%, 0.849 31.5%, 0.937 38.9%, 0.968 43.2%, 0.994 48.2%, 1.009 53.6%, 1.017 59.3%, 1.018 65.2%, 1.007 81.2%, 1);
+  --spring-bouncy: 0.5s linear(0, 0.004, 0.016, 0.035, 0.063 9.1%, 0.141 13.6%, 0.527, 0.66 27.3%, 0.824 36.4%, 0.879, 0.92, 0.949 50%, 0.966, 0.978 59.1%, 0.984 63.6%, 0.986 68.2%, 0.983 72.7%, 0.977, 0.97 81.8%, 0.965 90.9%, 0.97, 0.979, 0.992, 1);
+  --spring-wobbly: 0.6s linear(0, 0.003, 0.012, 0.027 5.6%, 0.109 11.1%, 0.381, 0.506 22.2%, 0.713 33.3%, 0.818, 0.886, 0.926, 0.949 50%, 0.965, 0.976, 0.98, 0.981 61.1%, 0.978, 0.973 66.7%, 0.968, 0.967 72.2%, 0.971, 0.979 83.3%, 0.986, 0.997, 1);
+  --spring-gentle: 0.5s linear(0, 0.007, 0.029 2.2%, 0.118 4.7%, 0.625 14.4%, 0.826 19.3%, 0.902, 0.962 25.5%, 1.006 29.8%, 1.037 34.4%, 1.054 39.3%, 1.059 44.6%, 1.053 50.2%, 1.039 56.4%, 1.013 66.7%, 1.004 76.3%, 1);
+  --spring-stiff: 0.2s linear(0, 0.015, 0.059 4.4%, 0.241 9.4%, 0.839 22.8%, 1.025, 1.129 33.4%, 1.157, 1.171 38.9%, 1.171, 1.162 44.4%, 1.115 55%, 1.08 61.7%, 1.014 80%, 0.998 89.4%, 1);
+  --spring-slow: 0.8s linear(0, 0.005, 0.02, 0.044 5%, 0.083 6.7%, 0.179 9.7%, 0.73 24.2%, 0.885 30.8%, 0.974 37.7%, 1.007, 1.029 44%, 1.04 47.3%, 1.045 51%, 1.041 56.3%, 1.007 78.2%, 0.998 87.7%, 1);
+
+
   /* Primary colors */
   --color-primary-50: #eff6ff;
   --color-primary-100: #dbeafe;
@@ -119,8 +130,8 @@
 }
 
 /* Exclude elements that use GSAP animations from global transitions */
-.atc-wrapper,
-.atc-wrapper *,
+[data-component="add-to-cart"],
+[data-component="add-to-cart"] *,
 [class*='gsap'],
 .gsap-animated {
   transition-property: none !important;
@@ -129,9 +140,9 @@
 
 /* Respect prefers-reduced-motion for AddToCartButton animations */
 @media (prefers-reduced-motion: reduce) {
-  .atc-wrapper *,
-  .atc__border--demo::before,
-  .atc__border--animated::after {
+  [data-component="add-to-cart"] *,
+  [data-atc-border][data-border-type="demo"]::before,
+  [data-atc-border][data-border-type="animated"]::after {
     animation: none !important;
     transition: none !important;
   }
@@ -183,7 +194,8 @@
   .card-shell {
     @apply bg-[var(--color-surface)] rounded-[var(--card-radius)] p-[var(--card-padding)] border border-[var(--color-border)];
     box-shadow: var(--card-shadow);
-    @apply transition-shadow duration-150 ease-in-out;
+    /* Spring-based transition for natural hover lift */
+    transition: box-shadow var(--spring-default);
   }
 
   .card-shell:hover {
@@ -194,7 +206,13 @@
   .btn {
     @apply inline-flex items-center justify-center gap-2 font-medium;
     border-radius: var(--btn-radius);
-    @apply transition-all duration-150 ease-in-out;
+    /* Spring-based transitions for natural feel */
+    transition: 
+      background-color var(--spring-snappy),
+      color var(--spring-snappy),
+      border-color var(--spring-snappy),
+      box-shadow var(--spring-default),
+      transform var(--spring-snappy);
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
     --tw-ring-color: var(--focus-ring-color);
     --tw-ring-offset-color: var(--color-background);

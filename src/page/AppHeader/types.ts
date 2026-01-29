@@ -56,6 +56,21 @@ export interface AppHeaderNotification {
   }) => ReactNode
 }
 
+export interface AppHeaderProfileMenuItem {
+  name: string
+  href?: string
+  icon?: string | ReactNode
+  onClick?: () => void | Promise<void>
+  /** Show confirmation dialog before action */
+  confirmDialog?: {
+    title: string
+    description?: string
+    confirmText?: string
+    cancelText?: string
+    variant?: 'default' | 'danger' | 'success'
+  }
+}
+
 export interface AppHeaderProfile {
   /** User avatar URL */
   avatar?: string
@@ -64,12 +79,7 @@ export interface AppHeaderProfile {
   /** User email */
   email?: string
   /** Profile menu items */
-  menuItems?: Array<{
-    name: string
-    href?: string
-    icon?: string | ReactNode
-    onClick?: () => void
-  }>
+  menuItems?: AppHeaderProfileMenuItem[]
   /** Custom render function for profile dropdown */
   render?: (props: {
     avatar?: string

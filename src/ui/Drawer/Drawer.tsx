@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Drawer as VaulDrawer } from 'vaul'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
+import './Drawer.css'
 
 export type DrawerPosition = 'left' | 'right' | 'bottom'
 export type DrawerSize = 'sm' | 'md' | 'lg' | 'xl' | 'full'
@@ -86,13 +87,18 @@ export function Drawer({
       direction={isBottom ? 'bottom' : isLeft ? 'left' : 'right'}
     >
       <VaulDrawer.Portal>
-        <VaulDrawer.Overlay
-          className={clsx(
-            'fixed inset-0 z-40 bg-gray-500/75 transition-opacity duration-500 ease-in-out data-[state=closed]:opacity-0',
-            backdropClassName,
-          )}
-        />
-        <VaulDrawer.Content
+        <div data-component="drawer">
+          <VaulDrawer.Overlay
+            data-drawer-overlay
+            className={clsx(
+              'fixed inset-0 z-40 bg-gray-500/75 transition-opacity duration-500 ease-in-out data-[state=closed]:opacity-0',
+              backdropClassName,
+            )}
+          />
+          <VaulDrawer.Content
+          data-drawer-panel
+          data-position={position}
+          data-size={size}
           style={
             isSide
               ? ({ '--initial-transform': 'calc(100% + 8px)' } as React.CSSProperties)
@@ -115,6 +121,7 @@ export function Drawer({
           {showCloseButton && (
             <button
               type="button"
+              data-drawer-close
               onClick={() => onClose(false)}
               className="absolute top-4 right-4 z-10 rounded-md text-gray-400 hover:text-gray-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:text-gray-400 dark:hover:text-gray-200"
             >
@@ -124,6 +131,7 @@ export function Drawer({
           )}
 
           <div
+            data-drawer-inner
             className={clsx(
               'relative flex h-full min-h-0 flex-col overflow-hidden',
               isSide && 'rounded-2xl bg-white shadow-xl dark:bg-gray-900',
@@ -131,6 +139,8 @@ export function Drawer({
           >
             {isBottom ? (
               <div
+                data-drawer-content
+                data-scrollable={contentScrollable}
                 data-vaul-scroll={contentScrollable ? true : undefined}
                 className={clsx(
                   'flex flex-1 min-h-0 flex-col px-4 pb-6 pt-4 sm:px-6',
@@ -138,9 +148,13 @@ export function Drawer({
                   contentClassName,
                 )}
               >
-                <div className="mx-auto mb-4 h-1.5 w-12 flex-shrink-0 rounded-full bg-gray-300 cursor-grab active:cursor-grabbing dark:bg-gray-600" />
+                <div
+                  data-drawer-handle
+                  className="mx-auto mb-4 h-1.5 w-12 flex-shrink-0 rounded-full bg-gray-300 cursor-grab active:cursor-grabbing dark:bg-gray-600"
+                />
                 {title && (
                   <VaulDrawer.Title
+                    data-drawer-title
                     className={clsx(
                       'text-base font-semibold text-gray-900 dark:text-white',
                       titleClassName,
@@ -163,6 +177,7 @@ export function Drawer({
                 {title && (
                   <div className="px-4 sm:px-6">
                     <VaulDrawer.Title
+                      data-drawer-title
                       className={clsx(
                         'text-base font-semibold text-gray-900 dark:text-white',
                         titleClassName,
@@ -173,6 +188,8 @@ export function Drawer({
                   </div>
                 )}
                 <div
+                  data-drawer-content
+                  data-scrollable={contentScrollable}
                   data-vaul-scroll={contentScrollable ? true : undefined}
                   className={clsx(
                     title ? 'mt-6' : 'mt-2',
@@ -187,6 +204,7 @@ export function Drawer({
             )}
           </div>
         </VaulDrawer.Content>
+        </div>
       </VaulDrawer.Portal>
     </VaulDrawer.Root>
   )

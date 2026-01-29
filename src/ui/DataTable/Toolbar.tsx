@@ -14,6 +14,7 @@ import {
   MenuItems,
 } from '@headlessui/react'
 import { mkConfig, generateCsv, download } from 'export-to-csv'
+import { FamilyDialog } from '../FamilyDialog/FamilyDialog'
 
 const csvConfig = mkConfig({
   fieldSeparator: ',',
@@ -97,20 +98,34 @@ export function Toolbar<TData extends Record<string, unknown>>({
         )}
         {enableBulkDelete && (
           <>
-            <Button
-              onClick={handleBulkDelete}
-              disabled={!hasSelection}
-              className={clsx(
-                'inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium',
-                'text-white bg-red-600 hover:bg-red-700',
-                'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500',
-                'disabled:opacity-50 disabled:cursor-not-allowed',
-                'transition-all duration-200 shadow-sm hover:shadow-md',
-              )}
-            >
-              <TrashIcon className="size-4" />
-              Delete Selected ({selectedRows.length})
-            </Button>
+            {hasSelection ? (
+              <FamilyDialog
+                trigger={
+                  <span className="inline-flex items-center gap-2">
+                    <TrashIcon className="size-4" />
+                    Delete Selected ({selectedRows.length})
+                  </span>
+                }
+                title={`Delete ${selectedRows.length} item(s)?`}
+                description="This action cannot be undone. All selected items will be permanently removed."
+                confirmText="Delete All"
+                cancelText="Cancel"
+                variant="danger"
+                onConfirm={handleBulkDelete}
+              />
+            ) : (
+              <Button
+                disabled
+                className={clsx(
+                  'inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium',
+                  'text-white bg-red-600',
+                  'disabled:opacity-50 disabled:cursor-not-allowed',
+                )}
+              >
+                <TrashIcon className="size-4" />
+                Delete Selected (0)
+              </Button>
+            )}
             {hasPageSelection && (
               <Menu as="div" className="relative">
                 <MenuButton

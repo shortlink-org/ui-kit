@@ -2,6 +2,25 @@ import preview from '#.storybook/preview'
 import type { ComponentProps } from 'react'
 import { ProductImageGallery } from './ProductImageGallery'
 
+const images = [
+  {
+    src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-secondary-product-shot.jpg',
+    alt: 'Two each of gray, white, and black shirts laying flat.',
+  },
+  {
+    src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg',
+    alt: 'Model wearing plain black basic tee.',
+  },
+  {
+    src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg',
+    alt: 'Model wearing plain gray basic tee.',
+  },
+  {
+    src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-featured-product-shot.jpg',
+    alt: 'Model wearing plain white basic tee.',
+  },
+]
+
 const meta = preview.meta({
   title: 'Shop/ProductImageGallery',
   component: ProductImageGallery,
@@ -19,82 +38,36 @@ function Template(args: ComponentProps<typeof ProductImageGallery>) {
   return <ProductImageGallery {...args} />
 }
 
-export const Default = meta.story({
+/** Grid layout (default) */
+export const Grid = meta.story({
   render: Template,
   args: {
-    images: [
-      {
-        src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-secondary-product-shot.jpg',
-        alt: 'Two each of gray, white, and black shirts laying flat.',
-      },
-      {
-        src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg',
-        alt: 'Model wearing plain black basic tee.',
-      },
-      {
-        src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg',
-        alt: 'Model wearing plain gray basic tee.',
-      },
-      {
-        src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-featured-product-shot.jpg',
-        alt: 'Model wearing plain white basic tee.',
-      },
-    ],
+    variant: 'grid',
+    enableZoom: true,
+    images,
   },
 })
 
-export const SingleImage = meta.story({
+/** Carousel with thumbnails */
+export const Carousel = meta.story({
   render: Template,
   args: {
-    images: [
-      {
-        src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-featured-product-shot.jpg',
-        alt: 'Model wearing plain white basic tee.',
-      },
-    ],
+    variant: 'carousel',
+    enableZoom: true,
+    images,
   },
 })
 
-export const TwoImages = meta.story({
+/**
+ * Card Stack - swipeable photo stack interface.
+ * Drag cards left/right to browse images.
+ * @see https://motion.dev/tutorials/react-card-stack
+ */
+export const CardStack = meta.story({
   render: Template,
   args: {
-    images: [
-      {
-        src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-secondary-product-shot.jpg',
-        alt: 'Two each of gray, white, and black shirts laying flat.',
-      },
-      {
-        src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-featured-product-shot.jpg',
-        alt: 'Model wearing plain white basic tee.',
-      },
-    ],
-  },
-})
-
-export const ManyImages = meta.story({
-  render: Template,
-  args: {
-    images: [
-      {
-        src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-secondary-product-shot.jpg',
-        alt: 'Two each of gray, white, and black shirts laying flat.',
-      },
-      {
-        src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg',
-        alt: 'Model wearing plain black basic tee.',
-      },
-      {
-        src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg',
-        alt: 'Model wearing plain gray basic tee.',
-      },
-      {
-        src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-featured-product-shot.jpg',
-        alt: 'Model wearing plain white basic tee.',
-      },
-      {
-        src: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-secondary-product-shot.jpg',
-        alt: 'Additional product image.',
-      },
-    ],
+    variant: 'stack',
+    enableZoom: true,
+    images,
   },
 })
