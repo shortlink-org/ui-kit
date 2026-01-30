@@ -1,6 +1,6 @@
 dependencies:
 - name: shortlink-template
-  repository: file://../../../shortlink-template
-  version: 0.9.6
-digest: sha256:4ea902cd930bde8073b396bcc3f7a81eb510687dac8145bc08ea47c026f68763
-generated: "2025-07-30T21:28:40.735699+03:00"
+  repository: oci://ghcr.io/shortlink-org/charts
+  version: 0.11.3
+digest: sha256:1fd4093b170bffb3a5de65b373aa53a8bbd1586553734b8a4f0f974eefac38ef
+generated: "2026-01-30T23:02:29.02216+02:00"

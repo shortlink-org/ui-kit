@@ -9,24 +9,25 @@ serviceAccount:
 
 # ==============================================================================
 ingress:
+  enabled: false
+
+# ==============================================================================
+httpRoute:
   enabled: true
-  ingressClassName: nginx
-  annotations:
-    cert-manager.io/cluster-issuer: cert-manager-production
-    nginx.ingress.kubernetes.io/enable-owasp-core-rules: 'true'
-    nginx.ingress.kubernetes.io/enable-opentelemetry: 'true'
-
-  hostname: ui-kit.shortlink.best
-  paths:
-    - path: /
-      service:
-        name: ui-kit
-        port: 8080
-
-  tls:
-    - secretName: ui-kit-tls
-      hosts:
-        - ui-kit.shortlink.best
+  parentRefs:
+    - name: external-gateway
+      namespace: istio-ingress
+      sectionName: https
+  hostnames:
+    - ui-kit.shortlink.best
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: ui-kit
+          port: 8080
 
 # ==============================================================================
 deploy:
@@ -116,7 +117,7 @@ networkPolicy:
               kubernetes.io/metadata.name: istio-system
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: nginx-ingress
+              kubernetes.io/metadata.name: istio-ingress
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: prometheus-operator
