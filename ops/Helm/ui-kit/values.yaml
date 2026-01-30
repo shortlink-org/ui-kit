@@ -20,14 +20,7 @@ httpRoute:
       sectionName: https
   hostnames:
     - ui-kit.shortlink.best
-  rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
-        - name: ui-kit
-          port: 8080
+  # backendRefs auto-generated for Canary: stable (100%) + canary (0%)
 
 # ==============================================================================
 deploy:
