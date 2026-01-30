@@ -113,7 +113,7 @@ importers:
         version: 10.2.1(storybook@10.2.1(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
       '@storybook/addon-links':
         specifier: ^10.2.0
-        version: 10.2.1(react@19.2.3)(storybook@10.2.1(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
+        version: 10.2.3(react@19.2.3)(storybook@10.2.1(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
       '@storybook/addon-themes':
         specifier: ^10.2.0
         version: 10.2.1(storybook@10.2.1(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
@@ -2209,11 +2209,11 @@ packages:
     peerDependencies:
       storybook: ^10.2.1
 
-  '@storybook/addon-links@10.2.1':
-    resolution: {integrity: sha512-RW00NsFbIiAnZDB56JJMxhFYnD5GLdfTXUdBGLH6F2DCGkXJn2eKisGCDjgqSZaR75yeTVm3HONOuuNpePrQwg==}
+  '@storybook/addon-links@10.2.3':
+    resolution: {integrity: sha512-ewOUga9zhcGQRGTTl7PyaV8kwLL4Jj1oeXWF2fq4fx+Fhzcn+d99gu3uV+zrGZa1gueBIRwf+p6NJTO//xSVUw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      storybook: ^10.2.1
+      storybook: ^10.2.3
     peerDependenciesMeta:
       react:
         optional: true
@@ -8408,7 +8408,7 @@ snapshots:
       axe-core: 4.11.1
       storybook: 10.2.1(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
 
-  '@storybook/addon-links@10.2.1(react@19.2.3)(storybook@10.2.1(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))':
+  '@storybook/addon-links@10.2.3(react@19.2.3)(storybook@10.2.1(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))':
     dependencies:
       '@storybook/global': 5.0.0
       storybook: 10.2.1(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
