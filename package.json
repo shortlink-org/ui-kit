@@ -66,7 +66,7 @@
     "@mui/x-date-pickers": "8.26.0",
     "@tailwindcss/postcss": "4.1.18",
     "@tailwindcss/typography": "^0.5.19",
-    "@tanstack/react-table": "8.20.6",
+    "@tanstack/react-table": "8.21.3",
     "@tanstack/react-virtual": "^3.13.18",
     "@types/react": "^19.2.10",
     "autoprefixer": "^10.4.24",
