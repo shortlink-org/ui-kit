@@ -121,7 +121,7 @@
     "jest-sonar-reporter": "^2.0.0",
     "playwright": "^1.58.1",
     "postcss-loader": "^8.2.0",
-    "storybook": "^10.2.3",
+    "storybook": "^10.2.10",
     "style-loader": "^4.0.0",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
