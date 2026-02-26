@@ -116,7 +116,7 @@ importers:
         version: 10.2.3(react@19.2.3)(storybook@10.2.3(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
       '@storybook/addon-themes':
         specifier: ^10.2.3
-        version: 10.2.3(storybook@10.2.3(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
+        version: 10.2.12(storybook@10.2.3(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
       '@storybook/addon-vitest':
         specifier: ^10.2.3
         version: 10.2.12(@vitest/browser-playwright@4.0.18)(@vitest/browser@4.0.18(vite@7.3.1(@types/node@25.1.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.0)(yaml@2.6.1))(vitest@4.0.18))(@vitest/runner@4.0.18)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(storybook@10.2.3(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(vitest@4.0.18)
@@ -2259,10 +2259,10 @@ packages:
       react:
         optional: true
 
-  '@storybook/addon-themes@10.2.3':
-    resolution: {integrity: sha512-8OVXivm1pDvf2D38RCzzvVqergvFwwG+bNRtevzXW/fjdJ1dG2hMnVlqiONka1Q9w2a2XOxeDBjRxuos0oc3rA==}
+  '@storybook/addon-themes@10.2.12':
+    resolution: {integrity: sha512-ZcqrxBgVgoD/PjRtyLF1riHQWL/YpwbEQEQthbCV9udHmTTf3Msqhn6aBiLQdnvaPwpoegAif1MH7uWlJE1XHg==}
     peerDependencies:
-      storybook: ^10.2.3
+      storybook: ^10.2.12
 
   '@storybook/addon-vitest@10.2.12':
     resolution: {integrity: sha512-HvYHO+soQR4nlgNqoWBbuxHaTtdrggzCCE6evmcgP4aQzN/jCStPAa7DEV5vNwJ3E0YzAYfT4RSA3txOQVWOGQ==}
@@ -8484,7 +8484,7 @@ snapshots:
     optionalDependencies:
       react: 19.2.3
 
-  '@storybook/addon-themes@10.2.3(storybook@10.2.3(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))':
+  '@storybook/addon-themes@10.2.12(storybook@10.2.3(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))':
     dependencies:
       storybook: 10.2.3(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       ts-dedent: 2.2.0
