@@ -24,11 +24,7 @@ httpRoute:
 
 # ==============================================================================
 deploy:
-  type: Rollout
-  strategy:
-    type: Canary
-    canary:
-      dynamicStableScale: true
+  type: Deployment
 
   replicaCount: 1
 
