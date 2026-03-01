@@ -64,7 +64,7 @@
     "@mui/material": "^7.3.8",
     "@mui/types": "^7.4.11",
     "@mui/x-date-pickers": "8.27.2",
-    "@tailwindcss/postcss": "4.1.18",
+    "@tailwindcss/postcss": "4.2.1",
     "@tailwindcss/typography": "^0.5.19",
     "@tanstack/react-table": "8.21.3",
     "@tanstack/react-virtual": "^3.13.19",
