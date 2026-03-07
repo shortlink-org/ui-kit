@@ -59,6 +59,8 @@ export { Skeleton } from './ui/Skeleton/Skeleton'
 export type { SkeletonProps } from './ui/Skeleton/Skeleton'
 export { CardSkeleton } from './ui/Skeleton/CardSkeleton'
 export type { CardSkeletonProps } from './ui/Skeleton/CardSkeleton'
+export { StatCard } from './ui/StatCard/StatCard'
+export type { StatCardProps, StatCardTone } from './ui/StatCard/StatCard'
 
 // Input
 export { default as SearchForm } from './ui/SearchForm/SearchForm'

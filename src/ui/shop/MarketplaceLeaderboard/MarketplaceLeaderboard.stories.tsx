@@ -630,29 +630,33 @@ function SystemStatesRender() {
 
   return (
     <div className="bg-[var(--color-background)] px-4 py-10 sm:px-6 lg:px-10">
-      <div className="mx-auto grid max-w-7xl gap-6 xl:grid-cols-2">
-        <MarketplaceLeaderboard
-          eyebrow="Seller campaign"
-          title="Loading into a live leaderboard state"
-          description="System behavior while campaign metrics load in from analytics."
-          scoreLabel="GMV"
-          entries={storefrontEntries.week}
-          stats={storefrontStats.week}
-          loading={loading}
-          visibleRows={6}
-          headerAction={<Button variant="outline">Campaign settings</Button>}
-        />
+      <div className="mx-auto grid max-w-[110rem] gap-6 2xl:grid-cols-2">
+        <div className="min-w-0">
+          <MarketplaceLeaderboard
+            eyebrow="Seller campaign"
+            title="Loading into a live leaderboard state"
+            description="System behavior while campaign metrics load in from analytics."
+            scoreLabel="GMV"
+            entries={storefrontEntries.week}
+            stats={storefrontStats.week}
+            loading={loading}
+            visibleRows={6}
+            headerAction={<Button variant="outline">Campaign settings</Button>}
+          />
+        </div>
 
-        <MarketplaceLeaderboard
-          eyebrow="Season kickoff"
-          title="Leaderboard without participants yet"
-          description="Pre-launch empty state for campaign pages and leaderboard shells."
-          scoreLabel="GMV"
-          entries={[]}
-          emptyTitle="Campaign starts tomorrow"
-          emptyDescription="Invite sellers and schedule the launch. Once the first tracked orders land, rankings will populate automatically."
-          headerAction={<Button>Invite sellers</Button>}
-        />
+        <div className="min-w-0">
+          <MarketplaceLeaderboard
+            eyebrow="Season kickoff"
+            title="Leaderboard without participants yet"
+            description="Pre-launch empty state for campaign pages and leaderboard shells."
+            scoreLabel="GMV"
+            entries={[]}
+            emptyTitle="Campaign starts tomorrow"
+            emptyDescription="Invite sellers and schedule the launch. Once the first tracked orders land, rankings will populate automatically."
+            headerAction={<Button>Invite sellers</Button>}
+          />
+        </div>
       </div>
     </div>
   )

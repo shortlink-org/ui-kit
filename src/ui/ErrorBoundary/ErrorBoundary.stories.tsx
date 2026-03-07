@@ -1,6 +1,7 @@
 import React from 'react'
 import preview from '#.storybook/preview'
 import { Button } from '../Button/Button'
+import { StatCard } from '../StatCard/StatCard'
 import { ErrorBoundary } from './ErrorBoundary'
 import type { ErrorBoundaryProps } from './ErrorBoundary'
 
@@ -14,23 +15,6 @@ const meta = preview.meta({
     chromatic: { viewports: [375, 768, 1280, 1600] },
   },
 })
-
-const StatCard = ({
-  label,
-  value,
-}: {
-  label: string
-  value: string
-}) => (
-  <div className="rounded-2xl border border-slate-200/80 bg-white/80 px-4 py-3 shadow-[0_18px_55px_-40px_rgba(15,23,42,0.3)] backdrop-blur-sm">
-    <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-500">
-      {label}
-    </p>
-    <p className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
-      {value}
-    </p>
-  </div>
-)
 
 const InsightsPanel = ({
   shouldThrow,
