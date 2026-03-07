@@ -19,7 +19,7 @@ export const CardSkeleton: React.FC<CardSkeletonProps> = ({
   ...props
 }) => {
   const containerClasses = clsx(
-    'flex w-full mx-auto overflow-hidden bg-white rounded-lg shadow-lg animate-pulse dark:bg-gray-800',
+    'mx-auto flex w-full overflow-hidden rounded-[1.5rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_96%,white)] shadow-[0_22px_64px_-46px_rgba(15,23,42,0.28)]',
     maxWidth === 'sm' && 'max-w-sm',
     maxWidth === 'md' && 'max-w-md',
     maxWidth === 'lg' && 'max-w-lg',
@@ -35,29 +35,43 @@ export const CardSkeleton: React.FC<CardSkeletonProps> = ({
   return (
     <div className={containerClasses} {...props}>
       {/* Image placeholder */}
-      <div className="w-1/3 bg-gray-300 dark:bg-gray-600" />
+      <div className="relative w-[34%] min-w-[120px] bg-[linear-gradient(180deg,rgba(226,232,240,0.92),rgba(241,245,249,0.96))] dark:bg-[linear-gradient(180deg,rgba(51,65,85,0.9),rgba(30,41,59,0.95))]">
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.45),transparent_60%)] opacity-70 dark:bg-[radial-gradient(circle_at_top,rgba(148,163,184,0.18),transparent_60%)]"
+          aria-hidden="true"
+        />
+      </div>
 
       {/* Content area */}
-      <div className="w-2/3 p-4 md:p-4">
+      <div className="flex w-[66%] flex-col p-4 sm:p-5">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <Skeleton className="h-3 w-16 rounded-full" />
+          <Skeleton circular className="size-8" />
+        </div>
+
         {/* Title */}
-        <Skeleton className="w-40 h-2" />
+        <Skeleton className="h-4 w-40 max-w-[80%]" />
 
         {/* Description */}
-        <Skeleton className="w-48 h-2 mt-4" />
+        <div className="mt-4 space-y-2.5">
+          <Skeleton className="h-3 w-full" />
+          <Skeleton className="h-3 w-[86%]" />
+          <Skeleton className="h-3 w-[62%]" />
+        </div>
 
         {/* Rating stars */}
-        <div className="flex mt-4 items-center gap-x-2">
-          <Skeleton className="w-5 h-2" />
-          <Skeleton className="w-5 h-2" />
-          <Skeleton className="w-5 h-2" />
-          <Skeleton className="w-5 h-2" />
-          <Skeleton className="w-5 h-2" />
+        <div className="mt-5 flex items-center gap-x-2">
+          <Skeleton className="h-3 w-12" />
+          <Skeleton className="h-3 w-20" />
         </div>
 
         {/* Price and button area */}
-        <div className="flex justify-between mt-6 items-center">
-          <Skeleton className="w-10 h-2" />
-          <Skeleton className="h-4 w-28" />
+        <div className="mt-auto flex items-end justify-between gap-3 pt-6">
+          <div className="space-y-2">
+            <Skeleton className="h-3 w-14" />
+            <Skeleton className="h-6 w-20" />
+          </div>
+          <Skeleton className="h-10 w-28 rounded-xl" />
         </div>
       </div>
     </div>

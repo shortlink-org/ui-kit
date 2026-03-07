@@ -52,22 +52,17 @@ export function MobileMenuPanel({
   }
 
   return (
-    <DisclosurePanel className="sm:hidden border-t border-white/10">
-      <div className="space-y-1 px-2 pt-2 pb-3 bg-gradient-to-r from-pink-600 via-purple-700 to-indigo-800 dark:from-indigo-800 dark:via-purple-800 dark:to-indigo-900">
+    <DisclosurePanel className="border-t border-[var(--color-border)] sm:hidden">
+      <div className="space-y-1 bg-[var(--color-background)] px-3 pb-4 pt-3">
         {items.map((item) => {
           const isActive = isNavigationItemActive(item, currentPath)
           const linkClassName = classNames(
             isActive
-              ? 'bg-white/10 text-white'
-              : 'text-white/70 hover:bg-white/5 hover:text-white',
-            'block rounded-md px-3 py-2 text-base font-medium',
+              ? 'bg-[var(--color-surface)] text-[var(--color-foreground)] shadow-sm'
+              : 'text-[var(--color-muted-foreground)] hover:bg-[var(--color-surface)] hover:text-[var(--color-foreground)]',
+            'block rounded-[1rem] px-3 py-3 text-base font-medium',
           )
-          return renderLink(
-            item,
-            item.name,
-            linkClassName,
-            isActive ? 'page' : undefined,
-          )
+          return renderLink(item, item.name, linkClassName, isActive ? 'page' : undefined)
         })}
       </div>
     </DisclosurePanel>

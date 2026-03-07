@@ -2,16 +2,11 @@ import { type Table as TanStackTable } from '@tanstack/react-table'
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
-  EllipsisVerticalIcon,
+  ChevronDownIcon,
 } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
-import {
-  Button,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-} from '@headlessui/react'
+import { Button } from '@headlessui/react'
+import './styles.css'
 
 export interface PaginationProps<TData> {
   table: TanStackTable<TData>
@@ -47,226 +42,221 @@ export function Pagination<TData>({
     (pagination.pageIndex + 1) * pagination.pageSize,
     totalRows,
   )
+  const visiblePages = Array.from({ length: totalPages }, (_, i) => i + 1).filter(
+    (page) => {
+      if (page === 1 || page === totalPages) return false
+      return page >= currentPage - 1 && page <= currentPage + 1
+    },
+  )
 
   if (totalPages <= 1 && currentPageSize >= totalRows) {
     return null
   }
 
+  const pageButtonClassName = (isActive: boolean) =>
+    clsx(
+      'inline-flex size-10 cursor-pointer items-center justify-center rounded-full text-sm font-semibold transition-[background-color,color,box-shadow] duration-200',
+      isActive
+        ? 'bg-slate-950 text-white shadow-[0_18px_48px_-34px_rgba(15,23,42,0.5)]'
+        : 'text-[var(--color-muted-foreground)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]',
+    )
+
+  const handlePageSizeChange = (value: string) => {
+    const nextSize = Number(value)
+
+    if (Number.isNaN(nextSize)) {
+      return
+    }
+
+    setPageSize(nextSize)
+    setPageIndex(0)
+  }
+
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
-      {/* Mobile: Show range and page size control */}
-      {mobilePageSizeControl && (
-        <div className="flex sm:hidden items-center justify-between w-full">
-          <span className="text-sm text-gray-700 dark:text-gray-300">
-            Showing <span className="font-medium">{startRow}</span> to{' '}
-            <span className="font-medium">{endRow}</span> of{' '}
-            <span className="font-medium">{totalRows}</span>
-          </span>
-          <Menu as="div" className="relative">
-            <MenuButton
+    <div
+      className="ui-pagination mt-6 rounded-[1.65rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_96%,white)] p-4 shadow-[0_22px_60px_-42px_rgba(15,23,42,0.35)] sm:p-5"
+      data-mobile-page-size-control={mobilePageSizeControl ? 'true' : 'false'}
+    >
+      {mobilePageSizeControl ? (
+        <div className="ui-pagination__mobile rounded-[1.25rem] border border-[var(--color-border)] bg-[var(--color-background)]/70 px-3 py-3">
+          <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2">
+            <Button
+              onClick={() => previousPage()}
+              disabled={!getCanPreviousPage()}
               className={clsx(
-                'inline-flex items-center justify-center rounded-md p-2',
-                'text-gray-700 dark:text-gray-300',
-                'hover:bg-gray-100 dark:hover:bg-gray-700',
-                'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
-                'transition-all duration-200',
+                'inline-flex min-h-10 cursor-pointer items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-sm font-semibold text-[var(--color-foreground)]',
+                'transition-[background-color,border-color,box-shadow] duration-200 hover:bg-[var(--color-muted)]',
+                'disabled:opacity-45 disabled:cursor-not-allowed disabled:hover:bg-[var(--color-surface)]',
               )}
             >
-              <EllipsisVerticalIcon className="w-5 h-5" />
-            </MenuButton>
-            <MenuItems
-              transition
-              anchor="top"
+              <ChevronLeftIcon className="h-4 w-4 rtl:-scale-x-100" />
+              <span className="hidden min-[24rem]:inline">Previous</span>
+            </Button>
+
+            <div className="justify-self-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm font-medium text-[var(--color-muted-foreground)]">
+              <span>Page </span>
+              <span className="font-semibold text-[var(--color-foreground)]">
+                {currentPage}
+              </span>
+              <span> / {totalPages}</span>
+            </div>
+
+            <Button
+              onClick={() => nextPage()}
+              disabled={!getCanNextPage()}
               className={clsx(
-                'absolute bottom-full right-0 mb-2 z-10 w-32 origin-bottom-right rounded-md',
-                'bg-white dark:bg-gray-800 shadow-lg',
-                'ring-1 ring-black/5 dark:ring-white/10',
-                'focus:outline-none',
-                'transition data-closed:scale-95 data-closed:transform data-closed:opacity-0',
-                'data-enter:duration-100 data-enter:ease-out',
-                'data-leave:duration-75 data-leave:ease-in',
+                'inline-flex min-h-10 cursor-pointer items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-sm font-semibold text-[var(--color-foreground)]',
+                'transition-[background-color,border-color,box-shadow] duration-200 hover:bg-[var(--color-muted)]',
+                'disabled:opacity-45 disabled:cursor-not-allowed disabled:hover:bg-[var(--color-surface)]',
               )}
             >
-              <div className="px-3 py-2 text-xs font-medium text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+              <span className="hidden min-[24rem]:inline">Next</span>
+              <ChevronRightIcon className="h-4 w-4 rtl:-scale-x-100" />
+            </Button>
+          </div>
+
+          <div className="mt-3 flex items-center justify-between gap-3 rounded-[1rem] border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2.5">
+            <div className="min-w-0">
+              <p className="text-sm text-[var(--color-muted-foreground)]">
+                Showing <span className="font-medium">{startRow}</span> to{' '}
+                <span className="font-medium">{endRow}</span> of{' '}
+                <span className="font-medium">{totalRows}</span>
+              </p>
+              <p className="mt-1 text-xs uppercase tracking-[0.16em] text-[var(--color-muted-foreground)]">
                 Rows per page
-              </div>
-              {pageSizeOptions.map((size) => (
-                <MenuItem key={size}>
-                  <button
-                    onClick={() => {
-                      setPageSize(size)
-                      setPageIndex(0)
-                    }}
-                    className={clsx(
-                      'w-full text-left px-3 py-2 text-sm',
-                      'text-gray-700 dark:text-gray-300',
-                      'data-focus:bg-gray-100 dark:data-focus:bg-gray-700',
-                      currentPageSize === size &&
-                        'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400',
-                    )}
-                  >
-                    {size}
-                  </button>
-                </MenuItem>
-              ))}
-            </MenuItems>
-          </Menu>
+              </p>
+            </div>
+
+            <div className="relative shrink-0">
+              <span className="mb-1 block text-right text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--color-muted-foreground)]">
+                Rows
+              </span>
+              <select
+                value={currentPageSize}
+                onChange={(event) => handlePageSizeChange(event.target.value)}
+                className="min-w-[6.5rem] cursor-pointer appearance-none rounded-full border border-slate-300 bg-white py-2 pr-9 pl-3 text-center text-sm font-semibold text-slate-950 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50"
+                aria-label="Rows per page"
+              >
+                {pageSizeOptions.map((size) => (
+                  <option key={size} value={size}>
+                    {size} / page
+                  </option>
+                ))}
+              </select>
+              <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-[var(--color-muted-foreground)]" />
+            </div>
+          </div>
         </div>
-      )}
+      ) : null}
 
-      <div className="flex items-center gap-2">
-        <Button
-          onClick={() => previousPage()}
-          disabled={!getCanPreviousPage()}
-          className={clsx(
-            'flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200',
-            'bg-white border border-gray-300 dark:border-gray-700 rounded-md gap-x-2',
-            'hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-800',
-            'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white',
-          )}
-        >
-          <ChevronLeftIcon className="w-5 h-5 rtl:-scale-x-100" />
-          <span className="hidden sm:inline">previous</span>
-        </Button>
-
-        <div className="items-center hidden md:flex gap-x-3">
-          {/* Always show first page */}
-          <button
-            onClick={() => setPageIndex(0)}
+      <div className="ui-pagination__desktop gap-4">
+        <div className="ui-pagination__nav">
+          <Button
+            onClick={() => previousPage()}
+            disabled={!getCanPreviousPage()}
             className={clsx(
-              'px-2 py-1 text-sm rounded-md transition-colors duration-200',
-              currentPage === 1
-                ? 'text-blue-500 dark:bg-gray-800 bg-blue-100/60'
-                : 'text-gray-500 dark:text-gray-300 dark:hover:bg-gray-800 hover:bg-gray-100',
+              'ui-pagination__button',
+              'inline-flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-4 text-sm font-semibold capitalize text-[var(--color-foreground)] md:w-auto',
+              'transition-[background-color,border-color,box-shadow] duration-200 hover:bg-[var(--color-muted)] hover:shadow-[0_18px_48px_-36px_rgba(15,23,42,0.25)]',
+              'disabled:opacity-45 disabled:cursor-not-allowed disabled:hover:bg-[var(--color-surface)]',
             )}
           >
-            1
-          </button>
+            <ChevronLeftIcon className="h-5 w-5 rtl:-scale-x-100" />
+            <span>Previous</span>
+          </Button>
 
-          {/* Show pages around current page */}
-          {currentPage > 3 && (
-            <span className="px-2 py-1 text-sm text-gray-500 dark:text-gray-400">
-              ...
-            </span>
-          )}
-
-          {Array.from({ length: totalPages }, (_, i) => i + 1)
-            .filter((page) => {
-              if (page === 1 || page === totalPages) return false
-              return page >= currentPage - 1 && page <= currentPage + 1
-            })
-            .map((page) => (
+          <div className="ui-pagination__pages min-w-0 overflow-x-auto">
+            <div className="ui-pagination__pages-desktop min-w-max items-center justify-center gap-2">
               <button
-                key={page}
-                onClick={() => setPageIndex(page - 1)}
-                className={clsx(
-                  'px-2 py-1 text-sm rounded-md transition-colors duration-200',
-                  page === currentPage
-                    ? 'text-blue-500 dark:bg-gray-800 bg-blue-100/60'
-                    : 'text-gray-500 dark:text-gray-300 dark:hover:bg-gray-800 hover:bg-gray-100',
-                )}
+                onClick={() => setPageIndex(0)}
+                className={pageButtonClassName(currentPage === 1)}
               >
-                {page}
+                1
               </button>
-            ))}
 
-          {/* Show ellipsis if needed */}
-          {currentPage < totalPages - 2 && (
-            <span className="px-2 py-1 text-sm text-gray-500 dark:text-gray-400">
-              ...
-            </span>
-          )}
+              {currentPage > 3 ? (
+                <span className="px-1 text-sm text-[var(--color-muted-foreground)]">
+                  ...
+                </span>
+              ) : null}
 
-          {/* Always show last page if more than 1 page */}
-          {totalPages > 1 && (
-            <button
-              onClick={() => setPageIndex(totalPages - 1)}
-              className={clsx(
-                'px-2 py-1 text-sm rounded-md transition-colors duration-200',
-                currentPage === totalPages
-                  ? 'text-blue-500 dark:bg-gray-800 bg-blue-100/60'
-                  : 'text-gray-500 dark:text-gray-300 dark:hover:bg-gray-800 hover:bg-gray-100',
-              )}
-            >
-              {totalPages}
-            </button>
-          )}
+              {visiblePages.map((page) => (
+                <button
+                  key={page}
+                  onClick={() => setPageIndex(page - 1)}
+                  className={pageButtonClassName(page === currentPage)}
+                >
+                  {page}
+                </button>
+              ))}
+
+              {currentPage < totalPages - 2 ? (
+                <span className="px-1 text-sm text-[var(--color-muted-foreground)]">
+                  ...
+                </span>
+              ) : null}
+
+              {totalPages > 1 ? (
+                <button
+                  onClick={() => setPageIndex(totalPages - 1)}
+                  className={pageButtonClassName(currentPage === totalPages)}
+                >
+                  {totalPages}
+                </button>
+              ) : null}
+            </div>
+
+            <div className="ui-pagination__pages-compact inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-background)]/70 px-3 py-2 text-sm font-medium text-[var(--color-muted-foreground)]">
+              <span>Page</span>
+              <span className="rounded-full bg-slate-950 px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-white">
+                {currentPage}/{totalPages}
+              </span>
+            </div>
+          </div>
+
+          <Button
+            onClick={() => nextPage()}
+            disabled={!getCanNextPage()}
+            className={clsx(
+              'ui-pagination__button',
+              'inline-flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-4 text-sm font-semibold capitalize text-[var(--color-foreground)] md:w-auto',
+              'transition-[background-color,border-color,box-shadow] duration-200 hover:bg-[var(--color-muted)] hover:shadow-[0_18px_48px_-36px_rgba(15,23,42,0.25)]',
+              'disabled:opacity-45 disabled:cursor-not-allowed disabled:hover:bg-[var(--color-surface)]',
+            )}
+          >
+            <span>Next</span>
+            <ChevronRightIcon className="h-5 w-5 rtl:-scale-x-100" />
+          </Button>
         </div>
 
-        <Button
-          onClick={() => nextPage()}
-          disabled={!getCanNextPage()}
-          className={clsx(
-            'flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200',
-            'bg-white border border-gray-300 dark:border-gray-700 rounded-md gap-x-2',
-            'hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-800',
-            'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white',
-          )}
-        >
-          <span className="hidden sm:inline">Next</span>
-          <ChevronRightIcon className="w-5 h-5 rtl:-scale-x-100" />
-        </Button>
-      </div>
-
-      {/* Desktop: Show range and page size control */}
-      <div className="hidden sm:flex items-center gap-4">
-        <span className="text-sm text-gray-700 dark:text-gray-300">
-          Showing <span className="font-medium">{startRow}</span> to{' '}
-          <span className="font-medium">{endRow}</span> of{' '}
-          <span className="font-medium">{totalRows}</span>
-        </span>
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-700 dark:text-gray-300">
-            Rows per page:
-          </span>
-          <Menu as="div" className="relative">
-            <MenuButton
-              className={clsx(
-                'inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium',
-                'text-gray-700 dark:text-gray-300',
-                'border border-gray-300 dark:border-gray-600',
-                'bg-white dark:bg-gray-800',
-                'hover:bg-gray-50 dark:hover:bg-gray-700',
-                'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
-                'transition-all duration-200',
-                'min-w-[70px]',
-              )}
-            >
-              {currentPageSize}
-            </MenuButton>
-            <MenuItems
-              transition
-              className={clsx(
-                'absolute bottom-full right-0 mb-2 z-10 w-20 origin-bottom-right rounded-md',
-                'bg-white dark:bg-gray-800 shadow-lg',
-                'ring-1 ring-black/5 dark:ring-white/10',
-                'focus:outline-none',
-                'transition data-closed:scale-95 data-closed:transform data-closed:opacity-0',
-                'data-enter:duration-100 data-enter:ease-out',
-                'data-leave:duration-75 data-leave:ease-in',
-              )}
-            >
-              {pageSizeOptions.map((size) => (
-                <MenuItem key={size}>
-                  <button
-                    onClick={() => {
-                      setPageSize(size)
-                      setPageIndex(0)
-                    }}
-                    className={clsx(
-                      'w-full text-left px-3 py-2 text-sm',
-                      'text-gray-700 dark:text-gray-300',
-                      'data-focus:bg-gray-100 dark:data-focus:bg-gray-700',
-                      currentPageSize === size &&
-                        'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400',
-                    )}
-                  >
-                    {size}
-                  </button>
-                </MenuItem>
-              ))}
-            </MenuItems>
-          </Menu>
+        <div className="ui-pagination__summary rounded-[1.3rem] border border-[var(--color-border)] bg-[var(--color-background)]/70 px-4 py-3">
+          <div className="ui-pagination__summary-inner grid gap-3">
+            <p className="text-sm leading-6 text-[var(--color-muted-foreground)]">
+              Showing <span className="font-medium tabular-nums">{startRow}</span>{' '}
+              to <span className="font-medium tabular-nums">{endRow}</span> of{' '}
+              <span className="font-medium tabular-nums">{totalRows}</span>
+            </p>
+            <div className="ui-pagination__summary-controls flex items-center justify-between gap-3">
+              <span className="whitespace-nowrap text-sm font-medium text-[var(--color-muted-foreground)]">
+                Rows per page:
+              </span>
+              <div className="relative">
+                <select
+                  value={currentPageSize}
+                  onChange={(event) => handlePageSizeChange(event.target.value)}
+                  className="min-w-[6.5rem] cursor-pointer appearance-none rounded-full border border-slate-300 bg-white py-2 pr-9 pl-3 text-center text-sm font-semibold text-slate-950 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50"
+                  aria-label="Rows per page"
+                >
+                  {pageSizeOptions.map((size) => (
+                    <option key={size} value={size}>
+                      {size} / page
+                    </option>
+                  ))}
+                </select>
+                <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-[var(--color-muted-foreground)]" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

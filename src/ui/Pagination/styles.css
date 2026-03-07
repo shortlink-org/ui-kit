@@ -1,0 +1,105 @@
+@layer pagination.component {
+  .ui-pagination {
+    container-type: inline-size;
+  }
+
+  .ui-pagination__desktop {
+    display: none;
+  }
+
+  .ui-pagination[data-mobile-page-size-control='false'] .ui-pagination__desktop {
+    display: grid;
+  }
+
+  .ui-pagination[data-mobile-page-size-control='false'] .ui-pagination__mobile {
+    display: none;
+  }
+
+  .ui-pagination__nav {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+  }
+
+  .ui-pagination__pages {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  .ui-pagination__pages-desktop {
+    display: none;
+  }
+
+  .ui-pagination__pages-compact {
+    display: inline-flex;
+  }
+
+  .ui-pagination__summary {
+    min-width: 0;
+  }
+
+  .ui-pagination__summary-controls {
+    flex-wrap: wrap;
+  }
+
+  @container (min-width: 40rem) {
+    .ui-pagination[data-mobile-page-size-control='true'] .ui-pagination__mobile {
+      display: none;
+    }
+
+    .ui-pagination[data-mobile-page-size-control='true'] .ui-pagination__desktop {
+      display: grid;
+      gap: 1rem;
+    }
+  }
+
+  @container (min-width: 52rem) {
+    .ui-pagination__nav {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+    }
+
+    .ui-pagination__pages {
+      grid-column: auto;
+      justify-self: center;
+      width: 100%;
+    }
+  }
+
+  @container (min-width: 60rem) {
+    .ui-pagination__pages-desktop {
+      display: flex;
+    }
+
+    .ui-pagination__pages-compact {
+      display: none;
+    }
+  }
+
+  @container (min-width: 70rem) {
+    .ui-pagination__desktop {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+    }
+
+    .ui-pagination__summary {
+      min-width: 22rem;
+    }
+  }
+
+  @container (min-width: 76rem) {
+    .ui-pagination__summary {
+      min-width: 24rem;
+    }
+
+    .ui-pagination__summary-inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+    }
+
+    .ui-pagination__summary-controls {
+      justify-content: flex-end;
+      flex-wrap: nowrap;
+    }
+  }
+}

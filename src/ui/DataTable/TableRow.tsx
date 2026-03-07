@@ -25,6 +25,7 @@ export function TableRow<TData>({
   enableExpanding = false,
   enableColumnResizing = false,
   density = 'normal',
+  index,
   rowClassName,
 }: TableRowProps<TData>) {
   const isSelected = row.getIsSelected()
@@ -34,11 +35,11 @@ export function TableRow<TData>({
   const isPinned = enableColumnResizing ? row.getIsPinned() : false
 
   const densityClasses = {
-    compact: { cell: 'px-2 py-1 text-xs', row: 'h-8', checkbox: 'h-3 w-3' },
-    normal: { cell: 'px-4 py-2 text-sm', row: 'h-10', checkbox: 'h-4 w-4' },
+    compact: { cell: 'px-3 py-2 text-xs', row: 'h-9', checkbox: 'h-3 w-3' },
+    normal: { cell: 'px-4 py-3 text-sm', row: 'h-11', checkbox: 'h-4 w-4' },
     comfortable: {
-      cell: 'px-6 py-3 text-base',
-      row: 'h-12',
+      cell: 'px-6 py-4 text-base',
+      row: 'h-14',
       checkbox: 'h-5 w-5',
     },
   }
@@ -48,13 +49,15 @@ export function TableRow<TData>({
       className={clsx(
         'group transition-all duration-150',
         densityClasses[density].row,
-        'bg-white dark:bg-gray-900',
-        'hover:bg-gray-50 dark:hover:bg-gray-800/50',
+        index !== undefined && index % 2 === 0
+          ? 'bg-transparent'
+          : 'bg-[color-mix(in_srgb,var(--color-surface)_98%,var(--color-muted)_2%)]',
+        'hover:bg-[color-mix(in_srgb,var(--table-row-hover)_96%,white)]',
         onRowClick && 'cursor-pointer',
         isSelected &&
-          'bg-gray-100 dark:bg-gray-800 border-l-4 border-l-indigo-500',
-        isGrouped && 'bg-gray-100 dark:bg-gray-800 font-semibold',
-        isPinned && 'sticky bg-white dark:bg-gray-900 z-10',
+          'bg-[color-mix(in_srgb,var(--table-row-selected)_92%,white)] shadow-[inset_2px_0_0_var(--table-row-selected-border)]',
+        isGrouped && 'bg-[color-mix(in_srgb,var(--color-muted)_94%,white)] font-semibold',
+        isPinned && 'sticky z-10 bg-[var(--color-surface)]',
         rowClassName,
       )}
       onClick={() => onRowClick?.(row.original)}
@@ -84,7 +87,7 @@ export function TableRow<TData>({
               e.stopPropagation()
               row.toggleExpanded()
             }}
-            className="p-0.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+            className="rounded-md p-1 text-[var(--color-muted-foreground)] transition-colors hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]"
           >
             <ChevronRightIcon
               className={clsx(
@@ -105,9 +108,9 @@ export function TableRow<TData>({
             key={cell.id}
             className={clsx(
               densityClasses[density].cell,
-              'text-sm whitespace-nowrap',
+              'border-b border-[var(--table-border)] text-sm whitespace-nowrap align-middle text-[var(--color-foreground)]',
               'transition-colors duration-150',
-              cellIsPinned && 'sticky bg-white dark:bg-gray-900 z-10',
+              cellIsPinned && 'sticky z-10 bg-[var(--color-surface)]',
               cellClassName,
             )}
             style={{
@@ -129,7 +132,7 @@ export function TableRow<TData>({
                     e.stopPropagation()
                     row.toggleExpanded()
                   }}
-                  className="p-0.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+                  className="rounded-md p-1 text-[var(--color-muted-foreground)] transition-colors hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]"
                 >
                   <ChevronRightIcon
                     className={clsx(
@@ -139,7 +142,7 @@ export function TableRow<TData>({
                   />
                 </button>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                <span className="text-xs text-gray-500 dark:text-gray-400">
+                <span className="rounded-md bg-[var(--color-muted)] px-2 py-0.5 text-[11px] font-medium text-[var(--color-muted-foreground)]">
                   ({row.subRows.length})
                 </span>
               </div>

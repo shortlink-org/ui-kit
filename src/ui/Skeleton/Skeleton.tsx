@@ -28,7 +28,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   ...props
 }) => {
   const skeletonClasses = clsx(
-    'bg-gray-200 rounded-lg dark:bg-gray-700 animate-pulse',
+    'animate-pulse rounded-lg bg-[linear-gradient(180deg,rgba(226,232,240,0.95),rgba(241,245,249,0.92))] dark:bg-[linear-gradient(180deg,rgba(51,65,85,0.95),rgba(30,41,59,0.92))]',
     circular && 'rounded-full',
     className,
   )

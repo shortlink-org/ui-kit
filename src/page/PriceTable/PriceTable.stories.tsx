@@ -1,60 +1,66 @@
 import preview from '#.storybook/preview'
-
 import PriceTable, { TiersProps } from './PriceTable'
 
 const meta = preview.meta({
   title: 'Page/PriceTable',
   component: PriceTable,
+  parameters: {
+    layout: 'fullscreen',
+  },
 })
 
+export default meta
+
 function Template(args: TiersProps) {
-  return <PriceTable {...args}>Text</PriceTable>
+  return <PriceTable {...args} />
 }
 
 export const Default = meta.story({
   render: Template,
-
   args: {
     tiers: [
       {
         title: 'Free',
-        subheader: 'Best option for personal use & for your next project.',
-        price: 0,
+        subheader: 'Best option for solo creators and early experiments.',
+        monthlyPrice: 0,
         description: [
-          'Consectetur adipiscing elit',
-          '10 users included',
-          '2 GB of storage',
-          'Help center access',
-          'Email support',
+          '1 workspace',
+          '10 branded links',
+          'Basic analytics',
+          'Community support',
+          'Manual exports',
         ],
         buttonText: 'Sign up for free',
         buttonVariant: 'outlined',
       },
       {
         title: 'Pro',
-        subheader: 'Most popular choice for small teams.',
-        price: 15,
+        subheader: 'Most popular choice for growth teams and active campaigns.',
+        monthlyPrice: 24,
+        badge: 'Most popular',
+        isFeatured: true,
+        labelColor: '#0f172a',
         description: [
-          'Consectetur adipiscing elit',
-          '20 users included',
-          '10 GB of storage',
-          'Help center access',
-          'Priority email support',
+          'Unlimited branded links',
+          'Realtime analytics',
+          'Audience segmentation',
+          'Priority support',
+          'Team collaboration',
         ],
         buttonText: 'Get started',
-        buttonVariant: 'outlined',
+        buttonVariant: 'contained',
       },
       {
         title: 'Enterprise',
         subheader:
-          'Best for large scale uses and extended redistribution rights.',
-        price: 30,
+          'Best for multi-brand programs, security reviews, and custom rollouts.',
+        monthlyPrice: 79,
         description: [
-          'Consectetur adipiscing elit',
-          '50 users included',
-          '30 GB of storage',
-          'Help center access',
-          'Phone & email support',
+          'Advanced permissions',
+          'Custom SLAs',
+          'SSO and audit trails',
+          'Dedicated success manager',
+          'Migration support',
         ],
         buttonText: 'Contact us',
         buttonVariant: 'outlined',

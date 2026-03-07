@@ -1,168 +1,91 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import Button from '@mui/material/Button'
+import { ArrowRightIcon } from '@heroicons/react/24/outline'
 
-describe('Button Component', () => {
-  const defaultProps = {
-    children: 'Test Button',
-    onClick: jest.fn(),
-  }
+import { Button } from './Button'
 
+describe('Button', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  it('renders with default props', () => {
-    render(<Button {...defaultProps} />)
+  it('renders a button with default semantics', () => {
+    render(<Button>Save changes</Button>)
 
-    const button = screen.getByRole('button', { name: 'Test Button' })
+    const button = screen.getByRole('button', { name: /save changes/i })
+
     expect(button).toBeInTheDocument()
-    expect(button).toBeEnabled()
+    expect(button).toHaveAttribute('type', 'button')
+    expect(button).toHaveAttribute('data-variant', 'primary')
+    expect(button).toHaveAttribute('data-size', 'md')
+    expect(button).toHaveAttribute('data-icon', 'left')
   })
 
-  it('calls onClick when clicked', async () => {
+  it('calls onClick when pressed', async () => {
     const user = userEvent.setup()
-    const mockOnClick = jest.fn()
+    const handleClick = jest.fn()
 
-    render(<Button {...defaultProps} onClick={mockOnClick} />)
+    render(<Button onClick={handleClick}>Create product</Button>)
 
-    const button = screen.getByRole('button', { name: 'Test Button' })
+    await user.click(screen.getByRole('button', { name: /create product/i }))
+
+    expect(handleClick).toHaveBeenCalledTimes(1)
+  })
+
+  it('renders icons and icon-only mode correctly', () => {
+    render(
+      <Button
+        size="icon"
+        variant="outline"
+        icon={<ArrowRightIcon data-testid="button-icon" />}
+        aria-label="Continue"
+      />,
+    )
+
+    const button = screen.getByRole('button', { name: /continue/i })
+
+    expect(button).toHaveAttribute('data-size', 'icon')
+    expect(button).toHaveAttribute('data-icon', 'only')
+    expect(screen.getByTestId('button-icon')).toBeInTheDocument()
+  })
+
+  it('renders loading state as busy and disabled', () => {
+    render(<Button loading>Saving</Button>)
+
+    const button = screen.getByRole('button', { name: /saving/i })
+
+    expect(button).toBeDisabled()
+    expect(button).toHaveAttribute('aria-busy', 'true')
+    expect(button).toHaveAttribute('data-loading', 'true')
+  })
+
+  it('renders as a link when requested', () => {
+    render(
+      <Button as="a" asProps={{ href: '/billing' }} variant="link">
+        Open billing
+      </Button>,
+    )
+
+    const link = screen.getByRole('link', { name: /open billing/i })
+
+    expect(link).toHaveAttribute('href', '/billing')
+    expect(link).toHaveAttribute('data-variant', 'link')
+  })
+
+  it('prevents clicks when disabled', async () => {
+    const user = userEvent.setup()
+    const handleClick = jest.fn()
+
+    render(
+      <Button disabled onClick={handleClick}>
+        Disabled action
+      </Button>,
+    )
+
+    const button = screen.getByRole('button', { name: /disabled action/i })
+
+    expect(button).toBeDisabled()
     await user.click(button)
-
-    expect(mockOnClick).toHaveBeenCalledTimes(1)
-  })
-
-  it('renders with different variants', () => {
-    const { rerender } = render(<Button {...defaultProps} variant="text" />)
-    expect(screen.getByRole('button')).toHaveClass('MuiButton-text')
-
-    rerender(<Button {...defaultProps} variant="outlined" />)
-    expect(screen.getByRole('button')).toHaveClass('MuiButton-outlined')
-
-    rerender(<Button {...defaultProps} variant="contained" />)
-    expect(screen.getByRole('button')).toHaveClass('MuiButton-contained')
-  })
-
-  it('renders with different sizes', () => {
-    const { rerender } = render(<Button {...defaultProps} size="small" />)
-    expect(screen.getByRole('button')).toHaveClass('MuiButton-sizeSmall')
-
-    rerender(<Button {...defaultProps} size="medium" />)
-    expect(screen.getByRole('button')).toHaveClass('MuiButton-sizeMedium')
-
-    rerender(<Button {...defaultProps} size="large" />)
-    expect(screen.getByRole('button')).toHaveClass('MuiButton-sizeLarge')
-  })
-
-  it('renders with different colors', () => {
-    const { rerender } = render(<Button {...defaultProps} color="primary" />)
-    expect(screen.getByRole('button')).toHaveClass('MuiButton-colorPrimary')
-
-    rerender(<Button {...defaultProps} color="secondary" />)
-    expect(screen.getByRole('button')).toHaveClass('MuiButton-colorSecondary')
-
-    rerender(<Button {...defaultProps} color="error" />)
-    expect(screen.getByRole('button')).toHaveClass('MuiButton-colorError')
-  })
-
-  it('renders disabled state', () => {
-    render(<Button {...defaultProps} disabled />)
-
-    const button = screen.getByRole('button', { name: 'Test Button' })
-    expect(button).toBeDisabled()
-  })
-
-  it('does not call onClick when disabled', async () => {
-    const mockOnClick = jest.fn()
-
-    render(<Button {...defaultProps} onClick={mockOnClick} disabled />)
-
-    const button = screen.getByRole('button', { name: 'Test Button' })
-    expect(button).toBeDisabled()
-
-    // Try to trigger the onClick programmatically (disabled buttons can't be clicked)
-    // The button should be disabled and onClick should not be called
-    expect(mockOnClick).not.toHaveBeenCalled()
-  })
-
-  it('renders with start icon', () => {
-    render(
-      <Button
-        {...defaultProps}
-        startIcon={<span data-testid="start-icon">🚀</span>}
-      />,
-    )
-
-    expect(screen.getByTestId('start-icon')).toBeInTheDocument()
-  })
-
-  it('renders with end icon', () => {
-    render(
-      <Button
-        {...defaultProps}
-        endIcon={<span data-testid="end-icon">⭐</span>}
-      />,
-    )
-
-    expect(screen.getByTestId('end-icon')).toBeInTheDocument()
-  })
-
-  it('renders with custom className', () => {
-    render(<Button {...defaultProps} className="custom-class" />)
-
-    const button = screen.getByRole('button', { name: 'Test Button' })
-    expect(button).toHaveClass('custom-class')
-  })
-
-  it('renders with full width', () => {
-    render(<Button {...defaultProps} fullWidth />)
-
-    const button = screen.getByRole('button', { name: 'Test Button' })
-    expect(button).toHaveClass('MuiButton-fullWidth')
-  })
-
-  it('renders as submit button', () => {
-    render(<Button {...defaultProps} type="submit" />)
-
-    const button = screen.getByRole('button', { name: 'Test Button' })
-    expect(button).toHaveAttribute('type', 'submit')
-  })
-
-  it('renders as reset button', () => {
-    render(<Button {...defaultProps} type="reset" />)
-
-    const button = screen.getByRole('button', { name: 'Test Button' })
-    expect(button).toHaveAttribute('type', 'reset')
-  })
-
-  it('handles keyboard navigation', async () => {
-    const user = userEvent.setup()
-    const mockOnClick = jest.fn()
-
-    render(<Button {...defaultProps} onClick={mockOnClick} />)
-
-    const button = screen.getByRole('button', { name: 'Test Button' })
-    await user.tab()
-    expect(button).toHaveFocus()
-
-    await user.keyboard('{Enter}')
-    expect(mockOnClick).toHaveBeenCalledTimes(1)
-
-    await user.keyboard(' ')
-    expect(mockOnClick).toHaveBeenCalledTimes(2)
-  })
-
-  it('renders with aria-label', () => {
-    render(<Button {...defaultProps} aria-label="Custom aria label" />)
-
-    const button = screen.getByLabelText('Custom aria label')
-    expect(button).toBeInTheDocument()
-  })
-
-  it('renders with data attributes', () => {
-    render(<Button {...defaultProps} data-testid="custom-button" />)
-
-    const button = screen.getByTestId('custom-button')
-    expect(button).toBeInTheDocument()
+    expect(handleClick).not.toHaveBeenCalled()
   })
 })

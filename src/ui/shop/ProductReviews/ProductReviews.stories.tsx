@@ -1,5 +1,4 @@
 import preview from '#.storybook/preview'
-import type { ComponentProps } from 'react'
 import { ProductReviews } from './ProductReviews'
 
 const meta = preview.meta({
@@ -8,58 +7,21 @@ const meta = preview.meta({
   parameters: {
     layout: 'centered',
   },
+  argTypes: {
+    average: {
+      control: { type: 'range', min: 0, max: 5, step: 0.1 },
+    },
+    totalCount: {
+      control: { type: 'number', min: 0, step: 1 },
+    },
+  },
 })
 
 export default meta
 
-function Template(args: ComponentProps<typeof ProductReviews>) {
-  return <ProductReviews {...args} />
-}
-
 export const Default = meta.story({
-  render: Template,
   args: {
-    average: 4,
+    average: 4.4,
     totalCount: 117,
-  },
-})
-
-export const HighRating = meta.story({
-  render: Template,
-  args: {
-    average: 5,
-    totalCount: 250,
-  },
-})
-
-export const LowRating = meta.story({
-  render: Template,
-  args: {
-    average: 2.5,
-    totalCount: 15,
-  },
-})
-
-export const NoReviews = meta.story({
-  render: Template,
-  args: {
-    average: 0,
-    totalCount: 0,
-  },
-})
-
-export const ManyReviews = meta.story({
-  render: Template,
-  args: {
-    average: 4.5,
-    totalCount: 1234,
-  },
-})
-
-export const PartialRating = meta.story({
-  render: Template,
-  args: {
-    average: 3.7,
-    totalCount: 89,
   },
 })

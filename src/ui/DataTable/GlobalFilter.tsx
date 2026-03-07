@@ -44,8 +44,8 @@ export function GlobalFilter<TData>({
 
   return (
     <div className="relative">
-      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-        <MagnifyingGlassIcon className="size-4 text-gray-400" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+        <MagnifyingGlassIcon className="size-4 text-[var(--color-muted-foreground)]" />
       </div>
       <input
         type="text"
@@ -54,11 +54,12 @@ export function GlobalFilter<TData>({
         placeholder={`${placeholder} (${table.getRowCount()} rows)`}
         className={clsx(
           'block w-full pl-10 pr-10',
-          'border border-gray-300 dark:border-gray-600 rounded-lg',
-          'bg-white dark:bg-gray-800',
-          'text-gray-900 dark:text-white',
-          'placeholder-gray-400 dark:placeholder-gray-500',
-          'focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500',
+          'rounded-[0.9rem] border border-[var(--color-border)]',
+          'bg-[var(--color-surface)]',
+          'text-[var(--color-foreground)]',
+          'placeholder:text-[var(--color-muted-foreground)]',
+          'shadow-none',
+          'focus:outline-none focus:ring-2 focus:ring-sky-500/18 focus:border-sky-500',
           'transition-all duration-200',
           densityClasses[density],
         )}
@@ -67,8 +68,8 @@ export function GlobalFilter<TData>({
         <button
           onClick={handleClear}
           className={clsx(
-            'absolute inset-y-0 right-0 flex items-center pr-3',
-            'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300',
+            'absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3',
+            'text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]',
             'transition-colors',
           )}
         >

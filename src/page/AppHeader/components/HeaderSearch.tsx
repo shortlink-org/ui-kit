@@ -12,13 +12,14 @@ export function HeaderSearch({
   defaultQuery,
 }: HeaderSearchProps) {
   return (
-    <div className="hidden md:block mr-2">
-      <div className="w-64">
+    <div className="hidden md:block mr-1">
+      <div className="w-72">
         <SearchForm
-          placeholder={placeholder || 'Search…'}
+          placeholder={placeholder || 'Search or jump…'}
           onSearch={onSearch}
           defaultValue={defaultQuery}
-          className="my-1 bg-white/10 border-white/20 text-white placeholder:text-white/70 [&_input]:text-white [&_input]:placeholder:text-white/70"
+          className="my-1 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-foreground)] shadow-none [&_input]:text-[var(--color-foreground)] [&_input]:placeholder:text-[var(--color-muted-foreground)]"
+          size="sm"
         />
       </div>
     </div>

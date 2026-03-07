@@ -15,9 +15,9 @@ export function TableFooter<TData>({
   density = 'normal',
 }: TableFooterProps<TData>) {
   const densityClasses = {
-    compact: { cell: 'px-2 py-1 text-xs' },
-    normal: { cell: 'px-4 py-2 text-sm' },
-    comfortable: { cell: 'px-6 py-3 text-base' },
+    compact: { cell: 'px-3 py-2 text-xs' },
+    normal: { cell: 'px-4 py-3 text-sm' },
+    comfortable: { cell: 'px-6 py-4 text-base' },
   }
 
   const footerGroups = table.getFooterGroups()
@@ -29,7 +29,7 @@ export function TableFooter<TData>({
   }
 
   return (
-    <tfoot className="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+    <tfoot className="border-t border-[var(--table-border)] bg-[color-mix(in_srgb,var(--table-header-bg)_98%,white)]">
       {footerGroups.map((footerGroup) => (
         <tr key={footerGroup.id}>
           {enableRowSelection && (
@@ -45,8 +45,9 @@ export function TableFooter<TData>({
                 key={header.id}
                 className={clsx(
                   densityClasses[density].cell,
-                  'font-semibold text-gray-700 dark:text-gray-300',
-                  isPinned && 'sticky bg-gray-50 dark:bg-gray-800 z-20',
+                  'font-semibold text-[var(--color-foreground)]',
+                  isPinned &&
+                    'sticky z-20 bg-[color-mix(in_srgb,var(--table-header-bg)_98%,white)]',
                   footerClassName,
                 )}
                 style={{

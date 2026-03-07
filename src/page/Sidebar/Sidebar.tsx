@@ -1,11 +1,13 @@
 import * as React from 'react'
 import clsx from 'clsx'
-import AddLinkIcon from '@mui/icons-material/AddLink'
-import ListIcon from '@mui/icons-material/List'
-import PersonIcon from '@mui/icons-material/Person'
-import PeopleIcon from '@mui/icons-material/People'
-import GroupAddIcon from '@mui/icons-material/GroupAdd'
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
+import {
+  LinkIcon,
+  QueueListIcon,
+  ShieldCheckIcon,
+  Squares2X2Icon,
+  UserCircleIcon,
+  UsersIcon,
+} from '@heroicons/react/24/outline'
 import CollapsibleMenu from './CollapsibleMenu'
 import Footer from './Footer'
 import getItem from './Item'
@@ -42,60 +44,57 @@ export type SidebarProps = {
   variant?: 'sticky' | 'scrollable'
   ariaLabel?: string
   className?: string
-  /** Custom render function for menu items */
+  onCollapsedChange?: (collapsed: boolean) => void
   renderItem?: (props: {
     item: SidebarItem
     isActive: boolean
     mode: 'full' | 'mini'
     defaultRender: () => React.ReactNode
   }) => React.ReactNode
-  /** Custom active class names */
   activeClassName?: string
-  /** Custom inactive class names */
   inactiveClassName?: string
 }
 
-// Default sections for backward compatibility
 const defaultSections: SidebarSection[] = [
   {
     type: 'simple',
     items: [
       {
         url: '/add-link',
-        icon: <AddLinkIcon />,
+        icon: <LinkIcon />,
         name: 'Add URL',
       },
       {
         url: '/links',
-        icon: <ListIcon />,
+        icon: <QueueListIcon />,
         name: 'Links',
       },
       {
         url: '/profile',
-        icon: <PersonIcon />,
+        icon: <UserCircleIcon />,
         name: 'Profile',
       },
     ],
   },
   {
     type: 'collapsible',
-    icon: AdminPanelSettingsIcon,
+    icon: ShieldCheckIcon,
     title: 'Admin',
     items: [
       {
+        url: '/admin/overview',
+        icon: <Squares2X2Icon />,
+        name: 'Overview',
+      },
+      {
         url: '/admin/links',
-        icon: <ListIcon />,
+        icon: <QueueListIcon />,
         name: 'Links',
       },
       {
         url: '/admin/users',
-        icon: <GroupAddIcon />,
+        icon: <UsersIcon />,
         name: 'Users',
-      },
-      {
-        url: '/admin/groups',
-        icon: <PeopleIcon />,
-        name: 'Groups',
       },
     ],
   },
@@ -112,22 +111,35 @@ export function Sidebar({
   variant = 'scrollable',
   ariaLabel = 'Sidebar',
   className,
+  onCollapsedChange,
   renderItem,
   activeClassName,
   inactiveClassName,
 }: SidebarProps) {
+  const isCollapsedControlled = sidebarCollapsed !== undefined
+  const [localMode, setLocalMode] = React.useState<'full' | 'mini'>(mode)
   const [collapsedState, setCollapsedState] = React.useState<
     Record<string, boolean>
   >({})
 
-  const effectiveMode = sidebarCollapsed ? 'mini' : mode
+  React.useEffect(() => {
+    if (!isCollapsedControlled) {
+      setLocalMode(mode)
+    }
+  }, [isCollapsedControlled, mode])
+
+  const effectiveMode = isCollapsedControlled
+    ? sidebarCollapsed
+      ? 'mini'
+      : mode
+    : localMode
   const effectiveWidth =
     width !== undefined
       ? typeof width === 'number'
         ? `${width}px`
         : width
       : effectiveMode === 'mini'
-        ? '3.5rem'
+        ? '5.25rem'
         : undefined
 
   const effectiveHeight =
@@ -137,26 +149,25 @@ export function Sidebar({
         : height
       : undefined
 
-  const containerClassName = clsx(
-    'w-full h-full bg-gray-50 dark:bg-gray-800 flex justify-between flex-col min-h-0',
-    variant === 'sticky' && 'sticky top-0 self-start',
-    variant === 'scrollable' && 'overflow-y-auto',
-    effectiveWidth && !width && effectiveMode === 'mini' && 'max-w-[3.5rem]',
-    className,
-  )
-
-  const navClassName = clsx(
-    'space-y-2 font-medium w-full px-2 py-4',
-    variant === 'scrollable' && 'flex-1 min-h-0 overflow-y-auto',
-  )
-
   const handleCollapseChange = (sectionTitle: string, collapsed: boolean) => {
-    setCollapsedState((prev) => ({ ...prev, [sectionTitle]: collapsed }))
+    setCollapsedState((previous) => ({ ...previous, [sectionTitle]: collapsed }))
+  }
+
+  const handleModeToggle = () => {
+    const nextCollapsed = effectiveMode === 'full'
+
+    if (isCollapsedControlled) {
+      onCollapsedChange?.(nextCollapsed)
+      return
+    }
+
+    setLocalMode((previous) => (previous === 'mini' ? 'full' : 'mini'))
+    onCollapsedChange?.(nextCollapsed)
   }
 
   const isItemActive = (itemUrl: string): boolean => {
     if (!activePath) return false
-    return activePath === itemUrl || activePath.startsWith(itemUrl + '/')
+    return activePath === itemUrl || activePath.startsWith(`${itemUrl}/`)
   }
 
   const renderSidebarItem = (item: SidebarItem) => {
@@ -181,7 +192,11 @@ export function Sidebar({
 
   return (
     <aside
-      className={containerClassName}
+      className={clsx(
+        'w-full',
+        variant === 'sticky' && 'sticky top-0 self-start',
+        className,
+      )}
       style={{
         ...(effectiveWidth
           ? { width: effectiveWidth, maxWidth: effectiveWidth }
@@ -190,44 +205,102 @@ export function Sidebar({
       }}
       aria-label={ariaLabel}
     >
-      <nav
-        aria-label={ariaLabel}
-        className={clsx(variant === 'scrollable' && 'flex min-h-0 flex-1')}
+      <div
+        className={clsx(
+          'relative flex h-full min-h-0 flex-col rounded-[1.75rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_92%,white)] shadow-[0_30px_80px_-48px_rgba(15,23,42,0.55)] backdrop-blur-xl',
+          effectiveMode === 'mini' ? 'overflow-hidden' : 'overflow-hidden',
+        )}
       >
-        <ul className={navClassName}>
-          {sections.map((section, sectionIndex) => {
-            if (section.type === 'collapsible') {
-              const isCollapsed =
-                collapsedState[section.title] ??
-                section.defaultCollapsed ??
-                false
+        <div
+          className={clsx(
+            'pointer-events-none absolute inset-x-0 top-0 h-28 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.16),_transparent_70%)]',
+            effectiveMode === 'mini' &&
+              'inset-x-2 top-2 h-14 rounded-t-[1.2rem] bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.12),_transparent_72%)]',
+          )}
+          aria-hidden="true"
+        />
 
-              return (
-                <CollapsibleMenu
-                  key={`collapsible-${sectionIndex}-${section.title}`}
-                  icon={section.icon}
-                  title={section.title}
+        <div
+          className={clsx(
+            'relative flex min-h-0 flex-1 flex-col',
+            'overflow-hidden',
+          )}
+        >
+          <nav
+            aria-label={ariaLabel}
+            className={clsx(
+              'relative min-h-0 flex-1 px-3 py-3',
+              effectiveMode === 'mini' && 'overflow-visible px-2 py-2',
+              'overflow-y-auto overscroll-contain pr-2',
+            )}
+          >
+            <ul className={clsx('space-y-3', effectiveMode === 'mini' && 'space-y-2')}>
+              {sections.map((section, sectionIndex) => {
+                if (section.type === 'collapsible') {
+                  const isCollapsed =
+                    effectiveMode === 'mini'
+                      ? true
+                      : collapsedState[section.title] ??
+                        section.defaultCollapsed ??
+                        false
+
+                  return (
+                    <CollapsibleMenu
+                      key={`collapsible-${sectionIndex}-${section.title}`}
+                      icon={section.icon}
+                      title={section.title}
+                      mode={effectiveMode}
+                      collapsed={isCollapsed}
+                      onCollapseChange={(collapsed) =>
+                        handleCollapseChange(section.title, collapsed)
+                      }
+                    >
+                      {section.items.map((item) => renderSidebarItem(item))}
+                    </CollapsibleMenu>
+                  )
+                }
+
+                return (
+                  <li
+                    key={`simple-${sectionIndex}`}
+                    className={clsx(
+                      'list-none rounded-[1.25rem] border border-[var(--color-border)] bg-[var(--color-background)]/70 p-1.5 backdrop-blur-sm',
+                      effectiveMode === 'mini' &&
+                        'rounded-none border-transparent bg-transparent p-0 backdrop-blur-none',
+                    )}
+                  >
+                    <ul
+                      className={clsx(
+                        'space-y-2',
+                        effectiveMode === 'mini' && 'space-y-1.5',
+                      )}
+                    >
+                      {section.items.map(renderSidebarItem)}
+                    </ul>
+                  </li>
+                )
+              })}
+            </ul>
+          </nav>
+
+          <div className="relative z-10 mt-auto sticky bottom-0">
+            <div
+              className="pointer-events-none absolute inset-x-0 top-0 h-6 bg-linear-to-t from-transparent to-[color-mix(in_srgb,var(--color-surface)_92%,white)]"
+              aria-hidden="true"
+            />
+            <div className="relative bg-[color-mix(in_srgb,var(--color-surface)_92%,white)]/96 backdrop-blur-xl">
+              {footerSlot !== undefined ? (
+                footerSlot
+              ) : (
+                <Footer
                   mode={effectiveMode}
-                  collapsed={isCollapsed}
-                  onCollapseChange={(collapsed) =>
-                    handleCollapseChange(section.title, collapsed)
-                  }
-                >
-                  {section.items.map((item) => renderSidebarItem(item))}
-                </CollapsibleMenu>
-              )
-            } else {
-              return section.items.map((item) => (
-                <React.Fragment key={`simple-${item.url}`}>
-                  {renderSidebarItem(item)}
-                </React.Fragment>
-              ))
-            }
-          })}
-        </ul>
-      </nav>
-
-      {footerSlot !== undefined ? footerSlot : <Footer mode={effectiveMode} />}
+                  onToggleMode={handleModeToggle}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </aside>
   )
 }

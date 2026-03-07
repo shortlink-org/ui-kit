@@ -444,7 +444,11 @@ function CardStack({
       )}
     >
       {/* Card stack container - constrained size */}
-      <div className="relative mx-auto max-w-md aspect-square overflow-visible">
+      <div className="relative mx-auto aspect-square max-w-md overflow-visible">
+        <div
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[85%] w-[85%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-sky-100/50 blur-3xl dark:bg-sky-400/10"
+          aria-hidden="true"
+        />
         {/* Stack of cards */}
         <div className="relative h-full w-full">
           {orderedImages.map(({ image, originalIndex }, stackIndex) => {
@@ -588,14 +592,22 @@ function StackCard({
   onZoom,
 }: StackCardProps) {
   const x = useMotionValue(0)
+  const stackShiftX = depth === 0 ? 0 : depth % 2 === 0 ? depth * 10 : -depth * 8
+  const baseRotate = depth === 0 ? 0 : depth % 2 === 0 ? depth * 1.5 : -depth * 1.2
 
   // Rotate based on drag position
-  const rotate = useTransform(x, [-200, 0, 200], [-15, 0, 15])
+  const rotate = useTransform(
+    x,
+    [-200, 0, 200],
+    [baseRotate - 12, baseRotate, baseRotate + 12],
+  )
+  const nextOverlayOpacity = useTransform(x, [0, 100], [0, 1])
+  const previousOverlayOpacity = useTransform(x, [-100, 0], [1, 0])
 
   // Scale and opacity for depth effect
-  const scale = 1 - depth * 0.05
-  const yOffset = depth * 8
-  const opacity = 1 - depth * 0.15
+  const scale = 1 - depth * 0.04
+  const yOffset = depth * 14
+  const opacity = Math.max(0.5, 1 - depth * 0.14)
 
   // Handle drag end
   const handleDragEnd = (_: unknown, info: PanInfo) => {
@@ -631,12 +643,12 @@ function StackCard({
   return (
     <motion.div
       className={clsx(
-        'absolute inset-0 rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-xl',
+        'absolute inset-0 overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-white p-4 shadow-[0_28px_70px_-34px_rgba(15,23,42,0.34)] sm:p-5 dark:border-white/10 dark:bg-slate-950',
         isTop ? 'cursor-grab active:cursor-grabbing' : 'pointer-events-none',
       )}
       style={{
-        x: isTop ? x : 0,
-        rotate: isTop ? rotate : 0,
+        x: isTop ? x : stackShiftX,
+        rotate,
         scale,
         y: yOffset,
         opacity,
@@ -648,33 +660,47 @@ function StackCard({
       onDragEnd={isTop ? handleDragEnd : undefined}
       whileDrag={{ cursor: 'grabbing' }}
     >
-      <img
-        alt={image.alt}
-        src={image.src}
-        className="h-full w-full object-cover pointer-events-none select-none"
-        draggable={false}
-      />
+      <div className="relative h-full w-full overflow-hidden rounded-[1.15rem] bg-gray-100 dark:bg-gray-800">
+        <img
+          alt={image.alt}
+          src={image.src}
+          className="pointer-events-none h-full w-full select-none object-cover"
+          draggable={false}
+        />
+
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-black/20 via-black/5 to-transparent"
+          aria-hidden="true"
+        />
+      </div>
+
+      {!isTop ? (
+        <div
+          className="pointer-events-none absolute inset-x-6 top-3 h-3 rounded-full bg-white/75 blur-md dark:bg-white/10"
+          aria-hidden="true"
+        />
+      ) : null}
 
       {/* Swipe indicators */}
       {isTop && (
         <>
           <motion.div
-            className="absolute inset-0 bg-green-500/20 flex items-center justify-center"
+            className="absolute inset-4 flex items-center justify-center rounded-[1.15rem] bg-emerald-500/18 sm:inset-5"
             style={{
-              opacity: useTransform(x, [0, 100], [0, 1]),
+              opacity: nextOverlayOpacity,
             }}
           >
-            <div className="bg-green-500 text-white px-4 py-2 rounded-full font-semibold">
+            <div className="rounded-full bg-emerald-500 px-4 py-2 font-semibold text-white shadow-lg">
               Next →
             </div>
           </motion.div>
           <motion.div
-            className="absolute inset-0 bg-red-500/20 flex items-center justify-center"
+            className="absolute inset-4 flex items-center justify-center rounded-[1.15rem] bg-rose-500/18 sm:inset-5"
             style={{
-              opacity: useTransform(x, [-100, 0], [1, 0]),
+              opacity: previousOverlayOpacity,
             }}
           >
-            <div className="bg-red-500 text-white px-4 py-2 rounded-full font-semibold">
+            <div className="rounded-full bg-rose-500 px-4 py-2 font-semibold text-white shadow-lg">
               ← Previous
             </div>
           </motion.div>
@@ -689,7 +715,7 @@ function StackCard({
             e.stopPropagation()
             onZoom()
           }}
-          className="absolute bottom-4 right-4 rounded-full bg-white/90 p-2 shadow-lg hover:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 z-10"
+          className="absolute right-7 bottom-7 z-10 cursor-pointer rounded-full bg-white/90 p-2 shadow-lg hover:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:right-8 sm:bottom-8"
           aria-label="Zoom image"
         >
           <MagnifyingGlassPlusIcon

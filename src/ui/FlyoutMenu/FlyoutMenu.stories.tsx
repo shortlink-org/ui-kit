@@ -1,147 +1,190 @@
-import { expect, within, userEvent } from 'storybook/test'
+import { expect, userEvent, within } from 'storybook/test'
 import preview from '#.storybook/preview'
-import { type ComponentProps } from 'react'
 import { FlyoutMenu } from './FlyoutMenu'
-import type { FlyoutMenuItem, FlyoutMenuCallToAction } from './FlyoutMenu'
+import type {
+  FlyoutMenuCallToAction,
+  FlyoutMenuSection,
+} from './FlyoutMenu'
 import {
-  ArrowPathIcon,
+  ArrowTrendingUpIcon,
   ChartPieIcon,
-  CursorArrowRaysIcon,
-  FingerPrintIcon,
-  SquaresPlusIcon,
+  ClockIcon,
+  CubeTransparentIcon,
   PlayCircleIcon,
   PhoneIcon,
+  ShieldCheckIcon,
+  SparklesIcon,
 } from '@heroicons/react/24/outline'
 
-const solutions: FlyoutMenuItem[] = [
+const sections: FlyoutMenuSection[] = [
   {
-    name: 'Analytics',
-    description: 'Get a better understanding of your traffic',
-    href: '#',
-    icon: ChartPieIcon,
+    title: 'Operate the marketplace',
+    items: [
+      {
+        id: 'seller-insights',
+        name: 'Seller insights',
+        description:
+          'Monitor GMV, retention and payout health across your top-performing merchants.',
+        href: '#',
+        icon: ChartPieIcon,
+      },
+      {
+        id: 'campaigns',
+        name: 'Campaign orchestration',
+        description:
+          'Launch category boosts, flash-sale lanes and promo rules without leaving the dashboard.',
+        href: '#',
+        icon: SparklesIcon,
+      },
+    ],
   },
   {
-    name: 'Engagement',
-    description: 'Speak directly to your customers',
-    href: '#',
-    icon: CursorArrowRaysIcon,
-  },
-  {
-    name: 'Security',
-    description: "Your customers' data will be safe and secure",
-    href: '#',
-    icon: FingerPrintIcon,
-  },
-  {
-    name: 'Integrations',
-    description: 'Connect with third-party tools',
-    href: '#',
-    icon: SquaresPlusIcon,
-  },
-  {
-    name: 'Automations',
-    description: 'Build strategic funnels that will convert',
-    href: '#',
-    icon: ArrowPathIcon,
+    title: 'Reliability and growth',
+    items: [
+      {
+        id: 'inventory-sync',
+        name: 'Inventory sync',
+        description:
+          'Keep supplier stock, lead times and bundle availability aligned in real time.',
+        href: '#',
+        icon: CubeTransparentIcon,
+      },
+      {
+        id: 'risk-automation',
+        name: 'Risk automation',
+        description:
+          'Flag suspicious orders, payout anomalies and checkout abuse before they escalate.',
+        href: '#',
+        icon: ShieldCheckIcon,
+      },
+      {
+        id: 'growth-pacing',
+        name: 'Growth pacing',
+        description:
+          'See which acquisition channels are lifting conversion by cohort and seasonality.',
+        href: '#',
+        icon: ArrowTrendingUpIcon,
+      },
+      {
+        id: 'sla-monitoring',
+        name: 'SLA monitoring',
+        description:
+          'Track support latency, shipping promises and incident recovery windows in one lane.',
+        href: '#',
+        icon: ClockIcon,
+      },
+    ],
   },
 ]
 
 const callsToAction: FlyoutMenuCallToAction[] = [
-  { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
-  { name: 'Contact sales', href: '#', icon: PhoneIcon },
+  { name: 'Watch product tour', href: '#', icon: PlayCircleIcon },
+  { name: 'Talk to platform team', href: '#', icon: PhoneIcon },
 ]
 
 const meta = preview.meta({
   title: 'UI/FlyoutMenu',
   component: FlyoutMenu,
   parameters: {
+    layout: 'fullscreen',
     chromatic: {
-      viewports: [375, 768, 1280, 1920],
-    },
-  },
-  args: {
-    label: 'Solutions',
-    items: solutions,
-    callsToAction,
-  },
-  argTypes: {
-    label: {
-      control: 'text',
-    },
-    showChevron: {
-      control: 'boolean',
+      viewports: [375, 768, 1280, 1600],
     },
   },
 })
 
 export default meta
 
-export const Default = meta.story({
+export const CommerceNavigationFlyout = meta.story({
   args: {
-    label: 'Solutions',
-    items: solutions,
+    label: 'Platform',
+    sections,
     callsToAction,
   },
-  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const canvas = within(canvasElement)
-    const button = canvas.getByRole('button', { name: /Solutions/i })
-    await userEvent.click(button)
-    // Wait for menu to appear
-    await expect(canvas.getByText('Analytics')).toBeInTheDocument()
-  },
-})
+  render: (args) => (
+    <div className="min-h-screen bg-slate-100 px-4 py-8 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-7xl rounded-[2rem] border border-slate-200 bg-white p-4 shadow-[0_24px_80px_-60px_rgba(15,23,42,0.28)] sm:p-5">
+        <div className="flex flex-wrap items-center justify-between gap-4 rounded-[1.25rem] border border-slate-200 bg-white px-4 py-3">
+          <div className="flex items-center gap-3">
+            <div className="inline-flex size-11 items-center justify-center rounded-xl bg-slate-900 text-lg font-semibold text-white">
+              S
+            </div>
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-500">
+                Store operations
+              </p>
+              <p className="text-sm font-semibold text-slate-950">
+                Commerce control center
+              </p>
+            </div>
+          </div>
 
-export const WithoutCallToAction = meta.story({
-  args: {
-    label: 'Products',
-    items: solutions,
-    callsToAction: [],
-  },
-})
+          <div className="flex flex-wrap items-center gap-3">
+            <a
+              href="#"
+              className="rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
+            >
+              Overview
+            </a>
+            <FlyoutMenu {...args} />
+            <a
+              href="#"
+              className="rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
+            >
+              Orders
+            </a>
+            <a
+              href="#"
+              className="rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
+            >
+              Customers
+            </a>
+          </div>
+        </div>
 
-export const WithoutChevron = meta.story({
-  args: {
-    label: 'Menu',
-    items: solutions,
-    showChevron: false,
-  },
-})
-
-export const SingleItem = meta.story({
-  args: {
-    label: 'Options',
-    items: [solutions[0]],
-    callsToAction: [],
-  },
-})
-
-export const DarkBackground = meta.story({
-  parameters: {
-    backgrounds: { default: 'dark' },
-  },
-  args: {
-    label: 'Solutions',
-    items: solutions,
-    callsToAction,
-  },
-})
-
-export const Interactive = meta.story({
-  render: (args: ComponentProps<typeof FlyoutMenu>) => (
-    <div className="p-8 bg-gray-900">
-      <FlyoutMenu {...args} />
+        <div className="mt-8 grid gap-4 lg:grid-cols-3">
+          {[
+            {
+              label: 'Live sellers',
+              value: '2,482',
+              note: 'Managed across campaigns and payout windows',
+            },
+            {
+              label: 'Revenue pulse',
+              value: '$842K',
+              note: 'Updated every 90 seconds from commerce events',
+            },
+            {
+              label: 'Incident SLA',
+              value: '99.92%',
+              note: 'Automation and support routing are both healthy',
+            },
+          ].map((card) => (
+            <div
+              key={card.label}
+              className="rounded-[1.5rem] border border-white/70 bg-white/80 p-5 shadow-[0_20px_55px_-42px_rgba(15,23,42,0.4)]"
+            >
+              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">
+                {card.label}
+              </p>
+              <p className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
+                {card.value}
+              </p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                {card.note}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   ),
-  play: async ({
-    canvasElement,
-    args,
-  }: {
-    canvasElement: HTMLElement
-    args: ComponentProps<typeof FlyoutMenu>
-  }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-    const button = canvas.getByRole('button', { name: args.label })
+    const button = canvas.getByRole('button', { name: /platform/i })
     await userEvent.click(button)
-    await expect(canvas.getByText('Analytics')).toBeInTheDocument()
+    await expect(
+      canvas.getByText('Seller insights'),
+    ).toBeInTheDocument()
   },
 })

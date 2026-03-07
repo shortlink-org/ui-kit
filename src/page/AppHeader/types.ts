@@ -33,6 +33,15 @@ export interface AppHeaderNavigationItem {
   href: string
   /** Whether this item is currently active */
   current?: boolean
+  /** Optional small badge or count */
+  badge?: string
+}
+
+export interface AppHeaderStatusBadge {
+  /** Badge label */
+  label: string
+  /** Visual tone */
+  tone?: 'neutral' | 'accent' | 'success' | 'warning'
 }
 
 export interface AppHeaderNotification {

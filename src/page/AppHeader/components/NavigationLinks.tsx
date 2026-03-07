@@ -55,18 +55,32 @@ export function NavigationLinks({
   }
 
   return (
-    <div className="hidden sm:ml-6 sm:block">
-      <div className="flex space-x-4">
+    <div className="hidden overflow-hidden xl:flex xl:min-w-0 xl:items-center xl:justify-center xl:px-3 2xl:px-5">
+      <div className="flex max-w-full min-w-0 items-center gap-2 overflow-x-auto rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-1.5 shadow-[0_16px_40px_-30px_rgba(15,23,42,0.28)] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         {items.map((item) => {
           const isActive = isNavigationItemActive(item, currentPath)
           return renderLink(
             item.href,
-            item.name,
+            <span className="inline-flex items-center gap-2">
+              <span>{item.name}</span>
+              {item.badge ? (
+                <span
+                  className={classNames(
+                    'rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em]',
+                    isActive
+                      ? 'bg-white/80 text-slate-700'
+                      : 'bg-[var(--color-muted)] text-[var(--color-muted-foreground)]',
+                  )}
+                >
+                  {item.badge}
+                </span>
+              ) : null}
+            </span>,
             classNames(
               isActive
-                ? 'bg-white/10 text-white'
-                : 'text-white/70 hover:bg-white/5 hover:text-white',
-              'rounded-md px-3 py-2 text-sm font-medium',
+                ? 'bg-slate-950 text-white shadow-sm dark:bg-white dark:text-slate-950'
+                : 'text-[var(--color-muted-foreground)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]',
+              'rounded-full px-3.5 py-2 text-sm font-medium transition-colors',
             ),
             isActive ? 'page' : undefined,
           )

@@ -39,12 +39,11 @@ export function HeaderSecondMenu({
   }
 
   return (
-    <div className="hidden sm:block mr-2">
-      <Popover className="relative">
+    <div className="mr-1 hidden shrink-0 sm:block">
+      <Popover className="relative z-20">
         <PopoverButton
           className={clsx(
-            'inline-flex items-center gap-x-1 text-sm font-medium text-white/90 hover:text-white transition-colors',
-            'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/50',
+            'focus-ring inline-flex shrink-0 items-center gap-x-1 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm font-medium text-[var(--color-foreground)] transition-colors hover:bg-[var(--color-muted)]',
           )}
         >
           <span>{label}</span>
@@ -53,13 +52,13 @@ export function HeaderSecondMenu({
         <PopoverPanel
           transition
           className={clsx(
-            'absolute left-1/2 z-10 mt-2 flex w-screen max-w-max -translate-x-1/2 bg-transparent px-4',
+            'absolute left-1/2 z-50 mt-3 flex w-screen max-w-max -translate-x-1/2 bg-transparent px-4',
             'transition data-closed:translate-y-1 data-closed:opacity-0',
             'data-enter:duration-200 data-enter:ease-out',
             'data-leave:duration-150 data-leave:ease-in',
           )}
         >
-          <div className="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-gray-800 text-sm/6 outline-1 -outline-offset-1 outline-white/10">
+          <div className="w-screen max-w-md flex-auto overflow-hidden rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] text-sm/6 shadow-[0_24px_60px_-36px_rgba(15,23,42,0.45)]">
             <div className="p-4">
               {items.map((item) => {
                 const IconComponent =
@@ -69,10 +68,10 @@ export function HeaderSecondMenu({
                 return (
                   <div
                     key={itemKey}
-                    className="group relative flex gap-x-6 rounded-lg p-4 hover:bg-white/5"
+                    className="group relative flex gap-x-4 rounded-[1rem] p-4 hover:bg-[var(--color-muted)]"
                   >
                     {IconComponent && (
-                      <div className="mt-1 flex size-11 flex-none items-center justify-center rounded-lg bg-gray-700/50 group-hover:bg-gray-700">
+                      <div className="mt-1 flex size-11 flex-none items-center justify-center rounded-[0.9rem] bg-[var(--color-muted)]">
                         {typeof IconComponent === 'function' ? (
                           React.createElement(
                             IconComponent as unknown as React.ComponentType<{
@@ -82,19 +81,19 @@ export function HeaderSecondMenu({
                             {
                               'aria-hidden': true,
                               className:
-                                'size-6 text-gray-400 group-hover:text-white',
+                                'size-6 text-[var(--color-muted-foreground)] group-hover:text-[var(--color-foreground)]',
                             },
                           )
                         ) : (
-                          <span className="size-6 text-gray-400 group-hover:text-white flex items-center justify-center">
+                          <span className="flex size-6 items-center justify-center text-[var(--color-muted-foreground)] group-hover:text-[var(--color-foreground)]">
                             {IconComponent}
                           </span>
                         )}
                       </div>
                     )}
                     {!IconComponent && item.icon && (
-                      <div className="mt-1 flex size-11 flex-none items-center justify-center rounded-lg bg-gray-700/50 group-hover:bg-gray-700">
-                        <span className="text-lg text-gray-400 group-hover:text-white">
+                      <div className="mt-1 flex size-11 flex-none items-center justify-center rounded-[0.9rem] bg-[var(--color-muted)]">
+                        <span className="text-lg text-[var(--color-muted-foreground)] group-hover:text-[var(--color-foreground)]">
                           {item.icon}
                         </span>
                       </div>
@@ -104,7 +103,7 @@ export function HeaderSecondMenu({
                         renderLink(
                           item.href,
                           <>
-                            <span className="font-semibold text-white">
+                            <span className="font-semibold text-[var(--color-foreground)]">
                               {item.name}
                             </span>
                             <span className="absolute inset-0" />
@@ -112,12 +111,14 @@ export function HeaderSecondMenu({
                           'block',
                         )
                       ) : (
-                        <span className="font-semibold text-white">
+                        <span className="font-semibold text-[var(--color-foreground)]">
                           {item.name}
                         </span>
                       )}
                       {item.description && (
-                        <p className="mt-1 text-gray-400">{item.description}</p>
+                        <p className="mt-1 text-[var(--color-muted-foreground)]">
+                          {item.description}
+                        </p>
                       )}
                     </div>
                   </div>

@@ -6,11 +6,16 @@ export interface LoaderProps {
 
 export function Loader({ className }: LoaderProps) {
   return (
-    <div className={clsx('flex items-center justify-center py-8', className)}>
-      <div className="flex space-x-2">
-        <div className="size-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.3s]" />
-        <div className="size-2 animate-bounce rounded-full bg-gray-400 [animation-delay:-0.15s]" />
-        <div className="size-2 animate-bounce rounded-full bg-gray-400" />
+    <div className={clsx('flex items-center justify-center py-10', className)}>
+      <div className="inline-flex items-center gap-3 rounded-md border border-[var(--color-border)] bg-[var(--color-background)] px-4 py-2">
+        <div className="flex space-x-1.5">
+          <div className="size-2 animate-bounce rounded-full bg-slate-500/80 [animation-delay:-0.3s]" />
+          <div className="size-2 animate-bounce rounded-full bg-slate-500/80 [animation-delay:-0.15s]" />
+          <div className="size-2 animate-bounce rounded-full bg-slate-500/80" />
+        </div>
+        <span className="text-sm font-medium text-[var(--color-muted-foreground)]">
+          Loading data
+        </span>
       </div>
     </div>
   )

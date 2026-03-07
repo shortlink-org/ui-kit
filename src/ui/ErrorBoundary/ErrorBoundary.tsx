@@ -1,5 +1,6 @@
 import React, { Component, type ReactNode } from 'react'
 import clsx from 'clsx'
+import { Button } from '../Button/Button'
 import { FeedbackPanel } from '../FeedbackPanel/FeedbackPanel'
 
 export interface ErrorBoundaryProps {
@@ -120,28 +121,34 @@ export class ErrorBoundary extends Component<
 
       // Default error UI - use FeedbackPanel for consistency
       const actionButton = (
-        <button
-          onClick={this.handleReset}
-          className={clsx(
-            'px-4 py-2 text-sm font-medium rounded-md',
-            'bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600',
-            'focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2',
-            'dark:focus:ring-offset-gray-900',
-            'transition-colors duration-200',
-            'disabled:opacity-50 disabled:cursor-not-allowed',
-          )}
-        >
+        <Button onClick={this.handleReset} variant="destructive" size="md">
           Try again
-        </button>
+        </Button>
       )
 
       return (
         <FeedbackPanel
           variant="error"
+          eyebrow="Runtime boundary"
+          title="Something went wrong"
           message={this.state.error?.message}
           className={this.props.className}
           action={actionButton}
-        />
+        >
+          <div
+            className={clsx(
+              'w-full max-w-lg rounded-2xl border border-[var(--color-border)] bg-[var(--color-background)] px-4 py-3 text-left',
+            )}
+          >
+            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-600">
+              Recovery
+            </p>
+            <p className="mt-2 text-sm leading-6 text-[var(--color-muted-foreground)]">
+              This section stopped rendering. Retry the panel without leaving
+              the page.
+            </p>
+          </div>
+        </FeedbackPanel>
       )
     }
 

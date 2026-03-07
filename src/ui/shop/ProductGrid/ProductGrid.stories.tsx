@@ -1,49 +1,141 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import type { ComponentProps } from 'react'
 import { ProductGrid } from './ProductGrid'
 import type { Product } from './ProductGrid'
 
 const mockProducts: Product[] = [
   {
     id: 1,
-    name: 'Basic Tee',
+    name: 'Storm Shell Parka',
     href: '#',
     imageSrc:
       'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '$35',
-    color: 'Black',
+    imageAlt: 'Black weatherproof jacket.',
+    price: {
+      current: 148,
+      original: 198,
+      currency: 'USD',
+      locale: 'en-US',
+    },
+    color: 'Midnight',
+    description: 'Water-resistant outer layer for cold city commutes.',
+    badges: [{ label: 'Best seller', tone: 'warning' }],
+    cta: {
+      rating: 4.8,
+      reviewCount: 124,
+    },
+    onAddToCart: () => undefined,
   },
   {
     id: 2,
-    name: 'Basic Tee',
+    name: 'Contour Knit',
     href: '#',
     imageSrc:
       'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg',
-    imageAlt: "Front of men's Basic Tee in white.",
-    price: '$35',
-    color: 'Aspen White',
+    imageAlt: 'Soft cream knitwear.',
+    price: {
+      current: 86,
+      currency: 'USD',
+      locale: 'en-US',
+    },
+    color: 'Chalk',
+    description: 'Soft structured knit with a relaxed premium silhouette.',
+    badges: [{ label: 'New arrival', tone: 'info' }],
+    cta: {
+      rating: 4.6,
+      reviewCount: 48,
+    },
+    onAddToCart: () => undefined,
   },
   {
     id: 3,
-    name: 'Basic Tee',
+    name: 'Transit Runner',
     href: '#',
     imageSrc:
       'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg',
-    imageAlt: "Front of men's Basic Tee in dark gray.",
-    price: '$35',
+    imageAlt: 'Performance sneaker in charcoal.',
+    price: {
+      current: 112,
+      original: 140,
+      currency: 'USD',
+      locale: 'en-US',
+    },
     color: 'Charcoal',
+    description: 'Everyday performance sneaker with lightweight cushioning.',
+    badges: [{ label: 'Limited drop', tone: 'error' }],
+    cta: {
+      rating: 4.9,
+      reviewCount: 203,
+    },
+    onAddToCart: () => undefined,
   },
   {
     id: 4,
-    name: 'Artwork Tee',
+    name: 'Canvas Weekender',
     href: '#',
     imageSrc:
       'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg',
-    imageAlt:
-      "Front of men's Artwork Tee in peach with white and brown dots forming an isometric cube.",
-    price: '$35',
-    color: 'Iso Dots',
+    imageAlt: 'Minimal weekender bag.',
+    price: {
+      current: 132,
+      currency: 'USD',
+      locale: 'en-US',
+    },
+    color: 'Sand',
+    description: 'Structured travel bag sized for two-day trips.',
+    badges: [{ label: 'Staff pick', tone: 'success' }],
+    cta: {
+      rating: 4.7,
+      reviewCount: 89,
+    },
+    onAddToCart: () => undefined,
+  },
+]
+
+const catalogProducts: Product[] = [
+  ...mockProducts,
+  {
+    id: 5,
+    name: 'Wool Overshirt',
+    href: '#',
+    imageSrc:
+      'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg',
+    imageAlt: 'Olive overshirt.',
+    price: { current: 118, currency: 'USD', locale: 'en-US' },
+    color: 'Olive',
+    description: 'Layering piece with tailored structure.',
+  },
+  {
+    id: 6,
+    name: 'Meridian Tote',
+    href: '#',
+    imageSrc:
+      'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg',
+    imageAlt: 'Large tote in soft grey.',
+    price: { current: 94, currency: 'USD', locale: 'en-US' },
+    color: 'Mist',
+    description: 'Daily carry tote with padded laptop sleeve.',
+  },
+  {
+    id: 7,
+    name: 'Field Bottle',
+    href: '#',
+    imageSrc:
+      'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg',
+    imageAlt: 'Reusable bottle.',
+    price: { current: 38, currency: 'USD', locale: 'en-US' },
+    color: 'Steel',
+    description: 'Insulated bottle with powder-coated finish.',
+  },
+  {
+    id: 8,
+    name: 'Arc Lamp',
+    href: '#',
+    imageSrc:
+      'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg',
+    imageAlt: 'Minimal table lamp.',
+    price: { current: 176, currency: 'USD', locale: 'en-US' },
+    color: 'Bone',
+    description: 'Warm ambient lighting for desks and nightstands.',
   },
 ]
 
@@ -66,145 +158,31 @@ const meta: Meta<typeof ProductGrid> = {
 export default meta
 type Story = StoryObj<typeof ProductGrid>
 
-function Template(args: ComponentProps<typeof ProductGrid>) {
-  return <ProductGrid {...args} />
-}
-
-export const Default: Story = {
-  render: Template,
+export const StorefrontShelf: Story = {
   args: {
     products: mockProducts,
-    title: 'Customers also purchased',
+    title: 'Recommended for your storefront',
   },
 }
 
-export const WithoutTitle: Story = {
-  render: Template,
+export const ExpandedCatalog: Story = {
+  args: {
+    products: catalogProducts,
+    title: 'Top picks across categories',
+    columns: {
+      base: 1,
+      sm: 2,
+      md: 3,
+      lg: 4,
+    },
+  },
+}
+
+export const LoadingState: Story = {
   args: {
     products: mockProducts,
-  },
-}
-
-export const WithBadges: Story = {
-  render: Template,
-  args: {
-    products: mockProducts.map((product, index) => ({
-      ...product,
-      badge: index === 0 ? 'New' : index === 1 ? 'Popular' : undefined,
-    })),
-    title: 'Featured Products',
-  },
-}
-
-export const WithSale: Story = {
-  render: Template,
-  args: {
-    products: mockProducts.map((product, index) => ({
-      ...product,
-      onSale: index < 2,
-      originalPrice: index < 2 ? '$50' : undefined,
-      price: index < 2 ? '$35' : product.price,
-    })),
-    title: 'Sale Products',
-  },
-}
-
-export const WithDescriptions: Story = {
-  render: Template,
-  args: {
-    products: mockProducts.map((product) => ({
-      ...product,
-      description:
-        'Comfortable and stylish basic tee made from premium cotton.',
-    })),
-    title: 'Recommended for You',
-  },
-}
-
-export const ManyProducts: Story = {
-  render: Template,
-  args: {
-    products: [
-      ...mockProducts,
-      {
-        id: 5,
-        name: 'Premium Tee',
-        href: '#',
-        imageSrc:
-          'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Premium Tee.",
-        price: '$45',
-        color: 'Navy',
-      },
-      {
-        id: 6,
-        name: 'Classic Tee',
-        href: '#',
-        imageSrc:
-          'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg',
-        imageAlt: "Front of men's Classic Tee.",
-        price: '$30',
-        color: 'Gray',
-      },
-      {
-        id: 7,
-        name: 'Sport Tee',
-        href: '#',
-        imageSrc:
-          'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg',
-        imageAlt: "Front of men's Sport Tee.",
-        price: '$40',
-        color: 'Blue',
-      },
-      {
-        id: 8,
-        name: 'Casual Tee',
-        href: '#',
-        imageSrc:
-          'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg',
-        imageAlt: "Front of men's Casual Tee.",
-        price: '$32',
-        color: 'Green',
-      },
-    ],
-    title: 'All Products',
-  },
-}
-
-export const CustomGrid: Story = {
-  render: Template,
-  args: {
-    products: mockProducts,
-    title: 'Custom Grid Layout',
-    gridClassName: 'lg:grid-cols-3',
-  },
-}
-
-export const SingleProduct: Story = {
-  render: Template,
-  args: {
-    products: [mockProducts[0]],
-    title: 'Featured Product',
-  },
-}
-
-export const TwoProducts: Story = {
-  render: Template,
-  args: {
-    products: mockProducts.slice(0, 2),
-    title: 'Best Sellers',
-  },
-}
-
-export const WithAddToCart: Story = {
-  render: Template,
-  args: {
-    products: mockProducts.map((product) => ({
-      ...product,
-      onAddToCart: () => {
-        console.log('Add to cart:', product.name)
-      },
-    })),
-    title: 'Products with Add to Cart',
+    title: 'Trending this week',
+    loading: true,
+    skeletonCount: 8,
   },
 }

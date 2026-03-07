@@ -3,8 +3,8 @@ import { AppHeaderBrand } from './types'
 export const defaultBrand: AppHeaderBrand = {
   name: 'Shortlink',
   logo: (
-    <div className="w-7 h-7 sm:w-8 sm:h-8 bg-indigo-900/30 dark:bg-indigo-400/20 rounded-lg flex items-center justify-center group-hover:bg-indigo-900/40 dark:group-hover:bg-indigo-400/30 transition-all duration-200">
-      <span className="text-white font-bold text-xs sm:text-sm">S</span>
+    <div className="flex h-9 w-9 items-center justify-center rounded-[1rem] bg-linear-to-br from-sky-500 to-cyan-600 text-white shadow-[0_18px_40px_-24px_rgba(14,165,233,0.9)] transition-transform duration-200 group-hover:scale-105">
+      <span className="text-sm font-bold">S</span>
     </div>
   ),
   href: '/',

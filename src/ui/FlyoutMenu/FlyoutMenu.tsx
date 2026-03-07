@@ -122,36 +122,32 @@ export function FlyoutMenu({
     }
 
     const defaultRender = () => {
-      const itemContent = (
-        <div className="group relative flex gap-x-6 rounded-lg p-4 hover:bg-white/5">
-          <div className="mt-1 flex size-11 flex-none items-center justify-center rounded-lg bg-gray-700/50 group-hover:bg-gray-700">
-            <item.icon
-              aria-hidden
-              className="size-6 text-gray-400 group-hover:text-white"
-            />
-          </div>
-          <div>
-            {item.href ? (
-              renderLink(
-                item.href,
-                <>
-                  <span className="font-semibold text-white">{item.name}</span>
-                  <span className="absolute inset-0" />
-                </>,
-                'block',
-              )
-            ) : (
-              <button
-                onClick={handleClick}
-                className="font-semibold text-white text-left w-full"
-              >
-                {item.name}
-              </button>
-            )}
-            <p className="mt-1 text-gray-400">{item.description}</p>
-          </div>
-        </div>
+      const itemBody = (
+        <>
+          <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-slate-50 text-slate-600 ring-1 ring-slate-200 transition-colors duration-200 group-hover:bg-white group-hover:text-slate-900">
+            <item.icon aria-hidden className="size-5" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm font-semibold text-slate-900">
+              {item.name}
+            </span>
+            <span className="mt-1 block text-sm leading-6 text-slate-600">
+              {item.description}
+            </span>
+          </span>
+        </>
       )
+
+      const itemClassName =
+        'group relative flex w-full items-start gap-4 rounded-2xl px-4 py-4 text-left transition-colors duration-200 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/60'
+
+      const itemContent = item.href
+        ? renderLink(item.href, itemBody, itemClassName)
+        : (
+            <button onClick={handleClick} className={itemClassName}>
+              {itemBody}
+            </button>
+          )
 
       if (renderItem) {
         return renderItem({ item, defaultRender: () => itemContent })
@@ -174,20 +170,20 @@ export function FlyoutMenu({
       return renderLink(
         item.href,
         <>
-          <item.icon aria-hidden className="size-5 flex-none text-gray-500" />
-          {item.name}
+          <item.icon aria-hidden className="size-5 flex-none text-slate-400 transition-colors group-hover:text-slate-600" />
+          <span className="font-medium text-slate-900">{item.name}</span>
         </>,
-        'flex items-center justify-center gap-x-2.5 p-3 font-semibold text-white hover:bg-gray-700/50',
+        'group flex items-center gap-3 rounded-xl px-4 py-3 text-sm transition-colors hover:bg-white',
       )
     }
 
     return (
       <button
         onClick={handleClick}
-        className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-white hover:bg-gray-700/50"
+        className="group flex items-center gap-3 rounded-xl px-4 py-3 text-sm transition-colors hover:bg-white"
       >
-        <item.icon aria-hidden className="size-5 flex-none text-gray-500" />
-        {item.name}
+        <item.icon aria-hidden className="size-5 flex-none text-slate-400 transition-colors group-hover:text-slate-600" />
+        <span className="font-medium text-slate-900">{item.name}</span>
       </button>
     )
   }
@@ -200,45 +196,58 @@ export function FlyoutMenu({
     <Popover className="relative">
       <PopoverButton
         className={clsx(
-          'inline-flex items-center gap-x-1 text-sm/6 font-semibold text-white',
+          'group inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-semibold text-slate-900 transition-colors duration-200 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/60',
           buttonClassName,
         )}
       >
         <span>{label}</span>
-        {showChevron && <ChevronIcon aria-hidden className="size-5" />}
+        {showChevron && (
+          <ChevronIcon
+            aria-hidden
+            className="size-5 text-[var(--color-muted-foreground)] transition-transform duration-200 group-data-open:rotate-180"
+          />
+        )}
       </PopoverButton>
       <PopoverPanel
         transition
         className={clsx(
-          'absolute left-1/2 z-10 mt-5 flex w-screen max-w-max -translate-x-1/2 bg-transparent px-4 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in',
+          'absolute left-1/2 z-20 mt-5 flex w-screen max-w-max -translate-x-1/2 bg-transparent px-4 transition data-closed:translate-y-2 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in',
           panelClassName,
         )}
       >
-        <div className="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-gray-800 text-sm/6 outline-1 -outline-offset-1 outline-white/10">
+        <div className="relative w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm shadow-lg ring-1 ring-slate-900/5 lg:max-w-2xl">
           <div className="p-4">
+
             {sections.map((section, sectionIndex) => (
-              <React.Fragment key={sectionIndex}>
+              <section
+                key={section.title || sectionIndex}
+                className={clsx(sectionIndex > 0 && 'mt-2 border-t border-slate-200 pt-4')}
+              >
                 {section.title && (
-                  <h3 className="px-4 py-2 text-xs font-semibold uppercase text-gray-400">
+                  <h3 className="mb-3 px-4 text-xs font-semibold text-slate-500">
                     {section.title}
                   </h3>
                 )}
-                {section.items.map((item, itemIndex) =>
-                  renderMenuItem(
-                    item,
-                    item.id || `${sectionIndex}-${itemIndex}`,
-                  ),
-                )}
-              </React.Fragment>
+                <div className="grid gap-2 lg:grid-cols-2">
+                  {section.items.map((item, itemIndex) =>
+                    renderMenuItem(
+                      item,
+                      item.id || `${sectionIndex}-${itemIndex}`,
+                    ),
+                  )}
+                </div>
+              </section>
             ))}
           </div>
           {callsToAction.length > 0 && (
-            <div className="grid grid-cols-2 divide-x divide-white/10 bg-gray-700/50">
-              {callsToAction.map((item, index) => (
-                <React.Fragment key={item.name || index}>
-                  {renderCallToAction(item)}
-                </React.Fragment>
-              ))}
+            <div className="border-t border-slate-200 bg-slate-50">
+              <div className="grid gap-1 p-3 sm:grid-cols-2">
+                {callsToAction.map((item, index) => (
+                  <React.Fragment key={item.name || index}>
+                    {renderCallToAction(item)}
+                  </React.Fragment>
+                ))}
+              </div>
             </div>
           )}
         </div>

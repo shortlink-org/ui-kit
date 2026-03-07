@@ -1,751 +1,687 @@
-import type { Meta, StoryObj } from '@storybook/react-vite'
-import React, { useState } from 'react'
-import { MultiColumnLayout, ColumnConfig } from './MultiColumnLayout'
-import { Sidebar } from '../Sidebar/Sidebar'
-import { SecondaryMenu, SecondaryMenuItem } from '../Sidebar/SecondaryMenu'
+import * as React from 'react'
+import preview from '#.storybook/preview'
+import {
+  BellAlertIcon,
+  ChartBarSquareIcon,
+  ChatBubbleLeftRightIcon,
+  ClipboardDocumentListIcon,
+  CubeIcon,
+  MegaphoneIcon,
+  ShieldCheckIcon,
+  ShoppingBagIcon,
+  SparklesIcon,
+  UserGroupIcon,
+} from '@heroicons/react/24/outline'
+import { MultiColumnLayout, type ColumnConfig } from './MultiColumnLayout'
+import { Sidebar, type SidebarSection } from '../Sidebar/Sidebar'
+import { SecondaryMenu, type SecondaryMenuItem } from '../Sidebar/SecondaryMenu'
 import { AppHeader } from '../AppHeader/AppHeader'
+import { Header } from '../Header/Header'
 
-const meta: Meta<typeof MultiColumnLayout> = {
-  title: 'Page/MultiColumnLayout',
-  component: MultiColumnLayout,
-  parameters: {
-    layout: 'fullscreen',
-  },
-  tags: ['autodocs'],
-  argTypes: {
-    columns: {
-      description: 'Array of column configurations',
-    },
-    className: {
-      description: 'Optional className for the container',
-      control: 'text',
-    },
-    gap: {
-      description: 'Gap between columns',
-      control: 'select',
-      options: ['none', 'sm', 'md', 'lg'],
-    },
-    minHeight: {
-      description: 'Minimum height of the layout container',
-      control: 'text',
-    },
-    containerClassName: {
-      description: 'Background color classes for the container',
-      control: 'text',
-    },
-    stackAt: {
-      description: 'Breakpoint at which columns stack vertically',
-      control: 'select',
-      options: ['sm', 'md', 'lg', 'xl', '2xl'],
-    },
-    mobileDrawer: {
-      description: 'Optional mobile drawer config for sidebar columns',
-      control: false,
-    },
-  },
-}
-
-export default meta
-type Story = StoryObj<typeof MultiColumnLayout>
-
-// Sample content components
-
-const SampleMiddleContent = () => (
-  <div className="p-6">
-    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-      Main Content
-    </h2>
-    <div className="space-y-4">
-      {[1, 2, 3, 4].map((item) => (
-        <div
-          key={item}
-          className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
-        >
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-            Content Item {item}
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400">
-            This is the main content area. You can place any content here, such
-            as articles, lists, or interactive elements.
-          </p>
-        </div>
-      ))}
-    </div>
-  </div>
-)
-
-const SampleRightContent = () => (
-  <div className="p-6">
-    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-      Right Column
-    </h2>
-    <div className="space-y-4">
-      <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-          Sidebar Item 1
-        </h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          Additional information or actions can be placed here.
-        </p>
-      </div>
-      <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-          Sidebar Item 2
-        </h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          This column is perfect for secondary content or widgets.
-        </p>
-      </div>
-    </div>
-  </div>
-)
-
-// Secondary menu items example (like in CodePen)
-const secondaryMenuItems = [
-  { url: '/users/activities', name: 'Activities' },
-  { url: '/users/transfer', name: 'Transfer' },
-  { url: '/users/budgets', name: 'Budgets' },
-  { url: '/users/notifications', name: 'Notifications', badge: 3 },
-  { url: '/users/cards', name: 'Cards' },
-]
-
-// Default three columns with real Sidebar - wrapped in function to create fresh instances
-const getDefaultColumns = (): ColumnConfig[] => [
+const workspaceSections: SidebarSection[] = [
   {
-    content: <Sidebar mode="full" />,
-    className: 'border-r border-gray-200 dark:border-gray-700',
-    span: 1,
+    type: 'simple',
+    items: [
+      {
+        url: '/dashboard',
+        icon: <SparklesIcon />,
+        name: 'Overview',
+      },
+      {
+        url: '/catalog',
+        icon: <ShoppingBagIcon />,
+        name: 'Catalog',
+      },
+      {
+        url: '/orders',
+        icon: <ClipboardDocumentListIcon />,
+        name: 'Orders',
+      },
+    ],
   },
   {
-    content: <SampleMiddleContent />,
-    className: 'bg-white dark:bg-gray-900',
-    span: 2, // Main content takes 2 columns
+    type: 'collapsible',
+    icon: MegaphoneIcon,
+    title: 'Growth',
+    items: [
+      {
+        url: '/growth/campaigns',
+        icon: <MegaphoneIcon />,
+        name: 'Campaigns',
+      },
+      {
+        url: '/growth/audiences',
+        icon: <UserGroupIcon />,
+        name: 'Audiences',
+      },
+      {
+        url: '/growth/messages',
+        icon: <ChatBubbleLeftRightIcon />,
+        name: 'Messages',
+      },
+    ],
   },
   {
-    content: <SampleRightContent />,
-    className:
-      'bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700',
-    span: 1,
+    type: 'collapsible',
+    icon: ShieldCheckIcon,
+    title: 'Operations',
+    defaultCollapsed: true,
+    items: [
+      {
+        url: '/ops/inventory',
+        icon: <CubeIcon />,
+        name: 'Inventory',
+      },
+      {
+        url: '/ops/billing',
+        icon: <ChartBarSquareIcon />,
+        name: 'Billing',
+      },
+      {
+        url: '/ops/alerts',
+        icon: <BellAlertIcon />,
+        name: 'Alerts',
+      },
+    ],
   },
 ]
 
-// User profile content for secondary menu example
-const UserProfileContent = () => (
-  <div className="p-6">
-    <div className="mb-6">
-      <div className="flex items-center gap-4 mb-4">
-        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-2xl font-bold">
-          MC
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Mert Cukuren
-          </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            Sales Department
-          </p>
-        </div>
-      </div>
-      <div className="flex items-center gap-6">
-        <div>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-            Account balance
-          </p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">
-            $2,794.00
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div className="space-y-4">
-      <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-        Recent Activities
-      </h2>
-      {[
-        {
-          type: 'Card',
-          where: 'PayPal',
-          description: 'Subscription renewal',
-          amount: '- $120.00',
-          date: '24.12.2020 11:16 AM',
-        },
-        {
-          type: 'Card',
-          where: 'Microsoft',
-          description: 'Subscription renewal',
-          amount: '- $9.99',
-          date: '24.12.2020 07:16 AM',
-        },
-        {
-          type: 'Income',
-          where: 'Client',
-          description: 'Invoice payment',
-          amount: '+ $1,200.00',
-          date: '23.12.2020 14:30 PM',
-        },
-      ].map((activity, index) => (
-        <div
-          key={index}
-          className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
-        >
-          <div className="flex items-start justify-between mb-2">
-            <div className="flex items-center gap-3">
-              <span className="px-2 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded">
-                {activity.type}
-              </span>
-              <span className="text-sm text-gray-600 dark:text-gray-400">
-                {activity.where}
-              </span>
-            </div>
-            <span
-              className={`text-sm font-semibold ${activity.amount.startsWith('+') ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
-            >
-              {activity.amount}
-            </span>
-          </div>
-          <p className="text-sm text-gray-900 dark:text-white mb-1">
-            {activity.description}
-          </p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
-            {activity.date}
-          </p>
-        </div>
-      ))}
-    </div>
-  </div>
-)
-
-export const Default: Story = {
-  args: {
-    columns: getDefaultColumns(),
-    gap: 'md',
-    mobileDrawer: {
-      columns: [0, 2],
-      title: 'Side Panels',
-      triggerLabel: 'Open panels',
-      position: 'bottom',
-    },
-  },
-}
-
-export const WithSecondaryMenu: Story = {
-  name: 'With Secondary Menu (Dashboard Style)',
-  args: {
-    columns: [
-      {
-        content: <Sidebar mode="full" />,
-        className: 'border-r border-gray-200 dark:border-gray-700',
-        sticky: true,
-        stickyOffset: '0',
-      },
-      {
-        content: (
-          <SecondaryMenu
-            title="USERS"
-            items={secondaryMenuItems}
-            sticky={true}
-            stickyOffset="0"
-          />
-        ),
-        className: 'border-r border-gray-200 dark:border-gray-700',
-        sticky: true,
-        stickyOffset: '0',
-      },
-      {
-        content: <UserProfileContent />,
-        className: 'bg-white dark:bg-gray-900',
-      },
-    ],
-    gap: 'none', // No gap between menus for seamless connection
-    mobileDrawer: {
-      columns: [0, 1],
-      title: 'Menus',
-      triggerLabel: 'Open menus',
-      position: 'bottom',
-    },
-  },
-}
-
-export const WithMobileDrawer: Story = {
-  name: 'With Mobile Drawer (Sidebars)',
-  args: {
-    columns: getDefaultColumns(),
-    gap: 'md',
-    mobileDrawer: {
-      columns: [0, 2],
-      title: 'Panels',
-      triggerLabel: 'Open panels',
-      position: 'bottom',
-    },
-  },
-}
-
-export const TwoColumns: Story = {
-  name: 'Two Columns Layout',
-  args: {
-    columns: [
-      {
-        content: <Sidebar mode="full" />,
-        className: 'border-r border-gray-200 dark:border-gray-700',
-        sticky: true,
-        stickyOffset: '0',
-        span: 1,
-      },
-      {
-        content: <SampleMiddleContent />,
-        className: 'bg-white dark:bg-gray-900',
-        span: 3, // Content takes remaining space
-      },
-    ],
-    gap: 'md',
-    mobileDrawer: {
-      columns: [0],
-      title: 'Menu',
-      triggerLabel: 'Open menu',
-      position: 'bottom',
-    },
-  },
-}
-
-export const FourColumns: Story = {
-  name: 'Four Columns Layout',
-  args: {
-    columns: [
-      {
-        content: (
-          <div className="p-4 bg-blue-50 dark:bg-blue-900/20">
-            <h3 className="font-semibold text-blue-900 dark:text-blue-100">
-              Column 1
-            </h3>
-            <p className="text-sm text-blue-700 dark:text-blue-300">
-              Narrow sidebar
-            </p>
-          </div>
-        ),
-        className: 'border-r border-gray-200 dark:border-gray-700',
-        span: 1,
-      },
-      {
-        content: (
-          <div className="p-4 bg-green-50 dark:bg-green-900/20">
-            <h3 className="font-semibold text-green-900 dark:text-green-100">
-              Column 2
-            </h3>
-            <p className="text-sm text-green-700 dark:text-green-300">
-              Secondary menu
-            </p>
-          </div>
-        ),
-        className: 'border-r border-gray-200 dark:border-gray-700',
-        span: 1,
-      },
-      {
-        content: <SampleMiddleContent />,
-        className: 'bg-white dark:bg-gray-900',
-        span: 2, // Main content
-      },
-      {
-        content: <SampleRightContent />,
-        className:
-          'bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700',
-        span: 1,
-      },
-    ],
-    gap: 'md',
-  },
-}
-
-export const SingleColumn: Story = {
-  name: 'Single Column (Full Width)',
-  args: {
-    columns: [
-      {
-        content: <SampleMiddleContent />,
-        className: 'bg-white dark:bg-gray-900',
-        span: 1,
-      },
-    ],
-    gap: 'none',
-  },
-}
-
-export const AsymmetricLayout: Story = {
-  name: 'Asymmetric Layout (Wide Sidebar)',
-  args: {
-    columns: [
-      {
-        content: <Sidebar mode="full" />,
-        className: 'border-r border-gray-200 dark:border-gray-700',
-        sticky: true,
-        stickyOffset: '0',
-        span: 2, // Wider sidebar
-      },
-      {
-        content: <SampleMiddleContent />,
-        className: 'bg-white dark:bg-gray-900',
-        span: 3, // Content area
-      },
-    ],
-    gap: 'md',
-    mobileDrawer: {
-      columns: [0],
-      title: 'Sidebar',
-      triggerLabel: 'Open sidebar',
-      position: 'bottom',
-    },
-  },
-}
-
-export const WithStickySidebar: Story = {
-  args: {
-    columns: [
-      {
-        content: <Sidebar mode="full" />,
-        className: 'border-r border-gray-200 dark:border-gray-700',
-        sticky: true,
-        stickyOffset: '0',
-      },
-      {
-        content: <SampleMiddleContent />,
-        className: 'bg-white dark:bg-gray-900',
-      },
-      {
-        content: <SampleRightContent />,
-        className:
-          'bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700',
-      },
-    ],
-    gap: 'md',
-    mobileDrawer: {
-      columns: [0, 2],
-      title: 'Side Panels',
-      triggerLabel: 'Open panels',
-      position: 'bottom',
-    },
-  },
-}
-
-export const DarkMode: Story = {
-  parameters: {
-    backgrounds: { default: 'dark' },
-  },
-  args: {
-    columns: [
-      {
-        content: <Sidebar mode="full" />,
-        className: 'border-r border-gray-700',
-        sticky: true,
-        stickyOffset: '0',
-      },
-      {
-        content: (
-          <SecondaryMenu
-            title="MENU"
-            items={secondaryMenuItems}
-            sticky={true}
-            stickyOffset="0"
-          />
-        ),
-        className: 'border-r border-gray-700',
-        sticky: true,
-        stickyOffset: '0',
-      },
-      {
-        content: <UserProfileContent />,
-        className: 'bg-gray-900',
-      },
-    ],
-    gap: 'none',
-    mobileDrawer: {
-      columns: [0, 1],
-      title: 'Menus',
-      triggerLabel: 'Open menus',
-      position: 'bottom',
-    },
-  },
-}
-
-// Interactive dashboard with dynamic secondary menu
-interface MenuStructure {
-  [path: string]: {
+const controlCenterMenu: Record<
+  string,
+  {
     title: string
     items: SecondaryMenuItem[]
     content: React.ReactNode
   }
+> = {
+  '/dashboard': {
+    title: 'Overview',
+    items: [
+      { url: '/dashboard/revenue', name: 'Revenue' },
+      { url: '/dashboard/funnel', name: 'Conversion funnel' },
+      { url: '/dashboard/regions', name: 'Top regions', badge: '7' },
+      { url: '/dashboard/retention', name: 'Retention' },
+    ],
+    content: (
+      <DashboardCanvas
+        eyebrow="Marketplace pulse"
+        title="Revenue command center"
+        description="A three-column shell with persistent workspace rails, compact action surfaces and a center canvas designed for dense decision-making."
+      />
+    ),
+  },
+  '/catalog': {
+    title: 'Catalog',
+    items: [
+      { url: '/catalog/collections', name: 'Collections' },
+      { url: '/catalog/new-arrivals', name: 'New arrivals', badge: '18' },
+      { url: '/catalog/pricing', name: 'Pricing rules' },
+      { url: '/catalog/merchandising', name: 'Merchandising' },
+    ],
+    content: (
+      <DashboardCanvas
+        eyebrow="Catalog studio"
+        title="Merchandising and sell-through analysis"
+        description="Use the content column as a fully composed page, not just as a blank slot. The header, metric cards and lists stay visually consistent with the surrounding rails."
+      />
+    ),
+  },
+  '/orders': {
+    title: 'Orders',
+    items: [
+      { url: '/orders/live', name: 'Live queue', badge: '24' },
+      { url: '/orders/disputes', name: 'Disputes' },
+      { url: '/orders/returns', name: 'Returns', badge: '5' },
+      { url: '/orders/finance', name: 'Finance' },
+    ],
+    content: (
+      <DashboardCanvas
+        eyebrow="Fulfillment stream"
+        title="Order queue health and escalation tracking"
+        description="The layout supports operational views just as well as executive dashboards. Left and right rails remain stable while the center switches context."
+      />
+    ),
+  },
+  '/growth/campaigns': {
+    title: 'Campaigns',
+    items: [
+      { url: '/growth/campaigns/live', name: 'Live campaigns', badge: '6' },
+      { url: '/growth/campaigns/attribution', name: 'Attribution' },
+      { url: '/growth/campaigns/budget', name: 'Budget pacing' },
+      { url: '/growth/campaigns/creative', name: 'Creative tests' },
+    ],
+    content: (
+      <DashboardCanvas
+        eyebrow="Growth engine"
+        title="Campaign pacing, attribution and creative velocity"
+        description="This is the primary showcase scenario for the refreshed multi-column system."
+      />
+    ),
+  },
 }
 
-const InteractiveExample = () => {
-  const [activePath, setActivePath] = useState<string>('/links')
-
-  // Define menu structure - maps Sidebar paths to secondary menu
-  const menuStructure: MenuStructure = {
-    '/add-link': {
-      title: 'ADD LINK',
-      items: [
-        { url: '/add-link/bulk', name: 'Bulk Import' },
-        { url: '/add-link/quick', name: 'Quick Add' },
-        { url: '/add-link/schedule', name: 'Schedule' },
-        { url: '/add-link/templates', name: 'Templates' },
-      ],
-      content: (
-        <div className="p-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            Add Link
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Add new links and manage URL settings.
-          </p>
-        </div>
-      ),
-    },
-    '/links': {
-      title: 'LINKS',
-      items: [
-        { url: '/links/all', name: 'All Links' },
-        { url: '/links/active', name: 'Active', badge: 42 },
-        { url: '/links/expired', name: 'Expired' },
-        { url: '/links/analytics', name: 'Analytics' },
-        { url: '/links/archived', name: 'Archived' },
-      ],
-      content: <UserProfileContent />,
-    },
-    '/profile': {
-      title: 'PROFILE',
-      items: [
-        { url: '/profile/settings', name: 'Settings' },
-        { url: '/profile/security', name: 'Security' },
-        { url: '/profile/preferences', name: 'Preferences' },
-        { url: '/profile/notifications', name: 'Notifications', badge: 3 },
-      ],
-      content: (
-        <div className="p-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            Profile Settings
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Manage your profile and account settings.
-          </p>
-        </div>
-      ),
-    },
-    '/admin/users': {
-      title: 'ADMIN - USERS',
-      items: [
-        { url: '/admin/users/list', name: 'All Users' },
-        { url: '/admin/users/pending', name: 'Pending', badge: 5 },
-        { url: '/admin/users/roles', name: 'Roles' },
-        { url: '/admin/users/permissions', name: 'Permissions' },
-      ],
-      content: (
-        <div className="p-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            User Management
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Manage users and their permissions.
-          </p>
-        </div>
-      ),
-    },
-    '/admin/links': {
-      title: 'ADMIN - LINKS',
-      items: [
-        { url: '/admin/links/moderation', name: 'Moderation', badge: 12 },
-        { url: '/admin/links/reports', name: 'Reports' },
-        { url: '/admin/links/analytics', name: 'Analytics' },
-      ],
-      content: (
-        <div className="p-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            Link Administration
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Admin tools for link management.
-          </p>
-        </div>
-      ),
-    },
-    '/admin/groups': {
-      title: 'ADMIN - GROUPS',
-      items: [
-        { url: '/admin/groups/list', name: 'All Groups' },
-        { url: '/admin/groups/create', name: 'Create Group' },
-        { url: '/admin/groups/members', name: 'Members' },
-      ],
-      content: (
-        <div className="p-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            Group Management
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Manage user groups and memberships.
-          </p>
-        </div>
-      ),
-    },
-  }
-
-  // Find matching menu structure by active path
-  // Match exact path or find parent path (e.g., /admin/users/something -> /admin/users)
-  const getCurrentMenu = (path: string) => {
-    if (menuStructure[path]) {
-      return menuStructure[path]
-    }
-    // Try to find parent path
-    const pathParts = path.split('/').filter(Boolean)
-    for (let i = pathParts.length; i > 0; i--) {
-      const parentPath = '/' + pathParts.slice(0, i).join('/')
-      if (menuStructure[parentPath]) {
-        return menuStructure[parentPath]
-      }
-    }
-    // Default fallback
-    return menuStructure['/links']
-  }
-
-  const currentMenu = getCurrentMenu(activePath)
-
-  // Navigation items for AppHeader
-  const navigationItems = [
-    { name: 'Add Link', href: '/add-link' },
-    { name: 'Links', href: '/links' },
-    { name: 'Profile', href: '/profile' },
-  ]
-
-  const [sidebarOpen, setSidebarOpen] = useState(true)
-
-  // Create custom Sidebar wrapper function that returns JSX (not a component)
-  const createCustomSidebar = (
-    activePath: string,
-    setActivePath: (path: string) => void,
-  ) => {
-    const handleLinkClick = (e: React.MouseEvent) => {
-      const link = (e.target as HTMLElement).closest('a')
-      if (link?.href) {
-        try {
-          const url = new URL(link.href)
-          const path = url.pathname
-          setActivePath(path)
-        } catch {
-          // Ignore invalid URLs
-        }
-      }
-    }
-
-    return (
-      <div
-        onClick={handleLinkClick}
-        className="w-full max-w-full lg:max-w-xs h-full"
-      >
-        <Sidebar mode="full" activePath={activePath} />
-      </div>
-    )
-  }
-
-  // Build columns conditionally based on sidebarOpen state
-  const columns: ColumnConfig[] = [
-    // Sidebar column - only shown when sidebarOpen is true
-    ...(sidebarOpen
-      ? [
-          {
-            content: createCustomSidebar(activePath, setActivePath),
-            className: 'border-r border-gray-200 dark:border-gray-700',
-            sticky: true,
-            stickyOffset: '0',
-          },
-        ]
-      : []),
-    {
-      content: (
-        <SecondaryMenu
-          title={currentMenu.title}
-          items={currentMenu.items}
-          sticky={true}
-          stickyOffset="0"
-          activePath={activePath}
-        />
-      ),
-      className: 'border-r border-gray-200 dark:border-gray-700',
-      sticky: true,
-      stickyOffset: '0',
-    },
-    {
-      content: (
-        <div className="w-full h-full overflow-y-auto">
-          {currentMenu.content}
-        </div>
-      ),
-      className: 'bg-white dark:bg-gray-900 overflow-hidden',
-    },
-  ]
-
-  // Custom Link component that syncs with activePath
-  const CustomLink: React.ComponentType<{
-    href: string
-    children: React.ReactNode
-    className?: string
-  }> = ({ href, children, className, ...props }) => {
-    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-      e.preventDefault()
-      setActivePath(href)
-    }
-    return (
-      <a href={href} onClick={handleClick} className={className} {...props}>
-        {children}
-      </a>
-    )
-  }
-
+function WorkspaceShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col h-screen">
-      <AppHeader
-        navigation={navigationItems}
-        currentPath={activePath}
-        showMenuButton={true}
-        onMenuClick={() => setSidebarOpen(!sidebarOpen)}
-        showThemeToggle={true}
-        showSearch={true}
-        searchProps={{
-          placeholder: 'Search links...',
-          onSearch: (query) => console.log('Search:', query),
-        }}
-        showNotifications={true}
-        notifications={{
-          count: 3,
-        }}
-        showProfile={true}
-        profile={{
-          avatar:
-            'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=64&h=64&fit=crop',
-          name: 'Mert Cukuren',
-          email: 'mert@example.com',
-          menuItems: [
-            { name: 'Your Profile', href: '/profile' },
-            { name: 'Settings', href: '/settings' },
-            { name: 'Sign out', onClick: () => console.log('Sign out') },
-          ],
-        }}
-        LinkComponent={CustomLink}
-      />
-      <div className="flex-1 overflow-hidden">
-        <MultiColumnLayout
-          columns={columns}
-          gap="none"
-          minHeight="h-full"
-          mobileDrawer={{
-            columns: [0, 1],
-            title: 'Menus',
-            triggerLabel: 'Open menus',
-            position: 'bottom',
-          }}
-        />
+    <div className="flex min-h-screen w-full flex-col bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.12),transparent_26%),linear-gradient(180deg,#f8fafc_0%,#eef2ff_100%)] px-3 py-3 sm:px-4 sm:py-4 lg:px-6 dark:bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.18),transparent_22%),linear-gradient(180deg,#020617_0%,#0f172a_100%)]">
+      <div className="flex min-h-0 w-full max-w-none flex-1 flex-col gap-3 sm:gap-4">
+        {children}
       </div>
     </div>
   )
 }
 
-export const Interactive: Story = {
-  name: 'Interactive (Dynamic Secondary Menu)',
-  render: () => <InteractiveExample />,
+function WorkspaceSidebar({
+  activePath,
+  collapsed = false,
+  onCollapsedChange,
+  className,
+}: {
+  activePath: string
+  collapsed?: boolean
+  onCollapsedChange?: (collapsed: boolean) => void
+  className?: string
+}) {
+  return (
+    <Sidebar
+      mode="full"
+      collapsed={collapsed}
+      onCollapsedChange={onCollapsedChange}
+      variant="sticky"
+      activePath={activePath}
+      sections={workspaceSections}
+      height="calc(100vh - 5rem)"
+      className={className}
+    />
+  )
 }
+
+function MetricTile({
+  label,
+  value,
+  tone = 'neutral',
+}: {
+  label: string
+  value: string
+  tone?: 'neutral' | 'positive' | 'accent'
+}) {
+  const toneClassName =
+    tone === 'positive'
+      ? 'text-emerald-600 dark:text-emerald-300'
+      : tone === 'accent'
+        ? 'text-sky-600 dark:text-sky-300'
+        : 'text-[var(--color-foreground)]'
+
+  return (
+    <div className="rounded-[1.35rem] border border-[var(--color-border)] bg-[var(--color-surface)]/92 p-4 shadow-[0_18px_48px_-36px_rgba(15,23,42,0.34)]">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)]">
+        {label}
+      </p>
+      <p className={`mt-3 text-2xl font-semibold ${toneClassName}`}>
+        {value}
+      </p>
+    </div>
+  )
+}
+
+function DashboardCanvas({
+  eyebrow,
+  title,
+  description,
+}: {
+  eyebrow: string
+  title: string
+  description: string
+}) {
+  return (
+    <div className="flex h-full min-h-0 flex-col gap-4 p-4 sm:p-5">
+      <Header
+        eyebrow={eyebrow}
+        title={title}
+        description={description}
+        stats={[
+          { label: 'Gross revenue', value: '$482K' },
+          { label: 'Conversion lift', value: '+18.4%' },
+          { label: 'Open tests', value: '12' },
+        ]}
+        secondaryAction={{
+          label: 'Export',
+          handler: () => undefined,
+          variant: 'secondary',
+        }}
+        primaryAction={{
+          label: 'Launch experiment',
+          handler: () => undefined,
+          variant: 'primary',
+        }}
+      />
+
+      <div className="grid gap-4 xl:grid-cols-[1.3fr_0.9fr]">
+        <div className="rounded-[1.6rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[0_24px_60px_-44px_rgba(15,23,42,0.32)]">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)]">
+                Performance curve
+              </p>
+              <h3 className="mt-2 text-xl font-semibold text-[var(--color-foreground)]">
+                Revenue by channel
+              </h3>
+            </div>
+            <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-emerald-600 dark:text-emerald-300">
+              +12.8% week over week
+            </span>
+          </div>
+
+          <div className="mt-6 grid h-60 grid-cols-12 items-end gap-2">
+            {[36, 44, 38, 56, 61, 72, 66, 84, 76, 92, 88, 98].map((height, index) => (
+              <div key={index} className="flex h-full items-end">
+                <div
+                  className="w-full rounded-t-2xl bg-[linear-gradient(180deg,rgba(56,189,248,0.2)_0%,rgba(14,165,233,0.82)_100%)]"
+                  style={{ height: `${height}%` }}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <MetricTile label="Average order value" value="$124.80" tone="accent" />
+          <MetricTile label="Fulfillment SLA" value="98.2%" tone="positive" />
+          <MetricTile label="Refund pressure" value="1.8%" />
+        </div>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div className="rounded-[1.6rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)]">
+            Live signals
+          </p>
+          <div className="mt-4 space-y-3">
+            {[
+              ['Flash sale', '8,422 sessions in the last hour'],
+              ['Top seller', 'Studio Nord now drives 18% of GMV'],
+              ['Risk alert', 'Returns rising in footwear for EU markets'],
+            ].map(([label, detail]) => (
+              <div
+                key={label}
+                className="rounded-[1.2rem] border border-[var(--color-border)] bg-[var(--color-background)]/70 p-4"
+              >
+                <p className="text-sm font-semibold text-[var(--color-foreground)]">
+                  {label}
+                </p>
+                <p className="mt-2 text-sm leading-6 text-[var(--color-muted-foreground)]">
+                  {detail}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="rounded-[1.6rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)]">
+            Priorities
+          </p>
+          <div className="mt-4 space-y-3">
+            {[
+              ['Reprice best sellers', 'Merchandising', 'Today'],
+              ['Approve creator payout', 'Finance', '2h'],
+              ['Review shipping SLA dip', 'Operations', 'Now'],
+            ].map(([label, owner, eta]) => (
+              <div
+                key={label}
+                className="flex items-center justify-between gap-3 rounded-[1.2rem] border border-[var(--color-border)] bg-[var(--color-background)]/70 p-4"
+              >
+                <div>
+                  <p className="text-sm font-semibold text-[var(--color-foreground)]">
+                    {label}
+                  </p>
+                  <p className="mt-1 text-xs uppercase tracking-[0.16em] text-[var(--color-muted-foreground)]">
+                    {owner}
+                  </p>
+                </div>
+                <span className="rounded-full bg-[var(--color-muted)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--color-muted-foreground)]">
+                  {eta}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function InsightsRail() {
+  return (
+    <div className="flex h-full min-h-0 flex-col gap-4 p-4">
+      <div className="rounded-[1.4rem] border border-[var(--color-border)] bg-[var(--color-background)]/72 p-4">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)]">
+          Team focus
+        </p>
+        <h3 className="mt-3 text-lg font-semibold text-[var(--color-foreground)]">
+          3 approvals need attention
+        </h3>
+        <p className="mt-2 text-sm leading-6 text-[var(--color-muted-foreground)]">
+          Pricing, creator payout and inventory transfer are waiting for review.
+        </p>
+      </div>
+
+      <div className="rounded-[1.4rem] border border-[var(--color-border)] bg-[var(--color-background)]/72 p-4">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)]">
+          Alert stream
+        </p>
+        <div className="mt-4 space-y-3">
+          {[
+            'Delayed deliveries crossed threshold in Berlin',
+            'Top campaign exhausted 78% of budget',
+            'Seller leaderboard updated 12 minutes ago',
+          ].map((item) => (
+            <div
+              key={item}
+              className="rounded-[1rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 text-sm leading-6 text-[var(--color-muted-foreground)]"
+            >
+              {item}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function AppChrome({
+  children,
+  currentPath = '/growth/campaigns',
+  onMenuClick,
+  LinkComponent,
+}: {
+  children?: React.ReactNode
+  currentPath?: string
+  onMenuClick?: () => void
+  LinkComponent?: React.ComponentType<{
+    href: string
+    children: React.ReactNode
+    className?: string
+  }>
+}) {
+  return (
+    <>
+      <AppHeader
+        className="-mx-3 sm:-mx-4 lg:-mx-6"
+        fullWidth
+        sticky
+        workspaceLabel="Marketplace workspace"
+        statusBadge={{ label: 'Live', tone: 'success' }}
+        showMenuButton
+        onMenuClick={onMenuClick}
+        showThemeToggle
+        showSearch
+        showNotifications
+        notifications={{ count: 4 }}
+        showProfile
+        profile={{
+          avatar:
+            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=96&h=96&fit=crop',
+          name: 'Nadia Li',
+          email: 'nadia@marketplace.com',
+          menuItems: [
+            { name: 'Workspace settings', href: '/settings' },
+            { name: 'Billing', href: '/billing' },
+            { name: 'Sign out', onClick: () => undefined },
+          ],
+        }}
+        navigation={[
+          { name: 'Overview', href: '/dashboard' },
+          { name: 'Catalog', href: '/catalog' },
+          { name: 'Orders', href: '/orders', badge: 'Hot' },
+          { name: 'Campaigns', href: '/growth/campaigns' },
+        ]}
+        currentPath={currentPath}
+        LinkComponent={LinkComponent}
+      />
+      {children}
+    </>
+  )
+}
+
+const meta = preview.meta({
+  title: 'Page/MultiColumnLayout',
+  component: MultiColumnLayout,
+  parameters: {
+    layout: 'fullscreen',
+  },
+  argTypes: {
+    gap: {
+      control: 'select',
+      options: ['none', 'sm', 'md', 'lg'],
+    },
+    stackAt: {
+      control: 'select',
+      options: ['sm', 'md', 'lg', 'xl', '2xl'],
+    },
+    mobileDrawer: {
+      control: false,
+    },
+    columns: {
+      control: false,
+    },
+  },
+})
+
+export default meta
+
+export const CommerceWorkbench = meta.story({
+  render: () => {
+    const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false)
+
+    const columns: ColumnConfig[] = [
+      {
+        id: 'sidebar',
+        content: (
+          <WorkspaceSidebar
+            activePath="/growth/campaigns"
+            collapsed={sidebarCollapsed}
+            onCollapsedChange={setSidebarCollapsed}
+          />
+        ),
+        width: { xl: sidebarCollapsed ? '5.25rem' : '18rem' },
+        surface: 'plain',
+        sticky: true,
+        stickyOffset: '5rem',
+      },
+      {
+        id: 'main',
+        content: controlCenterMenu['/growth/campaigns'].content,
+      },
+      {
+        id: 'rail',
+        content: <InsightsRail />,
+        width: { xl: '22rem' },
+        sticky: true,
+        stickyOffset: '5rem',
+      },
+    ]
+
+    return (
+      <WorkspaceShell>
+        <AppChrome
+          currentPath="/growth/campaigns"
+          onMenuClick={() => setSidebarCollapsed((value) => !value)}
+        />
+        <MultiColumnLayout
+          columns={columns}
+          gap="md"
+          minHeight="min-h-[calc(100vh-8rem)]"
+          stackAt="xl"
+          mobileDrawer={{
+            columns: [0, 2],
+            title: 'Workspace panels',
+            triggerLabel: 'Open panels',
+            position: 'bottom',
+          }}
+        />
+      </WorkspaceShell>
+    )
+  },
+})
+
+export const CommerceWithSecondaryRail = meta.story({
+  render: () => {
+    const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false)
+    const [secondaryCollapsed, setSecondaryCollapsed] = React.useState(false)
+
+    const columns: ColumnConfig[] = [
+      {
+        id: 'sidebar',
+        content: (
+          <WorkspaceSidebar
+            activePath="/catalog"
+            collapsed={sidebarCollapsed}
+            onCollapsedChange={setSidebarCollapsed}
+            className="[&>div]:rounded-r-none [&>div]:border-r-0 [&>div]:shadow-[12px_0_34px_-28px_rgba(15,23,42,0.18)]"
+          />
+        ),
+        width: { xl: sidebarCollapsed ? '5.25rem' : '18rem' },
+        surface: 'plain' as const,
+        sticky: true,
+        stickyOffset: '5rem',
+      },
+      {
+        id: 'secondary',
+        content: (
+          <SecondaryMenu
+            parentLabel="Catalog"
+            title="Catalog sections"
+            items={controlCenterMenu['/catalog'].items}
+            activePath="/catalog/collections"
+            collapsed={secondaryCollapsed}
+            onCollapsedChange={setSecondaryCollapsed}
+            className="-ml-px z-10"
+          />
+        ),
+        width: { xl: secondaryCollapsed ? '4.75rem' : '23rem' },
+        surface: 'plain',
+        sticky: true,
+        stickyOffset: '5rem',
+      },
+      {
+        id: 'main',
+        content: controlCenterMenu['/catalog'].content,
+        className:
+          '-ml-px rounded-l-none border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_96%,white)] shadow-[22px_0_56px_-42px_rgba(15,23,42,0.18)]',
+      },
+    ]
+
+    return (
+      <WorkspaceShell>
+        <AppChrome
+          currentPath="/catalog"
+          onMenuClick={() => setSidebarCollapsed((value) => !value)}
+        />
+        <MultiColumnLayout
+          columns={columns}
+          gap="none"
+          minHeight="min-h-[calc(100vh-8rem)]"
+          stackAt="xl"
+          mobileDrawer={{
+            columns: [0, 1],
+            title: 'Navigation',
+            triggerLabel: 'Open navigation',
+            position: 'bottom',
+          }}
+        />
+      </WorkspaceShell>
+    )
+  },
+})
+
+export const InteractiveWorkspace = meta.story({
+  render: () => {
+    const [activePath, setActivePath] = React.useState('/growth/campaigns')
+    const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false)
+    const [secondaryCollapsed, setSecondaryCollapsed] = React.useState(false)
+
+    const currentMenu =
+      controlCenterMenu[activePath] ??
+      controlCenterMenu[
+        Object.keys(controlCenterMenu).find((path) =>
+          activePath.startsWith(`${path}/`),
+        ) || '/growth/campaigns'
+      ]
+
+    const LinkBridge: React.ComponentType<{
+      href: string
+      children: React.ReactNode
+      className?: string
+    }> = ({ href, children, className }) => (
+      <a
+        href={href}
+        className={className}
+        onClick={(event) => {
+          event.preventDefault()
+          setActivePath(href)
+        }}
+      >
+        {children}
+      </a>
+    )
+
+    const columns: ColumnConfig[] = [
+      {
+        id: 'sidebar',
+        content: (
+          <WorkspaceSidebar
+            activePath={activePath}
+            collapsed={sidebarCollapsed}
+            onCollapsedChange={setSidebarCollapsed}
+          />
+        ),
+        width: { xl: sidebarCollapsed ? '5.25rem' : '18rem' },
+        surface: 'plain',
+        sticky: true,
+        stickyOffset: '5rem',
+      },
+      {
+        id: 'secondary',
+        content: (
+          <SecondaryMenu
+            title={currentMenu.title}
+            items={currentMenu.items}
+            activePath={activePath}
+            collapsed={secondaryCollapsed}
+            onCollapsedChange={setSecondaryCollapsed}
+            LinkComponent={LinkBridge}
+          />
+        ),
+        width: { xl: secondaryCollapsed ? '4.75rem' : '22rem' },
+        sticky: true,
+        stickyOffset: '5rem',
+      },
+      {
+        id: 'main',
+        content: currentMenu.content,
+      },
+    ]
+
+    return (
+      <WorkspaceShell>
+        <AppChrome
+          currentPath={activePath}
+          onMenuClick={() => setSidebarCollapsed((value) => !value)}
+          LinkComponent={LinkBridge}
+        />
+        <MultiColumnLayout
+          columns={columns}
+          gap="none"
+          minHeight="min-h-[calc(100vh-8rem)]"
+          stackAt="xl"
+          mobileDrawer={{
+            columns: [0, 1],
+            title: 'Workspace menus',
+            triggerLabel: 'Open menus',
+            position: 'bottom',
+          }}
+        />
+      </WorkspaceShell>
+    )
+  },
+})

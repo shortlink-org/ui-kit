@@ -1,3 +1,4 @@
+import { ArrowRightIcon, LockClosedIcon } from '@heroicons/react/24/outline'
 import { clsx } from 'clsx'
 
 export interface BasketSummaryProps {
@@ -40,45 +41,58 @@ export function BasketSummary({
   return (
     <div
       className={clsx(
-        'border-t border-gray-200 dark:border-gray-700 px-4 py-6 sm:px-6',
+        'rounded-[1.1rem] border border-[var(--color-border)] bg-[var(--color-background)] p-4 shadow-[0_18px_40px_-34px_rgba(15,23,42,0.16)]',
         className,
       )}
     >
-      <div className="flex justify-between text-base font-medium text-gray-900 dark:text-white">
-        <p>Subtotal</p>
-        <p>{subtotal}</p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-muted-foreground)]">
+            Subtotal
+          </p>
+          <p className="mt-1 text-2xl font-semibold tracking-tight text-[var(--color-foreground)]">
+            {subtotal}
+          </p>
+        </div>
+        <div className="text-right text-xs text-[var(--color-muted-foreground)]">
+          <p>Secure checkout</p>
+          <p className="mt-1">Taxes calculated next</p>
+        </div>
       </div>
       {shippingNote && (
-        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
+        <p className="mt-3 text-sm leading-6 text-[var(--color-muted-foreground)]">
           {shippingNote}
         </p>
       )}
-      <div className="mt-6">
+      <div className="mt-4">
         {checkoutHref ? (
           <a
             href={checkoutHref}
-            className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
+            className="focus-ring flex cursor-pointer items-center justify-center gap-2 rounded-[0.95rem] bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
           >
+            <LockClosedIcon className="size-4" aria-hidden="true" />
             {checkoutText}
+            <ArrowRightIcon className="size-4" aria-hidden="true" />
           </a>
         ) : (
           <button
             type="button"
             onClick={handleCheckout}
-            className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
+            className="focus-ring flex w-full cursor-pointer items-center justify-center gap-2 rounded-[0.95rem] bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
           >
+            <LockClosedIcon className="size-4" aria-hidden="true" />
             {checkoutText}
+            <ArrowRightIcon className="size-4" aria-hidden="true" />
           </button>
         )}
       </div>
       {onContinueShopping && (
-        <div className="mt-6 flex justify-center text-center text-sm text-gray-500 dark:text-gray-400">
+        <div className="mt-3 flex justify-start text-sm text-[var(--color-muted-foreground)]">
           <p>
-            or{' '}
             <button
               type="button"
               onClick={onContinueShopping}
-              className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+              className="cursor-pointer font-medium text-[var(--color-foreground)] hover:text-sky-700"
             >
               {continueShoppingText}
               <span aria-hidden="true"> &rarr;</span>

@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { motion } from 'motion/react'
 import { clsx } from 'clsx'
 
 export interface Breadcrumb {
@@ -19,6 +20,54 @@ export interface BreadcrumbsProps {
   className?: string
 }
 
+const itemMotion = {
+  initial: { opacity: 0, y: 4 },
+  animate: (index: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.22,
+      delay: index * 0.04,
+      ease: 'easeOut',
+    },
+  }),
+}
+
+function ChevronSeparator() {
+  return (
+    <span
+      className="inline-flex shrink-0 items-center justify-center text-slate-300 dark:text-slate-600"
+      aria-hidden="true"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="size-4"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fillRule="evenodd"
+          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 111.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+          clipRule="evenodd"
+        />
+      </svg>
+    </span>
+  )
+}
+
+function HomeIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="size-4"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+    >
+      <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+    </svg>
+  )
+}
+
 export function Breadcrumbs({
   breadcrumbs,
   showHome = true,
@@ -28,78 +77,95 @@ export function Breadcrumbs({
   return (
     <nav
       aria-label="Breadcrumb"
-      className={clsx('bg-gray-200 dark:bg-gray-800', className)}
+      className={clsx(
+        'rounded-[1.25rem] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 shadow-[0_16px_40px_-32px_rgba(15,23,42,0.18)] sm:px-5',
+        className,
+      )}
     >
-      <div className="container flex items-center px-6 py-4 mx-auto overflow-x-auto whitespace-nowrap">
-        {showHome && (
-          <>
-            <a
-              href={homeHref}
-              className="text-gray-600 dark:text-gray-200 transition-all duration-200 hover:text-gray-900 dark:hover:text-gray-100 hover:scale-110 active:scale-95"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
+      <div className="overflow-x-auto">
+        <ol className="flex min-w-max items-center gap-2 whitespace-nowrap">
+          {showHome ? (
+            <>
+              <motion.li
+                custom={0}
+                initial="initial"
+                animate="animate"
+                variants={itemMotion}
               >
-                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-              </svg>
-            </a>
-            {breadcrumbs.length > 0 && (
-              <span className="mx-5 text-gray-500 dark:text-gray-300 rtl:-scale-x-100">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
+                <a
+                  href={homeHref}
+                  className="focus-ring inline-flex cursor-pointer items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-background)] p-2 text-slate-500 transition-colors duration-200 hover:border-slate-300 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:border-slate-700 dark:hover:bg-slate-800 dark:hover:text-white"
+                  aria-label="Home"
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </span>
-            )}
-          </>
-        )}
+                  <HomeIcon />
+                </a>
+              </motion.li>
+              {breadcrumbs.length > 0 ? (
+                <motion.li
+                  custom={1}
+                  initial="initial"
+                  animate="animate"
+                  variants={itemMotion}
+                >
+                  <ChevronSeparator />
+                </motion.li>
+              ) : null}
+            </>
+          ) : null}
 
-        {breadcrumbs.map((breadcrumb, index) => (
-          <React.Fragment key={breadcrumb.id}>
-            <a
-              href={breadcrumb.href}
-              className={clsx(
-                'flex items-center text-gray-600 -px-2 dark:text-gray-200 transition-all duration-200',
-                'hover:text-gray-900 dark:hover:text-gray-100 hover:underline',
-                'hover:translate-x-0.5 active:translate-x-0',
-                index === breadcrumbs.length - 1 &&
-                  'text-blue-600 dark:text-blue-400',
-              )}
-            >
-              {breadcrumb.icon && (
-                <span className="w-6 h-6 mx-2">{breadcrumb.icon}</span>
-              )}
-              <span className="mx-2">{breadcrumb.name}</span>
-            </a>
-            {index < breadcrumbs.length - 1 && (
-              <span className="mx-5 text-gray-500 dark:text-gray-300 rtl:-scale-x-100">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
+          {breadcrumbs.map((breadcrumb, index) => {
+            const isLast = index === breadcrumbs.length - 1
+            const motionIndex = index + (showHome ? 2 : 0)
+
+            return (
+              <React.Fragment key={breadcrumb.id}>
+                <motion.li
+                  custom={motionIndex}
+                  initial="initial"
+                  animate="animate"
+                  variants={itemMotion}
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </span>
-            )}
-          </React.Fragment>
-        ))}
+                  {isLast ? (
+                    <span
+                      aria-current="page"
+                      className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-slate-100 px-3.5 py-2 text-sm font-semibold text-slate-950 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                    >
+                      {breadcrumb.icon ? (
+                        <span className="inline-flex size-4 shrink-0 items-center justify-center text-slate-700 dark:text-slate-300">
+                          {breadcrumb.icon}
+                        </span>
+                      ) : null}
+                      <span>{breadcrumb.name}</span>
+                    </span>
+                  ) : (
+                    <a
+                      href={breadcrumb.href}
+                      className="focus-ring inline-flex cursor-pointer items-center gap-2 rounded-full border border-transparent px-3 py-2 text-sm font-medium text-slate-500 transition-colors duration-200 hover:border-slate-200 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:border-slate-700 dark:hover:bg-slate-800 dark:hover:text-white"
+                    >
+                      {breadcrumb.icon ? (
+                        <span className="inline-flex size-4 shrink-0 items-center justify-center text-current">
+                          {breadcrumb.icon}
+                        </span>
+                      ) : null}
+                      <span>{breadcrumb.name}</span>
+                    </a>
+                  )}
+                </motion.li>
+
+                {!isLast ? (
+                  <motion.li
+                    custom={motionIndex + 0.5}
+                    initial="initial"
+                    animate="animate"
+                    variants={itemMotion}
+                  >
+                    <ChevronSeparator />
+                  </motion.li>
+                ) : null}
+              </React.Fragment>
+            )
+          })}
+        </ol>
       </div>
     </nav>
   )

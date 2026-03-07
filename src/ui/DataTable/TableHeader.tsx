@@ -30,16 +30,16 @@ export function TableHeader<TData>({
   headerClassName,
 }: TableHeaderProps<TData>) {
   const densityClasses = {
-    compact: { cell: 'px-2 py-1', checkbox: 'h-3 w-3' },
-    normal: { cell: 'px-4 py-2', checkbox: 'h-4 w-4' },
-    comfortable: { cell: 'px-6 py-3', checkbox: 'h-5 w-5' },
+    compact: { cell: 'px-3 py-2', checkbox: 'h-3 w-3' },
+    normal: { cell: 'px-4 py-3', checkbox: 'h-4 w-4' },
+    comfortable: { cell: 'px-6 py-4', checkbox: 'h-5 w-5' },
   }
 
   return (
     <thead
       className={clsx(
         'sticky top-0 z-10',
-        'bg-gray-50 dark:bg-gray-800',
+        'bg-[color-mix(in_srgb,var(--table-header-bg)_96%,white)]',
         headerClassName,
       )}
     >
@@ -86,11 +86,12 @@ export function TableHeader<TData>({
                   key={header.id}
                   className={clsx(
                     densityClasses[density].cell,
-                    'text-sm font-normal text-left rtl:text-right',
-                    'text-gray-500 dark:text-gray-400',
+                    'text-left rtl:text-right align-middle',
+                    'text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--table-header-text)]',
                     canSort && 'cursor-pointer select-none',
-                    'transition-colors duration-150',
-                    isPinned && 'sticky bg-gray-50 dark:bg-gray-800 z-20',
+                    'border-b border-[var(--table-border)] transition-colors duration-150',
+                    isPinned &&
+                      'sticky z-20 bg-[color-mix(in_srgb,var(--table-header-bg)_98%,white)]',
                     enableColumnResizing && 'relative',
                     headerClassName,
                   )}
@@ -125,7 +126,7 @@ export function TableHeader<TData>({
                     {enableExpanding && header.subHeaders.length > 0 && (
                       <button
                         onClick={() => header.column.toggleGrouping()}
-                        className="p-0.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+                        className="rounded-md p-1 text-[var(--color-muted-foreground)] transition-colors hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]"
                       >
                         <ChevronRightIcon
                           className={clsx(
@@ -138,15 +139,15 @@ export function TableHeader<TData>({
                     {canGroup && (
                       <button
                         onClick={header.column.getToggleGroupingHandler()}
-                        className="p-0.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded text-xs"
+                        className="rounded-md border border-[var(--color-border)] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--color-muted-foreground)] transition-colors hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]"
                         title="Group by this column"
                       >
                         {isGrouped ? 'Ungroup' : 'Group'}
                       </button>
                     )}
                     {canSort ? (
-                      <button className="flex items-center gap-x-3 focus:outline-none w-full text-left">
-                        <span>
+                      <button className="flex w-full items-center justify-between gap-x-3 rounded-md px-1 py-1 text-left transition-colors hover:bg-[var(--color-muted)]/60 focus:outline-none">
+                        <span className="truncate">
                           {header.isPlaceholder
                             ? null
                             : flexRender(
@@ -154,40 +155,18 @@ export function TableHeader<TData>({
                                 header.getContext(),
                               )}
                         </span>
-                        {sortDirection === 'asc' ? (
-                          <ChevronUpIcon className="h-3 w-3 text-indigo-600 dark:text-indigo-400" />
-                        ) : sortDirection === 'desc' ? (
-                          <ChevronDownIcon className="h-3 w-3 text-indigo-600 dark:text-indigo-400" />
-                        ) : (
-                          <svg
-                            className="h-3"
-                            viewBox="0 0 10 11"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z"
-                              fill="currentColor"
-                              stroke="currentColor"
-                              strokeWidth="0.1"
-                            />
-                            <path
-                              d="M0.722656 9.60832L3.09974 6.78633H0.811638V5.87109H4.35819V6.78633L2.01925 9.60832H4.43446V10.5617H0.722656V9.60832Z"
-                              fill="currentColor"
-                              stroke="currentColor"
-                              strokeWidth="0.1"
-                            />
-                            <path
-                              d="M8.45558 7.25664V7.40664H8.60558H9.66065C9.72481 7.40664 9.74667 7.42274 9.75141 7.42691C9.75148 7.42808 9.75146 7.42993 9.75116 7.43262C9.75001 7.44265 9.74458 7.46304 9.72525 7.49314C9.72522 7.4932 9.72518 7.49326 9.72514 7.49332L7.86959 10.3529L7.86924 10.3534C7.83227 10.4109 7.79863 10.418 7.78568 10.418C7.77272 10.418 7.73908 10.4109 7.70211 10.3534L7.70177 10.3529L5.84621 7.49332C5.84617 7.49325 5.84612 7.49318 5.84608 7.49311C5.82677 7.46302 5.82135 7.44264 5.8202 7.43262C5.81989 7.42993 5.81987 7.42808 5.81994 7.42691C5.82469 7.42274 5.84655 7.40664 5.91071 7.40664H6.96578H7.11578V7.25664V0.633865C7.11578 0.42434 7.29014 0.249976 7.49967 0.249976H8.07169C8.28121 0.249976 8.45558 0.42434 8.45558 0.633865V7.25664Z"
-                              fill="currentColor"
-                              stroke="currentColor"
-                              strokeWidth="0.3"
-                            />
-                          </svg>
-                        )}
+                        <span className="inline-flex size-4 items-center justify-center text-[var(--color-muted-foreground)]">
+                          {sortDirection === 'asc' ? (
+                            <ChevronUpIcon className="h-3.5 w-3.5 text-[var(--color-foreground)]" />
+                          ) : sortDirection === 'desc' ? (
+                            <ChevronDownIcon className="h-3.5 w-3.5 text-[var(--color-foreground)]" />
+                          ) : (
+                            <ChevronDownIcon className="h-3.5 w-3.5 opacity-40" />
+                          )}
+                        </span>
                       </button>
                     ) : (
-                      <span>
+                      <span className="px-2 py-1.5">
                         {header.isPlaceholder
                           ? null
                           : flexRender(
@@ -203,10 +182,9 @@ export function TableHeader<TData>({
                       onTouchStart={header.getResizeHandler()}
                       className={clsx(
                         'absolute right-0 top-0 h-full w-1 cursor-col-resize touch-none select-none',
-                        'bg-gray-300 dark:bg-gray-600 hover:bg-indigo-500 dark:hover:bg-indigo-400',
+                        'bg-transparent hover:bg-[var(--color-border)]',
                         'transition-colors',
-                        header.column.getIsResizing() &&
-                          'bg-indigo-500 dark:bg-indigo-400',
+                        header.column.getIsResizing() && 'bg-slate-400/80',
                       )}
                       style={{
                         transform: header.column.getIsResizing()
@@ -220,7 +198,7 @@ export function TableHeader<TData>({
             })}
           </tr>
           {showFilters && (
-            <tr className="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <tr className="border-t border-[var(--table-border)] bg-[color-mix(in_srgb,var(--table-header-bg)_99%,white)]">
               {enableRowSelection && (
                 <th className={clsx(densityClasses[density].cell)} />
               )}

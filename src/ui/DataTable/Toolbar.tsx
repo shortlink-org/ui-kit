@@ -80,16 +80,16 @@ export function Toolbar<TData extends Record<string, unknown>>({
   }
 
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm">
+    <div className="relative z-30 flex flex-col items-start justify-between gap-3 rounded-[1rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[0_6px_18px_-14px_rgba(15,23,42,0.12)] sm:flex-row sm:items-center">
       <div className="flex flex-wrap items-center gap-2">
         {enableCreate && (
           <Button
             onClick={onCreate}
             className={clsx(
-              'inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium',
-              'text-white bg-indigo-600 hover:bg-indigo-700',
-              'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
-              'transition-all duration-200 shadow-sm hover:shadow-md',
+              'inline-flex items-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium',
+              'bg-slate-950 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100',
+              'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500',
+              'transition-colors duration-200 shadow-none',
             )}
           >
             <PlusIcon className="size-4" />
@@ -106,19 +106,47 @@ export function Toolbar<TData extends Record<string, unknown>>({
                     Delete Selected ({selectedRows.length})
                   </span>
                 }
+                eyebrow="Bulk operation"
                 title={`Delete ${selectedRows.length} item(s)?`}
                 description="This action cannot be undone. All selected items will be permanently removed."
                 confirmText="Delete All"
                 cancelText="Cancel"
                 variant="danger"
                 onConfirm={handleBulkDelete}
-              />
+              >
+                <div className="grid gap-3 sm:grid-cols-3">
+                  <div className="rounded-[1.2rem] border border-rose-200/70 bg-white/80 p-4 text-left">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-rose-700">
+                      Selected
+                    </p>
+                    <p className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
+                      {selectedRows.length}
+                    </p>
+                  </div>
+                  <div className="rounded-[1.2rem] border border-slate-200/80 bg-white/80 p-4 text-left">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
+                      Visible on page
+                    </p>
+                    <p className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
+                      {pageRows.length}
+                    </p>
+                  </div>
+                  <div className="rounded-[1.2rem] border border-slate-200/80 bg-slate-950 p-4 text-left text-slate-50">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-rose-200">
+                      After action
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-slate-300">
+                      Row selection will be cleared after deletion.
+                    </p>
+                  </div>
+                </div>
+              </FamilyDialog>
             ) : (
               <Button
                 disabled
                 className={clsx(
-                  'inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium',
-                  'text-white bg-red-600',
+                  'inline-flex items-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium',
+                  'bg-red-600 text-white',
                   'disabled:opacity-50 disabled:cursor-not-allowed',
                 )}
               >
@@ -127,16 +155,13 @@ export function Toolbar<TData extends Record<string, unknown>>({
               </Button>
             )}
             {hasPageSelection && (
-              <Menu as="div" className="relative">
+              <Menu as="div" className="relative z-30">
                 <MenuButton
                   className={clsx(
-                    'inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium',
-                    'text-gray-700 dark:text-gray-300',
-                    'border border-gray-300 dark:border-gray-600',
-                    'bg-white dark:bg-gray-800',
-                    'hover:bg-gray-50 dark:hover:bg-gray-700',
-                    'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
-                    'transition-all duration-200',
+                    'inline-flex cursor-pointer items-center gap-2 rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2.5 text-sm font-medium',
+                    'text-[var(--color-foreground)] hover:bg-[var(--color-muted)]',
+                    'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500',
+                    'transition-colors duration-200',
                   )}
                 >
                   Selection Actions
@@ -144,9 +169,8 @@ export function Toolbar<TData extends Record<string, unknown>>({
                 <MenuItems
                   transition
                   className={clsx(
-                    'absolute top-full left-0 mt-2 z-10 w-48 origin-top-left rounded-md',
-                    'bg-white dark:bg-gray-800 shadow-lg',
-                    'ring-1 ring-black/5 dark:ring-white/10',
+                    'absolute top-full left-0 z-50 mt-2 w-56 origin-top-left rounded-[0.9rem] border border-[var(--color-border)] p-1.5',
+                    'bg-[var(--color-surface)] shadow-[0_10px_24px_-18px_rgba(15,23,42,0.16)]',
                     'focus:outline-none',
                     'transition data-closed:scale-95 data-closed:transform data-closed:opacity-0',
                     'data-enter:duration-100 data-enter:ease-out',
@@ -156,7 +180,7 @@ export function Toolbar<TData extends Record<string, unknown>>({
                   <MenuItem>
                     <button
                       onClick={() => table.toggleAllPageRowsSelected(true)}
-                      className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 data-focus:bg-gray-100 dark:data-focus:bg-gray-700"
+                      className="w-full cursor-pointer rounded-[0.7rem] px-3 py-2 text-left text-sm text-[var(--color-foreground)] data-focus:bg-[var(--color-muted)]"
                     >
                       Select All on Page
                     </button>
@@ -169,7 +193,7 @@ export function Toolbar<TData extends Record<string, unknown>>({
                           if (row) row.toggleSelected(!row.getIsSelected())
                         })
                       }}
-                      className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 data-focus:bg-gray-100 dark:data-focus:bg-gray-700"
+                      className="w-full cursor-pointer rounded-[0.7rem] px-3 py-2 text-left text-sm text-[var(--color-foreground)] data-focus:bg-[var(--color-muted)]"
                     >
                       Invert Selection on Page
                     </button>
@@ -177,7 +201,7 @@ export function Toolbar<TData extends Record<string, unknown>>({
                   <MenuItem>
                     <button
                       onClick={() => table.resetRowSelection()}
-                      className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 data-focus:bg-gray-100 dark:data-focus:bg-gray-700"
+                      className="w-full cursor-pointer rounded-[0.7rem] px-3 py-2 text-left text-sm text-[var(--color-foreground)] data-focus:bg-[var(--color-muted)]"
                     >
                       Clear All Selection
                     </button>
@@ -191,13 +215,10 @@ export function Toolbar<TData extends Record<string, unknown>>({
           <Button
             onClick={onRefresh}
             className={clsx(
-              'inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium',
-              'text-gray-700 dark:text-gray-300',
-              'border border-gray-300 dark:border-gray-600',
-              'bg-white dark:bg-gray-800',
-              'hover:bg-gray-50 dark:hover:bg-gray-700',
-              'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
-              'transition-all duration-200',
+              'inline-flex items-center gap-2 rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm font-medium',
+              'text-[var(--color-foreground)] hover:bg-[var(--color-muted)]',
+              'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500',
+              'transition-colors duration-200',
             )}
           >
             <ArrowPathIcon className="size-4" />
@@ -211,13 +232,10 @@ export function Toolbar<TData extends Record<string, unknown>>({
           <Button
             onClick={handleExportAll}
             className={clsx(
-              'inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium',
-              'text-gray-700 dark:text-gray-300',
-              'border border-gray-300 dark:border-gray-600',
-              'bg-white dark:bg-gray-800',
-              'hover:bg-gray-50 dark:hover:bg-gray-700',
-              'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
-              'transition-all duration-200',
+              'inline-flex items-center gap-2 rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm font-medium',
+              'text-[var(--color-foreground)] hover:bg-[var(--color-muted)]',
+              'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500',
+              'transition-colors duration-200',
             )}
           >
             <ArrowDownTrayIcon className="size-4" />
@@ -227,14 +245,11 @@ export function Toolbar<TData extends Record<string, unknown>>({
             onClick={handleExportPage}
             disabled={pageRows.length === 0}
             className={clsx(
-              'inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium',
-              'text-gray-700 dark:text-gray-300',
-              'border border-gray-300 dark:border-gray-600',
-              'bg-white dark:bg-gray-800',
-              'hover:bg-gray-50 dark:hover:bg-gray-700',
-              'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
+              'inline-flex items-center gap-2 rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm font-medium',
+              'text-[var(--color-foreground)] hover:bg-[var(--color-muted)]',
+              'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500',
               'disabled:opacity-50 disabled:cursor-not-allowed',
-              'transition-all duration-200',
+              'transition-colors duration-200',
             )}
           >
             <ArrowDownTrayIcon className="size-4" />
@@ -244,13 +259,10 @@ export function Toolbar<TData extends Record<string, unknown>>({
             <Button
               onClick={handleExportSelected}
               className={clsx(
-                'inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium',
-                'text-gray-700 dark:text-gray-300',
-                'border border-gray-300 dark:border-gray-600',
-                'bg-white dark:bg-gray-800',
-                'hover:bg-gray-50 dark:hover:bg-gray-700',
-                'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
-                'transition-all duration-200',
+                'inline-flex items-center gap-2 rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm font-medium',
+                'text-[var(--color-foreground)] hover:bg-[var(--color-muted)]',
+                'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500',
+                'transition-colors duration-200',
               )}
             >
               <ArrowDownTrayIcon className="size-4" />

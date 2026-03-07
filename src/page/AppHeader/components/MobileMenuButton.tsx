@@ -7,9 +7,8 @@ export function MobileMenuButton() {
     <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
       <DisclosureButton
         className={classNames(
-          'group relative inline-flex items-center justify-center rounded-md p-2',
-          'text-white/70 hover:bg-white/10 hover:text-white',
-          'focus:outline-2 focus:-outline-offset-1 focus:outline-white/50',
+          'focus-ring group relative inline-flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-2',
+          'text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]',
         )}
       >
         <span className="absolute -inset-0.5" />

@@ -51,9 +51,9 @@ describe('SuspenseFallback', () => {
       screen.getByText('Loading data', { selector: 'p' }),
     ).toBeInTheDocument()
 
-    // Check that it's a flex container
+    // Check that the panel shell is rendered
     const box = container.firstChild
-    expect(box).toHaveClass('flex', 'flex-col')
+    expect(box).toHaveClass('relative', 'isolate', 'overflow-hidden')
   })
 
   it('renders with different sizes', () => {

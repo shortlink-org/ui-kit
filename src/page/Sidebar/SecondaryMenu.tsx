@@ -5,58 +5,48 @@ import {
   ListboxOptions,
   ListboxOption,
 } from '@headlessui/react'
-import { ChevronDownIcon, CheckIcon } from '@heroicons/react/24/outline'
+import {
+  ChevronDownIcon,
+  CheckIcon,
+  ChevronDoubleLeftIcon,
+  ChevronDoubleRightIcon,
+  ChevronRightIcon,
+} from '@heroicons/react/24/outline'
 import ActiveLink from './ActiveLink'
 import { clsx } from 'clsx'
 
 export interface SecondaryMenuItem {
-  /** URL for the menu item */
   url: string
-  /** Display name of the menu item */
   name: string
-  /** Optional badge or label to show next to the item */
   badge?: string | number
-  /** Optional icon element */
   icon?: React.ReactNode
-  /** Additional data attributes for styling */
   dataAttributes?: Record<string, string>
 }
 
 export interface SecondaryMenuSection {
-  /** Section title */
   title?: string
-  /** Items in this section */
   items: SecondaryMenuItem[]
 }
 
 export interface SecondaryMenuProps {
-  /** Title/heading for the secondary menu (deprecated: use sections) */
   title?: string
-  /** Array of menu items (deprecated: use sections) */
   items?: SecondaryMenuItem[]
-  /** Array of sections (preferred over items) */
   sections?: SecondaryMenuSection[]
-  /** Current active path (for use outside Next.js) */
   activePath?: string
-  /** Display mode: 'list' for static list, 'dropdown' for dropdown menu */
+  parentLabel?: string
   mode?: 'list' | 'dropdown'
-  /** Optional className for the container */
+  collapsed?: boolean
+  onCollapsedChange?: (collapsed: boolean) => void
   className?: string
-  /** Whether the menu should be sticky when scrolling */
   sticky?: boolean
-  /** Sticky offset from top (default: '0') */
   stickyOffset?: string
-  /** Custom render function for menu items */
   renderItem?: (props: {
     item: SecondaryMenuItem
     isActive: boolean
     defaultRender: () => React.ReactNode
   }) => React.ReactNode
-  /** Custom active class names */
   activeClassName?: string
-  /** Custom inactive class names */
   inactiveClassName?: string
-  /** Custom Link component (e.g., Next.js Link) */
   LinkComponent?: React.ComponentType<{
     href: string
     children: React.ReactNode
@@ -72,56 +62,194 @@ export function SecondaryMenu({
   items: legacyItems,
   sections,
   activePath,
+  parentLabel,
   mode = 'list',
+  collapsed,
+  onCollapsedChange,
   className = '',
   sticky = false,
   stickyOffset = '0',
   renderItem,
-  activeClassName = 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 border-r-2 border-blue-700 dark:border-blue-400',
-  inactiveClassName = 'text-gray-700 dark:text-gray-300',
+  activeClassName,
+  inactiveClassName,
   LinkComponent,
 }: SecondaryMenuProps) {
+  const isCollapsedControlled = collapsed !== undefined
+  const [localCollapsed, setLocalCollapsed] = React.useState(false)
+  const effectiveCollapsed = isCollapsedControlled ? collapsed : localCollapsed
   const containerStyles: React.CSSProperties = {
     ...(sticky && { top: stickyOffset }),
+    ...(parentLabel
+      ? {
+          boxShadow:
+            '-14px 0 30px -26px rgba(15,23,42,0.14), 20px 0 42px -30px rgba(15,23,42,0.18)',
+        }
+      : null),
   }
 
-  // Normalize items/sections to sections array
   const normalizedSections: SecondaryMenuSection[] = React.useMemo(() => {
     if (sections) {
       return sections
     }
+
     if (legacyItems) {
       return title ? [{ title, items: legacyItems }] : [{ items: legacyItems }]
     }
+
     return []
   }, [sections, legacyItems, title])
 
-  // Flatten all items for dropdown mode
-  const allItems = React.useMemo(() => {
-    return normalizedSections.flatMap((section) => section.items)
-  }, [normalizedSections])
+  const allItems = React.useMemo(
+    () => normalizedSections.flatMap((section) => section.items),
+    [normalizedSections],
+  )
 
-  // Find active item for dropdown
   const activeItem = React.useMemo(() => {
     return allItems.find((item) => {
       if (!activePath) return false
-      return activePath === item.url || activePath.startsWith(item.url + '/')
+      return activePath === item.url || activePath.startsWith(`${item.url}/`)
     })
-  }, [allItems, activePath])
+  }, [activePath, allItems])
 
   const isItemActive = (itemUrl: string): boolean => {
     if (!activePath) return false
-    return activePath === itemUrl || activePath.startsWith(itemUrl + '/')
+    return activePath === itemUrl || activePath.startsWith(`${itemUrl}/`)
+  }
+
+  const getItemMonogram = (label: string): string => {
+    const words = label
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+
+    if (words.length === 0) return '?'
+    if (words.length === 1) return words[0].slice(0, 2).toUpperCase()
+
+    return `${words[0][0] ?? ''}${words[1][0] ?? ''}`.toUpperCase()
+  }
+
+  const handleCollapsedChange = () => {
+    const nextCollapsed = !effectiveCollapsed
+
+    if (!isCollapsedControlled) {
+      setLocalCollapsed(nextCollapsed)
+    }
+
+    onCollapsedChange?.(nextCollapsed)
   }
 
   const renderMenuItem = (item: SecondaryMenuItem) => {
     const isActive = isItemActive(item.url)
     const defaultRender = () => {
-      const itemClassName = clsx(
-        'flex items-center justify-between px-3 py-2 text-sm rounded-md transition-colors duration-150 group',
-        isActive
-          ? activeClassName
-          : clsx(inactiveClassName, 'hover:bg-gray-100 dark:hover:bg-gray-800'),
+      if (effectiveCollapsed) {
+        const compactContent = (
+          <div
+            className={clsx(
+              'group relative flex min-h-11 items-center justify-center rounded-[1rem] border px-2 py-3 text-sm transition-all duration-200 focus-visible:outline-none',
+              isActive
+                ? 'border-sky-300/70 bg-sky-500/10 text-sky-700 shadow-[0_18px_40px_-30px_rgba(14,165,233,0.55)] dark:border-sky-400/30 dark:bg-sky-400/10 dark:text-sky-300'
+                : 'border-transparent bg-transparent text-[var(--color-muted-foreground)] hover:border-[var(--color-border)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]',
+              !isActive && inactiveClassName,
+              isActive && activeClassName,
+            )}
+            title={item.name}
+            aria-label={item.name}
+            {...(item.dataAttributes || {})}
+          >
+            {isActive ? (
+              <span
+                className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-sky-500"
+                aria-hidden="true"
+              />
+            ) : null}
+
+            {item.icon ? (
+              <span
+                className={clsx(
+                  'inline-flex size-8 shrink-0 items-center justify-center rounded-[0.85rem]',
+                  isActive
+                    ? 'bg-sky-500/10 text-current'
+                    : 'bg-[var(--color-background)] text-current',
+                )}
+                aria-hidden="true"
+              >
+                {item.icon}
+              </span>
+            ) : (
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em]">
+                {getItemMonogram(item.name)}
+              </span>
+            )}
+          </div>
+        )
+
+        const linkProps = {
+          href: item.url,
+          passHref: true,
+          activeClassName,
+          activePath,
+        }
+
+        if (LinkComponent) {
+          return (
+            <LinkComponent {...linkProps}>
+              {compactContent}
+            </LinkComponent>
+          )
+        }
+
+        return <ActiveLink {...linkProps}>{compactContent}</ActiveLink>
+      }
+
+      const content = (
+        <div
+          className={clsx(
+            'group relative flex items-center gap-3 rounded-[1rem] border px-3 py-3 text-sm transition-all duration-200',
+            'focus-visible:outline-none',
+            isActive
+              ? 'border-sky-300/70 bg-sky-500/10 text-[var(--color-foreground)] shadow-[0_18px_40px_-30px_rgba(14,165,233,0.55)] dark:border-sky-400/30 dark:bg-sky-400/10'
+              : 'border-transparent bg-transparent text-[var(--color-muted-foreground)] hover:border-[var(--color-border)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]',
+            !isActive && inactiveClassName,
+            isActive && activeClassName,
+          )}
+          {...(item.dataAttributes || {})}
+        >
+          {isActive ? (
+            <span
+              className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-r-full bg-sky-500"
+              aria-hidden="true"
+            />
+          ) : null}
+
+          {item.icon ? (
+            <span
+              className={clsx(
+                'inline-flex size-9 shrink-0 items-center justify-center rounded-[0.85rem] transition-colors duration-200',
+                isActive
+                  ? 'bg-sky-500/10 text-sky-700 dark:text-sky-300'
+                  : 'bg-[var(--color-background)] text-[var(--color-muted-foreground)] group-hover:text-[var(--color-foreground)]',
+              )}
+              aria-hidden="true"
+            >
+              {item.icon}
+            </span>
+          ) : null}
+
+          <span className="min-w-0 flex-1 truncate font-medium">{item.name}</span>
+
+          {item.badge !== undefined ? (
+            <span
+              className={clsx(
+                'shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em]',
+                isActive
+                  ? 'bg-sky-500/12 text-sky-700 dark:text-sky-300'
+                  : 'bg-[var(--color-muted)] text-[var(--color-muted-foreground)]',
+              )}
+            >
+              {item.badge}
+            </span>
+          ) : null}
+        </div>
       )
 
       const linkProps = {
@@ -131,31 +259,15 @@ export function SecondaryMenu({
         activePath,
       }
 
-      const linkContent = (
-        <div className={itemClassName} {...(item.dataAttributes || {})}>
-          {item.icon && (
-            <span className="mr-2 flex-shrink-0" aria-hidden="true">
-              {item.icon}
-            </span>
-          )}
-          <span className="flex-1">{item.name}</span>
-          {item.badge !== undefined && (
-            <span className="ml-2 px-2 py-0.5 text-xs font-medium bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full">
-              {item.badge}
-            </span>
-          )}
-        </div>
-      )
-
       if (LinkComponent) {
         return (
-          <LinkComponent {...linkProps} className={itemClassName}>
-            {linkContent}
+          <LinkComponent {...linkProps}>
+            {content}
           </LinkComponent>
         )
       }
 
-      return <ActiveLink {...linkProps}>{linkContent}</ActiveLink>
+      return <ActiveLink {...linkProps}>{content}</ActiveLink>
     }
 
     if (renderItem) {
@@ -165,25 +277,28 @@ export function SecondaryMenu({
     return defaultRender()
   }
 
-  // Dropdown mode
   if (mode === 'dropdown') {
     return (
       <div className={clsx('relative', className)}>
-        <Listbox value={activeItem?.url} onChange={() => {}}>
-          <ListboxButton className="relative w-full cursor-pointer rounded-md bg-white dark:bg-gray-800 py-2 pl-3 pr-10 text-left text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm">
+        <Listbox value={activeItem?.url} onChange={() => undefined}>
+          <ListboxButton className="focus-ring relative w-full rounded-[1.2rem] border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-left text-sm font-medium text-[var(--color-foreground)] shadow-[0_18px_48px_-34px_rgba(15,23,42,0.4)]">
             <span className="block truncate">
-              {activeItem?.name || normalizedSections[0]?.title || 'Select...'}
+              {activeItem?.name ||
+                normalizedSections[0]?.title ||
+                parentLabel ||
+                'Select section'}
             </span>
-            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
               <ChevronDownIcon
-                className="h-5 w-5 text-gray-400"
+                className="size-4 text-[var(--color-muted-foreground)]"
                 aria-hidden="true"
               />
             </span>
           </ListboxButton>
+
           <ListboxOptions
             transition
-            className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-gray-800 py-1 text-base shadow-lg ring-1 ring-black/5 dark:ring-white/10 focus:outline-none transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+            className="absolute z-10 mt-3 max-h-72 w-full overflow-auto rounded-[1.25rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-2 text-sm shadow-[0_24px_60px_-38px_rgba(15,23,42,0.5)] ring-1 ring-black/5 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in dark:ring-white/10"
           >
             {allItems.map((item) => {
               const isActive = isItemActive(item.url)
@@ -192,27 +307,22 @@ export function SecondaryMenu({
                   key={item.url}
                   value={item.url}
                   className={clsx(
-                    'relative cursor-pointer select-none py-2 pl-3 pr-9',
+                    'relative cursor-pointer rounded-[1rem] px-3 py-3 select-none',
                     isActive
-                      ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-900 dark:text-indigo-100'
-                      : 'text-gray-900 dark:text-gray-100 data-focus:bg-gray-100 dark:data-focus:bg-gray-700',
+                      ? 'bg-sky-500/10 text-[var(--color-foreground)]'
+                      : 'text-[var(--color-muted-foreground)] data-focus:bg-[var(--color-muted)] data-focus:text-[var(--color-foreground)]',
                   )}
                 >
                   {({ selected }) => (
                     <>
-                      <span
-                        className={clsx(
-                          'block truncate',
-                          selected ? 'font-medium' : 'font-normal',
-                        )}
-                      >
+                      <span className={clsx('block truncate', selected && 'font-semibold')}>
                         {item.name}
                       </span>
-                      {selected && (
-                        <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 dark:text-indigo-400">
-                          <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                      {selected ? (
+                        <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-sky-600 dark:text-sky-300">
+                          <CheckIcon className="size-4" aria-hidden="true" />
                         </span>
-                      )}
+                      ) : null}
                     </>
                   )}
                 </ListboxOption>
@@ -224,42 +334,147 @@ export function SecondaryMenu({
     )
   }
 
-  // List mode (default)
   return (
     <aside
       className={clsx(
-        'w-full max-w-full lg:max-w-xs h-full bg-white dark:bg-gray-900 flex flex-col min-h-0',
+        'w-full h-full min-h-0',
         sticky && 'sticky self-start',
         className,
       )}
       style={containerStyles}
       aria-label={normalizedSections[0]?.title || 'Secondary menu'}
     >
-      <nav className="flex-grow overflow-y-auto">
-        {normalizedSections.map((section, sectionIndex) => (
-          <div key={sectionIndex}>
-            {section.title && (
-              <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-                <h2 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  {section.title}
+      <div
+        className={clsx(
+          'relative flex h-full min-h-0 flex-col overflow-hidden rounded-[1.6rem] border bg-[color-mix(in_srgb,var(--color-surface)_95%,white)] backdrop-blur-xl',
+          effectiveCollapsed && 'rounded-[1.35rem]',
+          parentLabel
+            ? 'rounded-l-none border-l-0 border-sky-200/80 dark:border-sky-400/15'
+            : 'border-[var(--color-border)] shadow-[0_26px_70px_-48px_rgba(15,23,42,0.42)]',
+        )}
+      >
+        {parentLabel ? (
+          <div
+            className="absolute bottom-0 left-0 top-0 w-px bg-[linear-gradient(180deg,rgba(14,165,233,0.14)_0%,rgba(14,165,233,0.65)_22%,rgba(56,189,248,0.16)_100%)]"
+            aria-hidden="true"
+          />
+        ) : null}
+        <div
+          className={clsx(
+            'pointer-events-none h-16',
+            effectiveCollapsed && 'h-10',
+            parentLabel
+              ? 'bg-transparent'
+              : 'bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.14),transparent_70%)]',
+          )}
+          aria-hidden="true"
+        />
+
+        <div
+          className={clsx(
+            'relative z-10 flex items-center border-b border-[var(--color-border)]/80 px-3 pb-3',
+            effectiveCollapsed
+              ? 'justify-center border-b-0 px-2 pb-2'
+              : parentLabel
+                ? '-mt-7 px-4 pb-4 pl-6'
+                : '-mt-7 px-3 pb-3',
+          )}
+        >
+          {!effectiveCollapsed ? (
+            <div className="min-w-0 flex-1">
+              {parentLabel ? (
+                <>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)]">
+                    Selected in sidebar
+                  </p>
+                  <div className="mt-2 flex items-center gap-2 text-sm font-semibold text-[var(--color-foreground)]">
+                    <span className="inline-flex rounded-full border border-sky-200/80 bg-white/85 px-2.5 py-1 text-[11px] uppercase tracking-[0.14em] text-sky-700 shadow-[0_10px_28px_-20px_rgba(14,165,233,0.45)] dark:border-sky-400/20 dark:bg-slate-950/40 dark:text-sky-300">
+                      {parentLabel}
+                    </span>
+                    <ChevronRightIcon className="size-4 text-[var(--color-muted-foreground)]" />
+                    <span className="truncate text-base">
+                      {normalizedSections[0]?.title || 'Section navigation'}
+                    </span>
+                  </div>
+                </>
+              ) : title ? (
+                <h2 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)]">
+                  {title}
                 </h2>
-              </div>
+              ) : null}
+            </div>
+          ) : null}
+
+          <button
+            type="button"
+            onClick={handleCollapsedChange}
+            aria-label={
+              effectiveCollapsed
+                ? 'Expand secondary menu'
+                : 'Collapse secondary menu'
+            }
+            title={
+              effectiveCollapsed
+                ? 'Expand secondary menu'
+                : 'Collapse secondary menu'
+            }
+            className={clsx(
+              'focus-ring inline-flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-muted-foreground)] transition-colors duration-200 hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]',
+              effectiveCollapsed && 'size-9 rounded-xl',
             )}
-            <ul
+          >
+            {effectiveCollapsed ? (
+              <ChevronDoubleRightIcon className="size-4" />
+            ) : (
+              <ChevronDoubleLeftIcon className="size-4" />
+            )}
+          </button>
+        </div>
+
+        <nav
+          className={clsx(
+            'flex-grow overflow-y-auto',
+            effectiveCollapsed ? 'px-2 pb-2' : 'px-3 pb-3',
+            !effectiveCollapsed && parentLabel && 'px-4 pb-4 pl-6',
+          )}
+        >
+          {normalizedSections.map((section, sectionIndex) => (
+            <div
+              key={`${section.title ?? 'section'}-${sectionIndex}`}
               className={clsx(
-                'px-2 py-4 space-y-1',
-                sectionIndex > 0 && 'mt-2',
+                'rounded-[1.35rem] border border-[var(--color-border)] bg-[var(--color-background)]/72 p-2 backdrop-blur-sm',
+                effectiveCollapsed && 'rounded-[1.1rem] p-1.5',
+                parentLabel &&
+                  sectionIndex === 0 &&
+                  'border-transparent bg-transparent p-0 shadow-none',
+                sectionIndex > 0 && 'mt-4',
               )}
             >
-              {section.items.map((item) => (
-                <li key={item.url} className="w-full">
-                  {renderMenuItem(item)}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </nav>
+              {section.title && !effectiveCollapsed ? (
+                <div className={clsx('px-3 pb-2 pt-1', parentLabel && sectionIndex === 0 && 'px-1 pb-3')}>
+                  <h2 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)]">
+                    {section.title}
+                  </h2>
+                </div>
+              ) : null}
+
+              <ul
+                className={clsx(
+                  'space-y-2',
+                  effectiveCollapsed && 'space-y-1.5',
+                  parentLabel && sectionIndex === 0 && 'space-y-1',
+                )}
+              >
+                {section.items.map((item) => (
+                  <li key={item.url} className="w-full">
+                    {renderMenuItem(item)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </nav>
+      </div>
     </aside>
   )
 }

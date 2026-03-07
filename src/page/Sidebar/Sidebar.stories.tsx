@@ -1,41 +1,116 @@
 import preview from '#.storybook/preview'
+import {
+  BellAlertIcon,
+  ChatBubbleLeftRightIcon,
+  CircleStackIcon,
+  ClipboardDocumentListIcon,
+  CubeIcon,
+  MegaphoneIcon,
+  ShieldCheckIcon,
+  ShoppingBagIcon,
+  SparklesIcon,
+  UserGroupIcon,
+} from '@heroicons/react/24/outline'
+import { SecondaryMenu, type SecondaryMenuItem } from './SecondaryMenu'
 import Sidebar, { type SidebarSection } from './Sidebar'
-import AddLinkIcon from '@mui/icons-material/AddLink'
-import ListIcon from '@mui/icons-material/List'
-import PersonIcon from '@mui/icons-material/Person'
-import SettingsIcon from '@mui/icons-material/Settings'
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
-import GroupAddIcon from '@mui/icons-material/GroupAdd'
+
+const commerceSections: SidebarSection[] = [
+  {
+    type: 'simple',
+    items: [
+      {
+        url: '/dashboard',
+        icon: <SparklesIcon />,
+        name: 'Overview',
+      },
+      {
+        url: '/catalog',
+        icon: <ShoppingBagIcon />,
+        name: 'Catalog',
+      },
+      {
+        url: '/orders',
+        icon: <ClipboardDocumentListIcon />,
+        name: 'Orders',
+      },
+    ],
+  },
+  {
+    type: 'collapsible',
+    icon: MegaphoneIcon,
+    title: 'Growth',
+    items: [
+      {
+        url: '/growth/campaigns',
+        icon: <MegaphoneIcon />,
+        name: 'Campaigns',
+      },
+      {
+        url: '/growth/audiences',
+        icon: <UserGroupIcon />,
+        name: 'Audiences',
+      },
+      {
+        url: '/growth/messages',
+        icon: <ChatBubbleLeftRightIcon />,
+        name: 'Messages',
+      },
+    ],
+  },
+  {
+    type: 'collapsible',
+    icon: ShieldCheckIcon,
+    title: 'Operations',
+    defaultCollapsed: true,
+    items: [
+      {
+        url: '/ops/inventory',
+        icon: <CubeIcon />,
+        name: 'Inventory',
+      },
+      {
+        url: '/ops/billing',
+        icon: <CircleStackIcon />,
+        name: 'Billing',
+      },
+      {
+        url: '/ops/alerts',
+        icon: <BellAlertIcon />,
+        name: 'Alerts',
+      },
+    ],
+  },
+]
+
+const catalogSections: SecondaryMenuItem[] = [
+  {
+    url: '/catalog/collections',
+    name: 'Collections',
+  },
+  {
+    url: '/catalog/new-arrivals',
+    name: 'New arrivals',
+    badge: '18',
+  },
+  {
+    url: '/catalog/pricing',
+    name: 'Pricing rules',
+  },
+  {
+    url: '/catalog/merchandising',
+    name: 'Merchandising',
+  },
+]
 
 const meta = preview.meta({
   title: 'Page/Sidebar',
   component: Sidebar,
   parameters: {
+    layout: 'fullscreen',
     nextjs: {
       appDirectory: true,
     },
   },
-})
-
-export const Default = meta.story({
-  args: {
-    mode: 'full',
-  },
-
-  render: (args: Parameters<typeof Sidebar>[0]) => {
-    let className = 'h-screen w-96'
-
-    if (args.mode === 'mini') {
-      className = 'h-screen w-14'
-    }
-
-    return (
-      <div className={className}>
-        <Sidebar {...args} />
-      </div>
-    )
-  },
-
   argTypes: {
     mode: {
       control: {
@@ -57,181 +132,101 @@ export const Default = meta.story({
   },
 })
 
-export const WithCustomSections = meta.story({
+export default meta
+
+export const CommerceWorkspace = meta.story({
   args: {
     mode: 'full',
-    sections: [
-      {
-        type: 'simple',
-        items: [
-          {
-            url: '/dashboard',
-            icon: <ListIcon />,
-            name: 'Dashboard',
-          },
-          {
-            url: '/projects',
-            icon: <AddLinkIcon />,
-            name: 'Projects',
-          },
-          {
-            url: '/settings',
-            icon: <SettingsIcon />,
-            name: 'Settings',
-          },
-        ],
-      },
-      {
-        type: 'collapsible',
-        icon: AdminPanelSettingsIcon,
-        title: 'Administration',
-        defaultCollapsed: false,
-        items: [
-          {
-            url: '/admin/users',
-            icon: <PersonIcon />,
-            name: 'Users',
-          },
-          {
-            url: '/admin/teams',
-            icon: <GroupAddIcon />,
-            name: 'Teams',
-          },
-        ],
-      },
-    ] as SidebarSection[],
-    activePath: '/dashboard',
+    activePath: '/catalog',
+    sections: commerceSections,
   },
 
-  render: (args: Parameters<typeof Sidebar>[0]) => {
-    return (
-      <div className="h-screen w-80">
-        <Sidebar {...args} />
+  render: (args: Parameters<typeof Sidebar>[0]) => (
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.12),transparent_32%),linear-gradient(180deg,#f8fafc_0%,#eef2ff_100%)] p-6 dark:bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.18),transparent_26%),linear-gradient(180deg,#020617_0%,#0f172a_100%)]">
+      <div className="mx-auto flex max-w-7xl gap-0">
+        <div className="w-[320px] shrink-0">
+          <Sidebar {...args} height="calc(100vh - 3rem)" />
+        </div>
+
+        <div className="w-[320px] shrink-0">
+          <SecondaryMenu
+            parentLabel="Catalog"
+            title="Catalog sections"
+            items={catalogSections}
+            activePath="/catalog/collections"
+            sticky
+            stickyOffset="0"
+            className="-ml-px h-[calc(100vh-3rem)]"
+          />
+        </div>
+
+        <div className="flex-1 rounded-r-[2rem] border border-white/50 bg-white/70 p-8 shadow-[0_30px_90px_-56px_rgba(15,23,42,0.45)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/50">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-600 dark:text-sky-300">
+            Commerce OS
+          </p>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">
+            Catalog control center
+          </h2>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300">
+            This story shows the primary workspace rail next to a secondary
+            contextual rail. It is useful for catalog and operations tools where
+            one menu sets the domain and the second menu scopes the active
+            workflow.
+          </p>
+        </div>
       </div>
-    )
-  },
+    </div>
+  ),
 })
 
-export const WithActivePath = meta.story({
+export const MiniRail = meta.story({
   args: {
-    mode: 'full',
-    activePath: '/links',
+    mode: 'mini',
+    activePath: '/catalog',
+    sections: commerceSections,
   },
 
-  render: (args: Parameters<typeof Sidebar>[0]) => {
-    return (
-      <div className="h-screen w-80">
-        <Sidebar {...args} />
-      </div>
-    )
-  },
+  render: (args: Parameters<typeof Sidebar>[0]) => (
+    <div className="flex min-h-screen items-start justify-center bg-[linear-gradient(180deg,#f8fafc_0%,#e2e8f0_100%)] p-8 dark:bg-[linear-gradient(180deg,#020617_0%,#0f172a_100%)]">
+      <Sidebar {...args} height="calc(100vh - 4rem)" />
+    </div>
+  ),
 })
 
-export const Collapsed = meta.story({
-  args: {
-    mode: 'full',
-    collapsed: true,
-  },
-
-  render: (args: Parameters<typeof Sidebar>[0]) => {
-    return (
-      <div className="h-screen w-14">
-        <Sidebar {...args} />
-      </div>
-    )
-  },
-})
-
-export const CustomWidth = meta.story({
-  args: {
-    mode: 'full',
-    width: '16rem',
-  },
-
-  render: (args: Parameters<typeof Sidebar>[0]) => {
-    return (
-      <div className="h-screen" style={{ width: args.width }}>
-        <Sidebar {...args} />
-      </div>
-    )
-  },
-})
-
-export const WithCustomFooter = meta.story({
-  args: {
-    mode: 'full',
-    footerSlot: (
-      <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-        <button className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-          Logout
-        </button>
-      </div>
-    ),
-  },
-
-  render: (args: Parameters<typeof Sidebar>[0]) => {
-    return (
-      <div className="h-screen w-80">
-        <Sidebar {...args} />
-      </div>
-    )
-  },
-})
-
-export const WithoutFooter = meta.story({
-  args: {
-    mode: 'full',
-    footerSlot: null,
-  },
-
-  render: (args: Parameters<typeof Sidebar>[0]) => {
-    return (
-      <div className="h-screen w-80">
-        <Sidebar {...args} />
-      </div>
-    )
-  },
-})
-
-export const StickyVariant = meta.story({
+export const StickyKnowledgeBase = meta.story({
   args: {
     mode: 'full',
     variant: 'sticky',
+    activePath: '/ops/inventory',
+    sections: commerceSections,
   },
 
-  render: (args: Parameters<typeof Sidebar>[0]) => {
-    return (
-      <div className="h-[200vh]">
-        <div className="sticky top-0 w-80">
-          <Sidebar {...args} />
-        </div>
-        <div className="p-8">
-          <p className="mb-4">
-            Scroll down to see the sticky sidebar behavior.
-          </p>
-          <div className="space-y-4">
-            {Array.from({ length: 20 }, (_, i) => (
-              <div key={i} className="p-4 bg-gray-100 dark:bg-gray-800 rounded">
-                Content block {i + 1}
-              </div>
-            ))}
-          </div>
-        </div>
+  render: (args: Parameters<typeof Sidebar>[0]) => (
+    <div className="mx-auto flex min-h-[200vh] max-w-6xl gap-8 bg-[var(--color-background)] px-6 py-8">
+      <div className="w-[320px] shrink-0">
+        <Sidebar {...args} height="calc(100vh - 4rem)" />
       </div>
-    )
-  },
-})
 
-export const MiniMode = meta.story({
-  args: {
-    mode: 'mini',
-  },
-
-  render: (args: Parameters<typeof Sidebar>[0]) => {
-    return (
-      <div className="h-screen w-14">
-        <Sidebar {...args} />
+      <div className="flex-1 space-y-6">
+        {Array.from({ length: 10 }, (_, index) => (
+          <article
+            key={index}
+            className="rounded-[1.75rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[0_24px_60px_-42px_rgba(15,23,42,0.35)]"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)]">
+              Documentation module {index + 1}
+            </p>
+            <h3 className="mt-3 text-xl font-semibold text-[var(--color-foreground)]">
+              Operational runbook and escalation flow
+            </h3>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--color-muted-foreground)]">
+              Sticky mode keeps the sidebar locked while dense content scrolls
+              next to it. This story validates the shell, the shadow treatment
+              and the navigation legibility during long reading sessions.
+            </p>
+          </article>
+        ))}
       </div>
-    )
-  },
+    </div>
+  ),
 })

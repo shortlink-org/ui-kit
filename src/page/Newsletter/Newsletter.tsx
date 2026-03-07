@@ -1,5 +1,10 @@
 import * as React from 'react'
 import { clsx } from 'clsx'
+import {
+  CheckCircleIcon,
+  EnvelopeIcon,
+  SparklesIcon,
+} from '@heroicons/react/24/outline'
 import { Button } from '../../ui/Button/Button'
 
 export interface NewsletterFeature {
@@ -12,10 +17,14 @@ export interface NewsletterFeature {
 }
 
 export interface NewsletterProps {
+  /** Small label shown above the heading */
+  eyebrow?: string
   /** Main heading text */
   heading?: string
   /** Description text */
   description?: string
+  /** Small trust/disclaimer text below the form */
+  disclaimer?: string
   /** Email input placeholder */
   emailPlaceholder?: string
   /** Subscribe button text */
@@ -34,11 +43,26 @@ export interface NewsletterProps {
   inputId?: string
 }
 
+const defaultFeatures: NewsletterFeature[] = [
+  {
+    icon: <SparklesIcon className="h-5 w-5" aria-hidden="true" />,
+    title: 'Launch notes',
+    description: 'See what shipped, what changed, and what to watch next.',
+  },
+  {
+    icon: <EnvelopeIcon className="h-5 w-5" aria-hidden="true" />,
+    title: 'No inbox bloat',
+    description: 'Thoughtful updates only. No noisy cadence or throwaway blasts.',
+  },
+]
+
 export function Newsletter({
-  heading = 'Subscribe to our newsletter',
-  description = 'Get the latest updates and news delivered to your inbox.',
-  emailPlaceholder = 'Enter your email',
-  buttonText = 'Subscribe',
+  eyebrow = 'Newsletter',
+  heading = 'Get thoughtful product updates, not noisy blasts',
+  description = 'Subscribe for curated release notes, launch insights, and practical ideas your team can use right away.',
+  disclaimer = 'Weekly at most. Unsubscribe any time.',
+  emailPlaceholder = 'Enter your work email',
+  buttonText = 'Join the list',
   onSubmit,
   features,
   className = '',
@@ -50,12 +74,17 @@ export function Newsletter({
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const generatedId = React.useId()
   const emailInputId = inputId ?? generatedId
+  const displayFeatures = features ?? defaultFeatures
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!email || isSubmitting || loading) return
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
+
+    if (!email || isSubmitting || loading) {
+      return
+    }
 
     setIsSubmitting(true)
+
     try {
       await onSubmit?.(email)
       setEmail('')
@@ -66,136 +95,127 @@ export function Newsletter({
     }
   }
 
-  // Default features if none provided
-  const defaultFeatures: NewsletterFeature[] = [
-    {
-      icon: (
-        <svg
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
-          />
-        </svg>
-      ),
-      title: 'Weekly articles',
-      description: 'Stay updated with our latest content and insights.',
-    },
-    {
-      icon: (
-        <svg
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
-          />
-        </svg>
-      ),
-      title: 'No spam',
-      description: 'We respect your privacy. Unsubscribe at any time.',
-    },
-  ]
-
-  const displayFeatures = features || defaultFeatures
-
   return (
-    <div
+    <section
       className={clsx(
-        'relative isolate overflow-hidden bg-gray-900 dark:bg-gray-950 py-16 sm:py-24 lg:py-32',
+        'relative isolate overflow-hidden bg-[var(--color-background)] py-16 sm:py-24 lg:py-28',
         className,
       )}
       data-testid={dataTestId}
     >
+      <div
+        className="pointer-events-none absolute inset-0 opacity-90"
+        aria-hidden="true"
+      >
+        <div className="absolute left-[-8%] top-[-14%] h-72 w-72 rounded-full bg-sky-400/14 blur-3xl" />
+        <div className="absolute right-[-2%] top-[2%] h-72 w-72 rounded-full bg-amber-300/12 blur-3xl" />
+        <div className="absolute bottom-[-12%] left-[20%] h-72 w-72 rounded-full bg-emerald-400/10 blur-3xl" />
+      </div>
+
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
-          <div className="max-w-xl lg:max-w-lg">
-            <h2 className="text-4xl font-semibold tracking-tight text-white">
-              {heading}
-            </h2>
-            <p className="mt-4 text-lg text-gray-300 dark:text-gray-400">
-              {description}
-            </p>
-            <form
-              onSubmit={handleSubmit}
-              className="mt-6 flex max-w-md gap-x-4"
-            >
-              <label htmlFor={emailInputId} className="sr-only">
-                Email address
-              </label>
-              <input
-                id={emailInputId}
-                name="email"
-                type="email"
-                required
-                placeholder={emailPlaceholder}
-                autoComplete="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={isSubmitting || loading}
-                className={clsx(
-                  'min-w-0 flex-auto rounded-md bg-white/5 px-3.5 py-2 text-base text-white',
-                  'outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500',
-                  'focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500',
-                  'sm:text-sm/6 disabled:opacity-50 disabled:cursor-not-allowed',
-                  'border border-white/10 focus:border-indigo-500',
-                )}
-              />
-              <Button
-                type="submit"
-                variant="primary"
-                size="md"
-                loading={isSubmitting || loading}
-                disabled={isSubmitting || loading || !email}
-                className="flex-none bg-indigo-500 hover:bg-indigo-400 focus-visible:outline-indigo-500 shadow-xs"
-              >
-                {buttonText}
-              </Button>
-            </form>
-          </div>
-          <dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:pt-2">
-            {displayFeatures.map((feature) => (
-              <div key={feature.title} className="flex flex-col items-start">
-                <div className="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
-                  <div className="text-white">{feature.icon}</div>
-                </div>
-                <dt className="mt-4 text-base font-semibold text-white">
-                  {feature.title}
-                </dt>
-                <dd className="mt-2 text-base/7 text-gray-400 dark:text-gray-500">
-                  {feature.description}
-                </dd>
+        <div className="relative overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[0_30px_100px_-60px_rgba(15,23,42,0.75)]">
+          <div className="grid gap-0 lg:grid-cols-[1.2fr_0.8fr]">
+            <div className="p-8 sm:p-10 lg:p-12">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/80 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)] shadow-sm dark:border-white/10 dark:bg-white/6">
+                <SparklesIcon className="h-3.5 w-3.5" aria-hidden="true" />
+                {eyebrow}
               </div>
-            ))}
-          </dl>
+
+              <h2 className="mt-5 max-w-2xl text-3xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-4xl">
+                {heading}
+              </h2>
+
+              <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--color-muted-foreground)]">
+                {description}
+              </p>
+
+              <form
+                onSubmit={handleSubmit}
+                className="mt-8 flex max-w-xl flex-col gap-3 sm:flex-row"
+              >
+                <label htmlFor={emailInputId} className="sr-only">
+                  Email address
+                </label>
+                <div className="relative flex-1">
+                  <EnvelopeIcon
+                    className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--color-muted-foreground)]"
+                    aria-hidden="true"
+                  />
+                  <input
+                    id={emailInputId}
+                    name="email"
+                    type="email"
+                    required
+                    placeholder={emailPlaceholder}
+                    autoComplete="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    disabled={isSubmitting || loading}
+                    className={clsx(
+                      'min-w-0 w-full rounded-[1.2rem] border border-[var(--color-border)] bg-[var(--color-background)] pl-12 pr-4 py-3.5 text-base text-[var(--color-foreground)]',
+                      'placeholder:text-[var(--color-muted-foreground)]',
+                      'focus:outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500',
+                      'disabled:opacity-50 disabled:cursor-not-allowed',
+                    )}
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  loading={isSubmitting || loading}
+                  disabled={isSubmitting || loading || !email}
+                  className="rounded-[1.2rem] px-6 sm:px-7"
+                >
+                  {buttonText}
+                </Button>
+              </form>
+
+              <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-[var(--color-muted-foreground)]">
+                <span className="inline-flex items-center gap-2">
+                  <CheckCircleIcon className="h-4 w-4 text-emerald-500" aria-hidden="true" />
+                  Product-minded updates
+                </span>
+                <span className="hidden h-4 w-px bg-[var(--color-border)] sm:inline-block" />
+                <span>{disclaimer}</span>
+              </div>
+            </div>
+
+            <div className="border-t border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-muted)_72%,white_28%)] p-8 sm:p-10 lg:border-l lg:border-t-0 lg:p-12 dark:bg-[color-mix(in_srgb,var(--color-muted)_86%,black_14%)]">
+              <div className="max-w-md">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)]">
+                  Why subscribe
+                </p>
+
+                <dl className="mt-6 space-y-5">
+                  {displayFeatures.map((feature) => (
+                    <div
+                      key={feature.title}
+                      className="rounded-[1.25rem] border border-white/70 bg-[var(--color-surface)] p-4 shadow-[0_16px_40px_-30px_rgba(15,23,42,0.35)] dark:border-white/8"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[0.95rem] bg-slate-950 text-white dark:bg-white dark:text-slate-950">
+                          {feature.icon}
+                        </div>
+                        <div>
+                          <dt className="text-base font-semibold text-[var(--color-foreground)]">
+                            {feature.title}
+                          </dt>
+                          <dd className="mt-1 text-sm leading-6 text-[var(--color-muted-foreground)]">
+                            {feature.description}
+                          </dd>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div
-        aria-hidden="true"
-        className="absolute top-0 left-1/2 -z-10 -translate-x-1/2 blur-3xl xl:-top-6"
-      >
-        <div
-          style={{
-            clipPath:
-              'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-          }}
-          className="aspect-[1155/678] w-[36.125rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30"
-        />
-      </div>
-    </div>
+    </section>
   )
 }
 

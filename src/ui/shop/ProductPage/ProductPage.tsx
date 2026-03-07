@@ -100,6 +100,9 @@ export function ProductPage({
   enableZoom = true,
   className,
 }: ProductPageProps) {
+  const selectedColor = colors.find((color) => color.id === selectedColorId)
+  const selectedSize = sizes.find((size) => size.id === selectedSizeId)
+
   return (
     <div className={clsx('bg-[var(--color-background)]', className)}>
       <div className="pt-6">
@@ -173,6 +176,7 @@ export function ProductPage({
                   {showBuyNow && (
                     <FamilyDialog
                       trigger="Buy Now"
+                      eyebrow="Instant checkout"
                       title="Confirm Purchase"
                       description={`You're about to purchase "${name}" for ${price}. Proceed to checkout?`}
                       confirmText="Proceed to Checkout"
@@ -180,7 +184,42 @@ export function ProductPage({
                       variant="success"
                       onConfirm={onBuyNow}
                       triggerClassName="w-full justify-center !bg-green-600 hover:!bg-green-700"
-                    />
+                    >
+                      <div className="grid gap-3 sm:grid-cols-[1.2fr_0.8fr]">
+                        <div className="rounded-[1.35rem] border border-emerald-200/70 bg-white/85 p-4 text-left">
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-700">
+                            Order summary
+                          </p>
+                          <p className="mt-3 text-sm font-semibold text-slate-950">
+                            {name}
+                          </p>
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            {selectedColor ? (
+                              <span className="rounded-full bg-[var(--color-muted)] px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--color-muted-foreground)]">
+                                {selectedColor.name}
+                              </span>
+                            ) : null}
+                            {selectedSize ? (
+                              <span className="rounded-full bg-[var(--color-muted)] px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--color-muted-foreground)]">
+                                Size {selectedSize.name}
+                              </span>
+                            ) : null}
+                          </div>
+                        </div>
+
+                        <div className="rounded-[1.35rem] border border-slate-200/80 bg-slate-950 p-4 text-left text-slate-50">
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-200">
+                            Charge today
+                          </p>
+                          <p className="mt-3 text-2xl font-semibold tracking-tight">
+                            {price}
+                          </p>
+                          <p className="mt-2 text-sm leading-6 text-slate-300">
+                            Secure checkout starts immediately after confirmation.
+                          </p>
+                        </div>
+                      </div>
+                    </FamilyDialog>
                   )}
                 </div>
               )}

@@ -47,9 +47,9 @@ export function ColumnFilter<TData, TValue>({
   }
 
   const densityClasses = {
-    compact: 'px-2 py-1 text-xs',
-    normal: 'px-2 py-1 text-xs',
-    comfortable: 'px-3 py-1.5 text-sm',
+    compact: 'px-3 py-1.5 text-xs',
+    normal: 'px-3 py-2 text-xs',
+    comfortable: 'px-4 py-2.5 text-sm',
   }
 
   return (
@@ -59,11 +59,10 @@ export function ColumnFilter<TData, TValue>({
       onChange={(e) => handleFilterChange(e.target.value)}
       placeholder={`Filter ${typeof column.columnDef.header === 'string' ? column.columnDef.header : column.id}...`}
       className={clsx(
-        'w-full rounded-md border-gray-300 dark:border-gray-600',
-        'shadow-sm focus:border-indigo-500 focus:ring-indigo-500',
-        'dark:bg-gray-700 dark:text-white',
+        'w-full rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-foreground)]',
+        'placeholder:text-[var(--color-muted-foreground)] shadow-none',
+        'focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/14',
         'transition-all duration-200',
-        'focus:ring-2 focus:ring-offset-1',
         densityClasses[density],
       )}
     />

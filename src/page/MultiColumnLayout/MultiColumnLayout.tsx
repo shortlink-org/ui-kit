@@ -1,91 +1,70 @@
-import React, { ReactNode } from 'react'
+import * as React from 'react'
 import { clsx } from 'clsx'
+import { Bars3BottomLeftIcon } from '@heroicons/react/24/outline'
 import { Drawer } from '../../ui/Drawer/Drawer'
 import type { DrawerPosition, DrawerSize } from '../../ui/Drawer/Drawer'
 
 export interface ColumnSpan {
-  /** Span for small screens (640px+) */
   sm?: number
-  /** Span for medium screens (768px+) */
   md?: number
-  /** Span for large screens (1024px+) */
   lg?: number
-  /** Span for extra large screens (1280px+) */
   xl?: number
-  /** Span for 2xl screens (1536px+) */
   '2xl'?: number
 }
 
+export interface ColumnWidth {
+  sm?: string
+  md?: string
+  lg?: string
+  xl?: string
+  '2xl'?: string
+}
+
 export interface ColumnConfig {
-  /** Content to render in the column */
-  content: ReactNode
-  /** Optional stable id for React keys */
+  content: React.ReactNode
   id?: string
-  /** Number of grid columns this column should span (default: 1) - legacy, use span object for responsive */
   span?: number | ColumnSpan
-  /** Additional CSS classes for the column */
+  width?: string | ColumnWidth
   className?: string
-  /** Whether the column should be sticky when scrolling */
+  surface?: 'card' | 'plain'
   sticky?: boolean
-  /** Sticky offset from top (default: 0) */
   stickyOffset?: string
 }
 
 export interface MobileDrawerConfig {
-  /** Column indexes (0-based, after filtering empty columns) to render inside a drawer on small screens */
   columns: number[]
-  /** Drawer title */
   title?: React.ReactNode
-  /** Trigger button label */
   triggerLabel?: string
-  /** Trigger button aria-label */
   triggerAriaLabel?: string
-  /** Drawer position (default: 'bottom') */
   position?: DrawerPosition
-  /** Drawer size (default: 'full' for bottom, 'md' otherwise) */
   size?: DrawerSize
-  /** Custom className for the trigger button */
   triggerClassName?: string
-  /** Custom className for the trigger wrapper */
   triggerWrapperClassName?: string
-  /** Custom className for the drawer panel */
   panelClassName?: string
-  /** Custom className for the drawer content area */
   contentClassName?: string
 }
 
 export interface MultiColumnLayoutProps {
-  /** Array of column configurations */
   columns: ColumnConfig[]
-  /** Optional className for the container */
   className?: string
-  /** Gap between columns */
   gap?: 'none' | 'sm' | 'md' | 'lg'
-  /** Minimum height of the layout container */
   minHeight?: string
-  /** Background color classes for the container */
   containerClassName?: string
-  /** Breakpoint at which columns stack vertically (default: 'lg') */
   stackAt?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
-  /** Test ID for E2E/integration testing */
   dataTestId?: string
-  /** Optional mobile drawer config for sidebar-style columns */
   mobileDrawer?: MobileDrawerConfig
 }
 
-// Helper for base column classes
-const baseColumnClass =
-  'transition-colors duration-500 w-full h-full min-h-0 flex flex-col'
+const baseColumnClass = 'w-full h-full min-h-0 min-w-0 flex flex-col'
 
-// Default configuration
 const defaultConfig = {
   gap: 'md' as const,
-  minHeight: 'min-h-screen',
-  containerClassName: 'bg-white dark:bg-gray-900',
+  minHeight: 'min-h-0',
+  containerClassName:
+    'bg-[color-mix(in_srgb,var(--color-surface)_92%,white)] dark:bg-[color-mix(in_srgb,var(--color-surface)_92%,black)]',
   stackAt: 'lg' as const,
 }
 
-// Gap classes mapping
 const gapClasses: Record<'none' | 'sm' | 'md' | 'lg', string> = {
   none: 'gap-0',
   sm: 'gap-4',
@@ -93,7 +72,13 @@ const gapClasses: Record<'none' | 'sm' | 'md' | 'lg', string> = {
   lg: 'gap-8',
 }
 
-// Breakpoint mapping for media queries
+const shellPaddingClasses: Record<'none' | 'sm' | 'md' | 'lg', string> = {
+  none: 'p-0',
+  sm: 'p-3 sm:p-4',
+  md: 'p-3 sm:p-4 lg:p-5',
+  lg: 'p-4 sm:p-5 lg:p-6',
+}
+
 const breakpointMap: Record<'sm' | 'md' | 'lg' | 'xl' | '2xl', string> = {
   sm: '640px',
   md: '768px',
@@ -134,12 +119,9 @@ export function MultiColumnLayout({
   dataTestId,
   mobileDrawer,
 }: MultiColumnLayoutProps) {
-  // Generate unique ID for this layout instance to scope styles (must be called before any conditional returns)
   const layoutId = React.useId().replace(/:/g, '-')
-
-  // Filter out empty columns
   const validColumns = columns.filter(
-    (col) => col.content !== null && col.content !== undefined,
+    (column) => column.content !== null && column.content !== undefined,
   )
   const columnCount = validColumns.length
 
@@ -154,12 +136,10 @@ export function MultiColumnLayout({
   const mobileDrawerSize =
     mobileDrawer?.size ??
     (mobileDrawerPosition === 'bottom' ? 'full' : 'md')
-  const mobileDrawerTriggerLabel =
-    mobileDrawer?.triggerLabel ?? 'Open panel'
+  const mobileDrawerTriggerLabel = mobileDrawer?.triggerLabel ?? 'Open panels'
   const showAtBreakpointClass = showAtBreakpointClasses[stackAt]
   const hideAtBreakpointClass = hideAtBreakpointClasses[stackAt]
 
-  // Helper to get span value (supports number or ColumnSpan object)
   const getSpanValue = React.useCallback(
     (
       span: number | ColumnSpan | undefined,
@@ -167,7 +147,7 @@ export function MultiColumnLayout({
     ): number => {
       if (!span) return 1
       if (typeof span === 'number') return span
-      // For responsive spans, get the value for current breakpoint or fallback to smaller breakpoint
+
       const breakpointOrder: (keyof typeof breakpointMap)[] = [
         'sm',
         'md',
@@ -176,66 +156,92 @@ export function MultiColumnLayout({
         '2xl',
       ]
       const currentIndex = breakpointOrder.indexOf(breakpoint)
-      for (let i = currentIndex; i >= 0; i--) {
-        const bp = breakpointOrder[i]
-        if (span[bp] !== undefined) {
-          return span[bp]!
+
+      for (let index = currentIndex; index >= 0; index -= 1) {
+        const currentBreakpoint = breakpointOrder[index]
+        if (span[currentBreakpoint] !== undefined) {
+          return span[currentBreakpoint] as number
         }
       }
+
       return 1
     },
     [],
   )
 
-  // Helper to check if span is responsive object
   const isResponsiveSpan = (
     span: number | ColumnSpan | undefined,
-  ): span is ColumnSpan => {
-    return typeof span === 'object' && span !== null && !Array.isArray(span)
-  }
+  ): span is ColumnSpan => typeof span === 'object' && span !== null
 
-  // Check if any column uses responsive spans
-  const hasResponsiveSpans = validColumns.some((col) =>
-    isResponsiveSpan(col.span),
+  const getWidthValue = React.useCallback(
+    (
+      width: string | ColumnWidth | undefined,
+      breakpoint: keyof typeof breakpointMap,
+    ): string | undefined => {
+      if (!width) return undefined
+      if (typeof width === 'string') return width
+
+      const breakpointOrder: (keyof typeof breakpointMap)[] = [
+        'sm',
+        'md',
+        'lg',
+        'xl',
+        '2xl',
+      ]
+      const currentIndex = breakpointOrder.indexOf(breakpoint)
+
+      for (let index = currentIndex; index >= 0; index -= 1) {
+        const currentBreakpoint = breakpointOrder[index]
+        if (width[currentBreakpoint] !== undefined) {
+          return width[currentBreakpoint]
+        }
+      }
+
+      return undefined
+    },
+    [],
+  )
+
+  const hasResponsiveSpans = validColumns.some((column) =>
+    isResponsiveSpan(column.span),
   )
 
   const breakpoint = breakpointMap[stackAt]
 
-  // Generate grid template columns for each breakpoint if responsive spans are used
   const generateGridTemplate = React.useCallback(
     (bp: keyof typeof breakpointMap): string => {
-      // Check if any column has explicit span > 1 at this breakpoint
-      const hasSpanColumns = validColumns.some((col) => {
-        const span = getSpanValue(col.span, bp)
-        return span > 1
-      })
+      const hasExplicitWidths = validColumns.some(
+        (column) => getWidthValue(column.width, bp) !== undefined,
+      )
+      const hasSpanColumns = validColumns.some(
+        (column) => getSpanValue(column.span, bp) > 1,
+      )
 
-      if (hasSpanColumns) {
-        // Use proportional sizing based on spans (including last column)
-        return validColumns
-          .map((col) => `${getSpanValue(col.span, bp)}fr`)
-          .join(' ')
-      } else {
-        // Use auto-sizing: auto for menus, 1fr for last column (content)
-        return validColumns
-          .map((_, idx) => {
-            // Last column always takes remaining space with 1fr
-            if (idx === validColumns.length - 1) {
-              return '1fr'
-            }
-            // Other columns use auto (for menus with max-width)
-            return 'auto'
-          })
-          .join(' ')
-      }
+      return validColumns
+        .map((column, index) => {
+          const explicitWidth = getWidthValue(column.width, bp)
+
+          if (explicitWidth) {
+            return explicitWidth
+          }
+
+          if (hasSpanColumns) {
+            return `minmax(0, ${getSpanValue(column.span, bp)}fr)`
+          }
+
+          if (hasExplicitWidths) {
+            return 'minmax(0, 1fr)'
+          }
+
+          return index === validColumns.length - 1 ? 'minmax(0, 1fr)' : 'auto'
+        })
+        .join(' ')
     },
-    [validColumns, getSpanValue],
+    [getSpanValue, getWidthValue, validColumns],
   )
 
-  // Generate CSS for responsive grid template columns
   const generateResponsiveStyles = React.useCallback((): string => {
     if (!hasResponsiveSpans) {
-      // Simple case: generate only for stackAt breakpoint
       const gridTemplateColumns = generateGridTemplate(stackAt)
       return `
         @media (min-width: ${breakpoint}) {
@@ -246,7 +252,6 @@ export function MultiColumnLayout({
       `
     }
 
-    // Complex case: generate for each breakpoint
     const styles: string[] = []
     const breakpointOrder: (keyof typeof breakpointMap)[] = [
       'sm',
@@ -257,21 +262,24 @@ export function MultiColumnLayout({
     ]
 
     breakpointOrder.forEach((bp) => {
-      const bpValue = breakpointMap[bp]
-      const gridTemplateColumns = generateGridTemplate(bp)
       styles.push(`
-        @media (min-width: ${bpValue}) {
+        @media (min-width: ${breakpointMap[bp]}) {
           [data-layout-id="${layoutId}"] {
-            grid-template-columns: ${gridTemplateColumns};
+            grid-template-columns: ${generateGridTemplate(bp)};
           }
         }
       `)
     })
 
     return styles.join('\n')
-  }, [hasResponsiveSpans, stackAt, layoutId, breakpoint, generateGridTemplate])
+  }, [
+    breakpoint,
+    generateGridTemplate,
+    hasResponsiveSpans,
+    layoutId,
+    stackAt,
+  ])
 
-  // Memoize styles to avoid remounting style tags on every render
   const responsiveStyles = React.useMemo(
     () => generateResponsiveStyles(),
     [generateResponsiveStyles],
@@ -282,12 +290,19 @@ export function MultiColumnLayout({
   }
 
   return (
-    <div className={clsx('w-full h-full', className)} data-testid={dataTestId}>
+    <div
+      className={clsx(
+        'relative flex w-full max-w-none min-h-0 flex-1 flex-col',
+        className,
+      )}
+      data-testid={dataTestId}
+    >
       <style>{responsiveStyles}</style>
-      {hasMobileDrawer && (
+
+      {hasMobileDrawer ? (
         <div
           className={clsx(
-            'flex items-center justify-end px-4 py-3',
+            'mb-4 flex items-center justify-stretch px-1 sm:justify-end sm:px-0',
             hideAtBreakpointClass,
             mobileDrawer?.triggerWrapperClassName,
           )}
@@ -299,60 +314,79 @@ export function MultiColumnLayout({
               mobileDrawer?.triggerAriaLabel ?? mobileDrawerTriggerLabel
             }
             className={clsx(
-              'inline-flex items-center rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 shadow-sm transition hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800',
+              'focus-ring inline-flex w-full items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm font-medium text-[var(--color-foreground)] shadow-[0_20px_48px_-34px_rgba(15,23,42,0.42)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[var(--color-muted)] sm:w-auto',
               mobileDrawer?.triggerClassName,
             )}
           >
+            <Bars3BottomLeftIcon className="size-4" aria-hidden="true" />
             {mobileDrawerTriggerLabel}
           </button>
         </div>
-      )}
+      ) : null}
+
       <div
-        data-layout-id={layoutId}
         className={clsx(
-          'grid',
-          'grid-cols-1',
-          gapClasses[gap],
-          minHeight,
-          'w-full h-full',
+          'relative flex min-h-0 w-full max-w-none flex-1 flex-col overflow-hidden rounded-[1.4rem] border border-[var(--color-border)] shadow-[0_30px_90px_-58px_rgba(15,23,42,0.48)] sm:rounded-[2rem]',
           containerClassName,
         )}
       >
-        {validColumns.map((column, index) => {
-          const isSticky = column.sticky === true
-          const stickyOffset = column.stickyOffset || '0'
-          const isMobileDrawerColumn = mobileDrawerColumnSet.has(index)
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.14),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(251,191,36,0.1),transparent_26%)]"
+          aria-hidden="true"
+        />
 
-          // Build column classes
-          const columnClasses = clsx(
-            baseColumnClass,
-            column.className,
-            isSticky && 'sticky self-start',
-            isMobileDrawerColumn && 'hidden',
-            isMobileDrawerColumn && showAtBreakpointClass,
-          )
+        <div
+          data-layout-id={layoutId}
+          className={clsx(
+            'relative grid min-h-0 w-full max-w-none flex-1 grid-cols-1 items-start transition-[grid-template-columns] duration-300 ease-out',
+            gapClasses[gap],
+            shellPaddingClasses[gap],
+            minHeight,
+            'h-full w-full',
+          )}
+        >
+          {validColumns.map((column, index) => {
+            const isSticky = column.sticky === true
+            const stickyOffset = column.stickyOffset || '0'
+            const isMobileDrawerColumn = mobileDrawerColumnSet.has(index)
+            const seamlessMode = gap === 'none'
+            const plainSurface = column.surface === 'plain'
 
-          // Generate column ID for CSS targeting
-          const columnId = `col-${layoutId}-${index}`
+            const columnClasses = clsx(
+              baseColumnClass,
+              isSticky && 'sticky self-start',
+              isMobileDrawerColumn && 'hidden',
+              isMobileDrawerColumn && showAtBreakpointClass,
+            )
 
-          // Build inline styles for sticky
-          const columnStyles: React.CSSProperties = {
-            ...(isSticky && { top: stickyOffset }),
-          }
+            const columnStyles: React.CSSProperties = {
+              ...(isSticky && { top: stickyOffset }),
+            }
 
-          return (
-            <div
-              key={column.id ?? index}
-              data-column-id={columnId}
-              className={columnClasses}
-              style={columnStyles}
-            >
-              {column.content}
-            </div>
-          )
-        })}
+            return (
+              <div
+                key={column.id ?? index}
+                className={columnClasses}
+                style={columnStyles}
+              >
+                <div
+                  className={clsx(
+                    'relative flex h-full min-h-0 min-w-0 flex-col overflow-hidden',
+                    seamlessMode || plainSurface
+                      ? 'bg-transparent'
+                      : 'rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[0_24px_60px_-44px_rgba(15,23,42,0.38)]',
+                    column.className,
+                  )}
+                >
+                  {column.content}
+                </div>
+              </div>
+            )
+          })}
+        </div>
       </div>
-      {hasMobileDrawer && (
+
+      {hasMobileDrawer ? (
         <Drawer
           open={mobileDrawerOpen}
           onClose={setMobileDrawerOpen}
@@ -360,23 +394,26 @@ export function MultiColumnLayout({
           size={mobileDrawerSize}
           title={mobileDrawer?.title}
           panelClassName={clsx(
-            mobileDrawerPosition === 'bottom' && 'rounded-t-3xl',
+            mobileDrawerPosition === 'bottom' &&
+              'rounded-t-[1.75rem] border-t border-[var(--color-border)]',
             mobileDrawer?.panelClassName,
           )}
-          contentClassName={clsx(
-            'space-y-6 pb-6',
-            mobileDrawer?.contentClassName,
-          )}
+          contentClassName={clsx('space-y-4 pb-6', mobileDrawer?.contentClassName)}
         >
           {validColumns
             .filter((_, index) => mobileDrawerColumnSet.has(index))
             .map((column, index) => (
-              <div key={column.id ?? index} className={column.className}>
-                {column.content}
+              <div
+                key={column.id ?? index}
+                className="overflow-hidden rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[0_24px_60px_-42px_rgba(15,23,42,0.32)]"
+              >
+                <div className={clsx('h-full min-h-0', column.className)}>
+                  {column.content}
+                </div>
               </div>
             ))}
         </Drawer>
-      )}
+      ) : null}
     </div>
   )
 }

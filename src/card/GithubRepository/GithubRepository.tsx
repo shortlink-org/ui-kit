@@ -1,114 +1,148 @@
-import { ChevronRightIcon } from '@heroicons/react/24/outline'
+import * as React from 'react'
+import {
+  ArrowTopRightOnSquareIcon,
+  CodeBracketSquareIcon,
+} from '@heroicons/react/24/outline'
 import clsx from 'clsx'
-import { FC, memo, CSSProperties } from 'react'
 
 export interface GithubRepositoryProps {
   url: string
   title: string
-  /** Accent color for hover/left bar (e.g. brand color) */
+  description?: string
+  /** Accent color used for the left rail and ambient glow */
   accentColor?: string
-  /** Secondary color for the animated overlay; falls back to accentColor */
+  /** Secondary accent for gradients and hover treatment */
   hoverColor?: string
-  /** Allow consumer to control width; when false we avoid max-w constraints */
+  /** Optional metadata pill, e.g. "Open source" or "Monorepo" */
+  meta?: string
+  /** CTA label shown on the right side */
+  ctaText?: string
+  /** Allow consumer to control width; when false we avoid width constraints */
   fullWidth?: boolean
   /** Additional className passthrough */
   className?: string
 }
 
-export const GithubRepository: FC<GithubRepositoryProps> = memo(
-  ({
-    url,
-    title,
-    accentColor = '#3b82f6',
-    hoverColor,
-    fullWidth = true,
-    className,
-  }) => {
-    const overlayStyle: CSSProperties = {
-      background: `linear-gradient(90deg, ${accentColor}, ${accentColor}, ${hoverColor || accentColor})`,
-    }
+function getRepositoryPath(url: string): string {
+  try {
+    const parsed = new URL(url)
+    return parsed.pathname || '/'
+  } catch {
+    return url.replace(/^.*\/\/[^/]+/, '') || url
+  }
+}
 
-    const containerStyle: CSSProperties = {
-      background: `linear-gradient(90deg, ${accentColor}26, transparent)`,
-    }
+function getHostname(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '')
+  } catch {
+    return 'github.com'
+  }
+}
 
-    return (
-      <a
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={clsx(
-          'group relative flex w-full items-center gap-3 overflow-hidden rounded-lg shadow-md transition-all duration-300 ease-in-out hover:shadow-lg dark:bg-slate-800/60 transform-gpu',
-          'bg-slate-50',
-          fullWidth ? 'w-full' : '',
-          className,
-        )}
-        style={containerStyle}
-        aria-label={`Visit GitHub repository ${title}`}
+export function GithubRepository({
+  url,
+  title,
+  description = 'Open the repository, inspect the codebase, and review the latest implementation details.',
+  accentColor = '#2563eb',
+  hoverColor = '#06b6d4',
+  meta = 'Open source',
+  ctaText = 'View repository',
+  fullWidth = true,
+  className,
+}: GithubRepositoryProps) {
+  const repositoryPath = getRepositoryPath(url)
+  const hostname = getHostname(url)
+
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Visit GitHub repository ${title}`}
+      className={clsx(
+        'group focus-ring relative flex overflow-hidden rounded-[1.6rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[0_24px_70px_-42px_rgba(15,23,42,0.8)] transition-transform duration-300 hover:-translate-y-1 sm:p-6',
+        fullWidth && 'w-full',
+        className,
+      )}
+      style={
+        {
+          '--repo-accent': accentColor,
+          '--repo-hover': hoverColor,
+        } as React.CSSProperties
+      }
+    >
+      <div
+        className="pointer-events-none absolute inset-0 opacity-90"
+        aria-hidden="true"
       >
-        {/* Animated overlay */}
-        <span
-          className="pointer-events-none absolute inset-0 z-0 translate-x-[-100%] transition-transform duration-500 ease-out delay-100 group-hover:translate-x-0"
-          style={overlayStyle}
-        />
-
-        {/* Accent bar */}
-        <span
-          className="z-10 h-full w-2 flex-shrink-0"
+        <div
+          className="absolute inset-y-0 left-0 w-1"
           style={{ backgroundColor: accentColor }}
-          aria-hidden
         />
+        <div
+          className="absolute right-[-10%] top-[-20%] h-40 w-40 rounded-full blur-3xl transition-transform duration-700 group-hover:scale-125"
+          style={{
+            background: `radial-gradient(circle, ${hoverColor}33 0%, transparent 70%)`,
+          }}
+        />
+        <div
+          className="absolute inset-x-0 top-0 h-px"
+          style={{
+            background: `linear-gradient(90deg, transparent, ${accentColor}55, transparent)`,
+          }}
+        />
+      </div>
 
-        {/* Content */}
-        <div className="z-20 flex flex-grow items-center py-3 px-4 no-underline">
-          {/* GitHub Icon */}
-          <svg
-            className="h-10 w-10 rounded-full object-cover text-gray-800 dark:text-white transition-colors duration-300 ease-in-out group-hover:text-white transform-gpu"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fillRule="evenodd"
-              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
-                 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
-                 -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66
-                 .07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
-                 0-.87.31-1.59.82-2.15
-                 -.08-.2-.36-1.02.08-2.12
-                 0 0 .67-.21 2.2.82
-                 .64-.18 1.32-.27 2-.27
-                 .68 0 1.36.09 2 .27
-                 1.53-1.04 2.2-.82 2.2-.82
-                 .44 1.1.16 1.92.08 2.12
-                 .51.56.82 1.27.82 2.15
-                 0 3.07-1.87 3.75-3.65 3.95
-                 .29.25.54.73.54 1.48
-                 0 1.07-.01 1.93-.01 2.2
-                 0 .21.15.46.55.38A8.013
-                 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
-            />
-          </svg>
-
-          <div className="mx-3 no-underline min-w-0">
-            <p className="text-lg font-semibold text-gray-900 dark:text-white transition-colors duration-300 ease-in-out group-hover:text-white no-underline">
-              {title}
-              <span
-                className="block text-sm font-medium text-gray-600 transition-colors duration-300 ease-in-out group-hover:text-white dark:text-gray-300 truncate"
-                dir="ltr"
-                title={url}
-              >
-                {url.replace(/^.*\/\/[^/]+/, '')}
-              </span>
-            </p>
-          </div>
+      <div className="relative flex min-w-0 flex-1 items-start gap-4">
+        <div
+          className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[1.2rem] text-white shadow-[0_18px_45px_-24px_rgba(15,23,42,0.8)]"
+          style={{
+            background: `linear-gradient(135deg, ${accentColor}, ${hoverColor})`,
+          }}
+        >
+          <CodeBracketSquareIcon className="size-7" aria-hidden="true" />
         </div>
 
-        {/* Chevron Icon */}
-        <ChevronRightIcon className="mr-4 h-6 w-6 text-gray-500 transition-all duration-300 ease-out group-hover:translate-x-3 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white transform-gpu" />
-      </a>
-    )
-  },
-)
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-[var(--color-muted)] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--color-muted-foreground)]">
+              {meta}
+            </span>
+            <span className="rounded-full border border-[var(--color-border)] px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-muted-foreground)]">
+              {hostname}
+            </span>
+          </div>
+
+          <h3 className="mt-4 text-xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-2xl">
+            {title}
+          </h3>
+
+          <p
+            className="mt-2 truncate text-sm font-medium text-[var(--color-muted-foreground)]"
+            dir="ltr"
+            title={repositoryPath}
+          >
+            {repositoryPath}
+          </p>
+
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--color-muted-foreground)] sm:text-base">
+            {description}
+          </p>
+        </div>
+
+        <div className="hidden shrink-0 items-center sm:flex">
+          <span
+            className="inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold transition-transform duration-300 group-hover:translate-x-1"
+            style={{ color: accentColor }}
+          >
+            {ctaText}
+            <ArrowTopRightOnSquareIcon className="size-4" aria-hidden="true" />
+          </span>
+        </div>
+      </div>
+    </a>
+  )
+}
 
 export default GithubRepository

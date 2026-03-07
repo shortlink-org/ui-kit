@@ -26,9 +26,9 @@ export type {
 } from './ui/Button/Button'
 export { ToggleDarkMode } from './ui/ToggleDarkMode/ToggleDarkMode'
 export { GithubRepository } from './card/GithubRepository/GithubRepository'
+export type { GithubRepositoryProps } from './card/GithubRepository/GithubRepository'
 export { FeatureCard } from './card/FeatureCard/FeatureCard'
-export { ParallaxCard } from './card/ParallaxCard/ParallaxCard'
-export type { ParallaxCardProps } from './card/ParallaxCard/ParallaxCard'
+export type { FeatureCardProps } from './card/FeatureCard/FeatureCard'
 export { Timeline } from './ui/Timeline/Timeline'
 // DataTable - компонент для работы с таблицами
 export { DataTable } from './ui/DataTable/DataTable'
@@ -62,6 +62,8 @@ export type { CardSkeletonProps } from './ui/Skeleton/CardSkeleton'
 
 // Input
 export { default as SearchForm } from './ui/SearchForm/SearchForm'
+export { ProfileIdentity } from './ui/ProfileIdentity/ProfileIdentity'
+export type { ProfileIdentityProps } from './ui/ProfileIdentity/ProfileIdentity'
 
 // FlyoutMenu
 export { FlyoutMenu } from './ui/FlyoutMenu/FlyoutMenu'
@@ -138,6 +140,23 @@ export type {
   ProductQuickViewProps,
   ProductQuickViewData,
 } from './ui/shop/ProductQuickView/ProductQuickView'
+export { MarketplaceLeaderboard } from './ui/shop/MarketplaceLeaderboard'
+export type {
+  MarketplaceLeaderboardProps,
+  LeaderboardEntry,
+  LeaderboardBadge,
+  LeaderboardFilter,
+  LeaderboardFilterId,
+  LeaderboardStat,
+  LeaderboardFiltersProps,
+  LeaderboardPodiumProps,
+  LeaderboardListProps,
+} from './ui/shop/MarketplaceLeaderboard'
+export {
+  LeaderboardFilters,
+  LeaderboardPodium,
+  LeaderboardList,
+} from './ui/shop/MarketplaceLeaderboard'
 
 // Layout exports
 export { Header } from './page/Header/Header'
@@ -147,6 +166,7 @@ export type {
   AppHeaderBrand,
   AppHeaderMenuItem,
   AppHeaderNavigationItem,
+  AppHeaderStatusBadge,
   AppHeaderNotification,
   AppHeaderProfile,
 } from './page/AppHeader/AppHeader'

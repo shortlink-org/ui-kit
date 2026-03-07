@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react'
-import { ArrowUpward } from '@mui/icons-material'
+import { ArrowUpIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 
 /**
@@ -161,30 +161,27 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
 
   const buttonClass = clsx(
     'fixed bottom-5 right-5 z-[9999]',
-    'flex items-center justify-center rounded-full p-3',
-    'transition-all duration-300 ease-in-out',
+    'group inline-flex items-center justify-center rounded-full',
+    'transition-all duration-300 ease-out',
     'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
     'transform-gpu',
     isVisible
-      ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
-      : 'opacity-0 translate-y-2 scale-95 pointer-events-none',
+      ? 'pointer-events-auto translate-y-0 scale-100 opacity-100'
+      : 'pointer-events-none translate-y-3 scale-95 opacity-0',
     variant === 'solid'
       ? clsx(
-          'bg-blue-600 dark:bg-blue-500 text-white',
-          'shadow-lg hover:shadow-xl',
-          'hover:bg-blue-700 dark:hover:bg-blue-600',
-          'active:bg-blue-800 dark:active:bg-blue-700',
-          'active:scale-95',
-          'focus-visible:ring-blue-500 dark:focus-visible:ring-blue-400',
+          'h-14 w-14 border border-sky-300/70 bg-[linear-gradient(180deg,rgba(14,165,233,0.96),rgba(2,132,199,0.98))] text-white',
+          'shadow-[0_24px_70px_-32px_rgba(2,132,199,0.75)]',
+          'hover:-translate-y-0.5 hover:shadow-[0_32px_80px_-34px_rgba(2,132,199,0.82)]',
+          'active:translate-y-0 active:scale-95',
+          'focus-visible:ring-sky-500',
         )
       : clsx(
-          'bg-white/80 dark:bg-gray-800/80 backdrop-blur-md',
-          'text-blue-600 dark:text-blue-400',
-          'ring-1 ring-blue-500/50 dark:ring-blue-400/50',
-          'hover:bg-white dark:hover:bg-gray-800',
-          'hover:ring-blue-500 dark:hover:ring-blue-400',
-          'active:scale-95',
-          'focus-visible:ring-blue-500 dark:focus-visible:ring-blue-400',
+          'h-14 w-14 border border-white/70 bg-white/85 text-sky-700 backdrop-blur-xl',
+          'shadow-[0_24px_70px_-38px_rgba(15,23,42,0.48)] ring-1 ring-black/5',
+          'hover:-translate-y-0.5 hover:bg-white hover:text-sky-800',
+          'active:translate-y-0 active:scale-95',
+          'focus-visible:ring-sky-500',
         ),
   )
 
@@ -195,7 +192,18 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
       type="button"
       className={buttonClass}
     >
-      <ArrowUpward style={{ width: iconSize, height: iconSize }} />
+      <span
+        aria-hidden="true"
+        className={clsx(
+          'absolute inset-0 rounded-full opacity-0 transition-opacity duration-300',
+          variant === 'solid'
+            ? 'bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.35),transparent_60%)] group-hover:opacity-100'
+            : 'bg-[radial-gradient(circle_at_top,rgba(14,165,233,0.12),transparent_60%)] group-hover:opacity-100',
+        )}
+      />
+      <span className="relative inline-flex h-8 w-8 items-center justify-center">
+        <ArrowUpIcon style={{ width: iconSize, height: iconSize }} />
+      </span>
     </button>
   )
 }

@@ -1,6 +1,5 @@
 import preview from '#.storybook/preview'
-import type { ComponentProps } from 'react'
-import { useState } from 'react'
+import { useState, type ComponentProps } from 'react'
 import { ProductSizeSelector } from './ProductSizeSelector'
 
 const meta = preview.meta({
@@ -18,7 +17,7 @@ const meta = preview.meta({
 
 export default meta
 
-function Template(args: ComponentProps<typeof ProductSizeSelector>) {
+function InteractiveStory(args: ComponentProps<typeof ProductSizeSelector>) {
   const [selectedSize, setSelectedSize] = useState<string | number | undefined>(
     args.selectedSizeId,
   )
@@ -36,79 +35,17 @@ function Template(args: ComponentProps<typeof ProductSizeSelector>) {
 }
 
 export const Default = meta.story({
-  render: Template,
+  render: InteractiveStory,
   args: {
     sizes: [
-      { name: 'XXS', inStock: false },
-      { name: 'XS', inStock: true },
+      { name: 'XS', inStock: false },
       { name: 'S', inStock: true },
       { name: 'M', inStock: true },
       { name: 'L', inStock: true },
       { name: 'XL', inStock: true },
-      { name: '2XL', inStock: true },
-      { name: '3XL', inStock: true },
-    ],
-  },
-})
-
-export const WithSelection = meta.story({
-  render: Template,
-  args: {
-    sizes: [
-      { name: 'XXS', inStock: false },
-      { name: 'XS', inStock: true },
-      { name: 'S', inStock: true },
-      { name: 'M', inStock: true },
-      { name: 'L', inStock: true },
-      { name: 'XL', inStock: true },
-      { name: '2XL', inStock: true },
-      { name: '3XL', inStock: true },
+      { name: '2XL', inStock: false },
     ],
     selectedSizeId: 'M',
-  },
-})
-
-export const AllInStock = meta.story({
-  render: Template,
-  args: {
-    sizes: [
-      { name: 'XS', inStock: true },
-      { name: 'S', inStock: true },
-      { name: 'M', inStock: true },
-      { name: 'L', inStock: true },
-      { name: 'XL', inStock: true },
-    ],
-  },
-})
-
-export const ManySizes = meta.story({
-  render: Template,
-  args: {
-    sizes: [
-      { name: 'XXS', inStock: true },
-      { name: 'XS', inStock: true },
-      { name: 'S', inStock: true },
-      { name: 'M', inStock: true },
-      { name: 'L', inStock: true },
-      { name: 'XL', inStock: true },
-      { name: '2XL', inStock: true },
-      { name: '3XL', inStock: true },
-      { name: '4XL', inStock: false },
-      { name: '5XL', inStock: false },
-    ],
-  },
-})
-
-export const WithSizeGuide = meta.story({
-  render: Template,
-  args: {
-    sizes: [
-      { name: 'XS', inStock: true },
-      { name: 'S', inStock: true },
-      { name: 'M', inStock: true },
-      { name: 'L', inStock: true },
-      { name: 'XL', inStock: true },
-    ],
     sizeGuideHref: '#size-guide',
   },
 })

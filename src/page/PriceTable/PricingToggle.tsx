@@ -1,57 +1,77 @@
-import React from 'react'
+import * as React from 'react'
+import { motion } from 'motion/react'
+import clsx from 'clsx'
 
 type PricingToggleProps = {
   isAnnual: boolean
   setIsAnnual: (isAnnual: boolean) => void
 }
 
+const plans = [
+  {
+    id: 'yearly',
+    label: 'Yearly',
+    hint: 'Save 20%',
+    annual: true,
+  },
+  {
+    id: 'monthly',
+    label: 'Monthly',
+    hint: 'Flexible billing',
+    annual: false,
+  },
+] as const
+
 const PricingToggle: React.FC<PricingToggleProps> = ({
   isAnnual,
   setIsAnnual,
-}) => (
-  <div className="flex justify-center max-w-[14rem] m-auto mb-8 lg:mb-16">
-    <div className="relative flex w-full p-1 bg-white dark:bg-slate-900 rounded-full">
-      <span
-        className="absolute inset-0 m-1 pointer-events-none"
-        aria-hidden="true"
-      >
-        <span
-          className={`absolute inset-0 w-1/2 bg-indigo-500 rounded-full shadow-sm shadow-indigo-950/10 transform transition-transform duration-150 ease-in-out ${
-            isAnnual ? 'translate-x-0' : 'translate-x-full'
-          }`}
-        />
-      </span>
-      <button
-        type="button"
-        className={`relative flex-1 text-sm font-medium h-8 rounded-full focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300 dark:focus-visible:ring-slate-600 transition-colors duration-150 ease-in-out ${
-          isAnnual
-            ? 'text-white'
-            : 'text-slate-500 dark:text-slate-400 hover:cursor-pointer'
-        }`}
-        onClick={() => setIsAnnual(true)}
-      >
-        Yearly
-        <span
-          className={
-            isAnnual ? 'text-indigo-200' : 'text-slate-400 dark:text-slate-500'
-          }
-        >
-          -20%
-        </span>
-      </button>
-      <button
-        type="button"
-        className={`relative flex-1 text-sm font-medium h-8 rounded-full focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300 dark:focus-visible:ring-slate-600 transition-colors duration-150 ease-in-out ${
-          isAnnual
-            ? 'text-slate-500 dark:text-slate-400 hover:cursor-pointer'
-            : 'text-white'
-        }`}
-        onClick={() => setIsAnnual(false)}
-      >
-        Monthly
-      </button>
+}) => {
+  return (
+    <div className="mx-auto mb-10 flex max-w-md justify-center lg:mb-16">
+      <div className="inline-flex rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-1.5 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.35)]">
+        {plans.map((plan) => {
+          const isActive = plan.annual === isAnnual
+
+          return (
+            <button
+              key={plan.id}
+              type="button"
+              onClick={() => setIsAnnual(plan.annual)}
+              className={clsx(
+                'focus-ring relative min-w-[8.5rem] rounded-full px-4 py-2.5 text-left transition-colors sm:px-5',
+                isActive
+                  ? 'text-white'
+                  : 'text-slate-700 hover:text-slate-950 dark:text-[var(--color-muted-foreground)] dark:hover:text-[var(--color-foreground)]',
+              )}
+            >
+              {isActive ? (
+                <motion.span
+                  layoutId="pricing-toggle-indicator"
+                  className="absolute inset-0 rounded-full bg-slate-950 shadow-[0_16px_36px_-24px_rgba(15,23,42,0.85)] dark:bg-white"
+                  transition={{ type: 'spring', stiffness: 340, damping: 28 }}
+                  aria-hidden="true"
+                />
+              ) : null}
+
+              <span className="relative block text-sm font-semibold">
+                {plan.label}
+              </span>
+              <span
+                className={clsx(
+                  'relative mt-0.5 block text-xs',
+                  isActive
+                    ? 'text-white/70 dark:text-slate-500'
+                    : 'text-slate-500 dark:text-[var(--color-muted-foreground)]',
+                )}
+              >
+                {plan.hint}
+              </span>
+            </button>
+          )
+        })}
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 export default PricingToggle

@@ -7,6 +7,7 @@ import {
   AppHeaderNavigationItem,
   AppHeaderNotification,
   AppHeaderProfile,
+  AppHeaderStatusBadge,
   LinkComponent,
 } from './types'
 import { defaultBrand } from './constants'
@@ -30,6 +31,7 @@ export type {
   AppHeaderNavigationItem,
   AppHeaderNotification,
   AppHeaderProfile,
+  AppHeaderStatusBadge,
 }
 
 export interface AppHeaderProps {
@@ -37,6 +39,10 @@ export interface AppHeaderProps {
   className?: string
   /** Brand configuration */
   brand?: AppHeaderBrand
+  /** Optional workspace label shown above brand name */
+  workspaceLabel?: string
+  /** Optional status pill shown near the brand */
+  statusBadge?: AppHeaderStatusBadge
   /** Show menu button (for sidebar toggle) */
   showMenuButton?: boolean
   /** Menu button click handler */
@@ -83,11 +89,17 @@ export interface AppHeaderProps {
   LinkComponent?: LinkComponent
   /** Custom theme toggle component (overrides default ToggleDarkMode) */
   themeToggleComponent?: React.ReactNode
+  /** Make header sticky */
+  sticky?: boolean
+  /** Use the full available width instead of a centered max-width container */
+  fullWidth?: boolean
 }
 
 export const AppHeader: React.FC<AppHeaderProps> = ({
   className = '',
   brand = defaultBrand,
+  workspaceLabel,
+  statusBadge,
   showMenuButton = true,
   onMenuClick,
   menuButtonDisabled = false,
@@ -107,26 +119,36 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   loginButton,
   LinkComponent,
   themeToggleComponent,
+  sticky = false,
+  fullWidth = false,
 }) => {
   const hasNavigation = navigation.length > 0
 
   return (
-    <nav className={clsx('relative', className)}>
+    <nav className={clsx('relative z-40', sticky && 'sticky top-0', className)}>
       <Disclosure>
         {() => (
           <>
-            <div
-              className={clsx(
-                'bg-gradient-to-r from-pink-600 via-purple-700 to-indigo-800',
-                'dark:from-indigo-800 dark:via-purple-800 dark:to-indigo-900',
-                'text-white shadow-lg border-b border-indigo-500/20 dark:border-purple-500/30',
-                'backdrop-blur-sm z-50',
-              )}
-            >
-              <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
-                <div className="relative flex h-14 sm:h-16 items-center justify-between">
+            <div className="relative overflow-visible border-b border-[var(--color-border)]/80 bg-[color-mix(in_srgb,var(--color-background)_82%,white_18%)] shadow-[0_16px_50px_-34px_rgba(15,23,42,0.35)] backdrop-blur-xl dark:bg-[color-mix(in_srgb,var(--color-background)_88%,black_12%)]">
+              <div
+                className="pointer-events-none absolute inset-0 opacity-90"
+                aria-hidden="true"
+              >
+                <div className="absolute left-[-10%] top-[-120%] h-52 w-52 rounded-full bg-sky-400/16 blur-3xl" />
+                <div className="absolute right-[8%] top-[-80%] h-44 w-44 rounded-full bg-amber-300/12 blur-3xl" />
+                <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-slate-400/25 to-transparent dark:via-white/10" />
+              </div>
+
+              <div
+                className={clsx(
+                  fullWidth
+                    ? 'w-full px-3 sm:px-4 lg:px-6'
+                    : 'mx-auto max-w-7xl px-3 sm:px-4 lg:px-8',
+                )}
+              >
+                <div className="relative flex min-h-[4.5rem] items-center justify-between gap-3 py-3 xl:grid xl:grid-cols-[minmax(0,max-content)_minmax(0,1fr)_max-content] xl:items-center xl:gap-6">
                   {/* Left: Mobile menu button + Menu button + Brand */}
-                  <div className="flex items-center gap-2 sm:gap-4">
+                  <div className="flex min-w-0 items-center gap-2 sm:gap-3 xl:pr-2 xl:justify-self-start">
                     {/* Mobile menu button */}
                     {hasNavigation && <MobileMenuButton />}
 
@@ -144,6 +166,8 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                       brand={brand}
                       LinkComponent={LinkComponent}
                       hasNavigation={hasNavigation}
+                      workspaceLabel={workspaceLabel}
+                      statusBadge={statusBadge}
                     />
                   </div>
 
@@ -155,7 +179,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                   />
 
                   {/* Right: Controls */}
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                  <div className="absolute inset-y-0 right-0 z-20 flex min-w-max items-center gap-2 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 xl:ml-0 xl:justify-self-end">
                     {showThemeToggle && (
                       <HeaderThemeToggle
                         themeToggleComponent={themeToggleComponent}
@@ -188,6 +212,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
 
                     {showLogin && !showProfile && (
                       <HeaderLoginButton
+                        href={loginButton?.href}
                         label={loginButton?.label}
                         onClick={loginButton?.onClick}
                       />

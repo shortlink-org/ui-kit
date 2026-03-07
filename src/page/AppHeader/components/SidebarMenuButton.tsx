@@ -19,8 +19,7 @@ export function SidebarMenuButton({
       disabled={disabled}
       aria-label="Toggle sidebar menu"
       className={clsx(
-        'hover:bg-white/10 active:bg-white/20 transition-all duration-200',
-        'rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-white/50',
+        'focus-ring rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-2 text-[var(--color-muted-foreground)] transition-all duration-200 hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]',
         'disabled:opacity-50 disabled:cursor-not-allowed',
         'hover:scale-105 active:scale-95',
         hasNavigation && 'hidden sm:block',
