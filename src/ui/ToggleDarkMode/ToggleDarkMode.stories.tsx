@@ -143,7 +143,7 @@ export const PreferencePanel = meta.story({
 
     return <Demo />
   },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const canvas = within(canvasElement)
     const toggle = canvas.getByRole('switch', { name: /toggle dark mode/i })
     await userEvent.click(toggle)
@@ -185,7 +185,7 @@ export const HeaderControlCluster = meta.story({
             { name: 'Catalog', href: '#' },
           ]}
           currentPath="#"
-          rightSlot={
+          themeToggleComponent={
             <div className="flex items-center gap-3">
               <ToggleDarkMode
                 id="header-toggle"

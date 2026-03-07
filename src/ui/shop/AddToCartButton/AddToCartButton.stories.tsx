@@ -66,8 +66,10 @@ const meta = preview.meta({
 
 export default meta
 
+type AddToCartButtonStoryProps = React.ComponentProps<typeof AddToCartButton>
+
 export const ProductCardCta = meta.story({
-  render: (args) => (
+  render: (args: AddToCartButtonStoryProps) => (
     <div className="grid gap-6 lg:grid-cols-[minmax(18rem,24rem)_minmax(0,1fr)]">
       <article className="rounded-[2rem] border border-[var(--color-border)] bg-white p-5 shadow-[0_24px_54px_-38px_rgba(15,23,42,0.16)]">
         <div className="aspect-[4/5] rounded-[1.5rem] bg-[linear-gradient(180deg,#f3f6fb_0%,#e6edf6_100%)]" />
@@ -107,7 +109,7 @@ export const ProductCardCta = meta.story({
       </aside>
     </div>
   ),
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const canvas = within(canvasElement)
     const button = canvas.getByRole('button', { name: /add to cart/i })
     await userEvent.click(button)
@@ -121,7 +123,7 @@ export const StickyProductBar = meta.story({
     text: 'Add bag',
     ariaLabel: 'Add bag',
   },
-  render: (args) => (
+  render: (args: AddToCartButtonStoryProps) => (
     <div className="space-y-6">
       <section className="rounded-[2rem] border border-[var(--color-border)] bg-white p-6 shadow-[0_24px_54px_-38px_rgba(15,23,42,0.16)]">
         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
@@ -163,7 +165,7 @@ export const AsyncCartUpdate = meta.story({
     text: 'Add to cart',
     ariaLabel: 'Add to cart',
   },
-  render: (args) => {
+  render: (args: AddToCartButtonStoryProps) => {
     const Demo = () => {
       const [status, setStatus] = React.useState('Idle')
 
@@ -214,7 +216,7 @@ export const AsyncCartUpdate = meta.story({
 
     return <Demo />
   },
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const canvas = within(canvasElement)
     const button = canvas.getByRole('button', { name: /add to cart/i })
     await userEvent.click(button)

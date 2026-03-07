@@ -1,3 +1,4 @@
+import type React from 'react'
 import preview from '#.storybook/preview'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { ProfileIdentity } from './ProfileIdentity'
@@ -21,7 +22,7 @@ export const Showcase = meta.story({
     label: 'Workspace account',
     size: 'md',
   },
-  render: (args) => (
+  render: (args: React.ComponentProps<typeof ProfileIdentity>) => (
     <div className="min-h-screen bg-[linear-gradient(180deg,#e0f2fe_0%,#f8fafc_30%,#eef2ff_100%)] px-4 py-10 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-4xl rounded-[2rem] border border-white/70 bg-white/75 p-5 shadow-[0_32px_120px_-60px_rgba(15,23,42,0.46)] backdrop-blur-xl sm:p-6">
         <div className="rounded-[1.6rem] border border-slate-200/80 bg-white/85 p-5 shadow-[0_20px_60px_-44px_rgba(15,23,42,0.34)]">

@@ -29,8 +29,10 @@ const meta = preview.meta({
 
 export default meta
 
+type BreadcrumbStoryProps = React.ComponentProps<typeof Breadcrumbs>
+
 export const ProductPageTrail = meta.story({
-  render: (args) => (
+  render: (args: BreadcrumbStoryProps) => (
     <div className="rounded-[1.5rem] border border-[var(--color-border)] bg-white p-5 shadow-[0_18px_44px_-34px_rgba(15,23,42,0.18)]">
       <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
         Product detail
@@ -54,7 +56,7 @@ export const ProductPageTrail = meta.story({
 })
 
 export const AccountNavigation = meta.story({
-  render: (args) => (
+  render: (args: BreadcrumbStoryProps) => (
     <div className="dark">
       <div className="rounded-[1.5rem] border border-slate-800 bg-slate-950 p-5 shadow-[0_22px_54px_-36px_rgba(15,23,42,0.36)]">
         <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-400">

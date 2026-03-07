@@ -6,6 +6,38 @@ import react from '@vitejs/plugin-react-swc'
 import dts from 'vite-plugin-dts'
 import { libInjectCss } from 'vite-plugin-lib-inject-css'
 
+const externalPackages = [
+  'react',
+  'react-dom',
+  'next',
+  '@headlessui/react',
+  '@heroicons/react',
+  '@tanstack/react-table',
+  '@tanstack/react-virtual',
+  '@emotion/react',
+  '@mui/styled-engine-sc',
+  '@mui/system',
+  '@mui/material',
+  '@mui/x-date-pickers',
+  '@mui/icons-material',
+  'clsx',
+  'date-fns',
+  'dayjs',
+  'export-to-csv',
+  'gsap',
+  'motion',
+  'next-themes',
+  'react-wrap-balancer',
+  'styled-jsx',
+  'vaul',
+] as const
+
+function isExternalPackage(id: string) {
+  return externalPackages.some(
+    (pkg) => id === pkg || id.startsWith(`${pkg}/`),
+  )
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), libInjectCss(), dts()],
@@ -17,22 +49,17 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: [
-        'react',
-        'react-dom',
-        '@emotion/react',
-        '@mui/styled-engine-sc',
-        '@mui/system',
-        '@mui/material',
-        '@mui/material/styles',
-        '@mui/x-date-pickers',
-        '@mui/icons-material',
-        'gsap',
-      ],
+      external: isExternalPackage,
       input: Object.fromEntries(
         glob
           .sync('src/**/*.{ts,tsx}', {
-            ignore: ['src/**/*.d.ts', 'src/**/*.stories.tsx'],
+            ignore: [
+              'src/**/*.d.ts',
+              'src/**/*.stories.tsx',
+              'src/**/*.test.ts',
+              'src/**/*.test.tsx',
+              'src/setupTests.ts',
+            ],
           })
           .map((file) => [
             // The name of the entry point

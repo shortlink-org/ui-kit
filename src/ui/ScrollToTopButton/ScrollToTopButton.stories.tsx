@@ -84,7 +84,7 @@ const meta = preview.meta({
 export default meta
 
 export const Showcase = meta.story({
-  render: (args) => {
+  render: (args: React.ComponentProps<typeof ScrollToTopButton>) => {
     const outerRef = useRef<HTMLDivElement>(null)
     const [scrollParent, setScrollParent] = useState<HTMLElement | null>(null)
 

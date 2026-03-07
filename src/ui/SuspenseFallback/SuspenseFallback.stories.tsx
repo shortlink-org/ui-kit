@@ -27,7 +27,7 @@ export const WorkspaceModuleLoading = meta.story({
       'Live payout summaries, seller velocity and campaign deltas are still streaming in.',
     size: 'lg',
   },
-  render: (args) => (
+  render: (args: React.ComponentProps<typeof SuspenseFallback>) => (
     <div className="min-h-screen bg-[linear-gradient(180deg,#e0f2fe_0%,#f8fafc_34%,#eef2ff_100%)] px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/70 bg-white/70 p-6 shadow-[0_32px_120px_-60px_rgba(15,23,42,0.48)] backdrop-blur-xl sm:p-8">
         <div className="grid gap-6 xl:grid-cols-[0.9fr_1.3fr]">

@@ -28,7 +28,7 @@ const itemMotion = {
     transition: {
       duration: 0.22,
       delay: index * 0.04,
-      ease: 'easeOut',
+      ease: 'easeOut' as const,
     },
   }),
 }

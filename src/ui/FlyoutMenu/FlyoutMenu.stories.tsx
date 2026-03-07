@@ -1,3 +1,4 @@
+import type React from 'react'
 import { expect, userEvent, within } from 'storybook/test'
 import preview from '#.storybook/preview'
 import { FlyoutMenu } from './FlyoutMenu'
@@ -101,7 +102,7 @@ export const CommerceNavigationFlyout = meta.story({
     sections,
     callsToAction,
   },
-  render: (args) => (
+  render: (args: React.ComponentProps<typeof FlyoutMenu>) => (
     <div className="min-h-screen bg-slate-100 px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl rounded-[2rem] border border-slate-200 bg-white p-4 shadow-[0_24px_80px_-60px_rgba(15,23,42,0.28)] sm:p-5">
         <div className="flex flex-wrap items-center justify-between gap-4 rounded-[1.25rem] border border-slate-200 bg-white px-4 py-3">
@@ -179,7 +180,7 @@ export const CommerceNavigationFlyout = meta.story({
       </div>
     </div>
   ),
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const canvas = within(canvasElement)
     const button = canvas.getByRole('button', { name: /platform/i })
     await userEvent.click(button)

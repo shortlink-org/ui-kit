@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { clsx } from 'clsx'
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { FamilyDialog } from '../../../FamilyDialog/FamilyDialog'
