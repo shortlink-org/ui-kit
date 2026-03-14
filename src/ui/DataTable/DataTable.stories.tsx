@@ -72,7 +72,7 @@ function WithRowActionsStory(args: DataTableProps<LinkData>) {
     url: `https://new-link-${seed}.example.com`,
     hash: `new-${seed}`,
     describe: `Generated record ${seed}`,
-    createdAt: new Date().toISOString(),
+    createdAt: Temporal.Now.instant().toString(),
   })
 
   const handleAdd = () => {
@@ -105,10 +105,10 @@ function WithRowActionsStory(args: DataTableProps<LinkData>) {
           event.stopPropagation()
           const duplicateRow: LinkData = {
             ...row,
-            hash: `${row.hash}-copy-${Date.now().toString().slice(-4)}`,
+            hash: `${row.hash}-copy-${String(Temporal.Now.instant().epochMilliseconds).slice(-4)}`,
             url: row.url.replace('https://', 'https://copy-'),
             describe: `${row.describe} (Copy)`,
-            createdAt: new Date().toISOString(),
+            createdAt: Temporal.Now.instant().toString(),
           }
           setRows((current) => [duplicateRow, ...current])
           setLastAction({ action: 'duplicate', row: duplicateRow })
@@ -202,7 +202,7 @@ function WithHeaderAndBadgeStory(args: DataTableProps<LinkData>) {
       url: `https://vendor-${seed}.example.com`,
       hash: `vendor-${seed}`,
       describe: `Vendor profile ${seed}`,
-      createdAt: new Date().toISOString(),
+      createdAt: Temporal.Now.instant().toString(),
     }
 
     setRows((current) => [nextRow, ...current])
@@ -283,9 +283,11 @@ const sampleData: LinkData[] = Array.from({ length: 50 }, (_, i) => ({
   url: `https://example${i + 1}.com`,
   hash: `hash${i + 1}`,
   describe: `Description for link ${i + 1}`,
-  createdAt: new Date(
-    Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000,
-  ).toISOString(),
+  createdAt: Temporal.Now.instant()
+    .subtract({
+      seconds: Math.floor(Math.random() * 30 * 24 * 60 * 60),
+    })
+    .toString(),
 }))
 
 export const Default = meta.story({
@@ -333,7 +335,10 @@ export const WithPagination = meta.story({
         header: 'Created',
         size: 150,
         cell: (info) =>
-          new Date(info.getValue() as string).toLocaleDateString(),
+          Temporal.Instant.from(info.getValue() as string).toLocaleString(
+            undefined,
+            { dateStyle: 'medium' },
+          ),
       }),
     ] as ColumnDef<LinkData, unknown>[],
     sorting: true,

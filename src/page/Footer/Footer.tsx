@@ -94,7 +94,7 @@ const defaultSocialLinks: SocialLink[] = [
   },
 ]
 
-const defaultCopyright = `© ${new Date().getFullYear()} ShortLink. All rights reserved.`
+const defaultCopyright = `© ${Temporal.Now.plainDateISO().year} ShortLink. All rights reserved.`
 
 export const Footer: React.FC<FooterProps> = ({
   className = '',

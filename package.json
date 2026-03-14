@@ -71,7 +71,6 @@
     "@types/react": "^19.2.14",
     "autoprefixer": "^10.4.27",
     "clsx": "^2.1.1",
-    "date-fns": "^4.1.0",
     "dayjs": "^1.11.19",
     "export-to-csv": "^1.4.0",
     "glob": "^13.0.6",

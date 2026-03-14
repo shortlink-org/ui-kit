@@ -21,7 +21,6 @@ const externalPackages = [
   '@mui/x-date-pickers',
   '@mui/icons-material',
   'clsx',
-  'date-fns',
   'dayjs',
   'export-to-csv',
   'gsap',
