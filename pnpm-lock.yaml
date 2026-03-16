@@ -158,7 +158,7 @@ importers:
         version: 4.0.18(@vitest/browser@4.0.18(vite@7.3.1(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.1)(yaml@2.6.1))(vitest@4.1.0))(vitest@4.1.0)
       chromatic:
         specifier: ^15.2.0
-        version: 15.2.0
+        version: 15.3.0
       css-loader:
         specifier: ^7.1.4
         version: 7.1.4(webpack@5.105.4(@swc/core@1.15.18(@swc/helpers@0.5.19))(esbuild@0.27.4))
@@ -3441,8 +3441,8 @@ packages:
       '@chromatic-com/playwright':
         optional: true
 
-  chromatic@15.2.0:
-    resolution: {integrity: sha512-c9tDfE62aiPVPnVab8jQLz+9c9II/CUFZ6T2Kk3hi2hSL+HLkRwX3zjwRYW1z9Shn57R/ORBEpQ3ftufp8EgWA==}
+  chromatic@15.3.0:
+    resolution: {integrity: sha512-ficw/Pz9OpBnPoWDRmuwFDwzLPSN0o90x6X+0+rbnMFYtDTPWXddW6R14jQ56SgYSByJ67OyHZg2gW6U6HF2Qw==}
     hasBin: true
     peerDependencies:
       '@chromatic-com/cypress': ^0.*.* || ^1.0.0
@@ -9852,7 +9852,7 @@ snapshots:
 
   chromatic@13.3.5: {}
 
-  chromatic@15.2.0: {}
+  chromatic@15.3.0: {}
 
   chrome-trace-event@1.0.4: {}
 
