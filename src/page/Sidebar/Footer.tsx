@@ -7,6 +7,7 @@ import { ProfileIdentity } from '../../ui/ProfileIdentity/ProfileIdentity'
 
 interface FooterProps {
   mode?: 'full' | 'compact' | 'mini'
+  density?: 'default' | 'compact'
   name?: string
   email?: string
   avatarUrl?: string
@@ -15,23 +16,26 @@ interface FooterProps {
 
 function Footer({
   mode = 'full',
+  density = 'default',
   name = 'User Name',
   email = 'user@example.com',
   avatarUrl = 'https://i.ibb.co/fxrbS6p/Ellipse-2-2.png',
   onToggleMode,
 }: FooterProps) {
   const compactMode = mode === 'mini' || mode === 'compact'
+  const dense = density === 'compact'
 
   return (
     <div
       className={clsx(
-        'border-t border-[var(--color-border)]/80 p-3',
-        compactMode && 'p-2.5',
+        'border-t border-[var(--color-border)]/80',
+        compactMode || dense ? 'p-2.5' : 'p-3',
       )}
     >
       <div
         className={clsx(
-          'relative overflow-hidden rounded-[1.35rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_94%,rgb(14_165_233)_6%)] p-3 shadow-[0_22px_48px_-36px_rgba(15,23,42,0.45)]',
+          'relative overflow-hidden rounded-[1.35rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_94%,rgb(14_165_233)_6%)] shadow-[0_22px_48px_-36px_rgba(15,23,42,0.45)]',
+          dense ? 'p-2.5' : 'p-3',
           compactMode &&
             'flex justify-center rounded-[1.15rem] border-transparent bg-transparent p-0 shadow-none',
         )}

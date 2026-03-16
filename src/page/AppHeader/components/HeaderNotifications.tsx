@@ -13,6 +13,8 @@ import { AppHeaderNotification } from '../types'
 
 interface HeaderNotificationsProps {
   notifications: AppHeaderNotification
+  className?: string
+  buttonClassName?: string
 }
 
 function NotificationRow({
@@ -64,10 +66,12 @@ function NotificationRow({
 
 export function HeaderNotifications({
   notifications,
+  className,
+  buttonClassName,
 }: HeaderNotificationsProps) {
   if (notifications.render) {
     return (
-      <div className="relative">
+      <div className={clsx('relative', className)}>
         {notifications.render({
           count: notifications.count,
           items: notifications.items,
@@ -80,11 +84,14 @@ export function HeaderNotifications({
   const hasItems = items.length > 0
 
   return (
-    <div className="relative z-20">
+    <div className={clsx('relative z-20', className)}>
       <Menu as="div" className="relative z-20">
         <MenuButton
           type="button"
-          className="focus-ring relative inline-flex size-10 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-muted-foreground)] transition-colors duration-200 hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]"
+          className={clsx(
+            'focus-ring relative inline-flex size-10 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-muted-foreground)] transition-colors duration-200 hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]',
+            buttonClassName,
+          )}
         >
           <span className="absolute -inset-1.5" />
           <span className="sr-only">View notifications</span>

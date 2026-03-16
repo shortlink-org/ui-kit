@@ -44,6 +44,22 @@ export interface AppHeaderStatusBadge {
   tone?: 'neutral' | 'accent' | 'success' | 'warning'
 }
 
+export interface AppHeaderSlotClassNames {
+  container?: string
+  header?: string
+  brandRail?: string
+  navigation?: string
+  controlsRail?: string
+  search?: string
+  searchForm?: string
+  themeToggle?: string
+  notifications?: string
+  notificationsButton?: string
+  profile?: string
+  profileButton?: string
+  loginButton?: string
+}
+
 export interface AppHeaderNotification {
   /** Notification count (shows badge) */
   count?: number

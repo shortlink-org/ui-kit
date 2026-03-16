@@ -7,6 +7,7 @@ import {
   AppHeaderNavigationItem,
   AppHeaderNotification,
   AppHeaderProfile,
+  AppHeaderSlotClassNames,
   AppHeaderStatusBadge,
   LinkComponent,
 } from './types'
@@ -31,6 +32,7 @@ export type {
   AppHeaderNavigationItem,
   AppHeaderNotification,
   AppHeaderProfile,
+  AppHeaderSlotClassNames,
   AppHeaderStatusBadge,
 }
 
@@ -93,6 +95,8 @@ export interface AppHeaderProps {
   sticky?: boolean
   /** Use the full available width instead of a centered max-width container */
   fullWidth?: boolean
+  /** Slot-level className hooks for layout customization */
+  slotClassNames?: AppHeaderSlotClassNames
 }
 
 export const AppHeader: React.FC<AppHeaderProps> = ({
@@ -121,6 +125,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   themeToggleComponent,
   sticky = false,
   fullWidth = false,
+  slotClassNames,
 }) => {
   const hasNavigation = navigation.length > 0
 
@@ -144,11 +149,22 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                   fullWidth
                     ? 'w-full px-3 sm:px-4 lg:px-6'
                     : 'mx-auto max-w-7xl px-3 sm:px-4 lg:px-8',
+                  slotClassNames?.container,
                 )}
               >
-                <div className="relative flex min-h-[4.5rem] items-center justify-between gap-3 py-3 xl:grid xl:grid-cols-[minmax(0,max-content)_minmax(0,1fr)_max-content] xl:items-center xl:gap-6">
+                <div
+                  className={clsx(
+                    'relative flex min-h-[4.5rem] items-center justify-between gap-3 py-3 xl:grid xl:grid-cols-[minmax(0,max-content)_minmax(0,1fr)_max-content] xl:items-center xl:gap-6',
+                    slotClassNames?.header,
+                  )}
+                >
                   {/* Left: Mobile menu button + Menu button + Brand */}
-                  <div className="flex min-w-0 items-center gap-2 sm:gap-3 xl:pr-2 xl:justify-self-start">
+                  <div
+                    className={clsx(
+                      'flex min-w-0 items-center gap-2 sm:gap-3 xl:pr-2 xl:justify-self-start',
+                      slotClassNames?.brandRail,
+                    )}
+                  >
                     {/* Mobile menu button */}
                     {hasNavigation && <MobileMenuButton />}
 
@@ -176,13 +192,20 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                     items={navigation}
                     currentPath={currentPath}
                     LinkComponent={LinkComponent}
+                    className={slotClassNames?.navigation}
                   />
 
                   {/* Right: Controls */}
-                  <div className="absolute inset-y-0 right-0 z-20 flex min-w-max items-center gap-2 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 xl:ml-0 xl:justify-self-end">
+                  <div
+                    className={clsx(
+                      'absolute inset-y-0 right-0 z-20 flex min-w-max items-center gap-2 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 xl:ml-0 xl:justify-self-end',
+                      slotClassNames?.controlsRail,
+                    )}
+                  >
                     {showThemeToggle && (
                       <HeaderThemeToggle
                         themeToggleComponent={themeToggleComponent}
+                        className={slotClassNames?.themeToggle}
                       />
                     )}
 
@@ -199,15 +222,25 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                         placeholder={searchProps?.placeholder}
                         onSearch={searchProps?.onSearch}
                         defaultQuery={searchProps?.defaultQuery}
+                        className={slotClassNames?.search}
+                        formClassName={slotClassNames?.searchForm}
                       />
                     )}
 
                     {showNotifications && notifications && (
-                      <HeaderNotifications notifications={notifications} />
+                      <HeaderNotifications
+                        notifications={notifications}
+                        className={slotClassNames?.notifications}
+                        buttonClassName={slotClassNames?.notificationsButton}
+                      />
                     )}
 
                     {showProfile && profile && (
-                      <HeaderProfile profile={profile} />
+                      <HeaderProfile
+                        profile={profile}
+                        className={slotClassNames?.profile}
+                        buttonClassName={slotClassNames?.profileButton}
+                      />
                     )}
 
                     {showLogin && !showProfile && (
@@ -215,6 +248,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                         href={loginButton?.href}
                         label={loginButton?.label}
                         onClick={loginButton?.onClick}
+                        className={slotClassNames?.loginButton}
                       />
                     )}
                   </div>

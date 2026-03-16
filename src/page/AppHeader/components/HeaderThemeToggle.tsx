@@ -1,15 +1,18 @@
 import React from 'react'
+import clsx from 'clsx'
 import { ToggleDarkMode } from '../../../ui/ToggleDarkMode/ToggleDarkMode'
 
 interface HeaderThemeToggleProps {
   themeToggleComponent?: React.ReactNode
+  className?: string
 }
 
 export function HeaderThemeToggle({
   themeToggleComponent,
+  className,
 }: HeaderThemeToggleProps) {
   return (
-    <div className="relative mr-1 hidden w-[72px] shrink-0 sm:block">
+    <div className={clsx('relative mr-1 hidden w-[72px] shrink-0 sm:block', className)}>
       <div className="flex h-10 w-full items-center overflow-hidden rounded-full border border-[var(--color-border)] bg-[var(--color-surface)]">
         {themeToggleComponent || (
           <div className="relative h-10 w-full shrink-0">

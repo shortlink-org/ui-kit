@@ -6,12 +6,14 @@ interface NavigationLinksProps {
   items: AppHeaderNavigationItem[]
   currentPath?: string
   LinkComponent?: LinkComponent
+  className?: string
 }
 
 export function NavigationLinks({
   items,
   currentPath,
   LinkComponent,
+  className,
 }: NavigationLinksProps) {
   const renderLink = (
     href: string,
@@ -55,7 +57,12 @@ export function NavigationLinks({
   }
 
   return (
-    <div className="hidden overflow-hidden xl:flex xl:min-w-0 xl:items-center xl:justify-center xl:px-3 2xl:px-5">
+    <div
+      className={classNames(
+        'hidden overflow-hidden xl:flex xl:min-w-0 xl:items-center xl:justify-center xl:px-3 2xl:px-5',
+        className,
+      )}
+    >
       <div className="flex max-w-full min-w-0 items-center gap-2 overflow-x-auto rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-1.5 shadow-[0_16px_40px_-30px_rgba(15,23,42,0.28)] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         {items.map((item) => {
           const isActive = isNavigationItemActive(item, currentPath)

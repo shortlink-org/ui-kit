@@ -32,6 +32,14 @@ export interface SocialLink {
 export interface FooterProps {
   /** Custom className */
   className?: string
+  /** Whether to keep the outer footer centered in a max-width container */
+  contained?: boolean
+  /** Whether to keep rounded top corners */
+  rounded?: boolean
+  /** Whether to keep the default top margin */
+  withTopMargin?: boolean
+  /** Custom className for the inner content container */
+  contentClassName?: string
   /** Navigation links (FAQ, Privacy, etc.) */
   links?: FooterLink[]
   /** Social media links */
@@ -98,6 +106,10 @@ const defaultCopyright = `© ${Temporal.Now.plainDateISO().year} ShortLink. All 
 
 export const Footer: React.FC<FooterProps> = ({
   className = '',
+  contained = true,
+  rounded = true,
+  withTopMargin = true,
+  contentClassName = '',
   links = defaultLinks,
   socialLinks = defaultSocialLinks,
   copyright = defaultCopyright,
@@ -154,11 +166,14 @@ export const Footer: React.FC<FooterProps> = ({
   return (
     <footer
       className={clsx(
-        'bg-white dark:bg-gray-800 w-full py-8 mt-5 rounded-t-lg content-center max-w-7xl mx-auto',
+        'w-full content-center bg-white py-8 dark:bg-gray-800',
+        contained && 'mx-auto max-w-7xl',
+        rounded && 'rounded-t-lg',
+        withTopMargin && 'mt-5',
         className,
       )}
     >
-      <div className="max-w-screen-xl mx-auto px-4">
+      <div className={clsx('mx-auto max-w-screen-xl px-4', contentClassName)}>
         {(logoSlot || description) && (
           <div className="mb-8 text-center">
             {logoSlot && <div className="mb-4">{logoSlot}</div>}

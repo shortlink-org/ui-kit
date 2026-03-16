@@ -53,6 +53,7 @@ export type SidebarProps = {
   }) => React.ReactNode
   activeClassName?: string
   inactiveClassName?: string
+  density?: 'default' | 'compact'
 }
 
 const defaultSections: SidebarSection[] = [
@@ -115,6 +116,7 @@ export function Sidebar({
   renderItem,
   activeClassName,
   inactiveClassName,
+  density = 'default',
 }: SidebarProps) {
   const isCollapsedControlled = sidebarCollapsed !== undefined
   const [localMode, setLocalMode] = React.useState<'full' | 'mini'>(mode)
@@ -229,12 +231,18 @@ export function Sidebar({
           <nav
             aria-label={ariaLabel}
             className={clsx(
-              'relative min-h-0 flex-1 px-3 py-3',
+              'relative min-h-0 flex-1',
+              density === 'compact' ? 'px-2.5 py-2.5' : 'px-3 py-3',
               effectiveMode === 'mini' && 'overflow-visible px-2 py-2',
               'overflow-y-auto overscroll-contain pr-2',
             )}
           >
-            <ul className={clsx('space-y-3', effectiveMode === 'mini' && 'space-y-2')}>
+            <ul
+              className={clsx(
+                density === 'compact' ? 'space-y-2.5' : 'space-y-3',
+                effectiveMode === 'mini' && 'space-y-2',
+              )}
+            >
               {sections.map((section, sectionIndex) => {
                 if (section.type === 'collapsible') {
                   const isCollapsed =
@@ -250,6 +258,7 @@ export function Sidebar({
                       icon={section.icon}
                       title={section.title}
                       mode={effectiveMode}
+                      density={density}
                       collapsed={isCollapsed}
                       onCollapseChange={(collapsed) =>
                         handleCollapseChange(section.title, collapsed)
@@ -264,14 +273,15 @@ export function Sidebar({
                   <li
                     key={`simple-${sectionIndex}`}
                     className={clsx(
-                      'list-none rounded-[1.25rem] border border-[var(--color-border)] bg-[var(--color-background)]/70 p-1.5 backdrop-blur-sm',
+                      'list-none rounded-[1.25rem] border border-[var(--color-border)] bg-[var(--color-background)]/70 backdrop-blur-sm',
+                      density === 'compact' ? 'p-1.25' : 'p-1.5',
                       effectiveMode === 'mini' &&
                         'rounded-none border-transparent bg-transparent p-0 backdrop-blur-none',
                     )}
                   >
                     <ul
                       className={clsx(
-                        'space-y-2',
+                        density === 'compact' ? 'space-y-1.5' : 'space-y-2',
                         effectiveMode === 'mini' && 'space-y-1.5',
                       )}
                     >
@@ -294,6 +304,7 @@ export function Sidebar({
               ) : (
                 <Footer
                   mode={effectiveMode}
+                  density={density}
                   onToggleMode={handleModeToggle}
                 />
               )}

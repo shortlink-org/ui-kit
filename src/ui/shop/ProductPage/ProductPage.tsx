@@ -102,6 +102,8 @@ export function ProductPage({
 }: ProductPageProps) {
   const selectedColor = colors.find((color) => color.id === selectedColorId)
   const selectedSize = sizes.find((size) => size.id === selectedSizeId)
+  const hasColors = colors.length > 0
+  const hasSizes = sizes.length > 0
 
   return (
     <div className={clsx('bg-[var(--color-background)]', className)}>
@@ -155,18 +157,22 @@ export function ProductPage({
             )}
 
             <form className="mt-10">
-              <ProductColorSelector
-                colors={colors}
-                selectedColorId={selectedColorId}
-                onColorChange={onColorChange}
-              />
+              {hasColors ? (
+                <ProductColorSelector
+                  colors={colors}
+                  selectedColorId={selectedColorId}
+                  onColorChange={onColorChange}
+                />
+              ) : null}
 
-              <ProductSizeSelector
-                sizes={sizes}
-                selectedSizeId={selectedSizeId}
-                onSizeChange={onSizeChange}
-                sizeGuideHref={sizeGuideHref}
-              />
+              {hasSizes ? (
+                <ProductSizeSelector
+                  sizes={sizes}
+                  selectedSizeId={selectedSizeId}
+                  onSizeChange={onSizeChange}
+                  sizeGuideHref={sizeGuideHref}
+                />
+              ) : null}
 
               {actionSlot ? (
                 <div className="mt-10">{actionSlot}</div>

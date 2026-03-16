@@ -77,6 +77,8 @@ export function ProductQuickView({
   const effectivePosition = position ?? 'right'
   const effectiveSize =
     size ?? (effectivePosition === 'bottom' ? 'full' : 'xl')
+  const hasColors = product.colors.length > 0
+  const hasSizes = product.sizes.length > 0
 
   return (
     <Drawer
@@ -138,19 +140,23 @@ export function ProductQuickView({
               </h3>
               <form>
                 {/* Colors */}
-                <ProductColorSelector
-                  colors={product.colors}
-                  selectedColorId={selectedColorId}
-                  onColorChange={onColorChange}
-                />
+                {hasColors ? (
+                  <ProductColorSelector
+                    colors={product.colors}
+                    selectedColorId={selectedColorId}
+                    onColorChange={onColorChange}
+                  />
+                ) : null}
 
                 {/* Sizes */}
-                <ProductSizeSelector
-                  sizes={product.sizes}
-                  selectedSizeId={selectedSizeId}
-                  onSizeChange={onSizeChange}
-                  sizeGuideHref={sizeGuideHref}
-                />
+                {hasSizes ? (
+                  <ProductSizeSelector
+                    sizes={product.sizes}
+                    selectedSizeId={selectedSizeId}
+                    onSizeChange={onSizeChange}
+                    sizeGuideHref={sizeGuideHref}
+                  />
+                ) : null}
 
                 {/* Add to cart */}
                 <div className="mt-6">

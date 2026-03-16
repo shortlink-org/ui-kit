@@ -108,6 +108,18 @@ export interface ProductGridProps {
   aspectMobile?: string
   /** Aspect ratio for product images on desktop */
   aspectDesktop?: string
+  /** Stable slot classNames for product card internals */
+  cardSlotClassNames?: Partial<{
+    image: string
+    badges: string
+    info: string
+    title: string
+    description: string
+    rating: string
+    footer: string
+    price: string
+    cta: string
+  }>
 }
 
 const breakpointMap: Record<Breakpoint, string> = {
@@ -156,6 +168,7 @@ export function ProductGrid({
   onProductClick,
   aspectMobile = '4/5',
   aspectDesktop = '4/5',
+  cardSlotClassNames,
 }: ProductGridProps) {
   const effectiveColumns = { ...defaultColumns, ...columns }
 
@@ -299,6 +312,7 @@ export function ProductGrid({
                   formatPrice={formatPrice}
                   getProductBadges={getProductBadges}
                   onProductClick={handleProductClick}
+                  slotClassNames={cardSlotClassNames}
                 />
               ))}
         </div>
@@ -320,6 +334,7 @@ interface ProductCardProps {
   }
   getProductBadges: (product: Product) => ProductBadge[]
   onProductClick: (product: Product) => void
+  slotClassNames?: ProductGridProps['cardSlotClassNames']
 }
 
 function ProductCard({
@@ -330,6 +345,7 @@ function ProductCard({
   formatPrice,
   getProductBadges,
   onProductClick,
+  slotClassNames,
 }: ProductCardProps) {
   const [isFavorite, setIsFavorite] = React.useState(
     product.isFavorite || false,
@@ -412,7 +428,13 @@ function ProductCard({
         )}
       >
         {/* Image container */}
-        <div className="relative w-full overflow-hidden bg-[var(--color-muted)] product-image-container">
+        <div
+          data-slot="image"
+          className={clsx(
+            'relative w-full overflow-hidden bg-[var(--color-muted)] product-image-container',
+            slotClassNames?.image,
+          )}
+        >
           {!imageLoaded && (
             <div className="absolute inset-0 animate-pulse bg-[var(--color-muted-foreground)]/20" />
           )}
@@ -432,7 +454,13 @@ function ProductCard({
 
           {/* Badges */}
           {badges.length > 0 && (
-            <div className="absolute top-2 left-2 flex flex-col gap-2">
+            <div
+              data-slot="badges"
+              className={clsx(
+                'absolute top-2 left-2 flex flex-col gap-2',
+                slotClassNames?.badges,
+              )}
+            >
               {badges.map((badge, index) => (
                 <span
                   key={index}
@@ -494,8 +522,17 @@ function ProductCard({
         </div>
 
         {/* Product info */}
-        <div className="flex flex-col flex-1 p-4">
-          <h3 className="text-sm font-medium text-[var(--color-foreground)] group-hover:text-[var(--color-muted-foreground)]">
+        <div
+          data-slot="info"
+          className={clsx('flex min-w-0 flex-1 flex-col p-4', slotClassNames?.info)}
+        >
+          <h3
+            data-slot="title"
+            className={clsx(
+              'text-sm font-medium text-[var(--color-foreground)] group-hover:text-[var(--color-muted-foreground)]',
+              slotClassNames?.title,
+            )}
+          >
             <a
               href={product.href}
               onClick={(e) => {
@@ -509,14 +546,23 @@ function ProductCard({
           </h3>
 
           {product.description && (
-            <p className="mt-1 text-sm text-[var(--color-muted-foreground)] line-clamp-2">
+            <p
+              data-slot="description"
+              className={clsx(
+                'mt-1 min-h-[2.5rem] text-sm text-[var(--color-muted-foreground)] line-clamp-2',
+                slotClassNames?.description,
+              )}
+            >
               {product.description}
             </p>
           )}
 
           {/* Rating */}
           {product.cta?.rating && (
-            <div className="mt-2 flex items-center gap-1">
+            <div
+              data-slot="rating"
+              className={clsx('mt-2 flex items-center gap-1', slotClassNames?.rating)}
+            >
               {[1, 2, 3, 4, 5].map((star) => (
                 <span key={star} className="text-yellow-400" aria-hidden="true">
                   {star <= Math.round(product.cta!.rating!) ? (
@@ -535,8 +581,17 @@ function ProductCard({
           )}
 
           {/* Price and Add to Cart */}
-          <div className="mt-auto pt-4 flex items-center justify-between">
-            <div className="flex flex-col">
+          <div
+            data-slot="footer"
+            className={clsx(
+              'mt-auto flex min-w-0 items-end justify-between gap-3 pt-4',
+              slotClassNames?.footer,
+            )}
+          >
+            <div
+              data-slot="price"
+              className={clsx('flex min-w-0 flex-1 flex-col', slotClassNames?.price)}
+            >
               <span className="text-base font-semibold text-[var(--color-foreground)]">
                 {formatted}
               </span>
@@ -557,7 +612,10 @@ function ProductCard({
               )}
             </div>
 
-            <div className="flex-shrink-0">
+            <div
+              data-slot="cta"
+              className={clsx('flex shrink-0 items-center', slotClassNames?.cta)}
+            >
               {product.onAddToCart && (
                 <AddToCartButton
                   text="Add to cart"

@@ -4,6 +4,7 @@ import { ChevronDownIcon } from '@heroicons/react/24/outline'
 
 interface CollapsibleMenuProps {
   mode: 'full' | 'mini'
+  density?: 'default' | 'compact'
   icon: React.ComponentType<{ className?: string }>
   title: string
   children: React.ReactNode
@@ -13,6 +14,7 @@ interface CollapsibleMenuProps {
 
 const CollapsibleMenu = ({
   mode,
+  density = 'default',
   icon: Icon,
   title,
   children,
@@ -44,6 +46,7 @@ const CollapsibleMenu = ({
       <div
         className={clsx(
           'rounded-[1.25rem] border border-[var(--color-border)] bg-[var(--color-background)]/75 p-1.5 backdrop-blur-sm transition-colors duration-200',
+            density === 'compact' && 'p-1.25',
           isOpen &&
             'border-sky-200/70 bg-[color-mix(in_srgb,var(--color-surface)_90%,rgb(14_165_233)_10%)] dark:border-sky-400/20',
           mode === 'mini' &&
@@ -69,7 +72,10 @@ const CollapsibleMenu = ({
                     ? 'border border-sky-200/70 bg-white text-sky-700 shadow-[0_14px_30px_-24px_rgba(14,165,233,0.28)] ring-1 ring-sky-100/80 dark:border-sky-400/25 dark:bg-[color-mix(in_srgb,var(--color-surface)_96%,white)] dark:text-sky-300 dark:ring-sky-400/10'
                     : 'border border-transparent text-[var(--color-muted-foreground)] hover:border-[var(--color-border)]/80 hover:bg-white/80 hover:text-[var(--color-foreground)]',
                 )
-              : 'gap-3 px-3 py-3 hover:bg-[var(--color-surface)]/80',
+              : clsx(
+                  'gap-3 hover:bg-[var(--color-surface)]/80',
+                  density === 'compact' ? 'px-2.5 py-2.5' : 'px-3 py-3',
+                ),
           )}
         >
           <span
@@ -118,7 +124,9 @@ const CollapsibleMenu = ({
 
               <ChevronDownIcon
                 className={clsx(
-                  'size-4 shrink-0 text-[var(--color-muted-foreground)] transition-transform duration-200',
+                  density === 'compact'
+                    ? 'size-4 shrink-0 text-[var(--color-muted-foreground)] transition-transform duration-200'
+                    : 'size-4 shrink-0 text-[var(--color-muted-foreground)] transition-transform duration-200',
                   isOpen && 'rotate-180 text-[var(--color-foreground)]',
                 )}
                 aria-hidden="true"
@@ -138,10 +146,13 @@ const CollapsibleMenu = ({
           <div className="overflow-hidden">
             <ul
               className={clsx(
-                'space-y-2',
+                density === 'compact' ? 'space-y-1.5' : 'space-y-2',
                 mode === 'mini'
                   ? 'space-y-1.5 px-0 pb-0 pt-1.5'
-                  : 'border-t border-[var(--color-border)]/80 px-1 pb-1 pt-3',
+                  : clsx(
+                      'border-t border-[var(--color-border)]/80 px-1 pb-1',
+                      density === 'compact' ? 'pt-2.5' : 'pt-3',
+                    ),
               )}
               role="group"
             >

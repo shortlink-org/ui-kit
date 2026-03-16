@@ -13,6 +13,8 @@ import { ProfileIdentity } from '../../../ui/ProfileIdentity/ProfileIdentity'
 
 interface HeaderProfileProps {
   profile: AppHeaderProfile
+  className?: string
+  buttonClassName?: string
 }
 
 function ProfileMenuItem({ menuItem }: { menuItem: AppHeaderProfileMenuItem }) {
@@ -127,10 +129,14 @@ function ProfileMenuItem({ menuItem }: { menuItem: AppHeaderProfileMenuItem }) {
   )
 }
 
-export function HeaderProfile({ profile }: HeaderProfileProps) {
+export function HeaderProfile({
+  profile,
+  className,
+  buttonClassName,
+}: HeaderProfileProps) {
   if (profile.render) {
     return (
-      <div className="relative ml-3">
+      <div className={clsx('relative ml-3', className)}>
         {profile.render({
           avatar: profile.avatar,
           name: profile.name,
@@ -142,9 +148,14 @@ export function HeaderProfile({ profile }: HeaderProfileProps) {
 
   if (profile.menuItems && profile.menuItems.length > 0) {
     return (
-      <div className="relative z-20 ml-3">
+      <div className={clsx('relative z-20 ml-3', className)}>
         <Menu as="div" className="relative z-20">
-          <MenuButton className="focus-ring relative flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] py-1 pl-1 pr-2 transition-[background-color,border-color,box-shadow] duration-200 hover:border-slate-300 hover:bg-[var(--color-muted)]/80 hover:shadow-[0_16px_40px_-32px_rgba(15,23,42,0.22)]">
+          <MenuButton
+            className={clsx(
+              'focus-ring relative flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] py-1 pl-1 pr-2 transition-[background-color,border-color,box-shadow] duration-200 hover:border-slate-300 hover:bg-[var(--color-muted)]/80 hover:shadow-[0_16px_40px_-32px_rgba(15,23,42,0.22)]',
+              buttonClassName,
+            )}
+          >
             <span className="absolute -inset-1.5" />
             <span className="sr-only">Open user menu</span>
             <ProfileIdentity
@@ -191,7 +202,7 @@ export function HeaderProfile({ profile }: HeaderProfileProps) {
   }
 
   return (
-    <div className="relative z-20 ml-3">
+    <div className={clsx('relative z-20 ml-3', className)}>
       <span className="sr-only">User profile</span>
       <ProfileIdentity
         avatarSrc={profile.avatar}
