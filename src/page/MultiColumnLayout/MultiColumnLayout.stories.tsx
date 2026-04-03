@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { clsx } from 'clsx'
 import preview from '#.storybook/preview'
 import {
   BellAlertIcon,
@@ -155,6 +156,7 @@ const controlCenterMenu: Record<
         eyebrow="Growth engine"
         title="Campaign pacing, attribution and creative velocity"
         description="This is the primary showcase scenario for the refreshed multi-column system."
+        headerClassName="[&>div:first-child]:hidden border-[var(--color-border)] bg-[var(--color-surface)] shadow-[0_22px_56px_-36px_rgba(15,23,42,0.2)] dark:shadow-[0_22px_56px_-36px_rgba(0,0,0,0.45)] [&_p.text-sky-600]:!text-[var(--color-muted-foreground)] dark:[&_p.text-sky-300]:!text-[var(--color-muted-foreground)]"
       />
     ),
   },
@@ -227,10 +229,12 @@ function DashboardCanvas({
   eyebrow,
   title,
   description,
+  headerClassName,
 }: {
   eyebrow: string
   title: string
   description: string
+  headerClassName?: string
 }) {
   return (
     <div className="flex h-full min-h-0 flex-col gap-4 p-4 sm:p-5">
@@ -238,6 +242,7 @@ function DashboardCanvas({
         eyebrow={eyebrow}
         title={title}
         description={description}
+        className={headerClassName}
         stats={[
           { label: 'Gross revenue', value: '$482K' },
           { label: 'Conversion lift', value: '+18.4%' },
@@ -473,6 +478,9 @@ export const CommerceWorkbench = meta.story({
   render: () => {
     const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false)
 
+    const miniStacked =
+      'xl:-translate-x-2 xl:[&>div]:ring-1 xl:[&>div]:ring-sky-200/50 xl:dark:[&>div]:ring-sky-400/30 xl:[&>div]:shadow-[0_28px_70px_-34px_rgba(56,189,248,0.32),0_18px_48px_-32px_rgba(15,23,42,0.12)]'
+
     const columns: ColumnConfig[] = [
       {
         id: 'sidebar',
@@ -481,16 +489,27 @@ export const CommerceWorkbench = meta.story({
             activePath="/growth/campaigns"
             collapsed={sidebarCollapsed}
             onCollapsedChange={setSidebarCollapsed}
+            className={sidebarCollapsed ? miniStacked : undefined}
           />
         ),
-        width: { xl: sidebarCollapsed ? '5.25rem' : '18rem' },
+        width: { xl: sidebarCollapsed ? '7rem' : '18rem' },
         surface: 'plain',
         sticky: true,
         stickyOffset: '5rem',
+        className: clsx(
+          'relative min-h-0',
+          sidebarCollapsed &&
+            'z-[5] xl:!overflow-visible max-xl:z-auto',
+        ),
       },
       {
         id: 'main',
         content: controlCenterMenu['/growth/campaigns'].content,
+        className: clsx(
+          'relative min-h-0',
+          sidebarCollapsed &&
+            'z-30 xl:-ml-12 xl:pl-3 xl:!overflow-visible max-xl:z-auto max-xl:ml-0 max-xl:pl-0',
+        ),
       },
       {
         id: 'rail',
@@ -498,6 +517,10 @@ export const CommerceWorkbench = meta.story({
         width: { xl: '22rem' },
         sticky: true,
         stickyOffset: '5rem',
+        className: clsx(
+          'relative min-h-0',
+          sidebarCollapsed && 'z-[15] max-xl:z-auto',
+        ),
       },
     ]
 
@@ -510,6 +533,7 @@ export const CommerceWorkbench = meta.story({
         <MultiColumnLayout
           columns={columns}
           gap="md"
+          gridClassName="!pt-5 sm:!pt-6 lg:!pt-7"
           minHeight="min-h-[calc(100vh-8rem)]"
           stackAt="xl"
           mobileDrawer={{
@@ -540,7 +564,7 @@ export const CommerceWithSecondaryRail = meta.story({
             className="[&>div]:rounded-r-none [&>div]:border-r-0 [&>div]:shadow-[12px_0_34px_-28px_rgba(15,23,42,0.18)]"
           />
         ),
-        width: { xl: sidebarCollapsed ? '5.25rem' : '18rem' },
+        width: { xl: sidebarCollapsed ? '7rem' : '18rem' },
         surface: 'plain' as const,
         sticky: true,
         stickyOffset: '5rem',
@@ -635,7 +659,7 @@ export const InteractiveWorkspace = meta.story({
             onCollapsedChange={setSidebarCollapsed}
           />
         ),
-        width: { xl: sidebarCollapsed ? '5.25rem' : '18rem' },
+        width: { xl: sidebarCollapsed ? '7rem' : '18rem' },
         surface: 'plain',
         sticky: true,
         stickyOffset: '5rem',

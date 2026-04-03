@@ -50,6 +50,8 @@ export interface MultiColumnLayoutProps {
   gap?: 'none' | 'sm' | 'md' | 'lg'
   minHeight?: string
   containerClassName?: string
+  /** Classes merged onto the inner grid div (`data-layout-id`, gap, shell padding). */
+  gridClassName?: string
   stackAt?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
   dataTestId?: string
   mobileDrawer?: MobileDrawerConfig
@@ -115,6 +117,7 @@ export function MultiColumnLayout({
   gap = defaultConfig.gap,
   minHeight = defaultConfig.minHeight,
   containerClassName = defaultConfig.containerClassName,
+  gridClassName,
   stackAt = defaultConfig.stackAt,
   dataTestId,
   mobileDrawer,
@@ -343,6 +346,7 @@ export function MultiColumnLayout({
             shellPaddingClasses[gap],
             minHeight,
             'h-full w-full',
+            gridClassName,
           )}
         >
           {validColumns.map((column, index) => {
