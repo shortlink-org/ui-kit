@@ -1,4 +1,7 @@
+'use client'
+
 import * as React from 'react'
+import { createPortal } from 'react-dom'
 import {
   Listbox,
   ListboxButton,
@@ -14,6 +17,181 @@ import {
 } from '@heroicons/react/24/outline'
 import ActiveLink from './ActiveLink'
 import { clsx } from 'clsx'
+
+function getScrollableAncestors(node: HTMLElement | null): HTMLElement[] {
+  const acc: HTMLElement[] = []
+  let el = node?.parentElement ?? null
+  while (el && el !== document.documentElement) {
+    const { overflowY, overflowX } = getComputedStyle(el)
+    if (
+      /(auto|scroll|overlay)/.test(overflowY) ||
+      /(auto|scroll|overlay)/.test(overflowX)
+    ) {
+      acc.push(el)
+    }
+    el = el.parentElement
+  }
+  return acc
+}
+
+type CollapsedSecondaryMenuItemLinkProps = {
+  item: SecondaryMenuItem
+  isActive: boolean
+  activePath?: string
+  activeClassName?: string
+  inactiveClassName?: string
+  LinkComponent?: React.ComponentType<{
+    href: string
+    children: React.ReactNode
+    className?: string
+    activeClassName?: string
+    activePath?: string
+    passHref?: boolean
+  }>
+  getItemMonogram: (label: string) => string
+}
+
+function CollapsedSecondaryMenuItemLink({
+  item,
+  isActive,
+  activePath,
+  activeClassName,
+  inactiveClassName,
+  LinkComponent,
+  getItemMonogram,
+}: CollapsedSecondaryMenuItemLinkProps) {
+  const anchorRef = React.useRef<HTMLDivElement>(null)
+  const [tooltipOpen, setTooltipOpen] = React.useState(false)
+  const [tooltipPos, setTooltipPos] = React.useState({ left: 0, top: 0 })
+
+  const updateTooltipPosition = React.useCallback(() => {
+    const el = anchorRef.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    setTooltipPos({ left: r.right + 12, top: r.top + r.height / 2 })
+  }, [])
+
+  React.useLayoutEffect(() => {
+    if (!tooltipOpen) return
+    updateTooltipPosition()
+    const el = anchorRef.current
+    if (!el) return
+    const ro = new ResizeObserver(updateTooltipPosition)
+    ro.observe(el)
+    const scrollParents = getScrollableAncestors(el)
+    scrollParents.forEach((parent) =>
+      parent.addEventListener('scroll', updateTooltipPosition, { passive: true }),
+    )
+    window.addEventListener('scroll', updateTooltipPosition, true)
+    window.addEventListener('resize', updateTooltipPosition)
+    return () => {
+      ro.disconnect()
+      scrollParents.forEach((parent) =>
+        parent.removeEventListener('scroll', updateTooltipPosition),
+      )
+      window.removeEventListener('scroll', updateTooltipPosition, true)
+      window.removeEventListener('resize', updateTooltipPosition)
+    }
+  }, [tooltipOpen, updateTooltipPosition])
+
+  const linkProps = {
+    href: item.url,
+    passHref: true,
+    activeClassName,
+    activePath,
+  }
+
+  const row = (
+    <div
+      ref={anchorRef}
+      className={clsx(
+        'group relative flex min-h-11 items-center justify-center rounded-[1rem] border px-2 py-3 text-sm transition-all duration-200 focus-visible:outline-none',
+        isActive
+          ? 'border-sky-300/70 bg-sky-500/10 text-sky-700 shadow-[0_18px_40px_-30px_rgba(14,165,233,0.55)] dark:border-sky-400/30 dark:bg-sky-400/10 dark:text-sky-300'
+          : 'border-transparent bg-transparent text-[var(--color-muted-foreground)] hover:border-[var(--color-border)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]',
+        !isActive && inactiveClassName,
+        isActive && activeClassName,
+      )}
+      aria-label={item.name}
+      onPointerEnter={() => {
+        updateTooltipPosition()
+        setTooltipOpen(true)
+      }}
+      onPointerLeave={() => setTooltipOpen(false)}
+      onFocus={() => {
+        requestAnimationFrame(() => {
+          if (anchorRef.current?.matches(':focus-visible')) {
+            updateTooltipPosition()
+            setTooltipOpen(true)
+          }
+        })
+      }}
+      onBlur={() => setTooltipOpen(false)}
+      {...(item.dataAttributes || {})}
+    >
+      {isActive ? (
+        <span
+          className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-sky-500"
+          aria-hidden="true"
+        />
+      ) : null}
+
+      {item.icon ? (
+        <span
+          className={clsx(
+            'inline-flex size-8 shrink-0 items-center justify-center rounded-[0.85rem]',
+            isActive
+              ? 'bg-sky-500/10 text-current'
+              : 'bg-[var(--color-background)] text-current',
+          )}
+          aria-hidden="true"
+        >
+          {item.icon}
+        </span>
+      ) : (
+        <span className="text-[11px] font-semibold uppercase tracking-[0.12em]">
+          {getItemMonogram(item.name)}
+        </span>
+      )}
+    </div>
+  )
+
+  return (
+    <>
+      {LinkComponent ? (
+        <LinkComponent {...linkProps}>{row}</LinkComponent>
+      ) : (
+        <ActiveLink {...linkProps}>{row}</ActiveLink>
+      )}
+      {tooltipOpen && typeof document !== 'undefined'
+        ? createPortal(
+            <div
+              role="tooltip"
+              className="pointer-events-none fixed z-[9999]"
+              style={{
+                left: tooltipPos.left,
+                top: tooltipPos.top,
+                transform: 'translateY(-50%)',
+              }}
+            >
+              <span
+                className={clsx(
+                  'relative block whitespace-nowrap rounded-xl border border-slate-200/90 bg-white px-3 py-2 text-xs font-semibold tracking-[0.08em] text-slate-900 shadow-[0_16px_36px_-22px_rgba(15,23,42,0.28)] ring-1 ring-slate-950/5 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:ring-white/10',
+                )}
+              >
+                <span
+                  className="absolute left-0 top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rotate-45 border-b border-l border-slate-200/90 bg-white dark:border-slate-700 dark:bg-slate-900"
+                  aria-hidden="true"
+                />
+                {item.name}
+              </span>
+            </div>,
+            document.body,
+          )
+        : null}
+    </>
+  )
+}
 
 export interface SecondaryMenuItem {
   url: string
@@ -55,6 +233,8 @@ export interface SecondaryMenuProps {
     activePath?: string
     passHref?: boolean
   }>
+  /** When true, no outer shadow and no sky seam — use inside a shared rounded shell next to Sidebar. */
+  embedded?: boolean
 }
 
 export function SecondaryMenu({
@@ -73,13 +253,14 @@ export function SecondaryMenu({
   activeClassName,
   inactiveClassName,
   LinkComponent,
+  embedded = false,
 }: SecondaryMenuProps) {
   const isCollapsedControlled = collapsed !== undefined
   const [localCollapsed, setLocalCollapsed] = React.useState(false)
   const effectiveCollapsed = isCollapsedControlled ? collapsed : localCollapsed
   const containerStyles: React.CSSProperties = {
     ...(sticky && { top: stickyOffset }),
-    ...(parentLabel
+    ...(parentLabel && !embedded
       ? {
           boxShadow:
             '-14px 0 30px -26px rgba(15,23,42,0.14), 20px 0 42px -30px rgba(15,23,42,0.18)',
@@ -142,63 +323,17 @@ export function SecondaryMenu({
     const isActive = isItemActive(item.url)
     const defaultRender = () => {
       if (effectiveCollapsed) {
-        const compactContent = (
-          <div
-            className={clsx(
-              'group relative flex min-h-11 items-center justify-center rounded-[1rem] border px-2 py-3 text-sm transition-all duration-200 focus-visible:outline-none',
-              isActive
-                ? 'border-sky-300/70 bg-sky-500/10 text-sky-700 shadow-[0_18px_40px_-30px_rgba(14,165,233,0.55)] dark:border-sky-400/30 dark:bg-sky-400/10 dark:text-sky-300'
-                : 'border-transparent bg-transparent text-[var(--color-muted-foreground)] hover:border-[var(--color-border)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]',
-              !isActive && inactiveClassName,
-              isActive && activeClassName,
-            )}
-            title={item.name}
-            aria-label={item.name}
-            {...(item.dataAttributes || {})}
-          >
-            {isActive ? (
-              <span
-                className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-sky-500"
-                aria-hidden="true"
-              />
-            ) : null}
-
-            {item.icon ? (
-              <span
-                className={clsx(
-                  'inline-flex size-8 shrink-0 items-center justify-center rounded-[0.85rem]',
-                  isActive
-                    ? 'bg-sky-500/10 text-current'
-                    : 'bg-[var(--color-background)] text-current',
-                )}
-                aria-hidden="true"
-              >
-                {item.icon}
-              </span>
-            ) : (
-              <span className="text-[11px] font-semibold uppercase tracking-[0.12em]">
-                {getItemMonogram(item.name)}
-              </span>
-            )}
-          </div>
+        return (
+          <CollapsedSecondaryMenuItemLink
+            item={item}
+            isActive={isActive}
+            activePath={activePath}
+            activeClassName={activeClassName}
+            inactiveClassName={inactiveClassName}
+            LinkComponent={LinkComponent}
+            getItemMonogram={getItemMonogram}
+          />
         )
-
-        const linkProps = {
-          href: item.url,
-          passHref: true,
-          activeClassName,
-          activePath,
-        }
-
-        if (LinkComponent) {
-          return (
-            <LinkComponent {...linkProps}>
-              {compactContent}
-            </LinkComponent>
-          )
-        }
-
-        return <ActiveLink {...linkProps}>{compactContent}</ActiveLink>
       }
 
       const content = (
@@ -346,14 +481,18 @@ export function SecondaryMenu({
     >
       <div
         className={clsx(
-          'relative flex h-full min-h-0 flex-col overflow-hidden rounded-[1.6rem] border bg-[color-mix(in_srgb,var(--color-surface)_95%,white)] backdrop-blur-xl',
-          effectiveCollapsed && 'rounded-[1.35rem]',
-          parentLabel
-            ? 'rounded-l-none border-l-0 border-sky-200/80 dark:border-sky-400/15'
-            : 'border-[var(--color-border)] shadow-[0_26px_70px_-48px_rgba(15,23,42,0.42)]',
+          'relative flex h-full min-h-0 flex-col overflow-hidden backdrop-blur-xl',
+          embedded
+            ? 'rounded-none border-0 bg-transparent shadow-none'
+            : 'rounded-[1.6rem] border bg-[color-mix(in_srgb,var(--color-surface)_95%,white)]',
+          !embedded && effectiveCollapsed && 'rounded-[1.35rem]',
+          !embedded &&
+            (parentLabel
+              ? 'rounded-l-none border-l-0 border-sky-200/80 dark:border-sky-400/15'
+              : 'border-[var(--color-border)] shadow-[0_26px_70px_-48px_rgba(15,23,42,0.42)]'),
         )}
       >
-        {parentLabel ? (
+        {parentLabel && !embedded ? (
           <div
             className="absolute bottom-0 left-0 top-0 w-px bg-[linear-gradient(180deg,rgba(14,165,233,0.14)_0%,rgba(14,165,233,0.65)_22%,rgba(56,189,248,0.16)_100%)]"
             aria-hidden="true"
@@ -388,7 +527,14 @@ export function SecondaryMenu({
                     Selected in sidebar
                   </p>
                   <div className="mt-2 flex items-center gap-2 text-sm font-semibold text-[var(--color-foreground)]">
-                    <span className="inline-flex rounded-full border border-sky-200/80 bg-white/85 px-2.5 py-1 text-[11px] uppercase tracking-[0.14em] text-sky-700 shadow-[0_10px_28px_-20px_rgba(14,165,233,0.45)] dark:border-sky-400/20 dark:bg-slate-950/40 dark:text-sky-300">
+                    <span
+                      className={clsx(
+                        'inline-flex rounded-full border px-2.5 py-1 text-[11px] uppercase tracking-[0.14em]',
+                        embedded
+                          ? 'border-[var(--color-border)] bg-[var(--color-muted)] text-[var(--color-foreground)]'
+                          : 'border-sky-200/80 bg-white/85 text-sky-700 shadow-[0_10px_28px_-20px_rgba(14,165,233,0.45)] dark:border-sky-400/20 dark:bg-slate-950/40 dark:text-sky-300',
+                      )}
+                    >
                       {parentLabel}
                     </span>
                     <ChevronRightIcon className="size-4 text-[var(--color-muted-foreground)]" />

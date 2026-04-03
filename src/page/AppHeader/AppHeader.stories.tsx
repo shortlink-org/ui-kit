@@ -121,43 +121,6 @@ export const WorkspaceDashboard = meta.story({
   ),
 })
 
-export const CommerceControlCenter = meta.story({
-  args: {
-    workspaceLabel: 'Seller operations',
-    statusBadge: {
-      label: 'Q1 launch',
-      tone: 'accent',
-    },
-    currentPath: '/catalog',
-    navigation: [
-      { name: 'Overview', href: '/overview' },
-      { name: 'Catalog', href: '/catalog', badge: '128' },
-      { name: 'Orders', href: '/orders', badge: '19' },
-      { name: 'Leaderboard', href: '/leaderboard' },
-    ],
-    showMenuButton: true,
-    onMenuClick: fn(),
-    showThemeToggle: true,
-    showSearch: true,
-    searchProps: {
-      placeholder: 'Search SKU, seller, or customer…',
-      onSearch: fn(),
-    },
-    showNotifications: true,
-    notifications: {
-      count: 3,
-    },
-    showProfile: true,
-    profile: {
-      avatar:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=96&h=96&fit=crop',
-      name: 'John Doe',
-      email: 'john@example.com',
-      menuItems: profileMenu,
-    },
-  },
-})
-
 export const SignedOutMarketing = meta.story({
   args: {
     brand: {

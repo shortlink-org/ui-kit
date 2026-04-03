@@ -255,7 +255,7 @@ export function FeatureCard({
     const centerY = rect.top + rect.height / 2
     const mouseX = event.clientX - centerX
     const mouseY = event.clientY - centerY
-    const maxTilt = 7
+    const maxTilt = 3
 
     rotateY.set((mouseX / (rect.width / 2)) * maxTilt)
     rotateX.set(-(mouseY / (rect.height / 2)) * maxTilt)

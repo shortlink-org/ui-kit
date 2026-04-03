@@ -11,6 +11,7 @@ import {
 import CollapsibleMenu from './CollapsibleMenu'
 import Footer from './Footer'
 import getItem from './Item'
+import { SidebarNavContext } from './SidebarNavContext'
 
 export type SidebarItem = {
   url: string
@@ -54,6 +55,7 @@ export type SidebarProps = {
   activeClassName?: string
   inactiveClassName?: string
   density?: 'default' | 'compact'
+  embedded?: boolean
 }
 
 const defaultSections: SidebarSection[] = [
@@ -117,6 +119,7 @@ export function Sidebar({
   activeClassName,
   inactiveClassName,
   density = 'default',
+  embedded = false,
 }: SidebarProps) {
   const isCollapsedControlled = sidebarCollapsed !== undefined
   const [localMode, setLocalMode] = React.useState<'full' | 'mini'>(mode)
@@ -141,7 +144,7 @@ export function Sidebar({
         ? `${width}px`
         : width
       : effectiveMode === 'mini'
-        ? '5.25rem'
+        ? '7rem'
         : undefined
 
   const effectiveHeight =
@@ -209,13 +212,17 @@ export function Sidebar({
     >
       <div
         className={clsx(
-          'relative flex h-full min-h-0 flex-col rounded-[1.75rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_92%,white)] shadow-[0_30px_80px_-48px_rgba(15,23,42,0.55)] backdrop-blur-xl',
-          effectiveMode === 'mini' ? 'overflow-hidden' : 'overflow-hidden',
+          'relative flex h-full min-h-0 flex-col',
+          embedded
+            ? 'border-0 bg-transparent shadow-none'
+            : 'rounded-[1.75rem] border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_92%,white)] shadow-[0_30px_80px_-48px_rgba(15,23,42,0.55)] backdrop-blur-xl',
+          effectiveMode === 'mini' ? 'overflow-visible' : 'overflow-hidden',
         )}
       >
         <div
           className={clsx(
             'pointer-events-none absolute inset-x-0 top-0 h-28 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.16),_transparent_70%)]',
+            embedded && 'hidden',
             effectiveMode === 'mini' &&
               'inset-x-2 top-2 h-14 rounded-t-[1.2rem] bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.12),_transparent_72%)]',
           )}
@@ -225,86 +232,95 @@ export function Sidebar({
         <div
           className={clsx(
             'relative flex min-h-0 flex-1 flex-col',
-            'overflow-hidden',
+            effectiveMode === 'mini' ? 'overflow-visible' : 'overflow-hidden',
           )}
         >
-          <nav
-            aria-label={ariaLabel}
-            className={clsx(
-              'relative min-h-0 flex-1',
-              density === 'compact' ? 'px-2.5 py-2.5' : 'px-3 py-3',
-              effectiveMode === 'mini' && 'overflow-visible px-2 py-2',
-              'overflow-y-auto overscroll-contain pr-2',
-            )}
-          >
-            <ul
+          <SidebarNavContext.Provider value={{ itemPresentation: 'rail' }}>
+            <nav
+              aria-label={ariaLabel}
               className={clsx(
-                density === 'compact' ? 'space-y-2.5' : 'space-y-3',
-                effectiveMode === 'mini' && 'space-y-2',
+                'relative min-h-0 flex-1 overflow-y-auto overscroll-contain',
+                density === 'compact' ? 'px-2.5 py-2.5' : 'px-3 py-3',
+                effectiveMode === 'mini'
+                  ? 'overflow-visible px-2.5 py-3'
+                  : 'pr-2',
               )}
             >
-              {sections.map((section, sectionIndex) => {
-                if (section.type === 'collapsible') {
-                  const isCollapsed =
-                    effectiveMode === 'mini'
-                      ? true
-                      : collapsedState[section.title] ??
-                        section.defaultCollapsed ??
-                        false
+              <ul
+                className={clsx(
+                  density === 'compact' ? 'space-y-2.5' : 'space-y-3',
+                  effectiveMode === 'mini' && 'space-y-2.5',
+                )}
+              >
+                {sections.map((section, sectionIndex) => {
+                  if (section.type === 'collapsible') {
+                    const isCollapsed =
+                      collapsedState[section.title] ??
+                      section.defaultCollapsed ??
+                      (effectiveMode === 'mini' ? true : false)
+
+                    return (
+                      <CollapsibleMenu
+                        key={`collapsible-${sectionIndex}-${section.title}`}
+                        icon={section.icon}
+                        title={section.title}
+                        mode={effectiveMode}
+                        density={density}
+                        collapsed={isCollapsed}
+                        onCollapseChange={(collapsed) =>
+                          handleCollapseChange(section.title, collapsed)
+                        }
+                      >
+                        {section.items.map((item) => renderSidebarItem(item))}
+                      </CollapsibleMenu>
+                    )
+                  }
 
                   return (
-                    <CollapsibleMenu
-                      key={`collapsible-${sectionIndex}-${section.title}`}
-                      icon={section.icon}
-                      title={section.title}
-                      mode={effectiveMode}
-                      density={density}
-                      collapsed={isCollapsed}
-                      onCollapseChange={(collapsed) =>
-                        handleCollapseChange(section.title, collapsed)
-                      }
-                    >
-                      {section.items.map((item) => renderSidebarItem(item))}
-                    </CollapsibleMenu>
-                  )
-                }
-
-                return (
-                  <li
-                    key={`simple-${sectionIndex}`}
-                    className={clsx(
-                      'list-none rounded-[1.25rem] border border-[var(--color-border)] bg-[var(--color-background)]/70 backdrop-blur-sm',
-                      density === 'compact' ? 'p-1.25' : 'p-1.5',
-                      effectiveMode === 'mini' &&
-                        'rounded-none border-transparent bg-transparent p-0 backdrop-blur-none',
-                    )}
-                  >
-                    <ul
+                    <li
+                      key={`simple-${sectionIndex}`}
                       className={clsx(
-                        density === 'compact' ? 'space-y-1.5' : 'space-y-2',
-                        effectiveMode === 'mini' && 'space-y-1.5',
+                        'list-none rounded-[1.25rem] border border-[var(--color-border)] bg-[var(--color-background)]/70 backdrop-blur-sm',
+                        density === 'compact' ? 'p-1.25' : 'p-1.5',
+                        effectiveMode === 'mini' &&
+                          'rounded-[1.35rem] border border-[var(--color-border)]/70 bg-[color-mix(in_srgb,var(--color-background)_88%,var(--color-muted)_12%)] p-1.5 backdrop-blur-sm',
                       )}
                     >
-                      {section.items.map(renderSidebarItem)}
-                    </ul>
-                  </li>
-                )
-              })}
-            </ul>
-          </nav>
+                      <ul
+                        className={clsx(
+                          density === 'compact' ? 'space-y-1.5' : 'space-y-2',
+                          effectiveMode === 'mini' && 'space-y-1',
+                        )}
+                      >
+                        {section.items.map(renderSidebarItem)}
+                      </ul>
+                    </li>
+                  )
+                })}
+              </ul>
+            </nav>
+          </SidebarNavContext.Provider>
 
           <div className="relative z-10 mt-auto sticky bottom-0">
             <div
               className="pointer-events-none absolute inset-x-0 top-0 h-6 bg-linear-to-t from-transparent to-[color-mix(in_srgb,var(--color-surface)_92%,white)]"
               aria-hidden="true"
             />
-            <div className="relative bg-[color-mix(in_srgb,var(--color-surface)_92%,white)]/96 backdrop-blur-xl">
+            <div
+              className={clsx(
+                'relative backdrop-blur-xl',
+                embedded
+                  ? 'bg-[var(--color-surface)]/90'
+                  : 'bg-[color-mix(in_srgb,var(--color-surface)_92%,white)]/96',
+              )}
+            >
               {footerSlot !== undefined ? (
                 footerSlot
               ) : (
                 <Footer
                   mode={effectiveMode}
                   density={density}
+                  embedded={embedded}
                   onToggleMode={handleModeToggle}
                 />
               )}

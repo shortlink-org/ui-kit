@@ -8,6 +8,7 @@ import { ProfileIdentity } from '../../ui/ProfileIdentity/ProfileIdentity'
 interface FooterProps {
   mode?: 'full' | 'compact' | 'mini'
   density?: 'default' | 'compact'
+  embedded?: boolean
   name?: string
   email?: string
   avatarUrl?: string
@@ -17,6 +18,7 @@ interface FooterProps {
 function Footer({
   mode = 'full',
   density = 'default',
+  embedded = false,
   name = 'User Name',
   email = 'user@example.com',
   avatarUrl = 'https://i.ibb.co/fxrbS6p/Ellipse-2-2.png',
@@ -24,6 +26,48 @@ function Footer({
 }: FooterProps) {
   const compactMode = mode === 'mini' || mode === 'compact'
   const dense = density === 'compact'
+  const miniRail = compactMode && mode === 'mini'
+
+  if (miniRail) {
+    return (
+      <div
+        className={clsx(
+          'border-t border-[var(--color-border)]/80 pt-3 pb-3.5',
+          embedded && 'bg-transparent',
+        )}
+      >
+        <div className="flex flex-col items-center gap-3">
+          {onToggleMode ? (
+            <button
+              type="button"
+              onClick={onToggleMode}
+              aria-label="Expand sidebar"
+              title="Expand sidebar"
+              className="focus-ring inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-[1rem] border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-muted-foreground)] transition-colors duration-200 hover:bg-[color-mix(in_srgb,var(--color-muted)_38%,transparent)] hover:text-[var(--color-foreground)]"
+            >
+              <ChevronDoubleRightIcon className="size-4" aria-hidden="true" />
+            </button>
+          ) : null}
+
+          <button
+            type="button"
+            aria-label={`Open ${name} profile`}
+            title={name}
+            className="focus-ring relative inline-flex size-11 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-[1rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-0.5 text-[var(--color-muted-foreground)] transition-[transform,border-color] duration-200 hover:border-sky-200/70 hover:shadow-[0_12px_28px_-18px_rgba(14,165,233,0.35)]"
+          >
+            <ProfileIdentity
+              avatarSrc={avatarUrl}
+              name={name}
+              size="md"
+              showDetails={false}
+              avatarShape="rounded"
+              avatarClassName="size-full rounded-[0.85rem]"
+            />
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div
@@ -46,14 +90,14 @@ function Footer({
         />
 
         {compactMode ? (
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center gap-2.5">
             {onToggleMode ? (
               <button
                 type="button"
                 onClick={onToggleMode}
                 aria-label="Expand sidebar"
                 title="Expand sidebar"
-                className="focus-ring inline-flex size-9 cursor-pointer items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-muted-foreground)] transition-colors duration-200 hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]"
+                className="focus-ring inline-flex size-10 cursor-pointer items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-muted-foreground)] transition-colors duration-200 hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]"
               >
                 <ChevronDoubleRightIcon className="size-4" />
               </button>

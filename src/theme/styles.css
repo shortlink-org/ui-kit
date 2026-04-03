@@ -61,6 +61,12 @@
   --color-muted: var(--color-gray-100);
   --color-muted-foreground: var(--color-gray-500);
 
+  /* Status highlights (badges, metrics, charts) — shared across stories and layouts */
+  --color-status-success: #15803d;
+  --color-status-success-soft: color-mix(in srgb, #22c55e 12%, transparent);
+  --color-status-accent: var(--color-primary-700);
+  --color-status-accent-soft: color-mix(in srgb, var(--color-primary-500) 12%, transparent);
+
   /* Spacing tokens */
   --spacing-xs: 0.25rem; /* 4px */
   --spacing-sm: 0.5rem; /* 8px */
@@ -104,6 +110,11 @@
   --color-border: var(--color-gray-700);
   --color-muted: var(--color-gray-800);
   --color-muted-foreground: var(--color-gray-400);
+
+  --color-status-success: #86efac;
+  --color-status-success-soft: color-mix(in srgb, #4ade80 14%, transparent);
+  --color-status-accent: var(--color-primary-300);
+  --color-status-accent-soft: color-mix(in srgb, var(--color-primary-400) 14%, transparent);
 
   /* Table tokens - dark mode */
   --table-row-hover: rgba(31, 41, 55, 0.5); /* gray-800 with opacity */

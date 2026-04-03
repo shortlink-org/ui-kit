@@ -129,7 +129,7 @@ export const Footer: React.FC<FooterProps> = ({
     }
 
     const linkClassName =
-      'text-gray-400 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition-colors duration-200'
+      'text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-colors duration-200'
 
     if (link.render) {
       return link.render({
@@ -166,9 +166,9 @@ export const Footer: React.FC<FooterProps> = ({
   return (
     <footer
       className={clsx(
-        'w-full content-center bg-white py-8 dark:bg-gray-800',
+        'w-full content-center bg-[var(--color-surface)] py-8 text-[var(--color-foreground)]',
         contained && 'mx-auto max-w-7xl',
-        rounded && 'rounded-t-lg',
+        rounded && 'rounded-t-[length:var(--radius-md)]',
         withTopMargin && 'mt-5',
         className,
       )}
@@ -178,13 +178,13 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="mb-8 text-center">
             {logoSlot && <div className="mb-4">{logoSlot}</div>}
             {description && (
-              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              <p className="mx-auto max-w-2xl text-[var(--color-muted-foreground)]">
                 {description}
               </p>
             )}
           </div>
         )}
-        <ul className="max-w-screen-md mx-auto text-lg font-light flex flex-wrap justify-between dark:prose-dark dark:md:prose-xl-dark items-center">
+        <ul className="mx-auto flex max-w-screen-md flex-wrap items-center justify-between text-lg font-light">
           {links.map((link, index) => {
             const linkId = link.id || `link-${index}`
             const renderedLink = renderLink(link)
@@ -206,13 +206,13 @@ export const Footer: React.FC<FooterProps> = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.name}
-                className="text-gray-400 hover:text-gray-800 dark:hover:text-white transition-colors duration-200"
+                className="text-[var(--color-muted-foreground)] transition-colors duration-200 hover:text-[var(--color-foreground)]"
               >
                 <svg
                   width="20"
                   height="20"
                   fill="currentColor"
-                  className="text-xl hover:text-gray-800 dark:hover:text-white transition-colors duration-200"
+                  className="size-5"
                   viewBox={social.viewBox || '0 0 1792 1792'}
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -222,7 +222,7 @@ export const Footer: React.FC<FooterProps> = ({
             )
           })}
         </div>
-        <div className="text-center text-gray-500 dark:text-gray-200 pt-10 sm:pt-12 font-light flex items-center justify-center">
+        <div className="flex items-center justify-center pt-10 text-center text-[var(--color-muted-foreground)] font-light sm:pt-12">
           {typeof copyright === 'string' ? <span>{copyright}</span> : copyright}
         </div>
       </div>

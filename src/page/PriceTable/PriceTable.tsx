@@ -6,9 +6,14 @@ import { CheckIcon } from '@heroicons/react/24/outline'
 import { Button } from '../../ui/Button/Button'
 import PricingToggle from './PricingToggle'
 
-type LegacyButtonVariant = 'text' | 'outlined' | 'contained'
+export type PriceTierFeature = {
+  id: string
+  text: string
+}
 
-type Tier = {
+export type PriceTier = {
+  /** Stable id for list keys and analytics */
+  id: string
   title: string
   subheader: string
   /** Monthly price in the base currency */
@@ -23,24 +28,22 @@ type Tier = {
   isFeatured?: boolean
   /** Custom background color for featured badge */
   labelColor?: string
-  description: string[]
-  /** Legacy custom CTA button props */
-  ctaButton?: {
-    children?: React.ReactNode
-    onClick?: () => void
-    disabled?: boolean
-    variant?: LegacyButtonVariant
-  }
-  /** @deprecated Use monthlyPrice instead */
-  price?: number
-  buttonVariant?: LegacyButtonVariant
+  features: PriceTierFeature[]
   buttonText?: string
   /** Optional CTA URL for link-based actions */
   ctaUrl?: string
+  onCtaClick?: () => void
+  ctaDisabled?: boolean
 }
 
-export type TiersProps = {
-  tiers: Tier[]
+export type PriceTableProps = {
+  tiers: PriceTier[]
+  /** Small label above the section heading */
+  eyebrow?: string
+  /** Section heading (h2) */
+  heading?: string
+  /** Lead paragraph under the heading */
+  lead?: string
 }
 
 function formatPrice(
@@ -64,20 +67,6 @@ function formatPrice(
     .join('')
 
   return { formatted, currencySymbol }
-}
-
-function mapLegacyVariant(
-  variant?: LegacyButtonVariant,
-): 'primary' | 'outline' | 'ghost' {
-  if (variant === 'outlined') {
-    return 'outline'
-  }
-
-  if (variant === 'text') {
-    return 'ghost'
-  }
-
-  return 'primary'
 }
 
 function PriceValue({
@@ -120,11 +109,11 @@ function TierCard({
   isAnnual,
   index,
 }: {
-  tier: Tier
+  tier: PriceTier
   isAnnual: boolean
   index: number
 }) {
-  const monthlyPrice = tier.monthlyPrice ?? tier.price ?? 0
+  const monthlyPrice = tier.monthlyPrice ?? 0
   const yearlyPrice = tier.yearlyPrice ?? monthlyPrice * 12 * 0.8
   const displayPrice = isAnnual ? yearlyPrice : monthlyPrice
   const pricePeriod = isAnnual ? '/year' : '/mo'
@@ -133,26 +122,15 @@ function TierCard({
   const isFeatured = tier.isFeatured ?? false
   const badgeText = tier.badge
   const labelColor = tier.labelColor ?? '#0f172a'
-  const defaultButtonVariant = mapLegacyVariant(
-    tier.buttonVariant ?? tier.ctaButton?.variant,
-  )
-  const buttonText =
-    tier.buttonText ??
-    (typeof tier.ctaButton?.children === 'string'
-      ? tier.ctaButton.children
-      : 'Get started')
+  const buttonText = tier.buttonText ?? 'Get started'
 
   const cta = (
     <Button
-      variant={isFeatured ? 'primary' : defaultButtonVariant}
+      variant={isFeatured ? 'primary' : 'outline'}
       size="lg"
-      className={clsx(
-        'w-full justify-center rounded-[1rem]',
-        isFeatured &&
-          '!bg-slate-950 hover:!bg-slate-800 dark:!bg-white dark:!text-slate-950 dark:hover:!bg-slate-100',
-      )}
-      disabled={tier.ctaButton?.disabled}
-      onClick={tier.ctaButton?.onClick}
+      className="w-full justify-center rounded-[1rem]"
+      disabled={tier.ctaDisabled}
+      onClick={tier.onCtaClick}
       as={tier.ctaUrl ? 'a' : undefined}
       asProps={tier.ctaUrl ? { href: tier.ctaUrl } : undefined}
     >
@@ -160,12 +138,7 @@ function TierCard({
     </Button>
   )
 
-  const secondaryTextClassName = isFeatured
-    ? 'text-slate-700 dark:text-slate-300'
-    : 'text-[var(--color-muted-foreground)]'
-  const sectionLabelClassName = isFeatured
-    ? 'text-slate-600 dark:text-slate-400'
-    : 'text-[var(--color-muted-foreground)]'
+  const mutedClassName = 'text-[var(--color-muted-foreground)]'
 
   return (
     <motion.article
@@ -177,8 +150,8 @@ function TierCard({
       className={clsx(
         'group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border p-6 shadow-[0_26px_70px_-42px_rgba(15,23,42,0.45)] backdrop-blur-sm transition-[border-color,box-shadow,background-color] duration-300 sm:p-7',
         isFeatured
-          ? 'border-sky-300/70 bg-[color-mix(in_srgb,var(--color-surface)_88%,rgb(14_165_233)_12%)] hover:border-sky-400/80 hover:shadow-[0_34px_90px_-46px_rgba(14,165,233,0.42)]'
-          : 'border-[var(--color-border)] bg-[var(--color-surface)] hover:border-sky-200/70 hover:bg-[color-mix(in_srgb,var(--color-surface)_93%,rgb(14_165_233)_7%)] hover:shadow-[0_34px_90px_-50px_rgba(15,23,42,0.42)]',
+          ? 'border-[color-mix(in_srgb,var(--color-primary-400)_45%,var(--color-border))] bg-[color-mix(in_srgb,var(--color-surface)_88%,var(--color-primary-500)_12%)] hover:border-[color-mix(in_srgb,var(--color-primary-400)_60%,var(--color-border))] hover:shadow-[0_34px_90px_-46px_color-mix(in_srgb,var(--color-primary-500)_35%,transparent)]'
+          : 'border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[color-mix(in_srgb,var(--color-primary-300)_35%,var(--color-border))] hover:bg-[color-mix(in_srgb,var(--color-surface)_93%,var(--color-primary-500)_7%)] hover:shadow-[0_34px_90px_-50px_rgba(15,23,42,0.42)]',
       )}
     >
       <div
@@ -189,8 +162,8 @@ function TierCard({
           className={clsx(
             'absolute right-[-18%] top-[-12%] h-40 w-40 rounded-full blur-3xl transition-all duration-300 group-hover:scale-110',
             isFeatured
-              ? 'bg-sky-400/20 group-hover:bg-sky-400/28'
-              : 'bg-slate-300/10 group-hover:bg-sky-300/14 dark:bg-white/5 dark:group-hover:bg-sky-400/10',
+              ? 'bg-[color-mix(in_srgb,var(--color-primary-400)_22%,transparent)] group-hover:bg-[color-mix(in_srgb,var(--color-primary-400)_30%,transparent)]'
+              : 'bg-[color-mix(in_srgb,var(--color-muted-foreground)_8%,transparent)] group-hover:bg-[color-mix(in_srgb,var(--color-primary-400)_14%,transparent)] dark:bg-[color-mix(in_srgb,var(--color-background)_40%,transparent)] dark:group-hover:bg-[color-mix(in_srgb,var(--color-primary-400)_12%,transparent)]',
           )}
         />
       </div>
@@ -201,7 +174,7 @@ function TierCard({
             <p className="text-lg font-semibold text-[var(--color-foreground)]">
               {tier.title}
             </p>
-            <p className={clsx('mt-2 text-sm leading-6', secondaryTextClassName)}>
+            <p className={clsx('mt-2 text-sm leading-6', mutedClassName)}>
               <Balancer>{tier.subheader}</Balancer>
             </p>
           </div>
@@ -216,22 +189,22 @@ function TierCard({
           ) : null}
         </div>
 
-        <div className="mt-8 rounded-[1.35rem] border border-[var(--color-border)] bg-[var(--color-background)]/70 p-4 transition-[border-color,background-color,transform] duration-300 group-hover:border-sky-200/70 group-hover:bg-[var(--color-background)]/90">
+        <div className="mt-8 rounded-[1.35rem] border border-[var(--color-border)] bg-[var(--color-background)]/70 p-4 transition-[border-color,background-color,transform] duration-300 group-hover:border-[color-mix(in_srgb,var(--color-primary-300)_40%,var(--color-border))] group-hover:bg-[var(--color-background)]/90">
           <PriceValue
             value={formatted}
             currencySymbol={currencySymbol}
             period={pricePeriod}
-            metaClassName={secondaryTextClassName}
+            metaClassName={mutedClassName}
           />
           {isAnnual ? (
-            <p className="mt-2 text-xs font-medium uppercase tracking-[0.16em] text-emerald-600 dark:text-emerald-300">
+            <p className="mt-2 text-xs font-medium uppercase tracking-[0.16em] text-[var(--color-status-success)]">
               Billed annually
             </p>
           ) : (
             <p
               className={clsx(
                 'mt-2 text-xs font-medium uppercase tracking-[0.16em]',
-                sectionLabelClassName,
+                mutedClassName,
               )}
             >
               Month to month
@@ -241,26 +214,26 @@ function TierCard({
 
         <div className="mt-6">{cta}</div>
 
-        <div className="mt-6 border-t border-[var(--color-border)] pt-6 transition-colors duration-300 group-hover:border-sky-200/70">
+        <div className="mt-6 border-t border-[var(--color-border)] pt-6 transition-colors duration-300 group-hover:border-[color-mix(in_srgb,var(--color-primary-300)_35%,var(--color-border))]">
           <p
             className={clsx(
               'text-xs font-semibold uppercase tracking-[0.18em]',
-              sectionLabelClassName,
+              mutedClassName,
             )}
           >
             Includes
           </p>
-          <ul className={clsx('mt-4 space-y-3 text-sm', secondaryTextClassName)}>
-            {tier.description.map((line) => (
+          <ul className={clsx('mt-4 space-y-3 text-sm', mutedClassName)}>
+            {tier.features.map((feature) => (
               <li
-                key={line}
-                className="flex items-start gap-3 rounded-[0.95rem] px-2 py-1.5 transition-colors duration-200 group-hover:hover:bg-[var(--color-background)]/80"
+                key={feature.id}
+                className="flex items-start gap-3 rounded-[0.95rem] px-2 py-1.5 transition-colors duration-200 group-hover:bg-[var(--color-background)]/80"
               >
-                <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 transition-transform duration-200 group-hover:scale-105 dark:text-emerald-300">
+                <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--color-status-success-soft)] text-[var(--color-status-success)] transition-transform duration-200 group-hover:scale-105">
                   <CheckIcon className="h-3.5 w-3.5" aria-hidden="true" />
                 </span>
                 <span className="leading-6">
-                  <Balancer>{line}</Balancer>
+                  <Balancer>{feature.text}</Balancer>
                 </span>
               </li>
             ))}
@@ -271,7 +244,17 @@ function TierCard({
   )
 }
 
-export const PriceTable: React.FC<TiersProps> = ({ tiers }) => {
+const defaultEyebrow = 'Pricing'
+const defaultHeading = 'Pick the plan that matches your launch stage'
+const defaultLead =
+  'Cleaner tier comparison with billing animation, stronger feature hierarchy, and a clearer featured-plan treatment.'
+
+export function PriceTable({
+  tiers,
+  eyebrow = defaultEyebrow,
+  heading = defaultHeading,
+  lead = defaultLead,
+}: PriceTableProps) {
   const [isAnnual, setIsAnnual] = React.useState<boolean>(true)
 
   return (
@@ -280,21 +263,20 @@ export const PriceTable: React.FC<TiersProps> = ({ tiers }) => {
         className="pointer-events-none absolute inset-0 opacity-90"
         aria-hidden="true"
       >
-        <div className="absolute left-[-10%] top-[-12%] h-72 w-72 rounded-full bg-sky-400/14 blur-3xl" />
-        <div className="absolute right-[-8%] top-[6%] h-72 w-72 rounded-full bg-amber-300/12 blur-3xl" />
+        <div className="absolute left-[-10%] top-[-12%] h-72 w-72 rounded-full bg-[color-mix(in_srgb,var(--color-primary-400)_14%,transparent)] blur-3xl" />
+        <div className="absolute right-[-8%] top-[6%] h-72 w-72 rounded-full bg-[color-mix(in_srgb,var(--color-primary-300)_10%,transparent)] blur-3xl" />
       </div>
 
       <div className="relative mx-auto max-w-6xl px-4 md:px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-600 dark:text-[var(--color-muted-foreground)]">
-            Pricing
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)]">
+            {eyebrow}
           </p>
           <h2 className="mt-4 text-4xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-5xl">
-            Pick the plan that matches your launch stage
+            {heading}
           </h2>
-          <p className="mt-4 text-base leading-7 text-slate-600 dark:text-[var(--color-muted-foreground)]">
-            Cleaner tier comparison with billing animation, stronger feature
-            hierarchy, and a clearer featured-plan treatment.
+          <p className="mt-4 text-base leading-7 text-[var(--color-muted-foreground)]">
+            {lead}
           </p>
         </div>
 
@@ -303,7 +285,7 @@ export const PriceTable: React.FC<TiersProps> = ({ tiers }) => {
         <div className="mx-auto grid max-w-sm gap-6 lg:max-w-none lg:grid-cols-3">
           {tiers.map((tier, index) => (
             <TierCard
-              key={tier.title}
+              key={tier.id}
               tier={tier}
               isAnnual={isAnnual}
               index={index}

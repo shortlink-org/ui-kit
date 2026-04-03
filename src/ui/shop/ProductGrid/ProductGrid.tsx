@@ -374,7 +374,7 @@ function ProductCard({
     const mouseX = e.clientX - centerX
     const mouseY = e.clientY - centerY
     // Max tilt of 10 degrees
-    const maxTilt = 10
+    const maxTilt = 4
     rotateY.set((mouseX / (rect.width / 2)) * maxTilt)
     rotateX.set(-(mouseY / (rect.height / 2)) * maxTilt)
   }

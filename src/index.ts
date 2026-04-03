@@ -185,7 +185,14 @@ export type {
   SecondaryMenuItem,
   SecondaryMenuProps,
 } from './page/Sidebar/SecondaryMenu'
+export { SidebarShell } from './page/Sidebar/SidebarShell'
+export type { SidebarShellProps } from './page/Sidebar/SidebarShell'
 export { PriceTable } from './page/PriceTable/PriceTable'
+export type {
+  PriceTableProps,
+  PriceTier,
+  PriceTierFeature,
+} from './page/PriceTable/PriceTable'
 export { MultiColumnLayout } from './page/MultiColumnLayout/MultiColumnLayout'
 export { Newsletter } from './page/Newsletter/Newsletter'
 export type {
