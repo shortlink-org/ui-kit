@@ -18,10 +18,6 @@
     "jsx": "react-jsx",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "paths": {
-      "#.storybook/*": [".storybook/*"]
-    },
 
     /* Linting */
     "strict": true,

@@ -6,10 +6,6 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "paths": {
-      "#.storybook/*": [".storybook/*"]
-    },
     "strict": true,
     "noEmit": true
   },
