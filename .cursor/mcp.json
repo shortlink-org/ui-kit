@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "shortlink-ui-kit-storybook": {
+      "url": "http://localhost:6006/mcp"
+    }
+  }
+}

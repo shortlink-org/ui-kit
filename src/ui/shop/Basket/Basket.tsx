@@ -7,12 +7,15 @@ import type { BasketItem as BasketItemData } from './BasketItem/BasketItem'
 import { BasketSummary } from './BasketSummary/BasketSummary'
 import { clsx } from 'clsx'
 import { FamilyDialog } from '../../FamilyDialog/FamilyDialog'
+import { resolveBasketSubtotalDisplay } from './basketMath'
 
 export interface BasketProps extends Omit<DrawerProps, 'title' | 'children'> {
   /** Array of items in the basket */
   items: BasketItemData[]
-  /** Subtotal amount */
-  subtotal: string
+  /**
+   * Subtotal label. If omitted, computed from line items (`unitPriceCents` or parsed `price` × `quantity`).
+   */
+  subtotal?: string
   /** Shipping and taxes note */
   shippingNote?: string
   /** Checkout button text */
@@ -62,6 +65,7 @@ export function Basket({
   const effectiveSize =
     size ?? (effectivePosition === 'bottom' ? 'full' : 'md')
   const itemCount = items.reduce((total, item) => total + item.quantity, 0)
+  const subtotalDisplay = resolveBasketSubtotalDisplay(items, subtotal)
 
   const handleContinueShopping = () => {
     onContinueShopping?.()
@@ -131,8 +135,8 @@ export function Basket({
                       <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-rose-200">
                         Subtotal
                       </p>
-                      <p className="mt-2 text-2xl font-semibold tracking-tight">
-                        {subtotal}
+                      <p className="mt-2 text-2xl font-semibold tracking-tight tabular-nums">
+                        {subtotalDisplay}
                       </p>
                     </div>
                   </div>
@@ -205,16 +209,15 @@ export function Basket({
         </div>
 
         {items.length > 0 && (
-          <div className="flex-shrink-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-4 sm:px-6">
+          <div className="flex-shrink-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 sm:px-6 sm:pb-4">
             <BasketSummary
-              subtotal={subtotal}
+              subtotal={subtotalDisplay}
               shippingNote={shippingNote}
               checkoutText={checkoutText}
               checkoutHref={checkoutHref}
               onCheckout={onCheckout}
               onContinueShopping={handleContinueShopping}
               continueShoppingText={continueShoppingText}
-              className="px-0 sm:px-0"
             />
           </div>
         )}

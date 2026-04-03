@@ -187,13 +187,13 @@ export function ProductPage({
                       description={`You're about to purchase "${name}" for ${price}. Proceed to checkout?`}
                       confirmText="Proceed to Checkout"
                       cancelText="Continue Shopping"
-                      variant="success"
+                      variant="default"
                       onConfirm={onBuyNow}
-                      triggerClassName="w-full justify-center !bg-green-600 hover:!bg-green-700"
+                      triggerClassName="w-full max-w-full justify-center"
                     >
                       <div className="grid gap-3 sm:grid-cols-[1.2fr_0.8fr]">
-                        <div className="rounded-[1.35rem] border border-emerald-200/70 bg-white/85 p-4 text-left">
-                          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-700">
+                        <div className="rounded-[1.35rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 text-left">
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--color-muted-foreground)]">
                             Order summary
                           </p>
                           <p className="mt-3 text-sm font-semibold text-slate-950">
@@ -214,7 +214,7 @@ export function ProductPage({
                         </div>
 
                         <div className="rounded-[1.35rem] border border-slate-200/80 bg-slate-950 p-4 text-left text-slate-50">
-                          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-200">
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-400">
                             Charge today
                           </p>
                           <p className="mt-3 text-2xl font-semibold tracking-tight">

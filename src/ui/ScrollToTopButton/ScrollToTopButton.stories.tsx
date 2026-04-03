@@ -8,23 +8,20 @@ function ScrollSurface({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,#e0f2fe_0%,#f8fafc_34%,#eef2ff_100%)] px-4 py-8 sm:px-6 lg:px-10">
-      <div className="mx-auto max-w-6xl rounded-[2rem] border border-white/70 bg-white/70 p-6 shadow-[0_32px_120px_-60px_rgba(15,23,42,0.48)] backdrop-blur-xl sm:p-8">
-        <div className="mb-6 max-w-3xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-sky-700">
-            Utility action
+    <div className="min-h-screen bg-[var(--color-background)] px-4 py-8 text-[var(--color-foreground)] sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-4xl space-y-6">
+        <header className="max-w-2xl space-y-1">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-muted-foreground)]">
+            ScrollToTopButton
           </p>
-          <h2 className="mt-3 text-4xl font-semibold tracking-tight text-slate-950">
-            Scroll-to-top inside a long workspace surface
-          </h2>
-          <p className="mt-3 text-sm leading-6 text-slate-600 sm:text-[15px]">
-            This story uses a constrained scroll container so the component can
-            be tested in a realistic dashboard feed without relying on the whole
-            preview page scroll.
+          <h2 className="text-xl font-semibold">Showcase</h2>
+          <p className="text-sm text-[var(--color-muted-foreground)]">
+            Scroll inside the panel — the floating action appears after you move
+            past the top. Uses the container ref, not the window.
           </p>
-        </div>
+        </header>
 
-        <div className="relative overflow-hidden rounded-[1.8rem] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(248,250,252,0.98))] shadow-[0_24px_70px_-44px_rgba(15,23,42,0.42)]">
+        <div className="relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[0_8px_24px_-18px_rgba(15,23,42,0.12)]">
           {children}
         </div>
       </div>
@@ -40,12 +37,12 @@ const ScrollableContainer = React.forwardRef<
     ref={ref}
     className="relative h-[75vh] overflow-y-auto px-5 py-5 sm:px-6"
   >
-    <div className="sticky top-0 z-10 mb-5 rounded-[1.4rem] border border-slate-200/80 bg-white/80 px-4 py-4 shadow-[0_18px_50px_-40px_rgba(15,23,42,0.35)] backdrop-blur-sm">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">
-        Marketplace workspace
+    <div className="sticky top-0 z-10 mb-5 rounded-xl border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_96%,var(--color-muted)_4%)] px-4 py-3">
+      <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--color-muted-foreground)]">
+        Long surface
       </p>
-      <p className="mt-2 text-lg font-semibold tracking-tight text-slate-950">
-        Scroll down to reveal the utility action
+      <p className="mt-1 text-sm font-semibold text-[var(--color-foreground)]">
+        Scroll down to show the button
       </p>
     </div>
 
@@ -53,17 +50,14 @@ const ScrollableContainer = React.forwardRef<
       {Array.from({ length: 16 }).map((_, i) => (
         <section
           key={i}
-          className="rounded-[1.45rem] border border-slate-200/80 bg-white/85 p-5 shadow-[0_18px_50px_-42px_rgba(15,23,42,0.32)]"
+          className="rounded-xl border border-[var(--color-border)] bg-[var(--color-background)] p-4"
         >
-          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">
-            Feed block {i + 1}
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--color-muted-foreground)]">
+            Block {i + 1}
           </p>
-          <h3 className="mt-2 text-xl font-semibold tracking-tight text-slate-950">
-            Seller performance snapshot
-          </h3>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-            Review category momentum, new orders, conversion spikes and payout
-            health while keeping long surfaces manageable on desktop and mobile.
+          <p className="mt-2 text-sm leading-relaxed text-[var(--color-muted-foreground)]">
+            Placeholder content so the list scrolls. The scroll-to-top control
+            stays fixed to the viewport corner while this area moves.
           </p>
         </section>
       ))}

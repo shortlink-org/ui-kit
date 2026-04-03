@@ -123,20 +123,20 @@ export const CommerceNavigationFlyout = meta.story({
           <div className="flex flex-wrap items-center gap-3">
             <a
               href="#"
-              className="rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
+              className="cursor-pointer rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
             >
               Overview
             </a>
             <FlyoutMenu {...args} />
             <a
               href="#"
-              className="rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
+              className="cursor-pointer rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
             >
               Orders
             </a>
             <a
               href="#"
-              className="rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
+              className="cursor-pointer rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
             >
               Customers
             </a>

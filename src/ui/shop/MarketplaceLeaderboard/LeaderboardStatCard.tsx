@@ -15,8 +15,9 @@ export function LeaderboardStatCard({
   const tone = stat.tone ?? 'neutral'
 
   return (
-    <motion.div layout>
+    <motion.div layout className="h-full min-h-0">
       <StatCard
+        className="h-full"
         label={stat.label}
         change={stat.change}
         tone={tone}

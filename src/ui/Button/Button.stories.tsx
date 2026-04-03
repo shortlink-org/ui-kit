@@ -25,7 +25,7 @@ const meta = preview.meta({
   },
   decorators: [
     (Story: React.ComponentType) => (
-      <div className="min-h-screen bg-[linear-gradient(180deg,#f8fbff_0%,#eef3f8_100%)] px-4 py-8 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-[linear-gradient(180deg,#f8fbff_0%,#eef3f8_100%)] px-4 py-8 text-[var(--color-foreground)] sm:px-6 lg:px-8 dark:bg-[linear-gradient(180deg,#0f172a_0%,#020617_100%)]">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
           <Story />
         </div>
@@ -63,19 +63,19 @@ export default meta
 export const Showcase = meta.story({
   render: () => (
     <div className="grid gap-6 xl:grid-cols-[minmax(0,1.35fr)_minmax(20rem,0.9fr)]">
-      <section className="rounded-[2rem] border border-[var(--color-border)] bg-white p-5 shadow-[0_24px_54px_-38px_rgba(15,23,42,0.16)] sm:p-6">
+      <section className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[0_24px_54px_-38px_rgba(15,23,42,0.16)] dark:shadow-[0_24px_54px_-38px_rgba(0,0,0,0.45)] sm:p-6">
         <div className="mb-6 flex flex-col gap-2">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--color-muted-foreground)]">
             Button system
           </p>
-          <h2 className="text-2xl font-semibold tracking-tight text-slate-950">
+          <h2 className="text-2xl font-semibold tracking-tight text-[var(--color-foreground)]">
             Core actions for product, workspace, and destructive flows
           </h2>
         </div>
 
         <div className="space-y-8">
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
+            <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)]">
               Variants
             </h3>
             <div className="flex flex-wrap items-center gap-3">
@@ -89,7 +89,7 @@ export const Showcase = meta.story({
           </div>
 
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
+            <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)]">
               Sizes and icons
             </h3>
             <div className="flex flex-wrap items-center gap-3">
@@ -112,7 +112,7 @@ export const Showcase = meta.story({
           </div>
 
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
+            <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)]">
               States
             </h3>
             <div className="flex flex-wrap items-center gap-3">
@@ -131,11 +131,11 @@ export const Showcase = meta.story({
         </div>
       </section>
 
-      <aside className="rounded-[2rem] border border-slate-200 bg-slate-950 p-5 text-white shadow-[0_28px_62px_-38px_rgba(15,23,42,0.42)] sm:p-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">
+      <aside className="rounded-[2rem] border border-[var(--color-border)] bg-slate-950 p-5 text-slate-300 shadow-[0_28px_62px_-38px_rgba(15,23,42,0.42)] sm:p-6 dark:border-[var(--color-border)] dark:bg-[color-mix(in_srgb,var(--color-background)_92%,var(--color-muted)_8%)] dark:text-[var(--color-foreground)] dark:shadow-[0_28px_62px_-38px_rgba(0,0,0,0.5)]">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400 dark:text-[var(--color-muted-foreground)]">
           Usage guidance
         </p>
-        <div className="mt-5 space-y-4 text-sm text-slate-300">
+        <div className="mt-5 space-y-4 text-sm text-slate-300 dark:text-[var(--color-muted-foreground)]">
           <p>Use `primary` for the single dominant action in a block.</p>
           <p>`outline` and `ghost` should handle secondary and quiet actions.</p>
           <p>`destructive` is reserved for irreversible flows and confirmations.</p>
@@ -147,14 +147,14 @@ export const Showcase = meta.story({
 
 export const CommerceActionBar = meta.story({
   render: () => (
-    <div className="rounded-[2rem] border border-[var(--color-border)] bg-white p-5 shadow-[0_24px_54px_-38px_rgba(15,23,42,0.16)] sm:p-6">
+    <div className="rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[0_24px_54px_-38px_rgba(15,23,42,0.16)] dark:shadow-[0_24px_54px_-38px_rgba(0,0,0,0.45)] sm:p-6">
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--color-muted-foreground)]">
               Catalog actions
             </p>
-            <h2 className="text-2xl font-semibold tracking-tight text-slate-950">
+            <h2 className="text-2xl font-semibold tracking-tight text-[var(--color-foreground)]">
               Manage a merchandising collection
             </h2>
           </div>
@@ -169,7 +169,7 @@ export const CommerceActionBar = meta.story({
           </div>
         </div>
 
-        <div className="rounded-[1.5rem] border border-slate-200 bg-slate-50 p-4">
+        <div className="rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-muted)]/40 p-4 dark:bg-[color-mix(in_srgb,var(--color-background)_70%,var(--color-muted)_30%)]">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-wrap items-center gap-3">
               <Button size="sm" variant="secondary" icon={<PencilSquareIcon />}>

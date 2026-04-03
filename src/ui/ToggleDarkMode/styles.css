@@ -14,7 +14,7 @@
     /* Wrapper */
     :scope {
       display: inline-block;
-      overflow: hidden;
+      overflow: visible;
     }
 
     /* Hidden input - accessible but visually hidden */

@@ -8,6 +8,7 @@ export default defineMain({
     '@chromatic-com/storybook',
     '@storybook/addon-a11y',
     '@storybook/addon-vitest',
+    '@storybook/addon-mcp',
   ],
   core: {
     builder: '@storybook/builder-vite',

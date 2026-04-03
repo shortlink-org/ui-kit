@@ -38,68 +38,54 @@ export function BasketSummary({
     }
   }
 
+  const checkoutClassName =
+    'focus-ring flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-slate-800'
+
   return (
-    <div
-      className={clsx(
-        'rounded-[1.1rem] border border-[var(--color-border)] bg-[var(--color-background)] p-4 shadow-[0_18px_40px_-34px_rgba(15,23,42,0.16)]',
-        className,
-      )}
-    >
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-muted-foreground)]">
-            Subtotal
-          </p>
-          <p className="mt-1 text-2xl font-semibold tracking-tight text-[var(--color-foreground)]">
-            {subtotal}
-          </p>
-        </div>
-        <div className="text-right text-xs text-[var(--color-muted-foreground)]">
-          <p>Secure checkout</p>
-          <p className="mt-1">Taxes calculated next</p>
-        </div>
-      </div>
-      {shippingNote && (
-        <p className="mt-3 text-sm leading-6 text-[var(--color-muted-foreground)]">
-          {shippingNote}
+    <div className={clsx('space-y-2.5', className)}>
+      <div className="flex min-w-0 items-baseline justify-between gap-3 border-b border-[var(--color-border)] pb-2.5">
+        <p className="shrink-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)]">
+          Subtotal
         </p>
-      )}
-      <div className="mt-4">
+        <p className="min-w-0 text-right text-xl font-semibold tabular-nums tracking-tight text-[var(--color-foreground)] sm:text-2xl">
+          {subtotal}
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-2.5">
+        {shippingNote ? (
+          <p className="text-[13px] leading-snug text-[var(--color-muted-foreground)]">
+            {shippingNote}
+          </p>
+        ) : null}
+
         {checkoutHref ? (
-          <a
-            href={checkoutHref}
-            className="focus-ring flex cursor-pointer items-center justify-center gap-2 rounded-[0.95rem] bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
-          >
-            <LockClosedIcon className="size-4" aria-hidden="true" />
+          <a href={checkoutHref} className={checkoutClassName}>
+            <LockClosedIcon className="size-4 shrink-0" aria-hidden="true" />
             {checkoutText}
-            <ArrowRightIcon className="size-4" aria-hidden="true" />
+            <ArrowRightIcon className="size-4 shrink-0" aria-hidden="true" />
           </a>
         ) : (
-          <button
-            type="button"
-            onClick={handleCheckout}
-            className="focus-ring flex w-full cursor-pointer items-center justify-center gap-2 rounded-[0.95rem] bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
-          >
-            <LockClosedIcon className="size-4" aria-hidden="true" />
+          <button type="button" onClick={handleCheckout} className={checkoutClassName}>
+            <LockClosedIcon className="size-4 shrink-0" aria-hidden="true" />
             {checkoutText}
-            <ArrowRightIcon className="size-4" aria-hidden="true" />
+            <ArrowRightIcon className="size-4 shrink-0" aria-hidden="true" />
           </button>
         )}
-      </div>
-      {onContinueShopping && (
-        <div className="mt-3 flex justify-start text-sm text-[var(--color-muted-foreground)]">
-          <p>
+
+        {onContinueShopping ? (
+          <div className="flex justify-start pt-0.5">
             <button
               type="button"
               onClick={onContinueShopping}
-              className="cursor-pointer font-medium text-[var(--color-foreground)] hover:text-sky-700"
+              className="cursor-pointer text-sm font-medium text-[var(--color-foreground)] underline-offset-4 hover:text-sky-700 hover:underline"
             >
               {continueShoppingText}
-              <span aria-hidden="true"> &rarr;</span>
+              <span aria-hidden="true"> →</span>
             </button>
-          </p>
-        </div>
-      )}
+          </div>
+        ) : null}
+      </div>
     </div>
   )
 }

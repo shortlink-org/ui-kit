@@ -137,6 +137,15 @@ export type {
 } from './ui/shop/Basket/BasketItem/BasketItem'
 export { BasketSummary } from './ui/shop/Basket/BasketSummary/BasketSummary'
 export type { BasketSummaryProps } from './ui/shop/Basket/BasketSummary/BasketSummary'
+export {
+  formatMoneyFromCents,
+  getLineTotalCents,
+  getUnitPriceCents,
+  parsePriceStringToCents,
+  resolveBasketSubtotalDisplay,
+  sumBasketSubtotalCents,
+} from './ui/shop/Basket/basketMath'
+export type { MoneyFormatOptions } from './ui/shop/Basket/basketMath'
 export { ProductQuickView } from './ui/shop/ProductQuickView/ProductQuickView'
 export type {
   ProductQuickViewProps,

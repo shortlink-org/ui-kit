@@ -215,7 +215,7 @@
 
   /* Button component styles using CSS variables */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 font-medium;
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 font-medium;
     border-radius: var(--btn-radius);
     /* Spring-based transitions for natural feel */
     transition: 
@@ -227,7 +227,7 @@
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
     --tw-ring-color: var(--focus-ring-color);
     --tw-ring-offset-color: var(--color-background);
-    @apply disabled:opacity-50 disabled:pointer-events-none;
+    @apply disabled:cursor-not-allowed disabled:opacity-50 disabled:pointer-events-none;
     @apply enabled:active:scale-[0.98];
   }
 

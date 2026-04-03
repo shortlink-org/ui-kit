@@ -52,11 +52,12 @@ export function TableRow<TData>({
         index !== undefined && index % 2 === 0
           ? 'bg-transparent'
           : 'bg-[color-mix(in_srgb,var(--color-surface)_98%,var(--color-muted)_2%)]',
-        'hover:bg-[color-mix(in_srgb,var(--table-row-hover)_96%,white)]',
+        'hover:bg-[color-mix(in_srgb,var(--table-row-hover)_96%,var(--color-background))]',
         onRowClick && 'cursor-pointer',
         isSelected &&
-          'bg-[color-mix(in_srgb,var(--table-row-selected)_92%,white)] shadow-[inset_2px_0_0_var(--table-row-selected-border)]',
-        isGrouped && 'bg-[color-mix(in_srgb,var(--color-muted)_94%,white)] font-semibold',
+          'bg-[color-mix(in_srgb,var(--table-row-selected)_92%,var(--color-background))] shadow-[inset_2px_0_0_var(--table-row-selected-border)]',
+        isGrouped &&
+          'bg-[color-mix(in_srgb,var(--color-muted)_94%,var(--color-background))] font-semibold',
         isPinned && 'sticky z-10 bg-[var(--color-surface)]',
         rowClassName,
       )}
@@ -83,11 +84,12 @@ export function TableRow<TData>({
       {canExpand && (
         <td className={clsx(densityClasses[density].cell, 'w-8')}>
           <button
+            type="button"
             onClick={(e) => {
               e.stopPropagation()
               row.toggleExpanded()
             }}
-            className="rounded-md p-1 text-[var(--color-muted-foreground)] transition-colors hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]"
+            className="cursor-pointer rounded-md p-1 text-[var(--color-muted-foreground)] transition-colors hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]"
           >
             <ChevronRightIcon
               className={clsx(

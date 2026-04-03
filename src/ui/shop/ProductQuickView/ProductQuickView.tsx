@@ -77,6 +77,7 @@ export function ProductQuickView({
   const effectivePosition = position ?? 'right'
   const effectiveSize =
     size ?? (effectivePosition === 'bottom' ? 'full' : 'xl')
+  const isBottomSheet = effectivePosition === 'bottom'
   const hasColors = product.colors.length > 0
   const hasSizes = product.sizes.length > 0
 
@@ -89,42 +90,92 @@ export function ProductQuickView({
       size={effectiveSize}
       showCloseButton={false}
       contentClassName={clsx('!px-0 !py-0', drawerProps.contentClassName)}
-      panelClassName={clsx(className, drawerProps.panelClassName)}
+      panelClassName={clsx(
+        isBottomSheet && 'rounded-t-[1.35rem]',
+        className,
+        drawerProps.panelClassName,
+      )}
     >
-      <div className="relative flex w-full flex-col px-4 pt-14 pb-8 sm:px-6 sm:pt-8 md:p-6 lg:p-8">
+      <div
+        className={clsx(
+          'relative flex w-full flex-col',
+          isBottomSheet &&
+            'min-h-0 flex-1 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 sm:px-5 sm:pt-4',
+          !isBottomSheet &&
+            'px-4 pb-8 pt-14 sm:px-6 sm:pt-8 md:p-6 lg:p-8',
+        )}
+      >
         <button
           type="button"
           onClick={() => onClose(false)}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-300 sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8"
+          className={clsx(
+            'absolute z-10 rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-white/10 dark:hover:text-gray-200',
+            isBottomSheet
+              ? 'right-3 top-1 sm:right-4 sm:top-3'
+              : 'right-4 top-4 sm:right-6 sm:top-8 md:right-6 md:top-6 lg:right-8 lg:top-8',
+          )}
         >
           <span className="sr-only">Close</span>
           <XMarkIcon aria-hidden="true" className="size-6" />
         </button>
 
-        <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8">
+        <div
+          className={clsx(
+            'grid w-full items-start',
+            isBottomSheet
+              ? 'max-sm:grid-cols-[minmax(0,40%)_minmax(0,1fr)] max-sm:gap-x-3 max-sm:gap-y-3 sm:grid-cols-12 sm:gap-x-6 sm:gap-y-6 lg:gap-x-8'
+              : 'grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8',
+          )}
+        >
           <img
             alt={product.imageAlt}
             src={product.imageSrc}
-            className="aspect-2/3 w-full rounded-lg bg-gray-100 dark:bg-gray-800 object-cover sm:col-span-4 lg:col-span-5"
+            className={clsx(
+              'w-full rounded-lg bg-gray-100 object-cover dark:bg-gray-800',
+              'aspect-2/3 sm:col-span-4 lg:col-span-5',
+              isBottomSheet &&
+                'max-sm:aspect-auto max-sm:max-h-[min(38vh,210px)] max-sm:min-h-0 max-sm:self-start',
+            )}
           />
 
-          <div className="sm:col-span-8 lg:col-span-7">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white sm:pr-12">
+          <div
+            className={clsx(
+              'min-w-0 sm:col-span-8 lg:col-span-7',
+              isBottomSheet && 'max-sm:col-span-1',
+            )}
+          >
+            <h2
+              className={clsx(
+                'font-bold text-gray-900 dark:text-white',
+                isBottomSheet
+                  ? 'text-lg leading-snug sm:pr-10 sm:text-2xl'
+                  : 'text-2xl sm:pr-12',
+              )}
+            >
               {product.name}
             </h2>
 
-            <section aria-labelledby="information-heading" className="mt-2">
+            <section aria-labelledby="information-heading" className="mt-1.5 sm:mt-2">
               <h3 id="information-heading" className="sr-only">
                 Product information
               </h3>
-              <p className="text-2xl text-gray-900 dark:text-white">
+              <p
+                className={clsx(
+                  'text-gray-900 dark:text-white',
+                  isBottomSheet ? 'text-xl tabular-nums sm:text-2xl' : 'text-2xl',
+                )}
+              >
                 {product.price}
               </p>
 
               {/* Reviews */}
               {product.rating !== undefined &&
                 product.reviewCount !== undefined && (
-                  <div className="mt-6">
+                  <div
+                    className={clsx(
+                      isBottomSheet ? 'mt-3 sm:mt-6' : 'mt-6',
+                    )}
+                  >
                     <ProductReviews
                       average={product.rating}
                       totalCount={product.reviewCount}
@@ -134,7 +185,12 @@ export function ProductQuickView({
                 )}
             </section>
 
-            <section aria-labelledby="options-heading" className="mt-10">
+            <section
+              aria-labelledby="options-heading"
+              className={clsx(
+                isBottomSheet ? 'mt-5 sm:mt-10' : 'mt-10',
+              )}
+            >
               <h3 id="options-heading" className="sr-only">
                 Product options
               </h3>
@@ -159,7 +215,7 @@ export function ProductQuickView({
                 ) : null}
 
                 {/* Add to cart */}
-                <div className="mt-6">
+                <div className={clsx(isBottomSheet ? 'mt-4 sm:mt-6' : 'mt-6')}>
                   <AddToCartButton onAddToCart={onAddToCart} />
                 </div>
               </form>

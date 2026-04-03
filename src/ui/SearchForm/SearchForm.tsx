@@ -35,9 +35,10 @@ export interface SearchFormProps {
   fullWidth?: boolean
 }
 
+/** Vertical rhythm lives on the input only — avoids double padding on the form shell */
 const sizeTokens: Record<SearchFormSize, string> = {
-  sm: 'text-sm py-2',
-  md: 'text-base py-2.5',
+  sm: 'min-h-10 py-2 text-sm leading-5',
+  md: 'min-h-11 py-2.5 text-base leading-6',
 }
 
 const SearchForm: React.FC<SearchFormProps> = ({
@@ -123,19 +124,21 @@ const SearchForm: React.FC<SearchFormProps> = ({
       aria-disabled={disabled}
       onSubmit={handleSubmit}
       className={clsx(
-        'flex items-center gap-2 self-center rounded-2xl border border-gray-300 bg-white px-3 py-2 shadow-sm transition focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 dark:border-gray-600 dark:bg-gray-900 dark:focus-within:border-indigo-400 dark:focus-within:ring-indigo-400/20',
+        'flex items-center gap-2 self-center rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] px-3 shadow-[0_8px_24px_-18px_rgba(15,23,42,0.12)] transition-[box-shadow,border-color] duration-200',
+        'focus-within:border-[var(--color-primary-500)] focus-within:shadow-[0_8px_28px_-16px_rgba(15,23,42,0.14)] focus-within:ring-2 focus-within:ring-[color-mix(in_srgb,var(--color-primary-500)_22%,transparent)]',
+        'dark:shadow-[0_8px_28px_-18px_rgba(0,0,0,0.45)]',
         fullWidth ? 'w-full' : 'w-auto',
-        disabled && 'opacity-60 contrast-75 pointer-events-none',
+        disabled && 'pointer-events-none opacity-60 contrast-75',
         className,
       )}
     >
       <label htmlFor={inputId} className="sr-only">
         {label || placeholder}
       </label>
-      <div className="flex flex-1 items-center gap-2">
+      <div className="flex min-w-0 flex-1 items-center gap-2">
         <MagnifyingGlassIcon
           className={clsx(
-            'h-5 w-5 text-gray-400 dark:text-gray-500',
+            'h-5 w-5 shrink-0 text-[var(--color-muted-foreground)]',
             loading && 'animate-spin',
           )}
           aria-hidden="true"
@@ -143,7 +146,8 @@ const SearchForm: React.FC<SearchFormProps> = ({
         <input
           ref={inputRef}
           id={inputId}
-          type="text"
+          type="search"
+          enterKeyHint="search"
           value={value}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
@@ -152,7 +156,8 @@ const SearchForm: React.FC<SearchFormProps> = ({
           autoFocus={autoFocus}
           autoComplete="off"
           className={clsx(
-            'flex-1 bg-transparent text-gray-900 placeholder:text-gray-400 focus:outline-none dark:text-gray-50 dark:placeholder:text-gray-500',
+            'min-w-0 flex-1 bg-transparent text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:outline-none',
+            '[&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none',
             sizeTokens[size],
           )}
         />
@@ -160,10 +165,10 @@ const SearchForm: React.FC<SearchFormProps> = ({
           <button
             type="button"
             onClick={handleClear}
-            className="rounded-full p-1 text-gray-500 transition hover:bg-gray-100 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200 dark:focus-visible:ring-indigo-400"
+            className="cursor-pointer rounded-full p-1 text-[var(--color-muted-foreground)] transition-colors hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-500)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface)]"
             aria-label="Clear search"
           >
-            <XMarkIcon className="h-4 w-4" />
+            <XMarkIcon className="h-4 w-4" aria-hidden />
           </button>
         )}
       </div>

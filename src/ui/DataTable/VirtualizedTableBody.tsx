@@ -48,7 +48,7 @@ export function VirtualizedTableBody<TData>({
     return (
       <tr>
         <td colSpan={columnCount} className="p-0">
-          <div className="p-8 text-center text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700">
+          <div className="border-t border-[var(--table-border)] p-8 text-center text-[var(--color-muted-foreground)]">
             <Loader />
           </div>
         </td>
@@ -60,7 +60,7 @@ export function VirtualizedTableBody<TData>({
     return (
       <tr>
         <td colSpan={columnCount} className="p-0">
-          <div className="p-8 text-center text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700">
+          <div className="border-t border-[var(--table-border)] p-8 text-center text-[var(--color-muted-foreground)]">
             <EmptyState message={emptyMessage} />
           </div>
         </td>

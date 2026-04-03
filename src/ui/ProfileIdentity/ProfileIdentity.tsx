@@ -66,6 +66,7 @@ export function ProfileIdentity({
     <div
       className={clsx(
         'flex min-w-0 items-center',
+        accessory && 'w-full',
         sizeConfig.wrapper,
         className,
       )}
@@ -122,7 +123,9 @@ export function ProfileIdentity({
         </div>
       ) : null}
 
-      {accessory}
+      {accessory ? (
+        <div className="flex shrink-0 items-center pl-2">{accessory}</div>
+      ) : null}
     </div>
   )
 }

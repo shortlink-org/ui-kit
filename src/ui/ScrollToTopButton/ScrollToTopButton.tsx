@@ -32,6 +32,11 @@ export interface ScrollToTopButtonProps {
    * to prevent intercepting keys for entire app.
    */
   enableGlobalHotkey?: boolean
+  /**
+   * Extra classes for the button (e.g. override `bottom` / `right` spacing).
+   * Default inset uses safe-area env() + responsive gaps.
+   */
+  className?: string
 }
 
 const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
@@ -39,8 +44,9 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
   variant = 'solid',
   label = 'Scroll to top',
   scrollThreshold = 500,
-  iconSize = 24,
+  iconSize = 22,
   enableGlobalHotkey = true,
+  className,
 }) => {
   // root element may be null on first render when ref is still empty → copy into state once it exists
   const [root, setRoot] = useState<HTMLElement | Window | null>(scrollContainer)
@@ -160,29 +166,37 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
   }, [root, enableGlobalHotkey, scrollToTop])
 
   const buttonClass = clsx(
-    'fixed bottom-5 right-5 z-[9999]',
-    'group inline-flex items-center justify-center rounded-full',
-    'transition-all duration-300 ease-out',
-    'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+    'fixed z-[9999]',
+    'right-[max(1rem,env(safe-area-inset-right,0px))]',
+    'bottom-[max(1rem,env(safe-area-inset-bottom,0px))]',
+    'sm:right-6 sm:bottom-6',
+    'md:right-8 md:bottom-8',
+    'inline-flex size-12 cursor-pointer items-center justify-center rounded-2xl md:size-14',
+    'transition-[transform,opacity,box-shadow,background-color,border-color] duration-300 ease-out',
+    'focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-500)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]',
     'transform-gpu',
     isVisible
-      ? 'pointer-events-auto translate-y-0 scale-100 opacity-100'
-      : 'pointer-events-none translate-y-3 scale-95 opacity-0',
-    variant === 'solid'
-      ? clsx(
-          'h-14 w-14 border border-sky-300/70 bg-[linear-gradient(180deg,rgba(14,165,233,0.96),rgba(2,132,199,0.98))] text-white',
-          'shadow-[0_24px_70px_-32px_rgba(2,132,199,0.75)]',
-          'hover:-translate-y-0.5 hover:shadow-[0_32px_80px_-34px_rgba(2,132,199,0.82)]',
-          'active:translate-y-0 active:scale-95',
-          'focus-visible:ring-sky-500',
-        )
-      : clsx(
-          'h-14 w-14 border border-white/70 bg-white/85 text-sky-700 backdrop-blur-xl',
-          'shadow-[0_24px_70px_-38px_rgba(15,23,42,0.48)] ring-1 ring-black/5',
-          'hover:-translate-y-0.5 hover:bg-white hover:text-sky-800',
-          'active:translate-y-0 active:scale-95',
-          'focus-visible:ring-sky-500',
-        ),
+      ? 'pointer-events-auto translate-y-0 opacity-100'
+      : 'pointer-events-none translate-y-3 opacity-0',
+    variant === 'solid' &&
+      clsx(
+        'border border-white/15 bg-[var(--color-primary-600)] text-white',
+        'shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18),0_8px_24px_-6px_color-mix(in_srgb,var(--color-primary-600)_45%,transparent),0_2px_6px_rgba(15,23,42,0.08)]',
+        'hover:-translate-y-px hover:bg-[var(--color-primary-500)]',
+        'hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.22),0_14px_36px_-8px_color-mix(in_srgb,var(--color-primary-500)_50%,transparent)]',
+        'active:translate-y-0 active:scale-[0.97]',
+      ),
+    variant === 'ghost' &&
+      clsx(
+        'border border-[var(--color-border)] bg-[var(--color-surface)]/90 text-[var(--color-primary-600)]',
+        'shadow-sm backdrop-blur-xl',
+        'dark:border-white/10 dark:bg-[color-mix(in_srgb,var(--color-surface)_85%,transparent)] dark:text-[var(--color-primary-400)]',
+        'dark:shadow-[0_8px_32px_-12px_rgba(0,0,0,0.55)]',
+        'hover:-translate-y-px hover:border-[color-mix(in_srgb,var(--color-primary-400)_22%,var(--color-border))] hover:bg-[var(--color-surface)]',
+        'hover:text-[var(--color-primary-700)] dark:hover:text-[var(--color-primary-300)]',
+        'active:translate-y-0 active:scale-[0.97]',
+      ),
+    className,
   )
 
   return (
@@ -192,18 +206,12 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({
       type="button"
       className={buttonClass}
     >
-      <span
-        aria-hidden="true"
-        className={clsx(
-          'absolute inset-0 rounded-full opacity-0 transition-opacity duration-300',
-          variant === 'solid'
-            ? 'bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.35),transparent_60%)] group-hover:opacity-100'
-            : 'bg-[radial-gradient(circle_at_top,rgba(14,165,233,0.12),transparent_60%)] group-hover:opacity-100',
-        )}
+      <ArrowUpIcon
+        className="relative shrink-0 text-current"
+        strokeWidth={2}
+        aria-hidden
+        style={{ width: iconSize, height: iconSize }}
       />
-      <span className="relative inline-flex h-8 w-8 items-center justify-center">
-        <ArrowUpIcon style={{ width: iconSize, height: iconSize }} />
-      </span>
     </button>
   )
 }

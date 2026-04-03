@@ -1,13 +1,23 @@
 import { clsx } from 'clsx'
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { FamilyDialog } from '../../../FamilyDialog/FamilyDialog'
+import {
+  formatMoneyFromCents,
+  getLineTotalCents,
+  getUnitPriceCents,
+} from '../basketMath'
 
 export interface BasketItem {
   id: number | string
   name: string
   href: string
   color?: string
+  /** Display unit price (e.g. from API). Used when `unitPriceCents` is omitted. */
   price: string
+  /** Optional unit price in minor units; avoids parsing `price`. */
+  unitPriceCents?: number
+  /** ISO 4217 for formatted amounts (default USD). */
+  currency?: string
   quantity: number
   imageSrc: string
   imageAlt: string
@@ -33,6 +43,18 @@ export function BasketItem({
   confirmRemove = true,
   className,
 }: BasketItemProps) {
+  const currency = item.currency ?? 'USD'
+  const unitCents = getUnitPriceCents(item)
+  const lineCents = getLineTotalCents(item)
+  const lineDisplay =
+    lineCents != null
+      ? formatMoneyFromCents(lineCents, { currency })
+      : null
+  const unitDisplay =
+    unitCents != null
+      ? formatMoneyFromCents(unitCents, { currency })
+      : item.price
+
   const handleRemove = () => {
     onRemove?.(item.id)
   }
@@ -79,11 +101,15 @@ export function BasketItem({
             </div>
 
             <div className="text-right">
-              <div className="text-sm font-semibold text-[var(--color-foreground)]">
-                {item.price}
+              <div className="text-sm font-semibold tabular-nums text-[var(--color-foreground)]">
+                {lineDisplay ?? item.price}
               </div>
               <p className="mt-1 text-xs uppercase tracking-[0.14em] text-[var(--color-muted-foreground)]">
-                unit price
+                {item.quantity > 1 && lineDisplay != null
+                  ? `${unitDisplay} × ${item.quantity}`
+                  : item.quantity > 1
+                    ? 'unit price'
+                    : 'each'}
               </p>
             </div>
           </div>
@@ -147,8 +173,8 @@ export function BasketItem({
                           {item.color ? ` • ${item.color}` : ''}
                         </p>
                       </div>
-                      <div className="text-sm font-semibold text-slate-950">
-                        {item.price}
+                      <div className="text-sm font-semibold tabular-nums text-slate-950">
+                        {lineDisplay ?? item.price}
                       </div>
                     </div>
                   </div>

@@ -186,7 +186,7 @@ export function DataTable<TData extends Record<string, unknown>>({
 
       {/* Table Container */}
       <div className="relative z-0">
-        <div className="overflow-hidden rounded-[1.15rem] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[0_8px_24px_-18px_rgba(15,23,42,0.12)]">
+        <div className="overflow-hidden rounded-[1.15rem] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[0_8px_24px_-18px_rgba(15,23,42,0.12)] dark:shadow-[0_8px_28px_-18px_rgba(0,0,0,0.45)]">
           <div className="border-b border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_96%,var(--color-muted)_4%)] px-5 py-3">
             <div className="flex items-center justify-between gap-3">
               <div className="min-w-0">

@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useMemo, useState, type ComponentType, type ReactNode } from 'react'
 import { type ColumnDef } from '@tanstack/react-table'
 import preview from '#.storybook/preview'
 import { DataTable, type DataTableProps } from './DataTable'
@@ -24,6 +24,13 @@ const columnHelper = createDataTableColumnHelper<LinkData>()
 const meta = preview.meta({
   title: 'UI/DataTable',
   component: DataTable as typeof DataTable,
+  decorators: [
+    (Story: ComponentType) => (
+      <div className="min-h-screen bg-[linear-gradient(180deg,#f8fbff_0%,#eef3f8_100%)] px-4 py-6 text-[var(--color-foreground)] sm:px-6 lg:px-8 dark:bg-[linear-gradient(180deg,#0f172a_0%,#020617_100%)]">
+        <Story />
+      </div>
+    ),
+  ],
 })
 
 function Template(args: DataTableProps<LinkData>) {

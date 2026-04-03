@@ -27,10 +27,8 @@ const meta = preview.meta({
   },
   decorators: [
     (Story: React.ComponentType) => (
-      <div className="min-h-screen bg-[linear-gradient(180deg,#f8fbff_0%,#eef3f8_100%)] px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
-          <Story />
-        </div>
+      <div className="min-h-screen bg-[linear-gradient(180deg,#f8fbff_0%,#eef3f8_100%)] py-8">
+        <Story />
       </div>
     ),
   ],
@@ -94,13 +92,13 @@ export const PreferencePanel = meta.story({
       )
 
       return (
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
+        <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 sm:px-6 lg:px-8 xl:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
           <section className="rounded-[2rem] border border-[var(--color-border)] bg-white p-6 shadow-[0_24px_54px_-38px_rgba(15,23,42,0.16)]">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
               Appearance preferences
             </p>
             <div className="mt-4 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-              <div className="space-y-2">
+              <div className="min-w-0 space-y-2">
                 <h2 className="text-2xl font-semibold tracking-tight text-slate-950">
                   Workspace theme mode
                 </h2>
@@ -109,14 +107,16 @@ export const PreferencePanel = meta.story({
                   leaving the settings surface.
                 </p>
               </div>
-              <ControlledToggle
-                {...args}
-                checked={enabled}
-                onChange={(nextChecked) => {
-                  setEnabled(nextChecked)
-                  args.onChange?.(nextChecked)
-                }}
-              />
+              <div className="shrink-0">
+                <ControlledToggle
+                  {...args}
+                  checked={enabled}
+                  onChange={(nextChecked) => {
+                    setEnabled(nextChecked)
+                    args.onChange?.(nextChecked)
+                  }}
+                />
+              </div>
             </div>
           </section>
 
@@ -158,55 +158,59 @@ export const HeaderControlCluster = meta.story({
     const [checked, setChecked] = useState(false)
 
     return (
-      <div className="min-h-screen w-full">
-        <AppHeader
-          fullWidth
-          className="-mx-4 sm:-mx-6 lg:-mx-8"
-          workspaceLabel="Workspace shell"
-          showMenuButton
-          showSearch
-          showNotifications
-          notifications={{ count: 3 }}
-          showProfile
-          profile={{
-            avatar:
-              'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=96&h=96&fit=crop',
-            name: 'Sara Salah',
-            email: 'sara@shortlink.org',
-            menuItems: [
-              { name: 'Workspace settings', href: '#' },
-              { name: 'Billing', href: '#' },
-              { name: 'Sign out', onClick: () => undefined },
-            ],
-          }}
-          navigation={[
-            { name: 'Overview', href: '#' },
-            { name: 'Analytics', href: '#' },
-            { name: 'Catalog', href: '#' },
-          ]}
-          currentPath="#"
-          themeToggleComponent={
-            <div className="flex items-center gap-3">
-              <ToggleDarkMode
-                id="header-toggle"
-                checked={checked}
-                onChange={setChecked}
-              />
-              <Button variant="outline" size="sm">
-                Invite team
-              </Button>
-            </div>
-          }
-        />
+      <div className="flex min-h-screen w-full flex-col overflow-x-hidden">
+        {/* Full viewport width (aligns to iframe edges via full-bleed margin) */}
+        <div className="w-screen max-w-[100vw] shrink-0 bg-[var(--color-background)] shadow-[0_1px_0_0_var(--color-border)] ml-[calc(50%-50vw)]">
+          <AppHeader
+            fullWidth
+            workspaceLabel="Workspace shell"
+            showMenuButton
+            showSearch
+            showNotifications
+            notifications={{ count: 3 }}
+            showProfile
+            profile={{
+              avatar:
+                'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=96&h=96&fit=crop',
+              name: 'Sara Salah',
+              email: 'sara@shortlink.org',
+              menuItems: [
+                { name: 'Workspace settings', href: '#' },
+                { name: 'Billing', href: '#' },
+                { name: 'Sign out', onClick: () => undefined },
+              ],
+            }}
+            navigation={[
+              { name: 'Overview', href: '#' },
+              { name: 'Analytics', href: '#' },
+              { name: 'Catalog', href: '#' },
+            ]}
+            currentPath="#"
+            themeToggleComponent={
+              <div className="flex items-center gap-3">
+                <ToggleDarkMode
+                  id="header-toggle"
+                  checked={checked}
+                  onChange={setChecked}
+                />
+                <Button variant="outline" size="sm">
+                  Invite team
+                </Button>
+              </div>
+            }
+          />
+        </div>
 
-        <div className="mt-6 rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-[0_24px_70px_-54px_rgba(15,23,42,0.24)]">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">
-            Header integration
-          </p>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-            ToggleDarkMode inside a real header control cluster, paired with the
-            other workspace controls instead of a synthetic demo row.
-          </p>
+        <div className="mx-auto mt-8 w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[0_8px_24px_-18px_rgba(15,23,42,0.12)]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-muted-foreground)]">
+              Header integration
+            </p>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--color-muted-foreground)]">
+              ToggleDarkMode inside a real AppHeader rail: full-width shell,
+              search, notifications, profile and the theme cluster.
+            </p>
+          </div>
         </div>
       </div>
     )

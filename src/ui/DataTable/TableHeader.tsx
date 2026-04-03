@@ -39,7 +39,7 @@ export function TableHeader<TData>({
     <thead
       className={clsx(
         'sticky top-0 z-10',
-        'bg-[color-mix(in_srgb,var(--table-header-bg)_96%,white)]',
+        'bg-[color-mix(in_srgb,var(--table-header-bg)_96%,var(--color-background))]',
         headerClassName,
       )}
     >
@@ -91,7 +91,7 @@ export function TableHeader<TData>({
                     canSort && 'cursor-pointer select-none',
                     'border-b border-[var(--table-border)] transition-colors duration-150',
                     isPinned &&
-                      'sticky z-20 bg-[color-mix(in_srgb,var(--table-header-bg)_98%,white)]',
+                      'sticky z-20 bg-[color-mix(in_srgb,var(--table-header-bg)_98%,var(--color-background))]',
                     enableColumnResizing && 'relative',
                     headerClassName,
                   )}
@@ -184,7 +184,8 @@ export function TableHeader<TData>({
                         'absolute right-0 top-0 h-full w-1 cursor-col-resize touch-none select-none',
                         'bg-transparent hover:bg-[var(--color-border)]',
                         'transition-colors',
-                        header.column.getIsResizing() && 'bg-slate-400/80',
+                        header.column.getIsResizing() &&
+                          'bg-slate-400/80 dark:bg-slate-500/90',
                       )}
                       style={{
                         transform: header.column.getIsResizing()
@@ -198,7 +199,7 @@ export function TableHeader<TData>({
             })}
           </tr>
           {showFilters && (
-            <tr className="border-t border-[var(--table-border)] bg-[color-mix(in_srgb,var(--table-header-bg)_99%,white)]">
+            <tr className="border-t border-[var(--table-border)] bg-[color-mix(in_srgb,var(--table-header-bg)_99%,var(--color-background))]">
               {enableRowSelection && (
                 <th className={clsx(densityClasses[density].cell)} />
               )}

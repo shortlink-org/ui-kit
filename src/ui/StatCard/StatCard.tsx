@@ -66,7 +66,7 @@ export function StatCard({
   return (
     <div
       className={clsx(
-        'relative overflow-hidden rounded-[1rem] border p-3 shadow-[0_14px_32px_-26px_rgba(15,23,42,0.24)] transition-[transform,box-shadow,border-color,background-color] duration-200 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(15,23,42,0.22)] sm:rounded-[1.2rem] sm:p-4',
+        'relative flex h-full min-h-0 flex-col overflow-hidden rounded-[1rem] border p-0 shadow-[0_14px_32px_-26px_rgba(15,23,42,0.24)] transition-[transform,box-shadow,border-color,background-color] duration-200 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_rgba(15,23,42,0.22)] sm:rounded-[1.2rem]',
         statCardToneClasses[tone],
         className,
       )}
@@ -79,10 +79,10 @@ export function StatCard({
         aria-hidden="true"
       />
 
-      <div className="flex flex-wrap items-start justify-between gap-2">
+      <div className="flex min-h-0 flex-1 flex-col gap-2 p-3 sm:gap-2.5 sm:p-4">
         <p
           className={clsx(
-            'min-w-0 flex-1 text-[10px] font-semibold uppercase tracking-[0.16em] leading-5 text-[var(--color-muted-foreground)] sm:text-[11px]',
+            'min-w-0 text-[10px] font-semibold uppercase leading-snug tracking-[0.16em] text-[var(--color-muted-foreground)] sm:text-[11px]',
             labelClassName,
           )}
         >
@@ -92,7 +92,7 @@ export function StatCard({
         {change ? (
           <span
             className={clsx(
-              'shrink-0 whitespace-nowrap rounded-full border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] sm:py-1 sm:text-[10px]',
+              'inline-flex max-w-full shrink-0 self-start rounded-full border px-2 py-0.5 text-[9px] font-semibold uppercase leading-tight tracking-[0.12em] sm:py-1 sm:text-[10px] sm:tracking-[0.14em]',
               statCardChangeToneClasses[tone],
               changeClassName,
             )}
@@ -100,15 +100,15 @@ export function StatCard({
             {change}
           </span>
         ) : null}
-      </div>
 
-      <div
-        className={clsx(
-          'mt-2 text-xl font-semibold tracking-tight text-[var(--color-foreground)] sm:mt-3 sm:text-[1.85rem]',
-          valueClassName,
-        )}
-      >
-        {value}
+        <div
+          className={clsx(
+            'mt-auto text-xl font-semibold leading-[1.1] tracking-tight text-[var(--color-foreground)] sm:text-[1.85rem]',
+            valueClassName,
+          )}
+        >
+          {value}
+        </div>
       </div>
     </div>
   )

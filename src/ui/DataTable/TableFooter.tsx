@@ -29,7 +29,7 @@ export function TableFooter<TData>({
   }
 
   return (
-    <tfoot className="border-t border-[var(--table-border)] bg-[color-mix(in_srgb,var(--table-header-bg)_98%,white)]">
+    <tfoot className="border-t border-[var(--table-border)] bg-[color-mix(in_srgb,var(--table-header-bg)_98%,var(--color-background))]">
       {footerGroups.map((footerGroup) => (
         <tr key={footerGroup.id}>
           {enableRowSelection && (
@@ -47,7 +47,7 @@ export function TableFooter<TData>({
                   densityClasses[density].cell,
                   'font-semibold text-[var(--color-foreground)]',
                   isPinned &&
-                    'sticky z-20 bg-[color-mix(in_srgb,var(--table-header-bg)_98%,white)]',
+                    'sticky z-20 bg-[color-mix(in_srgb,var(--table-header-bg)_98%,var(--color-background))]',
                   footerClassName,
                 )}
                 style={{

@@ -192,7 +192,6 @@ export const Default = meta.story({
   ),
   args: {
     items: mockItems,
-    subtotal: '$262.00',
     shippingNote: 'Shipping, taxes and express delivery options are confirmed at checkout.',
     checkoutText: 'Proceed to checkout',
     continueShoppingText: 'Back to storefront',
@@ -208,7 +207,6 @@ export const Empty = meta.story({
   ),
   args: {
     items: [],
-    subtotal: '$0.00',
     position: 'right',
     size: 'lg',
   },

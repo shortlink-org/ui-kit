@@ -16,8 +16,8 @@ const meta = preview.meta({
   },
   decorators: [
     (Story: React.ComponentType) => (
-      <div className="min-h-screen bg-[linear-gradient(180deg,#f8fbff_0%,#eef3f8_100%)] px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
+      <div className="min-h-screen bg-[var(--color-background)] px-4 py-8 text-[var(--color-foreground)] sm:px-6 lg:px-8">
+        <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
           <Story />
         </div>
       </div>
@@ -28,7 +28,10 @@ const meta = preview.meta({
   } as Partial<SearchFormProps>,
 })
 
+export default meta
+
 const getSearchInput = (ctx: ReturnType<typeof within>) =>
+  ctx.queryByRole('searchbox') ??
   ctx.queryByRole('textbox', { name: /search/i }) ??
   ctx.queryByPlaceholderText(/search/i) ??
   ctx.getByRole('textbox')
@@ -39,13 +42,13 @@ export const MarketplaceToolbar = meta.story({
     fullWidth: true,
   },
   render: (args: SearchFormProps) => (
-    <div className="rounded-[2rem] border border-[var(--color-border)] bg-white/90 p-4 shadow-[0_24px_50px_-34px_rgba(15,23,42,0.18)] backdrop-blur sm:p-5">
+    <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[0_8px_24px_-18px_rgba(15,23,42,0.12)] sm:p-5">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="space-y-1">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-muted-foreground)]">
             Catalog command bar
           </p>
-          <h2 className="text-2xl font-semibold tracking-tight text-slate-950">
+          <h2 className="text-2xl font-semibold tracking-tight text-[var(--color-foreground)]">
             Refine a large marketplace catalog quickly
           </h2>
         </div>
@@ -53,12 +56,12 @@ export const MarketplaceToolbar = meta.story({
           <SearchForm {...args} />
         </div>
       </div>
-      <div className="mt-4 flex flex-wrap gap-2 text-sm text-slate-600">
+      <div className="mt-4 flex flex-wrap gap-2 text-sm text-[var(--color-muted-foreground)]">
         {['In stock', 'Top sellers', 'Same-day delivery', 'Featured brands'].map(
           (chip) => (
             <span
               key={chip}
-              className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1"
+              className="rounded-full border border-[var(--color-border)] bg-[var(--color-background)] px-3 py-1"
             >
               {chip}
             </span>
@@ -88,51 +91,46 @@ export const WorkspaceSearchFeedback = meta.story({
       const [lastQuery, setLastQuery] = React.useState('')
 
       return (
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.8fr)]">
-          <section className="rounded-[2rem] border border-[var(--color-border)] bg-white p-5 shadow-[0_28px_56px_-40px_rgba(15,23,42,0.16)] sm:p-6">
-            <div className="mb-4 flex items-start justify-between gap-4">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
-                  Workspace search
-                </p>
-                <h2 className="mt-1 text-xl font-semibold text-slate-950">
-                  Investigate account activity
-                </h2>
+        <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[0_8px_24px_-18px_rgba(15,23,42,0.12)] sm:p-6">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(12rem,16rem)] lg:items-start">
+            <div className="space-y-4">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-muted-foreground)]">
+                    Workspace search
+                  </p>
+                  <h2 className="mt-1 text-xl font-semibold text-[var(--color-foreground)]">
+                    Investigate account activity
+                  </h2>
+                </div>
+                <span className="shrink-0 rounded-full border border-[var(--color-border)] bg-[var(--color-background)] px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-[var(--color-muted-foreground)]">
+                  Live query
+                </span>
               </div>
-              <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700">
-                Live query
-              </span>
+              <SearchForm
+                {...args}
+                onSearch={(query) => {
+                  setLastQuery(query)
+                  args.onSearch?.(query)
+                }}
+              />
             </div>
-            <SearchForm
-              {...args}
-              onSearch={(query) => {
-                setLastQuery(query)
-                args.onSearch?.(query)
-              }}
-            />
-          </section>
 
-          <aside className="rounded-[2rem] border border-[var(--color-border)] bg-slate-950 p-5 text-white shadow-[0_32px_64px_-42px_rgba(15,23,42,0.42)] sm:p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">
-              Search status
-            </p>
-            <div className="mt-5 space-y-4">
-              <div>
-                <p className="text-sm text-slate-400">Last query</p>
-                <p
-                  className="mt-1 text-lg font-medium text-white"
-                  data-testid="last-query"
-                >
-                  {lastQuery || 'No query yet'}
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                <p className="text-sm text-slate-300">
-                  Debounced search is useful for large catalog and order indexes.
-                </p>
-              </div>
-            </div>
-          </aside>
+            <aside className="rounded-xl border border-[var(--color-border)] bg-[var(--color-background)] p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--color-muted-foreground)]">
+                Last query
+              </p>
+              <p
+                className="mt-2 break-words text-base font-medium text-[var(--color-foreground)]"
+                data-testid="last-query"
+              >
+                {lastQuery || 'No query yet'}
+              </p>
+              <p className="mt-4 text-sm leading-relaxed text-[var(--color-muted-foreground)]">
+                Debounced search helps with large order and catalog indexes.
+              </p>
+            </aside>
+          </div>
         </div>
       )
     }

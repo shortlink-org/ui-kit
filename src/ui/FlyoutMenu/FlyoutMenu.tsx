@@ -139,7 +139,7 @@ export function FlyoutMenu({
       )
 
       const itemClassName =
-        'group relative flex w-full items-start gap-4 rounded-2xl px-4 py-4 text-left transition-colors duration-200 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/60'
+        'group relative flex w-full cursor-pointer items-start gap-4 rounded-2xl px-4 py-4 text-left transition-colors duration-200 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/60'
 
       const itemContent = item.href
         ? renderLink(item.href, itemBody, itemClassName)
@@ -173,14 +173,14 @@ export function FlyoutMenu({
           <item.icon aria-hidden className="size-5 flex-none text-slate-400 transition-colors group-hover:text-slate-600" />
           <span className="font-medium text-slate-900">{item.name}</span>
         </>,
-        'group flex items-center gap-3 rounded-xl px-4 py-3 text-sm transition-colors hover:bg-white',
+        'group flex cursor-pointer items-center gap-3 rounded-xl px-4 py-3 text-sm transition-colors hover:bg-white',
       )
     }
 
     return (
       <button
         onClick={handleClick}
-        className="group flex items-center gap-3 rounded-xl px-4 py-3 text-sm transition-colors hover:bg-white"
+        className="group flex cursor-pointer items-center gap-3 rounded-xl px-4 py-3 text-sm transition-colors hover:bg-white"
       >
         <item.icon aria-hidden className="size-5 flex-none text-slate-400 transition-colors group-hover:text-slate-600" />
         <span className="font-medium text-slate-900">{item.name}</span>
@@ -196,7 +196,7 @@ export function FlyoutMenu({
     <Popover className="relative">
       <PopoverButton
         className={clsx(
-          'group inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-semibold text-slate-900 transition-colors duration-200 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/60',
+          'group inline-flex cursor-pointer items-center gap-1.5 rounded-md px-3 py-2 text-sm font-semibold text-slate-900 transition-colors duration-200 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/60',
           buttonClassName,
         )}
       >
