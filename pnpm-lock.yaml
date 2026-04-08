@@ -116,7 +116,7 @@ importers:
         version: 0.5.0(@storybook/addon-vitest@10.3.4(@vitest/browser-playwright@4.1.3)(@vitest/browser@4.1.3)(@vitest/runner@4.1.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(storybook@10.3.4(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(vitest@4.1.3))(storybook@10.3.4(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(typescript@6.0.2)
       '@storybook/addon-themes':
         specifier: ^10.3.4
-        version: 10.3.4(storybook@10.3.4(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
+        version: 10.3.5(storybook@10.3.4(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
       '@storybook/addon-vitest':
         specifier: ^10.3.4
         version: 10.3.4(@vitest/browser-playwright@4.1.3)(@vitest/browser@4.1.3)(@vitest/runner@4.1.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(storybook@10.3.4(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(vitest@4.1.3)
@@ -2361,10 +2361,10 @@ packages:
       '@storybook/addon-vitest':
         optional: true
 
-  '@storybook/addon-themes@10.3.4':
-    resolution: {integrity: sha512-5734o52qtW8svu2vhKPncISWLr1FZrXZoN+u1q0BjTrbL6qTNE1AzIMCBEwn0TNdn16vC3ZsDJOj1dW4dD13cw==}
+  '@storybook/addon-themes@10.3.5':
+    resolution: {integrity: sha512-Mv+C7GuZ0MhGRx5C+rv8sCEjgYsDTLBvq68101V0s8Vwh3gKd6W9cbS31HoOeLAiIMiPPZ8C1iWudA3Oumdtlw==}
     peerDependencies:
-      storybook: ^10.3.4
+      storybook: ^10.3.5
 
   '@storybook/addon-vitest@10.3.4':
     resolution: {integrity: sha512-lSn8opaHVzDxLtMy28FnSkyx6uP1oQVnGzodNunTjrbJ8Ue8JVK+fjWtC/JfErIio0avlq79mgC5tfHSWlPr9w==}
@@ -8730,7 +8730,7 @@ snapshots:
       - '@tmcp/auth'
       - typescript
 
-  '@storybook/addon-themes@10.3.4(storybook@10.3.4(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))':
+  '@storybook/addon-themes@10.3.5(storybook@10.3.4(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))':
     dependencies:
       storybook: 10.3.4(@testing-library/dom@10.4.0)(prettier@3.4.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       ts-dedent: 2.2.0
