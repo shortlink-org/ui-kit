@@ -60,7 +60,7 @@
     "@fontsource/roboto": "^5.2.10",
     "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.2.0",
-    "@mui/icons-material": "^7.3.9",
+    "@mui/icons-material": "^9.0.0",
     "@mui/material": "^9.0.0",
     "@mui/types": "^7.4.12",
     "@mui/x-date-pickers": "8.27.2",
