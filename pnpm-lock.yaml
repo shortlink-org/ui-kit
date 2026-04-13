@@ -52,7 +52,7 @@ importers:
         version: 19.2.14
       autoprefixer:
         specifier: ^10.4.27
-        version: 10.4.27(postcss@8.5.9)
+        version: 10.5.0(postcss@8.5.9)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -3355,8 +3355,8 @@ packages:
   ast-v8-to-istanbul@1.0.0:
     resolution: {integrity: sha512-1fSfIwuDICFA4LKkCzRPO7F0hzFf0B7+Xqrl27ynQaa+Rh0e1Es0v6kWHPott3lU10AyAr7oKHa65OppjLn3Rg==}
 
-  autoprefixer@10.4.27:
-    resolution: {integrity: sha512-NP9APE+tO+LuJGn7/9+cohklunJsXWiaWEfV3si4Gi/XHDwVNgkwr1J3RQYFIvPy76GmJ9/bW8vyoU1LcxwKHA==}
+  autoprefixer@10.5.0:
+    resolution: {integrity: sha512-FMhOoZV4+qR6aTUALKX2rEqGG+oyATvwBt9IIzVR5rMa2HRWPkxf+P+PAJLD1I/H5/II+HuZcBJYEFBpq39ong==}
     engines: {node: ^10 || ^12 || >=14}
     hasBin: true
     peerDependencies:
@@ -3923,8 +3923,8 @@ packages:
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  electron-to-chromium@1.5.335:
-    resolution: {integrity: sha512-q9n5T4BR4Xwa2cwbrwcsDJtHD/enpQ5S1xF1IAtdqf5AAgqDFmR/aakqH3ChFdqd/QXJhS3rnnXFtexU7rax6Q==}
+  electron-to-chromium@1.5.336:
+    resolution: {integrity: sha512-AbH9q9J455r/nLmdNZes0G0ZKcRX73FicwowalLs6ijwOmCJSRRrLX63lcAlzy9ux3dWK1w1+1nsBJEWN11hcQ==}
 
   elliptic@6.6.1:
     resolution: {integrity: sha512-RaddvvMatK2LJHqFJ+YA4WysVN5Ita9E35botqIYspQ4TkRAlCicdzKOjlyv/1Za5RyTNn7di//eEV0uTAfe3g==}
@@ -9841,7 +9841,7 @@ snapshots:
       estree-walker: 3.0.3
       js-tokens: 10.0.0
 
-  autoprefixer@10.4.27(postcss@8.5.9):
+  autoprefixer@10.5.0(postcss@8.5.9):
     dependencies:
       browserslist: 4.28.2
       caniuse-lite: 1.0.30001787
@@ -10037,7 +10037,7 @@ snapshots:
     dependencies:
       baseline-browser-mapping: 2.10.18
       caniuse-lite: 1.0.30001787
-      electron-to-chromium: 1.5.335
+      electron-to-chromium: 1.5.336
       node-releases: 2.0.37
       update-browserslist-db: 1.2.3(browserslist@4.28.2)
 
@@ -10438,7 +10438,7 @@ snapshots:
 
   eastasianwidth@0.2.0: {}
 
-  electron-to-chromium@1.5.335: {}
+  electron-to-chromium@1.5.336: {}
 
   elliptic@6.6.1:
     dependencies:
