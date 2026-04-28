@@ -164,7 +164,7 @@ importers:
         version: 4.1.5(vitest@4.1.5)
       chromatic:
         specifier: ^16.2.0
-        version: 16.6.0
+        version: 16.6.1
       css-loader:
         specifier: ^7.1.4
         version: 7.1.4(webpack@5.106.1(@swc/core@1.15.24(@swc/helpers@0.5.21))(esbuild@0.27.7))
@@ -3652,8 +3652,8 @@ packages:
       '@chromatic-com/playwright':
         optional: true
 
-  chromatic@16.6.0:
-    resolution: {integrity: sha512-cxRHMa3HJYrQtuL1F3J2x6wuVvfP+d7frUzltS7SiCVE8HbUBQTejH6TzveTKAHzErgrMrXjxvjD37bOTi4Mhw==}
+  chromatic@16.6.1:
+    resolution: {integrity: sha512-QlrPBFFrMtR9LlP1FcnIsmIiMSQ055K94i/cDNHd8opo405AHO2oMEPPSfi1cKC2GyB3bEpXPZ+MW5bCHMcrLA==}
     hasBin: true
     peerDependencies:
       '@chromatic-com/cypress': ^0.*.* || ^1.0.0
@@ -10266,7 +10266,7 @@ snapshots:
 
   chromatic@13.3.5: {}
 
-  chromatic@16.6.0:
+  chromatic@16.6.1:
     dependencies:
       semver: 7.7.4
 
