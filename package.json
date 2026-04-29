@@ -63,7 +63,7 @@
     "@mui/icons-material": "^9.0.0",
     "@mui/material": "^9.0.0",
     "@mui/types": "^9.0.0",
-    "@mui/x-date-pickers": "9.0.2",
+    "@mui/x-date-pickers": "9.0.4",
     "@tailwindcss/postcss": "4.2.2",
     "@tailwindcss/typography": "^0.5.19",
     "@tanstack/react-table": "8.21.3",
